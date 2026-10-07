@@ -46,7 +46,8 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     mode: is (a claim about now or the past), ought (an expectation that must hold), or will (a prediction).
     about: the claim in words, for a person.
     is:    a process that names the claim in its `feeds` gives the value; property names the property of that
-           process. With no process, a person, an agent, or a run reports the value with flint ite observe --claim.
+           process. A person, an agent, or a run can also report the value with flint ite observe --claim;
+           that report needs a process that names the claim in its `feeds` too.
            type: number | text | boolean | time | version | sha | json | verdict.
            fresh-for: how long an accepted value stays fresh (1h, 6h, 7d). Omit it only for a fact that never changes.
            selection: newest | authoritative | agree (default: newest for one source, agree for more).

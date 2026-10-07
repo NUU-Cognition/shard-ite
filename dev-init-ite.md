@@ -341,7 +341,7 @@ Each process names its parts by their ids (`parts`), and it can name the claims 
 | `process-unobserved` | note | A process has no observation yet for a part. |
 | `process-invalid` | error | The manifest of a process has a problem. The process does not run. |
 
-**The migration.** `flint ite migrate` (the step `processes`) makes each `contact` item of a part into one process folder (`human` gives a person check, `agent` an agent request, each other kind a code process with `uses`; `fresh-for` gives `expect-every`), drops the field `contact`, moves the prose of the `# Contact` section into the process, and moves the newest 10 observations of each (process, part) pair of `.flint/ite/observations/` into the log. The old store goes.
+**The migration.** `flint ite migrate` (the step `processes`) makes each `contact` item of a part or of a view node into one process folder (`human` gives a person check, `agent` an agent request, each other kind a code process with `uses`; `fresh-for` gives `expect-every`), drops the field `contact`, and moves the prose of the `# Contact` section into the process. Each record of `.flint/ite/observations/` goes into the archive of this machine, `.flint/steel/archive/observations/<program id>.jsonl` (machine records; the core never reads them), and the newest 10 observations of each (process, part) pair also go into the live log. An old store goes only when the archive has each of its records. A program that fails makes the step fail.
 
 ### The Commands of a Process
 
@@ -669,7 +669,7 @@ claims:
       - { of: main-version, op: eq, value: "0.7.0" }
 ```
 
-1. **An `is` claim gets its value from the process that names it in `feeds`.** A claim names no process. When the process is a ready process (`git`, `npm`), the claim gives `property`: the name of the value that it takes (`origin/canon.version`). A property that the process does not give is an error. With no process, a person, an agent, or a run reports the value with `flint ite observe --claim` (give `type`).
+1. **An `is` claim gets its value from the process that names it in `feeds`.** A claim names no process. When the process is a ready process (`git`, `npm`), the claim gives `property`: the name of the value that it takes (`origin/canon.version`). A property that the process does not give is an error. A person, an agent, or a run can also report the value with `flint ite observe --claim` (give `type`). A report needs a process that names the claim in `feeds`.
 2. **`type`** is `number`, `text`, `boolean`, `time`, `version` (semver), `sha`, `json`, or `verdict`. The default is the type of the property.
 3. **`fresh-for`** is the time that an accepted value stays fresh (`1h`, `6h`, `7d`). With no `fresh-for`, the value never gets old: use that only for a fact that does not change.
 4. **`selection`** is `newest`, `authoritative` (needs a process that feeds the claim), or `agree` (the default: two fresh values from two sources that differ give `conflict`).
