@@ -36,8 +36,12 @@ description: "A map of Steel/Maps (format steel-map/1): the manifest map.md, the
       types [{ id, name, capabilities, fields, look }]   connections [{ key, title, capabilities }]
       parts [{ id, type, title, prose, parent, fields, claims [{ id, mode, about, state, value }], grounding, note }]
       links [{ from, to, key }]
-      view { id, title, question, map, slice, text, parts [<part id>...], prose { <node id>: <text> }, own [{ id, title, parent }] }
-        (null for the main map). Show only view.parts when the list is not empty; view.own are the nodes with no part.
+      view { id, title, question, map, slice, text, parts [<part id>...], own [{ id, title, parent }],
+             titles { <node id>: <words of the heading> }, prose { <node id>: <text> },
+             fields { <node id>: { date, status, actor, kind, ... } }, links [{ from, to, key }] }
+        (null for the main map). Show only view.parts and view.own when the view has nodes; view.own are the nodes
+        with no part. Use view.titles for the words of the view, and view.fields for what the view says of a node
+        (for example a `date` that the part does not have).
       state: { positions, viewport, map }: map is what saveState wrote last (or null).
       proposals: the count of the open proposals of the program.
   - api.onModel(fn): fn(model) after each new model. It returns a function that stops it.
