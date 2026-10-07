@@ -12,10 +12,122 @@ dependencies:
 
 types:
   - Program
-  - Framework
   - Run
+  - Actor
+  - Step
+  - Decision
+  - Process
+  - Stream
+  - Note
+  - Stage
+  - Input
+  - Output
+  - Policy
+  - Metric
+  - Goal
+  - Milestone
+  - Deliverable
+  - Person
+  - Role
+  - Venue
+  - Resource
+  - Task
+  - Risk
+  - Budget
+  - Question
+  - Hypothesis
+  - Claim
+  - Source
+  - Dataset
+  - Method
+  - Experiment
+  - Finding
+  - Team
+  - Responsibility
+  - Ritual
+  - Thing
+  - State
+  - Init
+  - Knowledge
+  - Rule
+  - Workflow
+  - Skill
+  - Template
+  - Type
+  - Command
+  - Agent
+  - Idea
+  - Option
+  - Criterion
+  - Matrix
+  - Act
+  - Theme
+  - Notepad
+  - Report
 
 folders:
   - Mesh/Programs
-  - Mesh/Metadata/Frameworks
+  - Mesh/Metadata/Templates
   - Mesh/Metadata/Step Libraries
+
+install:
+  - source: inst-ite-connection_next.md
+    dest: "Mesh/Metadata/Types/(Connection) Next (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_uses.md
+    dest: "Mesh/Metadata/Types/(Connection) Uses (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_depends_on.md
+    dest: "Mesh/Metadata/Types/(Connection) Depends On (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_owner.md
+    dest: "Mesh/Metadata/Types/(Connection) Owner (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_informs.md
+    dest: "Mesh/Metadata/Types/(Connection) Informs (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_mentions.md
+    dest: "Mesh/Metadata/Types/(Connection) Mentions (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_blocks.md
+    dest: "Mesh/Metadata/Types/(Connection) Blocks (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_supports.md
+    dest: "Mesh/Metadata/Types/(Connection) Supports (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_refutes.md
+    dest: "Mesh/Metadata/Types/(Connection) Refutes (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_reports_to.md
+    dest: "Mesh/Metadata/Types/(Connection) Reports To (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_reads.md
+    dest: "Mesh/Metadata/Types/(Connection) Reads (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_writes.md
+    dest: "Mesh/Metadata/Types/(Connection) Writes (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_part_of.md
+    dest: "Mesh/Metadata/Types/(Connection) Part Of (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_option_of.md
+    dest: "Mesh/Metadata/Types/(Connection) Option Of (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_answers.md
+    dest: "Mesh/Metadata/Types/(Connection) Answers (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_opposes.md
+    dest: "Mesh/Metadata/Types/(Connection) Opposes (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_picked.md
+    dest: "Mesh/Metadata/Types/(Connection) Picked (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_acts_on.md
+    dest: "Mesh/Metadata/Types/(Connection) Acts On (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_threatens.md
+    dest: "Mesh/Metadata/Types/(Connection) Threatens (ITE Shard).md"
+    mode: force
+  - source: inst-ite-connection_protects.md
+    dest: "Mesh/Metadata/Types/(Connection) Protects (ITE Shard).md"
+    mode: force
