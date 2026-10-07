@@ -4,7 +4,7 @@ description: "The template software of a program: a software product: its system
 
 # Software
 
-A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this framework.
+A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this template.
 
 ## How to model a system of this kind
 
@@ -56,7 +56,7 @@ Use only the types of this template. When a part fits no type, use the type `not
 format: steel-template/1
 id: software
 title: "Software"
-description: "A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this framework."
+description: "A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this template."
 types: [system, module, feature, data, actor, step, decision, process, stream, note]
 connections: [next, uses, depends-on, owner, informs, mentions]
 views:

@@ -4,7 +4,7 @@ description: "The template general of a program: a system of any kind. An instru
 
 # General
 
-A system of any kind. Use it when no other framework fits: it has things, actors, processes, states, goals, and questions.
+A system of any kind. Use it when no other template fits: it has things, actors, processes, states, goals, and questions.
 
 ## How to model a system of this kind
 
@@ -53,7 +53,7 @@ Use only the types of this template. When a part fits no type, use the type `not
 format: steel-template/1
 id: general
 title: "General"
-description: "A system of any kind. Use it when no other framework fits: it has things, actors, processes, states, goals, and questions."
+description: "A system of any kind. Use it when no other template fits: it has things, actors, processes, states, goals, and questions."
 types: [thing, actor, process, state, goal, question, note]
 connections: [next, uses, depends-on, owner, informs, mentions]
 views:
