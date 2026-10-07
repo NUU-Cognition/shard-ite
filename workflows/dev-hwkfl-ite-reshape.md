@@ -30,7 +30,7 @@ Change one view as a person asks, with no person in the session. The person revi
 ## Stage 2: Plan the Change
 
 1. Run `flint orbh session set phase shaping`.
-2. Write a node map: `keep`, `change`, `move`, or `remove` for each node, and each new node with a new id, a kind, a `ref` from `flint ite map "<program>" --json` (never invented), and links. A node keeps its id when it moves and when its title changes.
+2. Write a node map: `keep`, `change`, `move`, or `remove` for each node, and each new node with an id (the part id of its part, from `flint ite map "<program>" --json`, never invented; a slug for a node with no part), a kind, and links. A node keeps its id when it moves and when its title changes. To give a node with a slug its part, change its heading id to the part id and change each link to it.
 3. Keep `lifetime` as it is. Set `curation: "proposed"`.
 4. Once the plan makes the change, progress to the next stage.
 
@@ -38,7 +38,7 @@ Change one view as a person asks, with no person in the session. The person revi
 
 1. Run `flint orbh session set phase writing`. Set the focus on the nodes that change.
 2. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`) and one new UUID for `id`. `view_id` is the `id` of the view. `base_hash` is the hash of Stage 1.
-3. Write `<program folder>/Candidates/<candidate-id>.md`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]].
+3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with `state: proposed`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]] (format `ite-view/2`).
 4. Check the candidate against the quality rules of [[init-ite]].
 5. Once the candidate passes each rule, progress to the next stage.
 
@@ -47,7 +47,7 @@ Change one view as a person asks, with no person in the session. The person revi
 1. Run `flint orbh session set phase checking`.
 2. Run `flint ite diff --candidate <candidate-id> --json`. It reads the candidate as the view will be after the apply. Then run `flint ite check --candidate <candidate-id>`: it shows only the findings of the candidate and exits 1 for an error finding.
    - `conflict` must be `false`, and `added`, `removed`, `moved`, and `changed` must be the nodes of your node map. The text form of the command says "The candidate can be applied."
-   - Read `candidate.findings`. Repair each finding of the level `error` or `warning` in the candidate file, and run the diff again. A `framework` note names a kind that the framework does not have: change it to a kind of the framework.
+   - Read `candidate.findings`. Repair each finding of the level `error` or `warning` in the candidate file (`format`, `link-missing`, `ref-missing`: a heading id that names no part), and run the diff again.
    - For a conflict, read the view again and write a new candidate from the current view.
 3. Do not return before step 2 passes. Say in the `summary` that the diff passed.
 4. When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of [[hinit-ite]]).
@@ -66,5 +66,5 @@ Change one view as a person asks, with no person in the session. The person revi
 
 # Output
 
-- One candidate in `Candidates/`, with the `view_id` and the `base_hash` of the view
+- One candidate in `Steel/Programs/<Program>/Proposals/`, with the `view_id` and the `base_hash` of the view, and `state: proposed`
 - One `ite-result/1` JSON value as the result of the turn

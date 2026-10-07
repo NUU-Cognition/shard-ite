@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Reshape
 
-Change one view as a person asks: a new shape, a split, a merge, new nodes, other titles, or the anchors of its steps. The result is a candidate that replaces the view when the person applies it. The rules of the view file and the quality rules are in [[init-ite]].
+Change one view as a person asks: a new map, a new slice, a split, a merge, new nodes, other titles, or the parts of its steps. The result is a candidate that replaces the view when the person applies it. The rules of the view file and the quality rules are in [[init-ite]].
 
 # Input
 
@@ -29,8 +29,8 @@ Change one view as a person asks: a new shape, a split, a merge, new nodes, othe
 
 ## Stage 2: Plan the Change
 
-1. Write a node map: for each node of the view, `keep`, `change` (title, prose, kind, links, ref, contact), `move` (a new parent or place), or `remove`. For each new node: a new id, a title, a kind, a `ref` from the map (`flint ite map "<program>" --json`, never invented), and its links.
-2. A node keeps its id when it moves and when its title changes. Never give the id of a removed node to a node with another claim.
+1. Write a node map: for each node of the view, `keep`, `change` (title, prose, kind, links), `move` (a new parent or place), or `remove`. For each new node: an id (the part id of its part, from `flint ite map "<program>" --json`, never invented; a slug for a node with no part), a title, a kind, and its links.
+2. A node keeps its id when it moves and when its title changes. The heading id of a node of a part is the part id: to give a node with a slug its part, change its heading id to the part id and change each link to it. Never give the id of a removed node to a node with another claim.
 3. Keep `lifetime` as it is. Set `curation: "proposed"`.
 4. Show the node map to the person when the change removes nodes or changes the shape. Ask: write it, or change the plan.
 5. Once the plan makes the change, progress to the next stage.
@@ -38,7 +38,7 @@ Change one view as a person asks: a new shape, a split, a merge, new nodes, othe
 ## Stage 3: Write the Candidate
 
 1. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`) and one new UUID for `id`. `view_id` is the `id` of the view. `base_hash` is the hash of Stage 1.
-2. Write `<program folder>/Candidates/<candidate-id>.md`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]].
+2. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with `state: proposed`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]] (format `ite-view/2`).
 3. Check the candidate against the quality rules of [[init-ite]]. The last node is still the note of what the view leaves out; change its prose when the change moves the edge of the view.
 4. Once the candidate passes each rule, progress to the next stage.
 
@@ -54,4 +54,4 @@ Change one view as a person asks: a new shape, a split, a merge, new nodes, othe
 
 # Output
 
-- The view after the apply (the old form in `History/`), or one candidate that waits for the person
+- The view after the apply (the old form in `Steel/Programs/<Program>/History/`, the candidate with `state: applied`), or one candidate that waits for the person
