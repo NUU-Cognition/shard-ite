@@ -30,7 +30,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 
 ## Stage 2: Read the Sources
 
-1. Read the cards of the level: the title, the sentence, the kind, the count of children, and the findings of each.
+1. Read the cards of the level: the title, the sentence, the type, the count of children, and the findings of each.
 2. Read the relations of the level: the cards with many links between them belong together.
 3. Read the part notes of the cards when the sentence does not say what the part is.
 4. Never invent a path, a URL, or a note name. Each source that you write exists now.
@@ -40,12 +40,12 @@ The focus of this workflow: the selected part, or the root when no node is selec
 ## Stage 3: Plan the Operations
 
 1. Use only `split`, `merge`, `move`, and `rename`. Do not change sources, and do not remove parts in this job.
-2. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a kind (software: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
+2. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a type of the program (software: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
 3. **One child** (`map-single-child`): `merge` the child into its parent, or `move` siblings to it.
 4. **A marker** (`parent-missing`, `parent-outside`, `cycle`): `move` the part to its correct parent.
-5. **A part at the wrong level**: `move` it. **A title that does not say what the part is**: `rename` it.
+5. **A part at the wrong level**: `move` it. **A title that does not say what the part is**: `rename` it. **A type that does not fit the part**: `rename` it with `kind`, the new type id (`{"op":"rename","part":"<id>","title":"<the title>","kind":"<type id>"}`). The title can stay.
 6. The level after the change has 3 to `max-children` children. Do not make a new level of one child.
-7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 8. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
@@ -68,4 +68,4 @@ The focus of this workflow: the selected part, or the root when no node is selec
 
 # Output
 
-- One map change in `Changes/` of the program folder: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

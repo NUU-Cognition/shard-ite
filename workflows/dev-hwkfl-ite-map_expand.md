@@ -34,7 +34,7 @@ The focus of this job: the selected part.
 
 1. Run `flint orbh session set phase reading-sources`.
 2. Read the part note: its sentence, its prose, and its sources.
-3. Software: read the files below each code ref of the part (`git -C <product root> ls-files <ref>`). Other frameworks: read each source of the part.
+3. Software: read the files below each code ref of the part (`git -C <product root> ls-files <ref>`). Other programs: read each source of the part (the wikilinks and the URLs of its `sources`).
 4. Find the 3 to `max-children` things inside the part.
 5. Never invent a path, a URL, or a note name. Each source that you write exists now.
 6. Once you know what the sources hold, progress to the next stage.
@@ -42,11 +42,11 @@ The focus of this job: the selected part.
 ## Stage 3: Plan the Operations
 
 1. Run `flint orbh session set phase planning`.
-2. Write 3 to `max-children` children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a kind of the framework, one sentence, and its sources.
+2. Write 3 to `max-children` children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a type of the program, one sentence, and its sources.
 3. **The 100% rule.** Together the children cover all the sources of the part: each source of the part goes to one child, as the same path or as more precise paths. No two children share a file.
 4. **Keep the children that exist.** When the part has children already, keep them and add only what is missing. Group existing children with `split` when that makes the level clearer.
 5. When the part holds fewer than 3 things, propose no change: a part with one child is a finding. Say so in the result.
-6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 7. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change
@@ -81,5 +81,5 @@ The focus of this job: the selected part.
 
 # Output
 
-- One map change in `Changes/` of the program folder, with the state `proposed`
+- One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`
 - One `ite-result/1` JSON value as the result of the turn, with the change id as `candidate_id`

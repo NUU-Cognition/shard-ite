@@ -41,10 +41,10 @@ The focus of this workflow: the selected part.
 
 1. When the sentence or the prose of the part (or of a child) is not true now, `edit` it.
 2. When the sources moved, `edit` the sources (the whole new list). Repair each `code-ref-missing` of the part and its children.
-3. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child.
-4. When the title of a part is not true now, `rename` it.
+3. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child of a type of the program.
+4. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
 5. Change only the part and its subtree.
-6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 7. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
@@ -67,4 +67,4 @@ The focus of this workflow: the selected part.
 
 # Output
 
-- One map change in `Changes/` of the program folder: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

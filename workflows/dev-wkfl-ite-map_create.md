@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Map Create
 
-Draft the root and level 1 of the main map: 3 to 9 parts under the root, each with one sentence and its sources. Use it for a program with no main map, or with a flat map (many parts with no parent). The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
+Draft the root and level 1 of the main map: 3 to 9 parts under the root, each with one sentence and its sources. Use it for a program with no main map, or with a flat map (many top parts: parts whose `parent` is the root note). The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
 
 The focus of this workflow: the root (no node).
 
@@ -29,7 +29,7 @@ The focus of this workflow: the root (no node).
 
 ## Stage 2: Read the Sources
 
-1. Software: list the top folders of the product root (`ls`, `git -C <product root> ls-files | cut -d/ -f1-2 | sort | uniq -c`). Read the README files and the entry points. Other frameworks: read the program file, its `sources`, and the notes that it includes.
+1. Software: list the top folders of the product root (`ls`, `git -C <product root> ls-files | cut -d/ -f1-2 | sort | uniq -c`). Read the README files and the entry points. Other programs: read the root note, the parts that exist and their `sources`, and the notes that the root note and the parts link to.
 2. Find the 3 to `max-children` large things of the system: the parts that a person names when they explain the system in one minute.
 3. Never invent a path, a URL, or a note name. Each source that you write exists now.
 4. When the scope of the task can have two meanings, ask the person one question. Ask no other question in this stage.
@@ -37,11 +37,11 @@ The focus of this workflow: the root (no node).
 
 ## Stage 3: Plan the Operations
 
-1. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a kind of the framework (software: `system` for a large part), one sentence that says what the part is, and its sources (software: the folders of the part, each ending with `/`).
+1. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a type of the `types` of the root note (software: `system` for a large part), one sentence that says what the part is, and its sources (software: the folders of the part, each ending with `/`).
 2. **The 100% rule.** Together the parts cover the whole system: each top folder (or source) goes to one part. A folder that no person needs to see (a generated folder, a lock file) is not a part: name it in the result, so that the person can add it to `coverage-ignore`.
 3. **Keep the parts that exist.** When the main map has parts already, do not add a second part for one thing. Put the existing children of the root under the new parts: one `split` for each new part that groups existing parts (`parent: null`, the children are the existing parts), or `add` with an `id` and then `move`.
 4. Give an `add` an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) when a later operation of the same change names the new part.
-5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 6. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
@@ -64,4 +64,4 @@ The focus of this workflow: the root (no node).
 
 # Output
 
-- One map change in `Changes/` of the program folder: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

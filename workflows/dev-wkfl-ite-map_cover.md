@@ -40,16 +40,16 @@ The focus of this workflow: the selected part, or the root when no node is selec
 ## Stage 3: Plan the Operations
 
 1. For each group of gap files, `edit` the sources of the part that it belongs to. `edit` replaces the whole list: give the old sources and the new paths. Prefer a folder path (`dir/`) when all the files of the folder go to one part.
-2. When no part fits, `add` a new part with the files, under the correct parent.
+2. When no part fits, `add` a new part of a type of the program, with the files, under the correct parent.
 3. **Overlaps**: a file that two leaves cover stays in one leaf only: `edit` the sources of the other leaf.
 4. **Missing sources** (`code-ref-missing`): `edit` the source to the path now, or remove it from the list.
-5. Do not cover a file that no person needs to see (a generated file, a lock file, a fixture). Name those files in the result: the person can add them to `coverage-ignore` of the program file. `coverage-ignore` takes plain paths and globs: `**/test/` is a folder of that name at any depth, `**/package.json` is a file name at any depth, `*` does not cross `/`, `?` is one character, and `{a,b}` is one of the words.
+5. Do not cover a file that no person needs to see (a generated file, a lock file, a fixture). Name those files in the result: the person can add them to `main-map.coverage-ignore` of the root note (or of the OrbCode project file). `coverage-ignore` takes plain paths and globs: `**/test/` is a folder of that name at any depth, `**/package.json` is a file name at any depth, `*` does not cross `/`, `?` is one character, and `{a,b}` is one of the words.
 6. **Only two leaves make an overlap.** A folder ref on a part that is not a leaf covers its files for the part and its ancestors, and makes no overlap.
 7. **A folder ref that makes an overlap becomes a list of files.** When the folder ref of a leaf covers a file that another leaf also covers, replace the folder ref with the list of the files that belong to that leaf.
 8. **A shared file can stay in the common ancestor.** A file that two or more leaves use can be a source of their common ancestor (a part that is not a leaf), not of each leaf.
 9. **A slice never makes an overlap.** A slice is a code ref with a symbol or a line range: `path#symbol` or `path:Lx-Ly`. It covers the file. A slice and a whole-file ref of one file make no overlap. Give a slice to each leaf that is one part of a shared file, with a symbol that you read in the file.
 10. **Do not edit a part that a waiting change moves.** The `move` (or the `split`) of the waiting change writes the `parent` of the same file, so your `edit` gets a conflict (`changed`) at the apply. Leave that part, or name it in the result for a later job.
-11. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+11. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 12. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
@@ -72,4 +72,4 @@ The focus of this workflow: the selected part, or the root when no node is selec
 
 # Output
 
-- One map change in `Changes/` of the program folder: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

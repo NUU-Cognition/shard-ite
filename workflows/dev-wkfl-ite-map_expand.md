@@ -31,7 +31,7 @@ The focus of this workflow: the selected part.
 ## Stage 2: Read the Sources
 
 1. Read the part note: its sentence, its prose, and its sources.
-2. Software: read the files below each code ref of the part (`git -C <product root> ls-files <ref>`). Other frameworks: read each source of the part.
+2. Software: read the files below each code ref of the part (`git -C <product root> ls-files <ref>`). Other programs: read each source of the part (the wikilinks and the URLs of its `sources`).
 3. Find the 3 to `max-children` things inside the part.
 4. Never invent a path, a URL, or a note name. Each source that you write exists now.
 5. When the scope of the task can have two meanings, ask the person one question. Ask no other question in this stage.
@@ -39,11 +39,11 @@ The focus of this workflow: the selected part.
 
 ## Stage 3: Plan the Operations
 
-1. Write 3 to `max-children` children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a kind of the framework, one sentence, and its sources.
+1. Write 3 to `max-children` children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a type of the program, one sentence, and its sources.
 2. **The 100% rule.** Together the children cover all the sources of the part: each source of the part goes to one child, as the same path or as more precise paths. No two children share a file.
 3. **Keep the children that exist.** When the part has children already, keep them and add only what is missing. Group existing children with `split` when that makes the level clearer.
 4. When the part holds fewer than 3 things, propose no change: a part with one child is a finding. Say so in the result.
-5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 6. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
@@ -66,4 +66,4 @@ The focus of this workflow: the selected part.
 
 # Output
 
-- One map change in `Changes/` of the program folder: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

@@ -44,10 +44,10 @@ The focus of this job: the selected part.
 1. Run `flint orbh session set phase planning`.
 2. When the sentence or the prose of the part (or of a child) is not true now, `edit` it.
 3. When the sources moved, `edit` the sources (the whole new list). Repair each `code-ref-missing` of the part and its children.
-4. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child.
-5. When the title of a part is not true now, `rename` it.
+4. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child of a type of the program.
+5. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
 6. Change only the part and its subtree.
-7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part.
+7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 8. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change
@@ -82,5 +82,5 @@ The focus of this job: the selected part.
 
 # Output
 
-- One map change in `Changes/` of the program folder, with the state `proposed`
+- One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`
 - One `ite-result/1` JSON value as the result of the turn, with the change id as `candidate_id`
