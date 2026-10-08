@@ -30,7 +30,7 @@ Answer one question of a person with one new view of a program. The result is a 
 ## Stage 2: Read the Parts
 
 1. Read the note of each part that can be a part of the answer. The note owns the description; the view says only what answers the question.
-2. Note the processes of each part (`flint ite process list "<program>" --json`): a node of a part shows the grounding of its part. Note each claim of the answer that no part holds: its prose says the gap.
+2. Note the claims about each part (`flint ite claim list "<program>" --json`): a node of a part shows the grounding of its part. Note each statement of the answer that no part holds: its prose says the gap.
 3. Note the words of the system that the answer needs, and one short explanation of each.
 4. Once you can answer the question in one to three sentences, progress to the next stage.
 
@@ -53,7 +53,7 @@ Answer one question of a person with one new view of a program. The result is a 
    - [ ] Each heading id that is a UUID is the id of a part of the map.
    - [ ] Each claim that no part holds is a gap that its prose says.
    - [ ] The last node is a `kind: note` that says what the view leaves out.
-   - [ ] The view holds no grounding, no observation, no finding, and no position.
+   - [ ] The view holds no grounding, no result, no finding, and no position.
 5. Once the candidate passes each rule, progress to the next stage.
 
 ## Stage 5: Verify the Candidate

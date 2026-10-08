@@ -18,7 +18,7 @@ name: Knowledge
 plural: Knowledge
 description: "A knowledge file: deep reference that an agent reads on demand."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: sun, icon: library, layer: context }
 ```
@@ -29,5 +29,5 @@ look: { hue: sun, icon: library, layer: context }
 |----------|-------|
 | Type id | `knowledge` |
 | Naming | `(Program) <Name> . (Knowledge) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

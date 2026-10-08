@@ -70,7 +70,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 ## Stage 5: Check
 
 1. Run `flint orbh session set phase checking`.
-2. Run `flint ite check "<program>"`. Repair each error of the parts that you changed (`format`, `link-missing`). A `no-process` note is correct for a new part: the job `ground` gives it a process.
+2. Run `flint ite check "<program>"`. Repair each error of the parts that you changed (`format`, `link-missing`). A `no-claim` note is correct for a new part: the job `ground` gives it a claim.
 3. Read the tree after of the change (`flint ite map change show "<program>" <change id>`). Check the new parts against the quality rules of [[init-ite]].
 4. Once the check has no error of your parts, progress to the next stage.
 

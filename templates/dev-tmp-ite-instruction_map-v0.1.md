@@ -1,178 +1,101 @@
 ---
-description: "An instruction map: a root part with the instruction-map block, and the step parts below it (worksteps and decisions) that point to their instructions, with the executors, and the effects and the authority of a living system"
+description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md (format steel-flow/1), the nodes of a large process in order (step, decision, wait, parallel, join, sub-map), native, blended, or external, with a complete example"
 ---
 
-# Filename: Mesh/Programs/(Program) [Name]/Map/(Program) [Name] . ([Type]) [Title].md
+# Filename: Steel/Programs/[Program]/Processes/[id]/map.md
 
 /*
-  An instruction map is a branch of the main map that a person can RUN. It is parts, not a view:
-  one ROOT part with the frontmatter block `instruction-map`, and the STEP parts below it. Each step
-  points to its instruction with `does`; the instruction itself stays outside the model (a text, a
-  skill or a workflow of a shard, a script of a repository, a person). A view with `map: flow` and
-  `slice: { below: <root part id> }` draws the map. The view never says the order: `next` and
-  `outcomes` on the parts say it.
+  An instruction map is a large instruction: the nodes of a process in order, with the claims that must hold
+  before a step (precondition) and the claims that show that a step worked (effect). It is the file map.md in the
+  folder of its process, beside process.md (tmp-ite-process-v0.1). A process gets a map when one description is
+  not enough: more than one actor, a decision, a loop, a branch, or a step that waits for a claim.
 
-  Write the parts with `flint ite part add` or a map change (`flint ite map change propose`), as each
-  part of the main map. Then set the fields below with `flint ite part set`, or in the frontmatter.
+  Steps are not parts. The main map says what the system is; an instruction map says how it moves. A step names
+  the parts that it uses by their ids (parts). Steel draws each map itself: no view names a map.
 
-  THE ROOT PART
-  - Any type. A new map uses the type Instruction Map: `(Program) [Name] . (Instruction Map) [Title]`.
-  - `parent`: as each part. The steps are the parts below the root (`parent` is the root or a part
-    below it).
-  - `instruction-map`:
-      format: always steel-flow/1. One set of rules for each instruction map. The parts that name a claim
-        (the claim of an input, a precondition, an effect) and the authority need a living system: the
-        program has a `system` block.
-      id: a slug; unique in a living system.
-      title: the title of a run. Default: the title of the root part.
-      entry: a wikilink to the first step.
-      exits: wikilinks to the steps whose completion ends the run with success. At least one.
-      inputs: the inputs of a run: name, kind (text | number | choice | note | notes), required, prompt;
-        in a living system, `claim: <is claim>`: the start form offers its fresh value.
-      authority (a living system): { run, execute, approve, irreversible, approvers }. The steps are wikilinks.
-        An actor is person:<Name>, agent:*, or agent:<runtime/profile>. Name each step whose effect cannot
-        be undone in `irreversible`: it needs an approval of a person.
+  THE GRAMMAR (the grammar of a view file)
+  - The frontmatter: format "steel-flow/1"; entry (the id of the first node); exits (the ids of the nodes where a
+    run ends); inputs (a list of { name, kind, required?, prompt? }; kind: text | number | boolean | choice |
+    json); source (only for an external map: { ref: "[[<note>]]", hash } or { path: "@<Codebase>/<path>", hash }
+    or { command: "<line>" }).
+  - One H1: the title. The prose after it says what the map does, in one to three sentences.
+  - One H2 for each node: "## Title {#id}" (the id is a lower-case slug), the instruction for a person under it,
+    and one fenced block whose info word is the kind of the node.
 
-  A STEP PART
-  - A WORKSTEP is a part of a type with the capability `runnable` (for example Step):
-      next: one wikilink to the next step. An exit has none. A `next` to a part outside the map is a
-        warning, and a run does not follow it.
-      does: { by, who, instruction, executor }
-        by: person (default) | agent | command.
-        who: the person or the role, for a person to read.
-        instruction: the text that the actor reads, a wikilink to a skill or a workflow, or a path in a
-          repository. ${inputs.<name>} in the text is for a person or an agent only.
-        executor: agent { target: "<runtime/profile>", timeout, idempotent }; command { run, cwd, timeout,
-          idempotent }. Never put ${...} in `run`: a command gets ITE_INPUT_<NAME> and
-          ITE_VALUE_<STEP>_<OUTPUT> as environment variables. An agent step has at most one text output.
-      inputs: the values that the step reads: name, kind, required, prompt, from (a run value name, or
-        <step part id>.<output>). A step input takes its value by name from an earlier output or a run input.
-      outputs: name, kind, required, prompt; a note output has part_kind (the type id of the new part),
-        min, and link: { relation, to: <input name> | $choice }; a choice output has choices or of.
-      done-when: one sentence: when the step is done.
-      precondition (a living system): ought claims that must hold at the approval and at the dispatch.
-      effect (a living system): [{ claim: <is claim that a process feeds>, equals: <a literal, ${inputs.<name>},
-        or ${values.<step part id>.<output>}> }]. The step stays pending until the log of the process
-        confirms each value. A Done is only a report.
-      completion (a living system): { after: dispatched | reported, within: 2h, on-timeout: unknown | failed }:
-        the timing of the effect.
-  - A DECISION is a part of a type with the capability `decides` (for example Decision):
-      question: the question to the person.
-      outcomes: { "<outcome>": "[[<step>]]" } with at least two outcomes. Quote "yes" and "no".
-      does: { by: person }. Its answer is the value `<step part id>.answer`.
-  - A loop goes only out of a decision; the engine bounds each step at 20 visits for each run.
-  - A change of `effect`, `completion`, `precondition`, or `authority` in a living system is a protected
-    change: it goes only through a revision that a person applies (flint ite revision propose).
-  - The step id of a run is the part id. A run keeps its snapshot: an edit of a step makes a new
-    revision for the next run only.
+  THE NODES
+  - step: does ({ process: <id> }, or inline { by: person | agent, instruction: "...", target? }), next ([one
+    id]; none for an exit), run (auto | manual), inputs ({ <name>: "<value>" }), outputs (a list of fields, for
+    an inline step), precondition (claim ids), effect (claim ids), retry ({ max, wait }), on-fail (a node id),
+    timeout, source (a mirrored step), parts (part ids).
+  - decision: question, by (person | agent), outcomes ({ "<outcome>": <node id> }).
+  - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, event: <hook id>; timeout; next.
+  - parallel: next: [<id>, <id>, ...] (two or more).
+  - join: wait: all | any; next.
+  - sub-map: process: <id> (a process with a map.md), inputs, next. The child run names its parent run and node.
+
+  THE DATA: ${inputs.<name>} names an input of the run; ${<node id>.<output>} names an output of an earlier node;
+  ${<decision id>.answer} names an answer.
+
+  RUN: the default is auto for a step that does a code process or an agent with no approval, and for each wait,
+  parallel, join, and sub-map; manual (a person presses Begin) for a step of a person, a decision of a person, and
+  a step whose process needs an approval.
+
+  THE MODES (counted, never written): a step is mirrored when it has source or does a process with source, else
+  native. A map with source in its frontmatter is external: each node is mirrored, and the map is only for view.
+  All native: native. Both: blended.
+
+  RULES
+  - Loops go only out of a decision. A node gets at most 20 visits in one run.
+  - Each node has a way to an exit. A join has a parallel before it. A sub-map names a process with a map.
+  - A step that changes the world outside this machine does a process with irreversible: true, so a person
+    approves it. A Done of a person is a report: only a check of an effect claim confirms the work.
+  - After you write a map, run `flint ite flow show "<program>" <process>`: it gives the resolved map and its
+    problems. A map with a problem of the level error does not start a run.
+  - Never write a file of Runs/: only the run engine writes there.
 */
 
 ````markdown
 ---
-id: GENERATE-UUID4
-parent: "[[(Program) NAME]]"
-instruction-map:
-  format: steel-flow/1
-  id: MAP-ID
-  title: "TITLE"
-  entry: "[[(Program) NAME . (Step) FIRST STEP]]"
-  exits: ["[[(Program) NAME . (Step) LAST STEP]]"]
-  inputs:
-    - { name: question, kind: text, required: true, prompt: "THE QUESTION TO THE PERSON?" }
+format: steel-flow/1
+entry: write-summary
+exits: [ship]
+inputs: [{ name: head, kind: text, required: true, prompt: "The sha of the head of nathan-main to ship" }]
 ---
 
-# (Instruction Map) [Title]
+# Ship Flint to canon
 
-[One to three sentences: what the map does, and where its outputs land.]
-````
+The custodian writes the ship summary and ships `nathan-main` to `canon`, only when `nathan-main` is level with `canon` and the checks passed on the head.
 
-````markdown
----
-id: GENERATE-UUID4
-parent: "[[(Program) NAME . (Instruction Map) TITLE]]"
-next: ["[[(Program) NAME . (Decision) THE QUESTION]]"]
-does:
-  by: person
-  instruction: "WHAT THE PERSON DOES, IN ONE OR TWO SENTENCES."
-inputs:
-  - { name: question, kind: text }
-outputs:
-  - { name: options, kind: notes, part_kind: option, min: 3 }
----
+## Write the ship summary {#write-summary}
 
-# (Step) [First step]
+An agent reads the commits of `origin/canon..<head>` and writes one line for the ship.
 
-[One sentence: what the person does in this step.]
-````
-
-````markdown
----
-id: GENERATE-UUID4
-parent: "[[(Program) NAME . (Instruction Map) TITLE]]"
-question: "THE QUESTION?"
-outcomes:
-  "yes": "[[(Program) NAME . (Step) LAST STEP]]"
-  "no": "[[(Program) NAME . (Step) FIRST STEP]]"
-does: { by: person }
----
-
-# (Decision) [The question]
-
-[One sentence: what each answer means.]
-````
-
-## A complete example
-
-The instruction map "Decide" of the program Thinking of this Flint is a map with only steps of a person: the root `(Program) Thinking . (Instruction Map) Decide` and seven steps (clarify, options, the decision "Are the options enough", compare, critique, decide, commit), with one loop back to the options. Read it as the reference form.
-
-## A complete example in a living system
-
-The instruction map "Ship Flint to canon" of the living system Flint Release has the root `(Program) Flint Release . (Step) Shipping to Canon`:
-
-```yaml
-instruction-map:
-  format: steel-flow/1
-  id: ship
-  title: Ship Flint to canon
-  entry: "[[(Program) Flint Release . (Step) Write the ship summary]]"
-  exits:
-    - "[[(Program) Flint Release . (Step) Ship to canon]]"
-  inputs:
-    - { name: head, kind: text, prompt: "The head of nathan-main to ship", claim: machine-head }
-  authority:
-    run: ["person:Nathan"]
-    approve: ["[[(Program) Flint Release . (Step) Ship to canon]]"]
-    irreversible: ["[[(Program) Flint Release . (Step) Ship to canon]]"]
-    approvers: ["person:Nathan"]
+```step
+does: { process: write-ship-summary }
+inputs: { head: "${inputs.head}" }
+next: [release]
 ```
 
-The agent step "Write the ship summary":
+## Is this a release {#release}
 
-```yaml
-next: ["[[(Program) Flint Release . (Step) Ship to canon]]"]
-does:
-  by: agent
-  instruction: "Read the commits of origin/canon..${inputs.head} in the primary checkout of the repository flint. Write one line that says what the ship holds. Return only that line."
-  executor: { target: "claude/o55xh", timeout: 30m }
-outputs: [{ name: summary, kind: text }]
+Most ships stop at `canon`. A release is a separate decision of Nathan.
+
+```decision
+question: Is this a release?
+by: person
+outcomes: { "yes": ship, "no": ship }
 ```
 
-The person step "Ship to canon", with an effect:
+## Ship to canon {#ship}
 
-```yaml
-does:
-  by: person
-  who: Nathan
-  instruction: "Press Begin. Then, in the primary checkout of flint, run ndv repo ship flint, with the line of the step summary as the --summary value."
+Nathan approves the ship. Then the process runs `ndv repo ship flint` with the summary line. The step is done only when the check of `canon-shipped` finds the head on `origin/canon`.
+
+```step
+does: { process: ship-to-canon }
+inputs: { head: "${inputs.head}", summary: "${write-summary.summary}" }
 precondition: [no-pull-debt, checks-on-head]
-effect:
-  - { claim: canon-shipped-from, equals: "${inputs.head}" }
-completion: { after: dispatched, within: 2h, on-timeout: unknown }
+effect: [canon-shipped]
 ```
+````
 
-What the example does:
-
-- The start form offers the head of `nathan-main` (the claim `machine-head`). The approval and the Begin refuse when the head moved.
-- The agent step gets its prompt from the system. Its one `text` output is the result of its session.
-- The ship needs an approval of Nathan (it is irreversible), and the ought claims `no-pull-debt` and `checks-on-head` must hold at the approval and at the Begin.
-- The step stays pending until the process `git-flint-remote` observes the head in `canon-shipped-from` after the Begin. A Done of Nathan is only a report.
+This map is blended: the summary and the decision are native, and the step "Ship to canon" mirrors the command `ndv repo ship flint` of its process. The program Workflow Lab of this Flint has one map with each kind of node (`lab-flow`) and one external map (`notepad-start`).

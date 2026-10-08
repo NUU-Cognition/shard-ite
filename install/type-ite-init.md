@@ -18,7 +18,7 @@ name: Init
 plural: Inits
 description: "The init file or the headless init: the first file that an agent reads."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: sun, icon: book-open, layer: context }
 ```
@@ -29,5 +29,5 @@ look: { hue: sun, icon: book-open, layer: context }
 |----------|-------|
 | Type id | `init` |
 | Naming | `(Program) <Name> . (Init) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

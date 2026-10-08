@@ -18,7 +18,7 @@ name: State
 plural: States
 description: "A condition of the system at one time."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: teal, icon: circle-dot, layer: dynamics }
 ```
@@ -29,5 +29,5 @@ look: { hue: teal, icon: circle-dot, layer: dynamics }
 |----------|-------|
 | Type id | `state` |
 | Naming | `(Program) <Name> . (State) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `general` |

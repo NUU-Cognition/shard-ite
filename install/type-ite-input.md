@@ -18,7 +18,7 @@ name: Input
 plural: Inputs
 description: "What the process takes in: a request, a form, or a material."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: teal, icon: log-in, layer: process }
 ```
@@ -29,5 +29,5 @@ look: { hue: teal, icon: log-in, layer: process }
 |----------|-------|
 | Type id | `input` |
 | Naming | `(Program) <Name> . (Input) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `process` |

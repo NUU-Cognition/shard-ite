@@ -20,7 +20,7 @@ description: "A piece of work that a person must do. It is a Task of the Mesh, w
 fields:
   date: { type: date }
   status: { type: text }
-capabilities: [has-claims, dated, has-status]
+capabilities: [dated, has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: water, icon: list-checks, layer: work }
 ```
@@ -31,5 +31,5 @@ look: { hue: water, icon: list-checks, layer: work }
 |----------|-------|
 | Type id | `task` |
 | Naming | `(Program) <Name> . (Task) <Title>.md` |
-| Capabilities | `has-claims`, `dated`, `has-status` |
+| Capabilities | `dated`, `has-status` |
 | Templates | `event`, `work` |

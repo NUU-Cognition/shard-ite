@@ -17,7 +17,7 @@ description: "A map of Steel/Maps (format steel-map/1): the manifest map.md, the
   - title: the name of the map for a person.
   - entry: the module file in the folder. Default index.js.
   - needs: what a program must have so that the map is useful:
-      capabilities: [<capability of a type>...]   (for example runnable, dated, has-status)
+      capabilities: [<capability of a type>...]   (for example dated, has-status, owner)
       connections: [<connection key>...]          (for example owner, next, depends-on)
       fields: [<field name>...]                   (for example status, date)
     GET /api/steel/maps?program=<p> says for each map whether the program meets its needs.

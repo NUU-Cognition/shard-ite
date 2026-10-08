@@ -18,7 +18,7 @@ name: Team
 plural: Teams
 description: "A group of people that work together."
 fields: {}
-capabilities: [has-claims, owner, container]
+capabilities: [owner, container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reports-to: []}
 look: { hue: water, icon: users, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: water, icon: users, layer: structure }
 |----------|-------|
 | Type id | `team` |
 | Naming | `(Program) <Name> . (Team) <Title>.md` |
-| Capabilities | `has-claims`, `owner`, `container` |
+| Capabilities | `owner`, `container` |
 | Templates | `organisation` |

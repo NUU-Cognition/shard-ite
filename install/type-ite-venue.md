@@ -18,7 +18,7 @@ name: Venue
 plural: Venues
 description: "A place where the event, or a part of it, happens."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: earth, icon: map-pin, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: map-pin, layer: structure }
 |----------|-------|
 | Type id | `venue` |
 | Naming | `(Program) <Name> . (Venue) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `event` |

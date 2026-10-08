@@ -18,7 +18,7 @@ name: Type
 plural: Types
 description: "A Mesh type that the shard installs."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: earth, icon: shapes, layer: form }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: shapes, layer: form }
 |----------|-------|
 | Type id | `type` |
 | Naming | `(Program) <Name> . (Type) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

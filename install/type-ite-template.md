@@ -18,7 +18,7 @@ name: Template
 plural: Templates
 description: "The form of one artifact that the shard writes."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: earth, icon: file-text, layer: form }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: file-text, layer: form }
 |----------|-------|
 | Type id | `template` |
 | Naming | `(Program) <Name> . (Template) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

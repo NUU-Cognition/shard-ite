@@ -18,7 +18,7 @@ name: Resource
 plural: Resources
 description: "A thing that the event needs, such as equipment, food, or a room."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: stone, icon: briefcase, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: stone, icon: briefcase, layer: structure }
 |----------|-------|
 | Type id | `resource` |
 | Naming | `(Program) <Name> . (Resource) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `event` |

@@ -1,69 +1,71 @@
 ---
-description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/process.md (format steel-process/1), the one way that the model touches reality, by code, an agent, or a person, with a complete example of each form"
+description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/process.md (format steel-process/1), a small instruction that the program owns and can run, by code, an agent, or a person, with a complete example of each form"
 ---
 
-# Filename: Steel/Programs/[Program]/Reality/[id]/process.md
+# Filename: Steel/Programs/[Program]/Processes/[id]/process.md
 
 /*
-  A process is one way that the model touches reality. It checks one or more parts of a program and gives
-  observations. It never changes the world: code that changes the world is an instruction, outside the model.
-  A process has three forms: code (a script in the process folder), an agent request, and a person's check. Each form gives the same result: observations, through one door
-  (`flint ite process observe`, or the route POST /api/steel/programs/<program>/observations), into the log of the
-  program on this machine (.flint/steel/logs/<program id>.jsonl). No file of the Mesh or of Steel/ holds an
-  observation or a state.
+  A process is a small instruction that the program owns and can run: one description, and code, an agent, or a
+  person. It does work, and it can change the world. So it needs authority: a person enables its trigger on a
+  machine, and an irreversible process needs the approval of a person before each run. A process changes the
+  model only through a proposal. A process that checks reality and changes nothing is not a process: it is the
+  check of a claim (tmp-ite-claim-v0.1).
 
-  The core never starts a process by itself. A person or a run asks for it (Run now in Steel,
-  `flint ite process run "<program>" <id>`), or the process starts itself with its own means: a schedule of the
-  module crons, an Orbh cron, a live module, or a hook. `flint sync` does not schedule it.
+  A process with a map.md in its folder is a large process: it runs as a run of its instruction map
+  (tmp-ite-instruction_map-v0.1). One thing at two sizes.
 
   THE FOLDER
-  - Steel/Programs/<Program>/Reality/<id>/ — the folder name is the id of the process. The folder of the program
-    is the folder whose program.md has the id of the root note of the program.
-  - process.md holds the manifest. A code process keeps its code in the same folder.
+  - Steel/Programs/<Program>/Processes/<id>/ — the folder name is the id of the process.
+  - process.md holds the description. A code process keeps its code in the same folder.
 
   FRONTMATTER CONTRACT. The keys are kebab-case. No comment in the frontmatter.
   - format: always "steel-process/1".
-  - id: a slug, unique in the program, the same as the folder name: "booking-email".
+  - id: a slug, unique in the program, the same as the folder name: "send-reminders".
   - by: code | agent | person.
-  - parts: the ids (UUIDs) of the parts that the process checks. Never a title: a rename changes no id. Find the
-    id in the frontmatter of the part, or with `flint ite map "<program>" --json`.
-  - feeds: optional, the ids of the claims that the process gives a value to (a living system).
-  - expect-every: optional, a promise, not a trigger: 12h, 7d, 30d. When the newest observation is older, the
-    process is late: the part is stale, and `flint ite check` gives `process-late`.
-  - code (a code process is always its own code; the core has no library of checks):
-      runtime: node | python | exec. `exec` runs the entry file itself.
-      entry: the file in the process folder: "check.mjs", "check.py".
-      timeout: optional, at most this time for one run (default 60s).
-    The core runs the entry in the process folder with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID,
-    STEEL_PARTS (a JSON list of the part ids), and the values of flint.env and flint.env.local. Each line of its
-    output that is one JSON object is one observation: { "part": "<id>", "state": "holds|fails|error",
-    "summary": "<text>", "evidence"?: [{ "kind", "value", "label"? }] } for a yes-or-no check, or { "part": "<id>",
-    "claim": "<id>", "value": <value>, "type": "<type>", "unit"?: "<unit>", "summary": "<text>", "evidence"?: [...] }
-    for the value of a claim that the process feeds. Each other line is for a person. An exit code that is not 0, with no observation, gives one
-    `error` observation for each part.
+  - parts: optional, the ids (UUIDs) of the parts that the process uses. Never a title.
+  - inputs, outputs: optional, lists of { name, kind, required?, prompt? }. kind: text | number | boolean |
+    choice | json (choice adds choices: [...]).
+  - effect: optional, the ids of the claims that show that the work worked. After a done run, the core runs their
+    checks once, with the same inputs. Only a check confirms an effect.
+  - trigger: manual, { every: 10m }, { cron: "0 9 * * *" }, { on: hook }, or { on: watch }. A trigger runs only
+    on a machine where a person enabled it (`flint ite enable "<program>" <id>`).
+  - authority: optional, { run: ["person:<Name>"], approve: true|false, irreversible: true|false }. irreversible
+    implies approve, and an agent never approves.
+  - concurrency: optional, at most this many runs at once.
+  - code (a code process is always its own code):
+      runtime: node | python | exec. entry: the file in the folder. timeout: optional (default 60s).
+    The core runs the entry with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID, STEEL_PARTS, STEEL_INPUTS,
+    STEEL_STATE (JSON: the state of the process across its runs), STEEL_RUN_ID (or empty), STEEL_EVENT (a hook
+    or a watch), and the values of flint.env and flint.env.local. Each line of its output that is one JSON
+    object is one record: { "output": { "<name>": <value> } }, { "state": { ... } } (the new state of the
+    process), or { "log": "<text>" }. Exit 0 is done; another exit is failed. A file that the process writes on
+    this machine goes into .flint/steel/state/<program id>/.
   - agent:
-      prompt: the request. The agent reads, decides holds, fails, or error, and reports each part with
-              `flint ite process observe`. Run now starts one Orbh session with the prompt, the parts, the
-              claims, and the door command. The text of the result of the session is not an observation.
-      target: optional, the Orbh target "runtime/profile". Default: the default target of this machine.
+      prompt: the request, with ${inputs.<name>} for an input. One Orbh session starts, and its result gives
+              the outputs.
+      target: optional, the Orbh target "runtime/profile". timeout: optional.
   - person:
-      claim: the sentence that the person confirms. Run now gives `pending`, and Steel asks the person in the
-             panel Reality of the part. The answer is the observation.
+      task: what the person does. The run gives waiting; Steel shows the task, and the person presses Done with
+            the outputs.
       who: optional, "person:<Name>".
+  - source: optional. The process runs an instruction outside as one unit, so it is external: { command: "<a
+    command line, with ${inputs.<name>}>" }, { path: "@<Codebase>/<path>", hash: "<sha256>" }, or
+    { ref: "[[<a skill, a workflow, or a note>]]", hash: "<sha256>" } (an agent follows it). The hash is the
+    sha256 of the source text when you wrote the process; a later change of the source is the finding
+    mirror-drift.
 
   RULES
-  - Prefer code: a check with no mind. Use an agent when a reading decides, and a person only when only a
-    person knows.
-  - Test each code process before you keep it: `flint ite process test "<program>" <id>` runs the code one time,
-    checks each line against the door, and writes nothing to the log. Never invent a process that you did not check.
-  - A process touches reality outside the model. Code that only finds a part of this program proves only that the
-    model has the part: do not write it.
+  - Test each code process before you keep it: `flint ite process test "<program>" <id> [--input k=v]` runs the
+    code once, prints each record and its problems, writes nothing to the log, and changes no state. A process
+    with irreversible: true or a source refuses the test unless --dry is given.
+  - A process that changes the world outside this machine (a push, a send, a publish) is irreversible.
+  - Give the claims that show the result in effect. The record of a process never confirms its own work.
   - After you write a process, run `flint ite process list "<program>"`: a process with a problem shows it, and
-    it does not run. Then run it one time: `flint ite process run "<program>" <id>`.
+    it does not run.
 
   THE BODY
-  - One H1: the title for a person ("Booking email", "The forecast of the night").
-  - One to three short paragraphs: what the process checks, why, and what a person does when it fails.
+  - One H1: the title for a person ("Send the reminders").
+  - One to three short paragraphs: what the process does, why, and what it changes.
 */
 
 ## A code process
@@ -71,27 +73,29 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
 ````markdown
 ---
 format: steel-process/1
-id: rsvp-count
+id: send-reminders
 by: code
 runtime: node
-entry: check.mjs
+entry: index.js
 timeout: 30s
-parts:
-  - 04264f99-ff43-4d03-a867-e3634a085813
-expect-every: 1d
+parts: [366cc014-1f13-49f9-89f7-215623dfc872]
+outputs: [{ name: sent, kind: number }]
+effect: [rsvps-30]
+trigger: manual
+authority: { run: ["person:Nathan"], approve: false, irreversible: false }
 ---
 
-# The count of the RSVPs
+# Send the reminders
 
-The script reads the count of the RSVPs from the export of the ticket service and reports it. It holds when 80 or more guests answered.
+Mei sends a reminder to each person on the mailing list who has no RSVP yet. After the run, the check of `rsvps-30` runs once.
 ````
 
-The file `check.mjs` in the same folder:
+The file `index.js` in the same folder:
 
 ```js
-const [part] = JSON.parse(process.env.STEEL_PARTS);
-const count = 84; // read it from the export
-console.log(JSON.stringify({ part, state: count >= 80 ? 'holds' : 'fails', summary: `${count} guests answered the RSVP.` }));
+const sent = 8; // send the reminders here
+console.log(JSON.stringify({ log: `Sent ${sent} reminders.` }));
+console.log(JSON.stringify({ output: { sent } }));
 ```
 
 ## An agent process
@@ -99,35 +103,36 @@ console.log(JSON.stringify({ part, state: count >= 80 ? 'holds' : 'fails', summa
 ````markdown
 ---
 format: steel-process/1
-id: sponsors-signed
+id: write-ship-summary
 by: agent
-target: claude/o55h
-parts:
-  - 9ee6423c-9cff-464e-9a8f-dd5722e9dafc
-prompt: Read the sponsor sheet in the shared drive and say if two sponsors signed their letter.
-expect-every: 7d
+prompt: "Read the commits of origin/canon..${inputs.head} in the repository flint. Write one line that says what the ship holds. Change no file."
+target: claude/o55xh
+parts: [02586506-e1e8-4674-a72b-eeca885c9bc8]
+inputs: [{ name: head, kind: text, required: true }]
+outputs: [{ name: summary, kind: text }]
+trigger: manual
 ---
 
-# Two sponsors signed
+# Write the ship summary
 
-The sponsor sheet is a table that only a reader can check. The agent reads it and reports one observation.
+An agent reads the commits that the ship holds, and writes one line for the `--summary` value of the ship.
 ````
 
-## A person's check
+## An external process
 
 ````markdown
 ---
 format: steel-process/1
-id: booking-email
-by: person
-who: person:Priya
-parts:
-  - a9d285ce-53f0-448d-9580-5eff8cef7b1d
-claim: The venue manager confirmed by email the booking of the hall for Thursday 12 November 2026, from 17:30 to 22:00.
-expect-every: 30d
+id: ship-to-canon
+by: code
+source: { command: "ndv repo ship flint --summary ${inputs.summary}" }
+inputs: [{ name: summary, kind: text, required: true }]
+effect: [canon-shipped]
+trigger: manual
+authority: { run: ["person:Nathan"], approve: true, irreversible: true }
 ---
 
-# Booking email
+# Ship to canon
 
-The booking is an email from the venue manager to Priya. No public page shows the booking, so a person confirms it.
+The command `ndv repo ship flint` is the truth of the ship: this process only names it. The ship pushes to the remote, so Nathan approves each run.
 ````

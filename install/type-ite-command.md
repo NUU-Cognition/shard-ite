@@ -18,7 +18,7 @@ name: Command
 plural: Commands
 description: "A command of the CLI that the shard runs."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: teal, icon: terminal, layer: runtime }
 ```
@@ -29,5 +29,5 @@ look: { hue: teal, icon: terminal, layer: runtime }
 |----------|-------|
 | Type id | `command` |
 | Naming | `(Program) <Name> . (Command) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

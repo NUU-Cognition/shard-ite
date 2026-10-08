@@ -18,7 +18,7 @@ name: Role
 plural: Roles
 description: "A job that one person does at the event, such as host or treasurer."
 fields: {}
-capabilities: [has-claims, owner]
+capabilities: [owner]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: []}
 look: { hue: rose, icon: id-card, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: rose, icon: id-card, layer: structure }
 |----------|-------|
 | Type id | `role` |
 | Naming | `(Program) <Name> . (Role) <Title>.md` |
-| Capabilities | `has-claims`, `owner` |
+| Capabilities | `owner` |
 | Templates | `event`, `organisation` |

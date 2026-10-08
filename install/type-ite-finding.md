@@ -18,7 +18,7 @@ name: Finding
 plural: Findings
 description: "What the research found. It links to its evidence."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: sun, icon: search-check, layer: result }
 ```
@@ -29,5 +29,5 @@ look: { hue: sun, icon: search-check, layer: result }
 |----------|-------|
 | Type id | `finding` |
 | Naming | `(Program) <Name> . (Finding) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `research` |

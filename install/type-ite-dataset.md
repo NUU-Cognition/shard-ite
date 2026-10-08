@@ -18,7 +18,7 @@ name: Dataset
 plural: Datasets
 description: "A set of data that the research reads."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: teal, icon: table, layer: evidence }
 ```
@@ -29,5 +29,5 @@ look: { hue: teal, icon: table, layer: evidence }
 |----------|-------|
 | Type id | `dataset` |
 | Naming | `(Program) <Name> . (Dataset) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `research` |

@@ -19,7 +19,7 @@ plural: Hypotheses
 description: "A possible answer that a test can support or refute."
 fields:
   status: { type: text }
-capabilities: [has-claims, has-status]
+capabilities: [has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: fire, icon: lightbulb, layer: argument }
 ```
@@ -30,5 +30,5 @@ look: { hue: fire, icon: lightbulb, layer: argument }
 |----------|-------|
 | Type id | `hypothesis` |
 | Naming | `(Program) <Name> . (Hypothesis) <Title>.md` |
-| Capabilities | `has-claims`, `has-status` |
+| Capabilities | `has-status` |
 | Templates | `research` |

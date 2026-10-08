@@ -6,7 +6,7 @@ source:
 version: "0.1.0"
 name: ITE
 shorthand: ite
-description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, processes that check each claim against reality, and instruction maps that run"
+description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, claims with checks that read reality, and processes and instruction maps that run"
 dependencies:
   "@nuucognition/flint": "^0.4"
 

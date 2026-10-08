@@ -18,7 +18,7 @@ name: Agent
 plural: Agents
 description: "An agent session that runs the shard, interactive or headless."
 fields: {}
-capabilities: [has-claims, owner]
+capabilities: [owner]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: rose, icon: bot, layer: runtime }
 ```
@@ -29,5 +29,5 @@ look: { hue: rose, icon: bot, layer: runtime }
 |----------|-------|
 | Type id | `agent` |
 | Naming | `(Program) <Name> . (Agent) <Title>.md` |
-| Capabilities | `has-claims`, `owner` |
+| Capabilities | `owner` |
 | Templates | `shard` |

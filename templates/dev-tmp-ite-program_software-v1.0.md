@@ -13,7 +13,7 @@ You are an agent that models one system of the kind "Software" as a program of S
 1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`.
 2. Find the first level of the main map: at most 9 parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below. A connection is a frontmatter key of a part, with a wikilink to the other part.
-4. Write each claim that a person can check as a claim of a part (`claims`), and give it a process that checks it against reality.
+4. Write each statement that must be true as a claim about its parts (`Steel/Programs/<Name>/Reality/<id>/claim.md`, [[tmp-ite-claim-v0.1]]), with a check that reads reality. When the work of the system runs in an order that a person or an agent follows, write it as the instruction map of a process ([[tmp-ite-instruction_map-v0.1]]): steps of a run are nodes of a map, not parts.
 5. Answer the questions below with views. Each view is one map for one question.
 
 Use only the types of this template. When a part fits no type, use the type `note` and tell the person.

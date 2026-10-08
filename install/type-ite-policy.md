@@ -18,7 +18,7 @@ name: Policy
 plural: Policies
 description: "A rule that the process must obey."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: earth, icon: shield, layer: control }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: shield, layer: control }
 |----------|-------|
 | Type id | `policy` |
 | Naming | `(Program) <Name> . (Policy) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `process` |

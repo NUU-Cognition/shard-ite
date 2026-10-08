@@ -18,7 +18,7 @@ name: Actor
 plural: Actors
 description: "A person or another program that uses the product."
 fields: {}
-capabilities: [has-claims, owner]
+capabilities: [owner]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: rose, icon: user-round, layer: actors }
 ```
@@ -29,5 +29,5 @@ look: { hue: rose, icon: user-round, layer: actors }
 |----------|-------|
 | Type id | `actor` |
 | Naming | `(Program) <Name> . (Actor) <Title>.md` |
-| Capabilities | `has-claims`, `owner` |
+| Capabilities | `owner` |
 | Templates | `software`, `process`, `general`, `software-mine` |

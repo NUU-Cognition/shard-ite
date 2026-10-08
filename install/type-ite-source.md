@@ -18,7 +18,7 @@ name: Source
 plural: Sources
 description: "A paper, a book, a person, or a site that gives evidence."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: earth, icon: book-open, layer: evidence }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: book-open, layer: evidence }
 |----------|-------|
 | Type id | `source` |
 | Naming | `(Program) <Name> . (Source) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `research` |

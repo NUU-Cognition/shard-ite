@@ -17,7 +17,8 @@ description: "The root note of an ITE program (format steel-program/1): the fron
     Steel/Programs/<Name>/
       program.md                                 id = the id of the root note
       Views/(View) <Title>.md                    one file for each view (tmp-ite-view-v0.1)
-      Reality/<id>/process.md                    one folder for each process (tmp-ite-process-v0.1)
+      Reality/<id>/claim.md                      one folder for each claim, with its check (tmp-ite-claim-v0.1)
+      Processes/<id>/process.md (+ map.md)       one folder for each process (tmp-ite-process-v0.1), with its map (tmp-ite-instruction_map-v0.1)
       Proposals/<id>.md                          map changes, view candidates, revisions (only the engines write here)
       Runs/, History/, State/                    run records, replaced forms of views, positions (only the engines write here)
 
@@ -34,7 +35,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   - main-map (optional): max-children and coverage-ignore (see The Main Map of init-ite).
   - codebase, product-root (software only): the codebase and the folder of the product.
   - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
-  - The root note holds no grounding, no observation, no finding, no position, and no agent.
+  - The root note holds no grounding, no result, no finding, no position, and no agent.
     A command computes these facts.
 
   THE BODY

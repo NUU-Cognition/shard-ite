@@ -18,7 +18,7 @@ name: Metric
 plural: Metrics
 description: "A number that shows how well the process works."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: []}
 look: { hue: stone, icon: gauge, layer: control }
 ```
@@ -29,5 +29,5 @@ look: { hue: stone, icon: gauge, layer: control }
 |----------|-------|
 | Type id | `metric` |
 | Naming | `(Program) <Name> . (Metric) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `process`, `organisation` |

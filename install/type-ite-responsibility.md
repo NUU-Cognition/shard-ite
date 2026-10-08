@@ -18,7 +18,7 @@ name: Responsibility
 plural: Responsibilities
 description: "A duty that a team or a role owns."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reports-to: []}
 look: { hue: teal, icon: clipboard-check, layer: operation }
 ```
@@ -29,5 +29,5 @@ look: { hue: teal, icon: clipboard-check, layer: operation }
 |----------|-------|
 | Type id | `responsibility` |
 | Naming | `(Program) <Name> . (Responsibility) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `organisation` |

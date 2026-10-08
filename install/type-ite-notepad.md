@@ -19,7 +19,7 @@ plural: Notepads
 description: "A notepad of the Notepad shard: the thinking of a person on one topic."
 fields:
   status: { type: text }
-capabilities: [has-claims, has-status]
+capabilities: [has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: air, icon: notebook-pen, layer: work }
 ```
@@ -30,5 +30,5 @@ look: { hue: air, icon: notebook-pen, layer: work }
 |----------|-------|
 | Type id | `notepad` |
 | Naming | `(Program) <Name> . (Notepad) <Title>.md` |
-| Capabilities | `has-claims`, `has-status` |
+| Capabilities | `has-status` |
 | Templates | `work` |

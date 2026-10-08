@@ -20,7 +20,7 @@ description: "A point in time when a part of the plan is done, such as \"Venue b
 fields:
   date: { type: date }
   status: { type: text }
-capabilities: [has-claims, dated, has-status, container]
+capabilities: [dated, has-status, container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: fire, icon: flag, layer: plan }
 ```
@@ -31,5 +31,5 @@ look: { hue: fire, icon: flag, layer: plan }
 |----------|-------|
 | Type id | `milestone` |
 | Naming | `(Program) <Name> . (Milestone) <Title>.md` |
-| Capabilities | `has-claims`, `dated`, `has-status`, `container` |
+| Capabilities | `dated`, `has-status`, `container` |
 | Templates | `event` |

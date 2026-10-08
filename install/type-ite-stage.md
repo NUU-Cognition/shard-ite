@@ -19,7 +19,7 @@ plural: Stages
 description: "A group of steps of the process that go together, such as the review or the release."
 fields:
   status: { type: text }
-capabilities: [has-claims, runnable, has-status, container]
+capabilities: [has-status, container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reads: [], writes: []}
 look: { hue: air, icon: layers, layer: process }
 ```
@@ -30,5 +30,5 @@ look: { hue: air, icon: layers, layer: process }
 |----------|-------|
 | Type id | `stage` |
 | Naming | `(Program) <Name> . (Stage) <Title>.md` |
-| Capabilities | `has-claims`, `runnable`, `has-status`, `container` |
+| Capabilities | `has-status`, `container` |
 | Templates | `process`, `shard` |

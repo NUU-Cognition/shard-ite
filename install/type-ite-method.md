@@ -18,7 +18,7 @@ name: Method
 plural: Methods
 description: "A way to get evidence or to test it."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: air, icon: workflow, layer: process }
 ```
@@ -29,5 +29,5 @@ look: { hue: air, icon: workflow, layer: process }
 |----------|-------|
 | Type id | `method` |
 | Naming | `(Program) <Name> . (Method) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `research` |

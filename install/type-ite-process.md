@@ -18,7 +18,7 @@ name: Process
 plural: Processes
 description: "A series of steps that the product runs from a start to an end, such as the sync of a Flint."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: air, icon: workflow, layer: process }
 ```
@@ -29,5 +29,5 @@ look: { hue: air, icon: workflow, layer: process }
 |----------|-------|
 | Type id | `process` |
 | Naming | `(Program) <Name> . (Process) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `software`, `general`, `software-mine` |

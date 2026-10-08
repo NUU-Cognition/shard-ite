@@ -19,7 +19,7 @@ plural: Claims
 description: "Something that the research says is true. It links to its evidence."
 fields:
   status: { type: text }
-capabilities: [has-claims, has-status]
+capabilities: [has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: [], part-of: [], option-of: [], answers: [], opposes: [], picked: [], acts-on: [], threatens: [], protects: []}
 look: { hue: water, icon: quote, layer: argument }
 ```
@@ -30,5 +30,5 @@ look: { hue: water, icon: quote, layer: argument }
 |----------|-------|
 | Type id | `claim` |
 | Naming | `(Program) <Name> . (Claim) <Title>.md` |
-| Capabilities | `has-claims`, `has-status` |
+| Capabilities | `has-status` |
 | Templates | `research`, `thinking` |

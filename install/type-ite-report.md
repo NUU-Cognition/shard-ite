@@ -20,7 +20,7 @@ description: "A report of the Reports shard: the answer to one question, with ev
 fields:
   date: { type: date }
   status: { type: text }
-capabilities: [has-claims, dated, has-status]
+capabilities: [dated, has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: earth, icon: file-text, layer: work }
 ```
@@ -31,5 +31,5 @@ look: { hue: earth, icon: file-text, layer: work }
 |----------|-------|
 | Type id | `report` |
 | Naming | `(Program) <Name> . (Report) <Title>.md` |
-| Capabilities | `has-claims`, `dated`, `has-status` |
+| Capabilities | `dated`, `has-status` |
 | Templates | `work` |

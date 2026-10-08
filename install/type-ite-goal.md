@@ -18,7 +18,7 @@ name: Goal
 plural: Goals
 description: "What the event must achieve, such as 120 guests or a new sponsor."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: []}
 look: { hue: sun, icon: target, layer: plan }
 ```
@@ -29,5 +29,5 @@ look: { hue: sun, icon: target, layer: plan }
 |----------|-------|
 | Type id | `goal` |
 | Naming | `(Program) <Name> . (Goal) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `event`, `organisation`, `general` |

@@ -19,7 +19,7 @@ plural: Rituals
 description: "A meeting or a practice that repeats, such as a weekly review."
 fields:
   date: { type: date }
-capabilities: [has-claims, dated]
+capabilities: [dated]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reports-to: []}
 look: { hue: air, icon: repeat, layer: operation }
 ```
@@ -30,5 +30,5 @@ look: { hue: air, icon: repeat, layer: operation }
 |----------|-------|
 | Type id | `ritual` |
 | Naming | `(Program) <Name> . (Ritual) <Title>.md` |
-| Capabilities | `has-claims`, `dated` |
+| Capabilities | `dated` |
 | Templates | `organisation` |

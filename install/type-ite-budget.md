@@ -18,7 +18,7 @@ name: Budget
 plural: Budgets
 description: "An amount of money: where it comes from and where it goes."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: earth, icon: wallet, layer: control }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: wallet, layer: control }
 |----------|-------|
 | Type id | `budget` |
 | Naming | `(Program) <Name> . (Budget) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `event` |

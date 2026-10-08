@@ -19,7 +19,7 @@ plural: Steps
 description: "One step of a process: one action and its result."
 fields:
   status: { type: text }
-capabilities: [has-claims, runnable, has-status]
+capabilities: [has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], supports: [], refutes: []}
 look: { hue: air, icon: footprints, layer: process }
 ```
@@ -30,5 +30,5 @@ look: { hue: air, icon: footprints, layer: process }
 |----------|-------|
 | Type id | `step` |
 | Naming | `(Program) <Name> . (Step) <Title>.md` |
-| Capabilities | `has-claims`, `runnable`, `has-status` |
+| Capabilities | `has-status` |
 | Templates | `software`, `process`, `event`, `research`, `software-mine` |

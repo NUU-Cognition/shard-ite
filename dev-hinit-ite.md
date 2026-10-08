@@ -25,9 +25,9 @@ The session metadata has the keys `ite-program`, `ite-document`, `ite-focus`, an
 | `model` | [[hwkfl-ite-model]] | One map change with the new parts (`flint ite part add` or `flint ite map change propose`), and links with `flint ite link` |
 | `view` | [[hwkfl-ite-view]] | One candidate in `Proposals/` |
 | `reshape` | [[hwkfl-ite-reshape]] | One candidate in `Proposals/` |
-| `ground` | [[hwkfl-ite-ground]] | Processes in `Reality/`, and their first observations through the door |
-| `observe` | [[hwkfl-ite-observe]] | Observations, with `flint ite process run` and `flint ite process observe` |
-| `repair` | [[hwkfl-ite-repair]] | Parts (through a map change), processes, and candidates |
+| `ground` | [[hwkfl-ite-ground]] | Claims in `Reality/` with their checks, and the first results of the code checks |
+| `observe` | [[hwkfl-ite-observe]] | Results, with `flint ite claim check` and `flint ite claim report` |
+| `repair` | [[hwkfl-ite-repair]] | Parts (through a map change), claims, and candidates |
 | `map-create` | [[hwkfl-ite-map_create]] | One map change (the root and level 1), with `flint ite map change propose` |
 | `map-expand` | [[hwkfl-ite-map_expand]] | One map change (the children of one part) |
 | `map-refactor` | [[hwkfl-ite-map_refactor]] | One map change (one level to the size limit) |
@@ -41,34 +41,34 @@ The session metadata has the keys `ite-program`, `ite-document`, `ite-focus`, an
 2. **Show progress.** Set the phase at the start of each stage: `flint orbh session set phase <phase>`. Each workflow names its phases.
 3. **Ask no question.** When the instructions are not clear, select the reading that best helps the person, and write that reading in the `summary`.
 4. **A view changes only through a candidate.** Never write a file in `Views/` or in `History/` of `Steel/Programs/<P>/`. Never apply a candidate, and never discard the candidate that you return. The person reviews it in the Workbench.
-5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. `flint ite part set` changes the prose, the claims, and the fields that are not structure. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return.
+5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. `flint ite part set` changes the prose and the fields that are not structure. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return.
 6. **Never change an OrbCode project, except through a map change.** A program of the template `software` in `Mesh/OrbCode/` changes only through the OrbCode shard, or through a map change of its main map that a person applies. For such a program, the workflows `model`, `ground`, and `repair` name the change in the `summary` and write nothing. The `map-*` workflows propose a map change.
-7. **Processes are files; observations go through the door.** Write a process as `Steel/Programs/<P>/Reality/<id>/process.md` ([[tmp-ite-process-v0.1]]). Send each observation with `flint ite process observe` or `flint ite process run`. Never write the log by hand.
-8. **Never run a code process that you did not read.** A code process runs its own code on this machine: read its entry first. Never rename, archive, or remove a program or a view (`flint ite rename`, `archive`, `view remove`), unless the prompt of the person asks for exactly that.
-9. **Never invent a process that you did not check.** Test each code process that you write with `flint ite process test "<program>" <process>`, then run it one time before you return.
+7. **Claims and processes are files; results go through the door.** Write a claim as `Steel/Programs/<P>/Reality/<id>/claim.md` ([[tmp-ite-claim-v0.1]]) and a process as `Steel/Programs/<P>/Processes/<id>/process.md` ([[tmp-ite-process-v0.1]]). Send each result with `flint ite claim check` or `flint ite claim report`. Never write the log by hand.
+8. **Never run code that you did not read.** A code check and a code process run their own code on this machine: read the entry first. Never run a process (`flint ite process run`) unless the prompt of the person asks for exactly that: a process can change the world. Never enable a trigger: only a person does. Never rename, archive, or remove a program or a view (`flint ite rename`, `archive`, `view remove`), unless the prompt of the person asks for exactly that.
+9. **Never keep a check or a process that you did not test.** Test each code check that you write with `flint ite claim test "<program>" <claim>`, and run it one time (`flint ite claim check`) before you return. Test each code process that you write with `flint ite process test "<program>" <process>`.
 10. **Stay inside the program.** Change only the parts of the program, the files of its folder in `Steel/`, and the log through `flint ite`. Do not commit: the person commits.
 
 ## Instruction Maps and Runs (Headless)
 
 The section Instruction Maps and Runs of [[init-ite]] applies. In a headless session, these rules are added:
 
-1. **The engine is the only writer of a run record.** Never create, edit, or delete a file in `Steel/Programs/<P>/Runs/`, and never write below `# Remarks`.
-2. **An instruction map is parts.** A change of a step or of the root block is a change of a part: the structure through a map change, the fields (`does`, `next`, `outcomes`, `effect`) with `flint ite part set`. An edit never changes an active run: the run keeps its snapshot.
-3. **Run an instruction map only when the prompt asks for exactly that.** `flint ite flow start`, `done`, `answer`, `skip`, `pause`, `resume`, and `cancel` act for the person. Read the runs with `flint ite flow list`, `show`, `runs`, and `status`.
+1. **The engine is the only writer of a run.** Never create, edit, or delete a file in `Steel/Programs/<P>/Runs/`.
+2. **An instruction map is a file.** A change of a node is an edit of `Processes/<id>/map.md` ([[tmp-ite-instruction_map-v0.1]]); check it with `flint ite flow show`. An external map is read-only: a change goes to its source. An edit never changes an active run: the run keeps its snapshot.
+3. **Run an instruction map only when the prompt asks for exactly that.** `flint ite flow start`, `begin`, `done`, `answer`, `skip`, `retry`, `pause`, `resume`, and `cancel` act for the person. Never run `approve` or `refuse`. Read the runs with `flint ite flow list`, `show`, `runs`, `status`, and `events`.
 
 ## Living Systems (Headless)
 
 The section Living Systems of [[init-ite]] applies. In a headless session, these rules are added:
 
-1. **Take the instruction from the system.** When your prompt names a living system, run `flint ite prompt "<program>" --json` (with `--flow <id> --step <id>` for a step of an instruction map) and follow the text in its field `prompt`. Do not follow a copy of the instruction in another text: a copy can be old. The command records that an agent took a prompt (the vital sign "use").
-2. **An agent step returns only its result.** When the engine dispatched you for an agent step of a run, your result is the value of the one `text` output of the step. Return only that text, with `flint orbh session return --finish "<text>"`: this result rule replaces the shape `steel-result/1`. The run takes the result of your session only.
-3. **A report is not evidence.** Report the value of a claim (a check receipt, for example) with `flint ite observe "<program>" --claim <id> --value <v> --type <t> --summary "<text>"`. The claim needs a process that names it in `feeds`. Never report a value that you did not see. A report never confirms an effect: only a process does.
-4. **Read; do not decide for a person.** You can run `flint ite read`, `flint ite flow reconcile <run>` with no `--decision`, `flint ite brief`, `flint ite claims`, and `flint ite evidence`. Never run `flint ite flow approve`, `waive`, `dispatch`, or `reconcile --decision`, never acknowledge an item of the brief, and never run `flint ite revision apply`, `revert`, or `discard`, unless the prompt of the person asks for exactly that. The authority layer refuses an agent for an approval, a waiver, and a retry.
-5. **A protected change goes through a revision.** To change a goal, a predicate, `fresh-for`, a process that feeds a claim, a completion, a precondition, or the authority, write the full new file and run `flint ite revision propose`. Never apply it. A direct edit of such a field refuses with `protected-change`, or shows as a finding.
-6. **Never act on the world** (a ship, a push, a publish, a release) in a living system unless the step that you execute says so, and the run has its approval.
-7. **Never write the log, a run record, or a proposal by hand.**
+1. **Take the instruction from the system.** When your prompt names a living system with no other work, run `flint ite prompt "<program>" --json` and follow the text in its field `prompt`. Do not follow a copy of the instruction in another text: a copy can be old. The command records that an agent took a prompt (the vital sign "use").
+2. **An agent process or an agent step returns only its outputs.** When a process or a step of a run started you, your result gives its outputs: one JSON line `{ "output": { "<name>": <value> } }`, or, for one `text` output, only that text. Return it with `flint orbh session return --finish "<result>"`: this result rule replaces the shape `steel-result/1`. The run takes the result of your session only.
+3. **An agent check reports through the door.** When the check of a claim started you, read what its prompt names, and report the result with `flint ite claim report "<program>" <claim> --state holds|fails|error --summary "<text>" [--part <id>] [--value <name>=<value>]...`. Never report what you did not see. A report never confirms the effect of a process: only a check after the work does.
+4. **Read; do not decide for a person.** You can run `flint ite claim list`, `claim show`, `claim check` (a check only reads), `flint ite brief`, `flint ite vitals`, and `flint ite system`. Never run `flint ite flow approve` or `refuse`, never answer a decision of a person, never enable a trigger, never acknowledge an item of the brief, and never run `flint ite revision apply`, `revert`, or `discard`, unless the prompt of the person asks for exactly that. The authority layer refuses an agent for an approval and an enable.
+5. **A protected change goes through a revision.** To change `goals`, `authority`, or `governor` of the system block, write the full new root note and run `flint ite revision propose`. Never apply it. A direct edit of these keys shows as the finding `protected-change`.
+6. **Never act on the world** (a ship, a push, a publish, a release) in a living system unless the process or the step that started you says so, and the run has its approval.
+7. **Never write the log, a run, or a proposal by hand.**
 
-The reconciliation of a living system (a cron with no instruction map, for example the morning cron of Flint Release) follows the reconciliation prompt of `flint ite prompt "<program>" --json`: it runs the processes with `flint ite read`, reconciles each run with a pending or unknown effect, and returns the brief as Markdown (`flint ite brief "<program>" --markdown`) as its result. It acts on nothing.
+The reconciliation of a living system (a cron with no instruction map, for example the morning cron of Flint Release) follows the reconciliation prompt of `flint ite prompt "<program>" --json`: it runs the checks of the old claims with `flint ite claim check`, and returns the brief as Markdown (`flint ite brief "<program>" --markdown`) as its result. It acts on nothing.
 
 ## Before You Return
 
@@ -99,7 +99,7 @@ The payload is one line of JSON of the schema `steel-result/1`, with no other te
 
 - `program` is the name of the program.
 - `view_id` is the `view_id` of the candidate (the UUID of the view, not the `id` of the candidate file), or the id of the view that the job worked on, or `null` for the map.
-- `candidate_id` is the file stem of the candidate, or `null` when the workflow wrote its changes with no candidate (`ground`, `observe`, and a `repair` that changed only processes). For a `model` or `map-*` workflow, it is the map change id (`mc-...`), and `view_id` and `base_hash` are `null`.
+- `candidate_id` is the file stem of the candidate, or `null` when the workflow wrote its changes with no candidate (`ground`, `observe`, and a `repair` that changed only claims). For a `model` or `map-*` workflow, it is the map change id (`mc-...`), and `view_id` and `base_hash` are `null`.
 - `base_hash` is the `base_hash` of the candidate: the SHA-256 hex for a reshape, `null` for a new view or for no candidate.
 - `summary` tells the person what changed and what is true now, in one to three short sentences of Simplified Technical English. Name the counts (for example "Added 14 parts and 19 links." or "6 parts hold, 2 fail, 3 wait for a person."), then the most important gap. Write it with no `'` character and no line break, so that the shell quote stays correct.
 

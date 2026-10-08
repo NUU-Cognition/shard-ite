@@ -19,7 +19,7 @@ plural: Decisions
 description: "A point in a process where the path divides."
 fields:
   status: { type: text }
-capabilities: [has-claims, decides, has-status]
+capabilities: [has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: [], part-of: [], option-of: [], answers: [], supports: [], opposes: [], picked: [], acts-on: [], threatens: [], protects: []}
 look: { hue: fire, icon: split, layer: process }
 ```
@@ -30,5 +30,5 @@ look: { hue: fire, icon: split, layer: process }
 |----------|-------|
 | Type id | `decision` |
 | Naming | `(Program) <Name> . (Decision) <Title>.md` |
-| Capabilities | `has-claims`, `decides`, `has-status` |
+| Capabilities | `has-status` |
 | Templates | `software`, `process`, `organisation`, `software-mine`, `thinking` |

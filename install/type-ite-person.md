@@ -18,7 +18,7 @@ name: Person
 plural: People
 description: "A person who takes part: a guest, a speaker, a helper, or a partner."
 fields: {}
-capabilities: [has-claims, owner]
+capabilities: [owner]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: [], reads: [], writes: []}
 look: { hue: rose, icon: user-round, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: rose, icon: user-round, layer: structure }
 |----------|-------|
 | Type id | `person` |
 | Naming | `(Program) <Name> . (Person) <Title>.md` |
-| Capabilities | `has-claims`, `owner` |
+| Capabilities | `owner` |
 | Templates | `event`, `organisation`, `shard`, `work` |

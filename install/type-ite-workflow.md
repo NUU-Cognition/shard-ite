@@ -18,7 +18,7 @@ name: Workflow
 plural: Workflows
 description: "A workflow with stages, interactive or headless."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: water, icon: workflow, layer: procedure }
 ```
@@ -29,5 +29,5 @@ look: { hue: water, icon: workflow, layer: procedure }
 |----------|-------|
 | Type id | `workflow` |
 | Naming | `(Program) <Name> . (Workflow) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `shard` |

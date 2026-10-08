@@ -20,7 +20,7 @@ description: "A thing that the event makes or gives, such as a poster, a booking
 fields:
   date: { type: date }
   status: { type: text }
-capabilities: [has-claims, dated, has-status]
+capabilities: [dated, has-status]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: teal, icon: package, layer: plan }
 ```
@@ -31,5 +31,5 @@ look: { hue: teal, icon: package, layer: plan }
 |----------|-------|
 | Type id | `deliverable` |
 | Naming | `(Program) <Name> . (Deliverable) <Title>.md` |
-| Capabilities | `has-claims`, `dated`, `has-status` |
+| Capabilities | `dated`, `has-status` |
 | Templates | `event` |

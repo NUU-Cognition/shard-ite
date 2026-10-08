@@ -37,7 +37,7 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
     computed before you read it: shasum -a 256 "<view file>". A file in Views/ has no base_hash.
   - template, authors, orbh-sessions: the Flint conventions.
   - No program field: the folder gives the program.
-  - The view holds no grounding, no observation, no finding, no position, and no agent.
+  - The view holds no grounding, no result, no finding, no position, and no agent.
   - The H1 has none of the characters \ / : * ? " < > | # ^ [ ].
 
   THE BODY (the grammar of OrbCode views)

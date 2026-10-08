@@ -18,7 +18,7 @@ name: Rule
 plural: Rules
 description: "One rule that each workflow of the shard follows."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: fire, icon: shield, layer: context }
 ```
@@ -29,5 +29,5 @@ look: { hue: fire, icon: shield, layer: context }
 |----------|-------|
 | Type id | `rule` |
 | Naming | `(Program) <Name> . (Rule) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

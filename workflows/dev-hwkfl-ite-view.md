@@ -30,7 +30,7 @@ Write one new candidate view that answers one question of a person, with no pers
 ## Stage 2: Read the Parts
 
 1. Read the note of each part that can be a part of the answer. With selected nodes, stay inside these parts and their direct neighbours; name each part outside them in the note of what the view leaves out.
-2. Note the processes of each part (`flint ite process list "<program>" --json`), and each claim of the answer that no part holds.
+2. Note the claims about each part (`flint ite claim list "<program>" --json`), and each statement of the answer that no part holds.
 3. Once you can answer the question in one to three sentences, progress to the next stage.
 
 ## Stage 3: Select the Map and the Nodes

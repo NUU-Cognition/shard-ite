@@ -20,7 +20,7 @@ description: "One test of a hypothesis, with its setup and its result."
 fields:
   date: { type: date }
   status: { type: text }
-capabilities: [has-claims, dated, has-status, container]
+capabilities: [dated, has-status, container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], supports: [], refutes: []}
 look: { hue: rose, icon: flask-conical, layer: process }
 ```
@@ -31,5 +31,5 @@ look: { hue: rose, icon: flask-conical, layer: process }
 |----------|-------|
 | Type id | `experiment` |
 | Naming | `(Program) <Name> . (Experiment) <Title>.md` |
-| Capabilities | `has-claims`, `dated`, `has-status`, `container` |
+| Capabilities | `dated`, `has-status`, `container` |
 | Templates | `research` |

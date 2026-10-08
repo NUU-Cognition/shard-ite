@@ -18,7 +18,7 @@ name: Skill
 plural: Skills
 description: "An atomic task with no human checkpoint."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
 look: { hue: air, icon: zap, layer: procedure }
 ```
@@ -29,5 +29,5 @@ look: { hue: air, icon: zap, layer: procedure }
 |----------|-------|
 | Type id | `skill` |
 | Naming | `(Program) <Name> . (Skill) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `shard` |

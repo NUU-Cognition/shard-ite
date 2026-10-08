@@ -18,7 +18,7 @@ name: Act
 plural: Acts
 description: "One concrete action that follows a decision."
 fields: {}
-capabilities: [has-claims, runnable]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], part-of: [], option-of: [], answers: [], supports: [], opposes: [], picked: [], acts-on: [], threatens: [], protects: []}
 look: { hue: earth, icon: play, layer: act }
 ```
@@ -29,5 +29,5 @@ look: { hue: earth, icon: play, layer: act }
 |----------|-------|
 | Type id | `act` |
 | Naming | `(Program) <Name> . (Act) <Title>.md` |
-| Capabilities | `has-claims`, `runnable` |
+| Capabilities | none |
 | Templates | `thinking` |

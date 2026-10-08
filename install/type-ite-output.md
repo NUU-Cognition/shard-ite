@@ -18,7 +18,7 @@ name: Output
 plural: Outputs
 description: "What the process gives out: a product, a record, or a message."
 fields: {}
-capabilities: [has-claims]
+capabilities: []
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], supports: [], refutes: []}
 look: { hue: sun, icon: log-out, layer: process }
 ```
@@ -29,5 +29,5 @@ look: { hue: sun, icon: log-out, layer: process }
 |----------|-------|
 | Type id | `output` |
 | Naming | `(Program) <Name> . (Output) <Title>.md` |
-| Capabilities | `has-claims` |
+| Capabilities | none |
 | Templates | `process`, `research` |

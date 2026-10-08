@@ -18,7 +18,7 @@ name: Stream
 plural: Streams
 description: "A lane of steps that runs beside other lanes, such as the work of the server during the work of the client."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: water, icon: waves, layer: process }
 ```
@@ -29,5 +29,5 @@ look: { hue: water, icon: waves, layer: process }
 |----------|-------|
 | Type id | `stream` |
 | Naming | `(Program) <Name> . (Stream) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `software`, `software-mine` |

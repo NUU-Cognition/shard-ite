@@ -25,7 +25,7 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
   - The folder Map/ is the default home of a new part. A folder is for a person only: the membership is `parent`.
 
   FRONTMATTER CONTRACT. Replace the VALUES, keep the shapes. No comment in the frontmatter.
-  - id: a new UUID v4 (uuidgen | tr A-Z a-z). It never changes. Each view heading, process, run, state, and proposal
+  - id: a new UUID v4 (uuidgen | tr A-Z a-z). It never changes. Each view heading, claim, process, step, run, state, and proposal
     names the part by this id. Write it with no quotes (id: <uuid>), so that grep "^id: <uuid>" finds the note.
   - tags: always "#ite/part".
   - parent: one wikilink to the part that holds this part, or to the root note "[[(Program) <Name>]]" for a top part.
@@ -34,30 +34,12 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     program (`flint ite types`). Name a link only when it is true.
   - owner: the person or the role that answers for the part, as a wikilink. Omit it when nobody owns the part.
   - status: a short word as the person uses it: active, todo, in-progress, done, open, closed.
-  - claims: optional, a part of a type with the capability has-claims (see THE CLAIMS).
   - template, authors, orbh-sessions: the Flint conventions.
-  - The part holds no grounding, no observation, no finding, and no position. A command computes these facts.
-    A process in Steel/Programs/<Name>/Reality/ checks the part against reality ([[tmp-ite-process-v0.1]]).
-
-  THE CLAIMS (optional)
-  - claims: a list. Each item says something about the system, with a mode. The keys are kebab-case.
-    id: a slug, unique in the program (not only in the part).
-    mode: is (a claim about now or the past), ought (an expectation that must hold), or will (a prediction).
-    about: the claim in words, for a person.
-    is:    the code of a process that names the claim in its `feeds` gives the value. A person, an agent, or a run can also report the value with flint ite observe --claim;
-           that report needs a process that names the claim in its `feeds` too.
-           type: number | text | boolean | time | version | sha | json | verdict.
-           fresh-for: how long an accepted value stays fresh (1h, 6h, 7d). Omit it only for a fact that never changes.
-           selection: newest | authoritative | agree (default: newest for one source, agree for more).
-    ought: holds-when: a list of predicates; each must be true. A predicate is
-           { of: <is claim>, op: eq | ne | lt | le | gt | ge | match | exists | age-lt | age-gt,
-             value: <a literal> or value-of: <another is claim>, path: <a dot path into a json value> }.
-           owner, reason (a goal has both), refute (the observation that would show it false), limit: true (a limit).
-    will:  holds-when as an ought, p (0 to 1), and resolves (a quoted date or date-time).
-  - owner defaults to the owner of the part, else the first owner of the system.
-  - The claims hold meaning only: no value, no state, and no time of a read. A command computes them.
-  - In a living system, a change of holds-when, fresh-for, selection, or limit, and the removal of a claim,
-    is a protected change: it goes only through a revision that a person applies (flint ite revision propose).
+  - The part holds no grounding, no result, no finding, and no position. A command computes these facts.
+  - The part has no field claims. A claim is a folder of Steel/Programs/<Name>/Reality/ that names the part in
+    its `about` ([[tmp-ite-claim-v0.1]]). One claim can be about many parts, and one part can have many claims.
+  - A part says what the system is. A step of an instruction map is not a part: it is a node of the map.md of a
+    process ([[tmp-ite-instruction_map-v0.1]]), and it names the parts that it uses by their ids.
 
   THE BODY
   - One H1: "(<Type>) <Title>". It is for a person; no code reads it.
@@ -89,16 +71,14 @@ orbh-sessions:
 
 ## A complete example
 
-File: `Mesh/Programs/(Program) Garden Share/Map/(Program) Garden Share . (Step) Water the beds.md`.
+File: `Mesh/Programs/(Program) Garden Share/Map/(Program) Garden Share . (Resource) The beds.md`.
 
 ````markdown
 ---
 id: 3f1c9a47-7e2b-4d08-b6a5-91c0e4d27f83
 tags:
   - "#ite/part"
-parent: "[[(Program) Garden Share . (System) The week of the garden]]"
-next:
-  - "[[(Program) Garden Share . (Step) Record the harvest]]"
+parent: "[[(Program) Garden Share . (System) The garden]]"
 uses:
   - "[[(Program) Garden Share . (System) Tool shed]]"
 owner: "[[(Program) Garden Share . (Actor) Member on duty]]"
@@ -108,55 +88,16 @@ authors:
   - "[[@Nathan]]"
 ---
 
-# (Step) Water the beds
+# (Resource) The beds
 
-The member on duty waters the four beds on Tuesday and on Saturday. On a day with more than 5 mm of rain, the member skips the water and writes "rain" in the roster.
+The garden has four raised beds behind the hall. The member on duty waters them on Tuesday and on Saturday, with the hose of the tool shed.
 
-The forecast and the roster check this part: the process `rain` reads the forecast, and the process `roster` asks the member on duty each week.
+Two claims are about this part: `beds-watered` (a person check: the member on duty answers each week) and `rain-week` (its own code reads the forecast).
 ````
 
 What the example does:
 
-- The file name gives the program, the type `Step`, and the title. The H1 repeats the type and the title.
-- `parent` puts the step inside the system "The week of the garden". `next` and `uses` are connections: each wikilink is one link.
+- The file name gives the program, the type `Resource`, and the title. The H1 repeats the type and the title.
+- `parent` puts the beds inside the system "The garden". `uses` is a connection: each wikilink is one link.
 - `owner` names a part of the same program (an actor), so the link has a target.
-- Two processes in `Steel/Programs/Garden Share/Reality/` check the part: `rain` (its own code) and `roster` (a person's check). Each names the part by its id. The part file holds no process and no state.
-
-## A complete example with claims
-
-File: `Mesh/Programs/(Program) Flint Release/Map/(Program) Flint Release . (Metric) Debt against canon.md` of this Flint, a part of a living system. The frontmatter:
-
-````markdown
----
-id: 1260b6db-fd46-45ce-b734-8c5984b9464c
-tags:
-  - "#ite/part"
-parent: "[[(Program) Flint Release . (System) Repository and Branches]]"
-informs:
-  - "[[(Program) Flint Release . (Step) Ship to canon]]"
-status: "active"
-claims:
-  - id: pull-debt
-    mode: is
-    about: "The count of the commits of origin/canon that nathan-main does not have"
-    type: number
-    fresh-for: 1h
-  - id: no-pull-debt
-    mode: ought
-    owner: "[[@Nathan]]"
-    about: "nathan-main has each commit of origin/canon"
-    holds-when:
-      - { of: pull-debt, op: eq, value: 0 }
-    refute: "origin/canon has a commit that nathan-main does not have"
-    reason: "A ship needs no sync first."
-template: "[[tmp-ite-part-v0.1]]"
-authors:
-  - "[[@Nathan]]"
----
-````
-
-What the example does:
-
-- `pull-debt` is an `is` claim: the process `git-flint-remote` names it in its `feeds`, and its code prints the value (the count of `git rev-list --left-right --count origin/canon...nathan-main`). The value is old after 1 hour.
-- `no-pull-debt` is an `ought` claim and a goal of the system (the system block names it in `goals`). It holds when the debt is 0. When `pull-debt` is old, it is `unknown`, never `holds`.
-- The part prose names the claims in words, and holds no value.
+- Two claims in `Steel/Programs/Garden Share/Reality/` are about the part: `beds-watered` and `rain-week`. Each names the part by its id in `about`. The part file holds no claim and no state.

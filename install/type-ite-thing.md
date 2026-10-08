@@ -18,7 +18,7 @@ name: Thing
 plural: Things
 description: "A part of the system."
 fields: {}
-capabilities: [has-claims, container]
+capabilities: [container]
 connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: water, icon: box, layer: structure }
 ```
@@ -29,5 +29,5 @@ look: { hue: water, icon: box, layer: structure }
 |----------|-------|
 | Type id | `thing` |
 | Naming | `(Program) <Name> . (Thing) <Title>.md` |
-| Capabilities | `has-claims`, `container` |
+| Capabilities | `container` |
 | Templates | `general` |
