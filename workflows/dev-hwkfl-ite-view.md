@@ -20,10 +20,10 @@ Write one new candidate view that answers one question of a person, with no pers
 
 ## Stage 1: Understand the Question
 
-1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
+1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Say the question again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`. With selected nodes and no question, the question is "How do these parts work together?".
-4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program, follow the workflow `hwkfl-orbc-view` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1`.
+4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program, follow the workflow `hwkfl-orbc-view` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1` with `flint orbh session return --await`.
 5. Read the views that exist (`flint ite list --json`). When a view already answers the question, still write the new candidate, and name that view in the `summary`.
 6. Once you know the question and the parts that can answer it, progress to the next stage.
 
@@ -68,13 +68,13 @@ Write one new candidate view that answers one question of a person, with no pers
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Write the `summary`: the map, the number of nodes, the reading that you selected, and the most important gap. Use no `'` character.
 3. Do not apply and do not discard the candidate.
-4. End the turn with the result, and nothing else. `view_id` is the `view_id` of the candidate:
+4. End the job with the result, and nothing else. `view_id` is the `view_id` of the candidate:
 
    ```bash
-   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":"<view_id>","candidate_id":"<candidate-id>","base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":"<view_id>","candidate_id":"<candidate-id>","base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - One candidate in `Steel/Programs/<Program>/Proposals/`, with a new `view_id`, its own `id`, `state: proposed`, and `base_hash: null`
-- One `steel-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the job

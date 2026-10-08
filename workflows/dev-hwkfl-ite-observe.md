@@ -20,7 +20,7 @@ Check the claims of a program against reality now, with no person in the session
 
 ## Stage 1: Read the Claims
 
-1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
+1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Read the claims: `flint ite claim list "<program>" --json` (with `--part <id>` for one part). For each claim, note its mode, its form, its parts, and its state.
 4. Sort the claims: the code checks, the agent checks, and the person checks. Keep each claim with `by: none` for the `summary`.
@@ -47,13 +47,13 @@ For each agent check:
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Read the claims again (`flint ite claim list "<program>" --json`).
 3. Write the `summary`: the counts ("9 claims hold, 2 fail, 1 error, 3 wait for a person."), then the claim that fails and matters most, with its meaning (drift for `is`, at risk for `ought` with its `fixed-by`) and what the check saw. Do not answer a person check: the person answers it in Steel. Do not run a process. Use no `'` character.
-4. End the turn with the result, and nothing else:
+4. End the job with the result, and nothing else:
 
    ```bash
-   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Results in the log of this machine, recorded by `flint ite claim check` and `flint ite claim report`
-- One `steel-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the job

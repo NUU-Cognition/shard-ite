@@ -20,10 +20,10 @@ Change one view as a person asks, with no person in the session. The person revi
 
 ## Stage 1: Read the View
 
-1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
+1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Compute the `base_hash` before you read the file: `shasum -a 256 "<view file>"` (the first word). When it is not the `base_hash` of the prompt, the view changed after the start of the job: use the new hash, and say so in the `summary`.
-4. Read the view: `flint ite view <view id> --json` and the view file in full. For an OrbCode view, follow the workflow `hwkfl-orbc-reshape` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1`.
+4. Read the view: `flint ite view <view id> --json` and the view file in full. For an OrbCode view, follow the workflow `hwkfl-orbc-reshape` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1` with `flint orbh session return --await`.
 5. Say the change again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`.
 6. Once you know the change and the base hash, progress to the next stage.
 
@@ -58,13 +58,13 @@ Change one view as a person asks, with no person in the session. The person revi
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Write the `summary`: what changed (the counts of the added, the removed, the moved, and the changed nodes), the reading that you selected, and the most important gap. Use no `'` character.
 3. Do not apply and do not discard the candidate.
-4. End the turn with the result, and nothing else:
+4. End the job with the result, and nothing else:
 
    ```bash
-   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":"<view id>","candidate_id":"<candidate-id>","base_hash":"<base_hash>","summary":"<summary>"}'
+   flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":"<view id>","candidate_id":"<candidate-id>","base_hash":"<base_hash>","summary":"<summary>"}'
    ```
 
 # Output
 
 - One candidate in `Steel/Programs/<Program>/Proposals/`, with the `view_id` and the `base_hash` of the view, and `state: proposed`
-- One `steel-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the job

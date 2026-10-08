@@ -20,7 +20,7 @@ Make the model true again, with no person in the session. For each claim that fa
 
 ## Stage 1: Read the Failures
 
-1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
+1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Read the claims (`flint ite claim list "<program>" --json`). For an OrbCode program, stop: return `No change:` with the next step "use the OrbCode shard and Orbtest" (rule 6 of [[hinit-ite]]).
 4. For each claim that fails, has an error, or is old, read its newest results: `flint ite claim show "<program>" <claim> --json`.
@@ -48,13 +48,13 @@ Make the model true again, with no person in the session. For each claim that fa
 
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Write the `summary`: the count of the claims that hold again, the count of the model changes, and the work that reality needs (the most important item first, with its owner and its `fixed-by`). Name each claim whose cause is not known. Use no `'` character.
-3. End the turn with the result, and nothing else (`candidate_id` and `base_hash` of the candidate when you wrote one, else null):
+3. End the job with the result, and nothing else (`candidate_id` and `base_hash` of the candidate when you wrote one, else null):
 
    ```bash
-   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Changed parts and claims, and at most one candidate
-- One `steel-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the job

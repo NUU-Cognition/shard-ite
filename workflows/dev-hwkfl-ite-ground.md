@@ -20,7 +20,7 @@ Give parts their claims, with no person in the session. The form is in Claims an
 
 ## Stage 1: Read the Parts
 
-1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
+1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Read the map (`flint ite map "<program>" --json`) and the claims (`flint ite claim list "<program>" --json`). For an OrbCode program, stop: return `No change:` with the next step "use the OrbCode shard and Orbtest" (rule 6 of [[hinit-ite]]).
 4. For each part, read its note and write its claim in one sentence, with its mode (`is`, `ought`, or `will`). Skip a part that makes no claim, and keep it for the `summary`.
@@ -38,7 +38,7 @@ Give parts their claims, with no person in the session. The form is in Claims an
 ## Stage 3: Write and Check
 
 1. Run `flint orbh session set phase writing`.
-2. Write each claim: `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]], and its code in the same folder. Give it a short, readable `id` (`hall-booked`): the person reads it in the Workbench. Name the parts by their ids, never by their titles.
+2. Make each claim with `flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>"`. Give it a short, readable `id` (`hall-booked`): the person reads it in the Workbench. Name the parts by their ids, never by their titles. Then complete `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]] (the prose, `fresh-for`, `fixed-by`), and write the code of its check in the same folder. When `flint ite claim new` is not a command of the CLI (an older build), write the whole file with the form.
 3. Run `flint ite claim list "<program>"`, and repair each claim that shows a problem.
 4. Test each code check before you keep it: `flint ite claim test "<program>" <id>`. Never keep a check that you did not test.
 5. Run `flint orbh session set phase checking`. Run each code check one time: `flint ite claim check "<program>" <id> --json`. This step is required: before it, each new claim is `unchecked`, and the person sees no grounding. Take the counts of the `summary` from these checks, not from your own reading. Do not run an agent check or a person check: the person starts them in Steel.
@@ -49,13 +49,13 @@ Give parts their claims, with no person in the session. The form is in Claims an
 
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Write the `summary`: the count of the new claims by form, the count that hold now, the count that fail now, and the parts with no possible check. Use no `'` character.
-3. End the turn with the result, and nothing else (`candidate_id` is the candidate of a view, else null):
+3. End the job with the result, and nothing else (`candidate_id` is the candidate of a view, else null):
 
    ```bash
-   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Claims in `Steel/Programs/<program>/Reality/`, each with its check, and the first results of the code checks
-- One `steel-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the job
