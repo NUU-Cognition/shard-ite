@@ -47,7 +47,7 @@ For each claim, find the place where reality shows it, and select the form. Pref
 
 ## Stage 3: Write and Check
 
-1. For each claim, write `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]]. A code check gets its code (`check.js`, `check.py`) and its data in the same folder.
+1. Make each claim with `flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>"`. Then complete `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]] (the prose, `fresh-for`, `owner`, `fixed-by`). A code check gets its code (`check.js`, `check.py`) and its data in the same folder. When `flint ite claim new` is not a command of the CLI (an older build), write the whole file with the form.
 2. Run `flint ite claim list "<program>"`. Repair each claim that shows a problem: it does not check until its file is correct.
 3. **Test each code check before you keep it** with `flint ite claim test "<program>" <id>`: the check runs, and each line passes the door. Never keep a check that you did not test.
 4. Run each check one time: `flint ite claim check "<program>" <id>`. Run a new code check only when the person agreed to its code. An agent check starts one Orbh session, and a person check waits for the answer of the person in Steel.
@@ -55,6 +55,13 @@ For each claim, find the place where reality shows it, and select the form. Pref
 6. Run `flint ite check "<program>"`. Repair each `claim-invalid` and `claim-fixed-by` finding.
 7. Show the person each part with its claims and their states. Propose [[wkfl-ite-observe]] for the agent and person checks.
 8. Once each claim is written and checked one time, the workflow is done.
+
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the count of the new claims by form, the count that hold and that fail now, the claim ids, and the parts with no possible check. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
 
 # Output
 

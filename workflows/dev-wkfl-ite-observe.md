@@ -53,6 +53,13 @@ You are the agent of each agent check in this session. For each one:
 4. Propose [[wkfl-ite-repair]] for the claims that fail. Do not run a process of `fixed-by`: the owner of the claim decides.
 5. Once the person has the report, the workflow is done.
 
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the counts of the claims that hold, fail, have an error, and wait for a person, and the claim that fails and matters most. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+
 # Output
 
 - Results in the log of this machine, recorded by `flint ite claim check` and `flint ite claim report`

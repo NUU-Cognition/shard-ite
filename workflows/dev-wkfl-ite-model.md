@@ -75,6 +75,13 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 4. Show the person: the count of the parts and of the links, the top level, each part of the type `note` because no type fits, and the list of what you left out and why. Propose the next job: [[wkfl-ite-ground]] for the processes of the claims, or [[wkfl-ite-view]] for the first question.
 5. Once the person has the result, the workflow is done.
 
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the map change id, whether the person applied it, the counts of the parts and the links, and what you left out. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+
 # Output
 
 - A program with a main map of parts and links, in the words of the person: one map change in `Steel/Programs/<program>/Proposals/` that the person applied, and the links

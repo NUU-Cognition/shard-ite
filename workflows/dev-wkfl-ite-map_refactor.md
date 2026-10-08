@@ -66,6 +66,13 @@ The focus of this workflow: the selected part, or the root when no node is selec
 5. After an apply, run `flint ite map check "<program>"` and show the person the findings of the level.
 6. Once the person applied or discarded the change, the workflow is done.
 
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the map change id, whether the person applied it, the counts of each operation, and the most important gap. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+
 # Output
 
 - One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded

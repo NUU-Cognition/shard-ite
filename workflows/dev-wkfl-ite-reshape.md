@@ -52,6 +52,13 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
    - **Discard**: `flint ite discard --candidate <candidate-id>`.
 4. Once the person selected apply or discard, the workflow is done.
 
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the candidate id, whether the person applied it, and the counts of the added, removed, moved, and changed nodes. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+
 # Output
 
 - The view after the apply (the old form in `Steel/Programs/<Program>/History/`, the candidate with `state: applied`), or one candidate that waits for the person

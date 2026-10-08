@@ -51,10 +51,17 @@ For each claim that fails or has an error, decide one cause, with evidence:
 ## Stage 4: Name the Work of Reality
 
 1. For each claim where reality is wrong, write one sentence: what must happen in reality so that the claim holds, and who can do it (the `owner` of the claim). Name each process of its `fixed-by`: the owner decides to run it.
-2. Do not change the world to make a claim true, and do not run a process of `fixed-by`. When the person asks you to do the work, that is a new job (the template `do`), or a run of the process by the person, not a repair.
+2. Do not change the world to make a claim true, and do not run a process of `fixed-by`. When the person asks you to do the work, that is a new job (the action `do`), or a run of the process by the person, not a repair.
 3. Show the person the list of the work. Propose a task of the Projects shard for each large item, when the person wants one.
 4. Run `flint ite claim list "<program>"` and show the states after the repair.
 5. Once the person has the list, the workflow is done.
+
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the claims that hold again, the changes of the model (with the id of each map change or candidate), and the work that reality needs. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
 
 # Output
 

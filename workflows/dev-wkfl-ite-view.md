@@ -72,6 +72,13 @@ Answer one question of a person with one new view of a program. The result is a 
    - **Discard**: `flint ite discard --candidate <candidate-id>`.
 3. Once the person selected apply or discard, the workflow is done.
 
+# The End of a Job
+
+When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
+
+1. Write the result in the chat: the candidate id and the view id, whether the person applied it, the map, and the count of the nodes. Use short sentences.
+2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+
 # Output
 
 - One view in `Steel/Programs/<Program>/Views/` (after the apply), or one candidate in `Proposals/` with `state: proposed` that waits for the person
