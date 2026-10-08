@@ -311,24 +311,30 @@ This Flint has three example maps: **Outline** (`outline`: the tree of the parts
 
 A **process** is one way that the model touches reality. It checks one or more parts of a program and gives observations. It never changes the world: code that changes the world is an instruction, outside the model. A process lives in `Steel/Programs/<Program>/Reality/<id>/process.md` (`format: steel-process/1`). Its form is [[tmp-ite-process-v0.1]].
 
-A process has three forms. Each form gives the same result: observations.
+A process has three forms. Each form gives the same result: observations. A code process is always its own code: a script in its folder. The core has no library of checks.
 
 | Form | Manifest | Run now |
 |---|---|---|
-| Code with a ready process | `by: code`, `uses: file\|http\|mesh\|command\|reference\|note\|orbtest\|git\|npm`, `settings` | The core runs the ready process with the settings, and gives one observation for each part. |
-| Code with its own entry | `by: code`, `runtime: node\|python\|exec`, `entry`, `timeout` (default 60s) | The core runs the entry in the process folder with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_PROCESS_ID`, `STEEL_PARTS` (JSON), and the values of `flint.env` and `flint.env.local`. Each line of the output that is one JSON object is one observation. |
+| Code | `by: code`, `runtime: node\|python\|exec`, `entry`, `timeout` (default 60s) | The core runs the entry in the process folder with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_PROCESS_ID`, `STEEL_PARTS` (JSON), and the values of `flint.env` and `flint.env.local`. Each line of the output that is one JSON object is one observation (see The Code of a Process). |
 | An agent request | `by: agent`, `prompt`, `target` (optional) | One Orbh session starts with the prompt, the parts, the claims, and the door command. The agent reports each part with `flint ite process observe`. The text of its result is not an observation. |
 | A person's check | `by: person`, `claim`, `who` (optional) | The result is `pending`. Steel asks the person in the panel Reality of the part, and the answer is the observation. |
 
-Each process names its parts by their ids (`parts`), and it can name the claims that it gives a value to (`feeds`). `expect-every` (`12h`, `7d`, `30d`) is a promise, not a trigger. With `settings.from-part`, a ready process reads fields of each part in place of fixed settings: each OrbCode project has the process `orbtest-proof` (`stories`, `criteria`) and the process `code-refs` (`code-refs`).
+Each process names its parts by their ids (`parts`), and it can name the claims that it gives a value to (`feeds`). `expect-every` (`12h`, `7d`, `30d`) is a promise, not a trigger. In this Flint, each OrbCode project has the process `code-refs`, and Flint has the process `orbtest-proof`: each is a short script that reads the fields `code-refs`, or `stories` and `criteria`, of each part.
 
-**One door.** Each observation comes in through one door: `flint ite process observe`, or the route `POST /api/steel/programs/<program>/observations`. The door checks the observation against the process (the process exists, the part is a part of the process, the observation has a `state` or a `value`), and it records the actor: `person:<Name>`, `agent:<session id>`, `process:<id>`, or `run:<id>`. An agent or a person never writes an observation into a file.
+**The code of a process.** The core runs the entry in the process folder, with the process folder as the working folder. Each line of the output that is one JSON object is one observation:
 
-**The log.** Each program has one log on this machine: `.flint/steel/logs/<program id>.jsonl` (the header `steel-log/1`, then one record for each line with `seq`, `at`, and `kind`). An observation record holds `process`, `part`, `claim`, `state` or `value`, `summary`, `evidence`, `observed_at`, `received_at`, and `by`. The log of a living system holds its other records too (`read`, `notice`, `ack`, `detection`, `clearance`, `escalation`, `prompt`, `brief-opened`). Git ignores the log: it is a fact of this machine.
+- A yes-or-no check: `{ "part": "<part id>", "state": "holds" | "fails" | "error", "summary": "<text>", "evidence": [{ "kind": "text" | "output" | "url" | "file" | "note", "value": "<text>", "label"?: "<text>" }] }`.
+- The value of a claim: `{ "part": "<part id>", "claim": "<claim id>", "value": <value>, "type": "<type>", "unit"?: "<unit>", "summary": "<text>", "evidence": [...] }`. The claim is in the `feeds` of the process.
+
+Each other line is for a person. An exit code that is not 0, with no observation, gives one `error` observation for each part. The code only reads: it never changes the world. Test the code with `flint ite process test "<program>" <process>`: it runs the code one time, checks each line against the door, prints the observations and the problems, and writes nothing to the log.
+
+**One door.** Each observation comes in through one door: `flint ite process observe`, or the route `POST /api/steel/programs/<program>/observations`. The door checks the observation against the process (the process exists, the part is a part of the process, the process feeds the claim, the observation has a `state` or a `value`), and it records the actor: `person:<Name>`, `agent:<session id>`, `process:<id>`, or `run:<id>`. An agent or a person never writes an observation into a file.
+
+**The log.** Each program has one log on this machine: `.flint/steel/logs/<program id>.jsonl` (the header `steel-log/1`, then one record for each line with `seq`, `at`, and `kind`). An observation record holds `process`, `part`, `claim`, `state` or `value`, `summary`, `evidence`, `observed_at`, `received_at`, and `by`. The log of a living system holds its other records too (`ack`, `detection`, `clearance`, `escalation`, `prompt`, `brief-opened`). Git ignores the log: it is a fact of this machine.
 
 **Who starts a process.** The core never starts a process by itself, and `flint sync` does not schedule it. A person or a run asks for it (Run now in Steel, or `flint ite process run`). A process that must run on a schedule starts itself with its own means: a schedule of the module `crons`, an Orbh cron, a live module, or a hook that calls `flint ite process run "<program>" <id>`.
 
-**The grounding.** The grounding of a part comes from the newest observation of each (process, part) pair in the log. A pair with no observation is `unobserved`. An observation that is older than `expect-every` is `stale`. A value observation counts as `holds`. An `orbtest` process counts each criterion. The grounding of a part is, in this order: `no-process` (no process checks the part), `failing`, `stale`, `grounded`, `partial`, `unobserved`. A group, a view, and a program add the counts of their parts.
+**The grounding.** The grounding of a part comes from the newest observation of each (process, part) pair in the log. A pair with no observation is `unobserved`. An observation that is older than `expect-every` is `stale`. A value observation counts as `holds`. The grounding of a part is, in this order: `no-process` (no process checks the part), `failing`, `stale`, `grounded`, `partial`, `unobserved`. A group, a view, and a program add the counts of their parts.
 
 **The findings.** `flint ite check` gives the findings of the processes, and runs no process:
 
@@ -339,15 +345,16 @@ Each process names its parts by their ids (`parts`), and it can name the claims 
 | `process-late` | warning | A process with `expect-every` has no observation that new. |
 | `process-fails` | error | The newest observation of a process for a part fails, or the check had an error. |
 | `process-unobserved` | note | A process has no observation yet for a part. |
-| `process-invalid` | error | The manifest of a process has a problem. The process does not run. |
+| `process-invalid` | error | The manifest of a process has a problem, for example a code process with no `runtime` and `entry`. The process does not run. |
 
 ### The Commands of a Process
 
 | Command | Result |
 |---|---|
 | `flint ite process list "<program>" [--part <id>]` | The processes of a program, with the form, the state of each part, the parts, and `expect-every`. A late process says `late`. Writes nothing. |
-| `flint ite process show "<program>" <process>` | One process: its file, its settings or prompt or claim, its problems, the state of each part, and its newest observations. Writes nothing. |
+| `flint ite process show "<program>" <process>` | One process: its file, its runtime and entry, or its prompt, or its claim, its problems, the state of each part, and its newest observations. Writes nothing. |
 | `flint ite process run "<program>" <process>` | Run now: a code process runs on this machine; an agent process starts one Orbh session; a person check gives `pending`. Each observation goes through the door. Exit 1 when the run fails. |
+| `flint ite process test "<program>" <process>` | Runs the code of a code process one time, checks each line of its output against the door, and prints the observations and the problems. Writes nothing to the log. Exit 1 when a line has a problem or the run fails. It refuses an agent process and a person check. |
 | `flint ite process observe "<program>" <process> [--part <id>] [--claim <id>] --state holds\|fails\|error \| --value <v> [--type <t>] --summary "<text>" [--evidence <kind>=<value>]...` | The one door: records one observation in the log of the program. The default part is the only part of the process. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. |
 
 ## Proposals: The Candidate and the Apply
@@ -575,7 +582,6 @@ These terms add to The Terms and to The Terms of a Run. One term has one meaning
 | Limit | An `ought` that the system must never leave. It escalates at once. |
 | `will` | The mode of a prediction, with a probability `p` and an instant `resolves` |
 | Process | One way that the model touches reality (`Steel/Programs/<P>/Reality/<folder>/process.md`). A process **feeds** a claim when it names the claim in `feeds`. |
-| Ready process | A process of the core that a process folder names with `uses`. A living system adds `git` and `npm`. |
 | Late | A process whose newest observation is older than its `expect-every`. Its claims get old. |
 | Observation | One record of the log (`steel-observation/1`): the process, the part, the claim, a `state` or a typed `value`, the time it was observed, and the time it was received |
 | Log | The append-only file of one program on this machine: `.flint/steel/logs/<program id>.jsonl`. It holds the observations and the attention records. |
@@ -646,7 +652,6 @@ claims:
   - id: canon-version
     mode: is
     about: "The version of the CLI on origin/canon"
-    property: origin/canon.version
     type: version
     fresh-for: 6h
   - id: monthly-release
@@ -666,8 +671,8 @@ claims:
       - { of: main-version, op: eq, value: "0.7.0" }
 ```
 
-1. **An `is` claim gets its value from the process that names it in `feeds`.** A claim names no process. When the process is a ready process (`git`, `npm`), the claim gives `property`: the name of the value that it takes (`origin/canon.version`). A property that the process does not give is an error. A person, an agent, or a run can also report the value with `flint ite observe --claim` (give `type`). A report needs a process that names the claim in `feeds`.
-2. **`type`** is `number`, `text`, `boolean`, `time`, `version` (semver), `sha`, `json`, or `verdict`. The default is the type of the property.
+1. **An `is` claim gets its value from the process that names it in `feeds`.** A claim names no process. The code of the process prints one line with the `claim` and its `value` (see The Code of a Process). A person, an agent, or a run can also report the value with `flint ite observe --claim` (give `type`). A report needs a process that names the claim in `feeds`.
+2. **`type`** is `number`, `text`, `boolean`, `time`, `version` (semver), `sha`, `json`, or `verdict`. Give the `type` in the claim; the line of the process gives it too.
 3. **`fresh-for`** is the time that an accepted value stays fresh (`1h`, `6h`, `7d`). With no `fresh-for`, the value never gets old: use that only for a fact that does not change.
 4. **`selection`** is `newest`, `authoritative` (needs a process that feeds the claim), or `agree` (the default: two fresh values from two sources that differ give `conflict`).
 5. **`ought`** and **`will`** have one or more `holds-when` predicates. Each must be true. A predicate has `of` (an `is` claim), `op` (`eq`, `ne`, `lt`, `le`, `gt`, `ge`, `match`, `exists`, `age-lt`, `age-gt`), and `value` or `value-of` (another `is` claim). `path` is a dot path into a `json` value.
@@ -678,38 +683,28 @@ The states: an `is` claim is `fresh`, `stale`, `unobserved`, `conflict`, or `err
 
 ### The Processes of a Living System
 
-A living system reads reality through the processes of its program (see Processes and the Log). A process feeds a claim when it names the claim in `feeds`. The two ready processes of a living system read Git and npm:
+A living system reads reality through the processes of its program (see Processes and the Log). A process feeds a claim when it names the claim in `feeds`. In this Flint, the process `git-flint-remote` of Flint Release reads Git with its own code:
 
 ```yaml
 ---
 format: steel-process/1
 id: git-flint-remote
 by: code
-uses: git
+runtime: node
+entry: index.js
+timeout: 120s
 parts: [2b11ea5e-3c55-498f-85d8-cf3c702b8b12]
-feeds: [canon-version, canon-shipped-from, pull-debt]
+feeds: [canon-version, canon-shipped-from]
 expect-every: 30m
-settings:
-  repo: "@Flint"
-  fetch: true
-  refs: [origin/canon, origin/main]
-  version-file: apps/flint-cli/package.json
-  compare:
-    - [origin/canon, nathan-main]
 ---
 # The remote branches canon and main
 The prose for a person: what the process checks, and why.
 ```
 
-| `uses` | `settings` | The values of one run |
-|---|---|---|
-| `git` | `repo` (`@<Codebase>` or a path), `refs`, `fetch`, `version-file`, `compare` | For each ref: `<ref>.sha`, `<ref>.time`, `<ref>.subject`, `<ref>.squashed-from`, `<ref>.version`. For each `compare` pair `[a, b]`: `<a>...<b>.left`, `<a>...<b>.right` |
-| `npm` | `package`, `registry` (default `https://registry.npmjs.org`), `tags` (default `[latest]`) | For each tag: `<tag>.version`, `<tag>.integrity`, `<tag>.time`; and `modified` |
-
 1. **The core never starts a process by itself.** `flint ite read "<program>"` (Run now) runs each `code` process of the system once. A process starts itself with its own means: a schedule of `crons`, an Orbh cron, a hook that runs `flint ite process run`.
 2. **One run gives one observation for each value**, also when the value did not change. The observation names the claim that takes the value. The observations are the heartbeat of the process.
 3. **`expect-every` is a promise, not a trigger.** Past it with no observation, the process is late: its claims get old, and the brief says so.
-4. **A remote ref needs a fetch in the same run.** A `git` process with a ref under `origin/` must have `fetch: true`, else it is an error. A failed fetch gives one observation with the state `error` and no value. Put local refs in another process with `fetch: false`.
+4. **A value that the process cannot read is an error, not an old value.** For example, when the fetch of a remote fails, the code prints one `error` line and no value.
 5. A late process does not change a value. It makes the value old.
 
 ### Instructions
@@ -748,7 +743,7 @@ A revision is a candidate change of one file of the system: a file in `Steel/Pro
 1. **The targets:** the root note, a part file, and a new part file. A revision of an instruction changes the root part or a step part of an instruction map. Never a file of `Steel/`, a file outside the program, or a symbolic link.
 2. **The check** reads the whole system with the new bytes in place. A finding of the level error, or a refusal of an instruction map, stops the apply.
 3. **The apply** writes the target only when its hash is the base hash, and keeps the exact old bytes in the revision file. **The revert** writes the old bytes back (or removes a new part) only when the target has the hash of the apply. A write that a crash cut is finished at the next read.
-4. **A protected change** is a change of `holds-when`, `limit`, `selection`, `fresh-for`, `property`, or `goals`, the removal of a claim, a change of `authority` or `governor` of the system block, a change of the `authority` of an `instruction-map` block, and a change of `effect`, `completion`, or `precondition` of a step part. Only a person applies it, with `--protected`. Each other write path refuses a protected change with `forbidden` and the reason `protected-change`.
+4. **A protected change** is a change of `holds-when`, `limit`, `selection`, `fresh-for`, or `goals`, the removal of a claim, a change of `authority` or `governor` of the system block, a change of the `authority` of an `instruction-map` block, and a change of `effect`, `completion`, or `precondition` of a step part. Only a person applies it, with `--protected`. Each other write path refuses a protected change with `forbidden` and the reason `protected-change`.
 5. An active run keeps its snapshot. A new run uses the applied instruction map.
 
 ### Authority
@@ -846,8 +841,8 @@ A program is for a person. A model that breaks these rules does not help that pe
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
 6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds 3 to 9 parts (`max-children`); a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
 7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When a claim has no process, say so. A model with an honest gap is better than a model with an invented fact.
-8. **Give each claim a process when you can.** A part that makes a claim about reality has a process that checks it: code that reads a file, a page, a note, or a command; an agent request; or a check of a person. Prefer a process that code can run.
-9. **Never invent a process that you did not check.** Before you write a code process, run it one time: the path exists, the URL answers, the note exists, the command runs. Never invent a story id, a path, a URL, or a note name. A process touches reality outside the model: a `mesh` read that only finds a part of the same program proves nothing about the system.
+8. **Give each claim a process when you can.** A part that makes a claim about reality has a process that checks it: its own code that reads a file, a page, or a command; an agent request; or a check of a person. Prefer a process that code can run.
+9. **Never invent a process that you did not check.** Before you keep a code process, test it with `flint ite process test "<program>" <process>`: the code runs, and each line passes the door. Never invent a story id, a path, a URL, or a note name. A process touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
 10. **End each view with what it leaves out.** The last section of a view is one node of the type `note` that names what the view does not show, and why.
 11. **Meaning only.** No grounding, no observation, no finding, no position, and no presence in a file.
 12. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.

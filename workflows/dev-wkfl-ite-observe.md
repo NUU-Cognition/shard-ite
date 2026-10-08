@@ -14,7 +14,7 @@ Check parts against reality now, and record what you see. Each observation goes 
 
 - The program
 - (Optional) The part ids. With no part: each part that a process checks.
-- (Optional) The processes to run. A `command` process runs only when the person names it.
+- (Optional) The processes to run.
 
 # Actions
 
@@ -23,12 +23,11 @@ Check parts against reality now, and record what you see. Each observation goes 
 1. Set the focus: `flint ite focus <part ids>` ([[sk-ite-focus]]).
 2. Read the processes: `flint ite process list "<program>"` (with `--part <id>` for one part). For each process, note its form, its parts, its state for each part, and whether it is late.
 3. Sort the processes in three lists: the code processes (`by: code`), the agent processes (`by: agent`), and the person checks (`by: person`).
-4. Ask the person whether the `command` processes run now, when there are any. Show each command line first (`flint ite process show "<program>" <id>`).
-5. Once the three lists are complete, progress to the next stage.
+4. Once the three lists are complete, progress to the next stage.
 
 ## Stage 2: Run the Code Processes
 
-1. Run each one: `flint ite process run "<program>" <id>`. Run a `command` process only when the person agreed in Stage 1.
+1. Run each one: `flint ite process run "<program>" <id>`.
 2. Read each result: the status, and each observation with its part, its state, and its summary.
 3. A process that gives `error` or the status `failed` has a wrong form or cannot run on this machine. Note it for Stage 4.
 4. Once each run is done, progress to the next stage.

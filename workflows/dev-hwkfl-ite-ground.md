@@ -29,9 +29,9 @@ Give parts their processes, with no person in the session. The process forms are
 ## Stage 2: Find the Processes
 
 1. Run `flint orbh session set phase grounding`.
-2. For each claim, select the form with the table of Stage 2 of [[wkfl-ite-ground]]. Prefer a form that a command can check. When one check answers for many parts, plan one process with each of those parts.
-3. Set the focus on the part that you work on. Check each code process one time before you write it (the path, the URL, the note, the query, the command). Never invent a process. Never write a process that changes the world: a process observes, and it never acts.
-4. A process touches reality outside the model. A `mesh` query that only finds a part of this program (for example the part of a person, to prove a role) proves only that the model has the part: do not write it. A `mesh` process counts records of the work or of the world: tasks, meetings, reports, or the `status` that a person writes on a part.
+2. For each claim, select the form with the table of Stage 2 of [[wkfl-ite-ground]]. Prefer code: a short script in the process folder. When one check answers for many parts, plan one process with each of those parts.
+3. Set the focus on the part that you work on. Test each code process before you keep it: `flint ite process test "<program>" <id>`. Never invent a process. Never write a process that changes the world: a process observes, and it never acts.
+4. A process touches reality outside the model. Code that only finds a part of this program (for example the part of a person, to prove a role) proves only that the model has the part: do not write it. Code can count records of the work or of the world: tasks, meetings, reports, or the `status` that a person writes on a part.
 5. When no process is possible, write no process, and keep the part for the `summary`.
 6. Once each claim has its processes or its gap, progress to the next stage.
 
@@ -40,7 +40,7 @@ Give parts their processes, with no person in the session. The process forms are
 1. Run `flint orbh session set phase writing`.
 2. Write each process: `Steel/Programs/<program>/Reality/<id>/process.md` with the form of [[tmp-ite-process-v0.1]]. Give it a short, readable `id` (`booking-email`): the person reads it in the Workbench. Name the parts by their ids, never by their titles.
 3. Run `flint ite process list "<program>"`, and repair each process that shows a problem.
-4. Run `flint orbh session set phase checking`. Run each code process one time: `flint ite process run "<program>" <id> --json`. This step is required: before it, each new process is `unobserved`, and the person sees no grounding. Do not run a `command` process unless the instructions name it. Take the counts of the `summary` from these runs, not from your own check.
+4. Run `flint orbh session set phase checking`. Run each code process one time: `flint ite process run "<program>" <id> --json`. This step is required: before it, each new process is `unobserved`, and the person sees no grounding. Take the counts of the `summary` from these runs, not from your own check.
 5. Run `flint ite check "<program>"`. Repair each `process-invalid` and `process-no-part` finding.
 6. Once each process is written and run, progress to the next stage.
 

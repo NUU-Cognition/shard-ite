@@ -7,8 +7,7 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
 /*
   A process is one way that the model touches reality. It checks one or more parts of a program and gives
   observations. It never changes the world: code that changes the world is an instruction, outside the model.
-  A process has three forms: code (a script, or a ready process of the core with `uses`), an agent request, and a
-  person's check. Each form gives the same result: observations, through one door
+  A process has three forms: code (a script in the process folder), an agent request, and a person's check. Each form gives the same result: observations, through one door
   (`flint ite process observe`, or the route POST /api/steel/programs/<program>/observations), into the log of the
   program on this machine (.flint/steel/logs/<program id>.jsonl). No file of the Mesh or of Steel/ holds an
   observation or a state.
@@ -20,7 +19,7 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
   THE FOLDER
   - Steel/Programs/<Program>/Reality/<id>/ — the folder name is the id of the process. The folder of the program
     is the folder whose program.md has the id of the root note of the program.
-  - process.md holds the manifest. A code process with its own entry keeps its code in the same folder.
+  - process.md holds the manifest. A code process keeps its code in the same folder.
 
   FRONTMATTER CONTRACT. The keys are kebab-case. No comment in the frontmatter.
   - format: always "steel-process/1".
@@ -31,32 +30,17 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
   - feeds: optional, the ids of the claims that the process gives a value to (a living system).
   - expect-every: optional, a promise, not a trigger: 12h, 7d, 30d. When the newest observation is older, the
     process is late: the part is stale, and `flint ite check` gives `process-late`.
-  - code, with its own entry:
+  - code (a code process is always its own code; the core has no library of checks):
       runtime: node | python | exec. `exec` runs the entry file itself.
       entry: the file in the process folder: "check.mjs", "check.py".
       timeout: optional, at most this time for one run (default 60s).
     The core runs the entry in the process folder with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID,
     STEEL_PARTS (a JSON list of the part ids), and the values of flint.env and flint.env.local. Each line of its
     output that is one JSON object is one observation: { "part": "<id>", "state": "holds|fails|error",
-    "summary": "<text>", "evidence"?: [...], "claim"?: "<id>" }, or "value": { "type", "value", "unit"? } in place
-    of "state". Each other line is for a person. An exit code that is not 0, with no observation, gives one
+    "summary": "<text>", "evidence"?: [{ "kind", "value", "label"? }] } for a yes-or-no check, or { "part": "<id>",
+    "claim": "<id>", "value": <value>, "type": "<type>", "unit"?: "<unit>", "summary": "<text>", "evidence"?: [...] }
+    for the value of a claim that the process feeds. Each other line is for a person. An exit code that is not 0, with no observation, gives one
     `error` observation for each part.
-  - code, with a ready process of the core:
-      uses: file | http | mesh | command | reference | note | orbtest (the core), git | npm (living systems).
-      settings: the settings of the ready process:
-        file:      path (the code-refs grammar: "@<Codebase>/<path>", "<path>#<symbol>").
-        http:      url, expect (status, match, not-match, json { path, equals | exists }). A GET request.
-        mesh:      query (type, tags, where, links-to, search), expect (count: ">=1", "==3", "==0").
-        command:   run, cwd (relative to the Flint root, or "@<Codebase>"), expect (exit, match, not-match, json).
-                   A command must be cheap, and it must not change the world.
-        reference: ref (the name of a reference marker, for example "rf-cb-flint").
-        note:      ref (the name of a note of the Mesh that is the evidence).
-        orbtest:   stories, criteria, cwd (the product root).
-        git, npm:  the settings of the living systems (repo, refs, fetch, version-file, compare; package,
-                   registry, tags). The init of the ITE says their values.
-      settings.from-part: a list of field names. The ready process reads those fields of each part in place
-      of fixed settings, and gives one observation for each part (OrbCode: `orbtest` with [stories, criteria],
-      `file` with [code-refs]).
   - agent:
       prompt: the request. The agent reads, decides holds, fails, or error, and reports each part with
               `flint ite process observe`. Run now starts one Orbh session with the prompt, the parts, the
@@ -68,12 +52,12 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
       who: optional, "person:<Name>".
 
   RULES
-  - Prefer a form that a command can check with no mind (a ready process, then code). Use an agent when a
-    reading decides, and a person only when only a person knows.
-  - Check each ready process one time before you write it: the path exists, the URL answers, the query
-    matches. Never invent a process that you did not check.
-  - A process touches reality outside the model. A `mesh` query that only finds a part of this program proves
-    only that the model has the part: do not write it.
+  - Prefer code: a check with no mind. Use an agent when a reading decides, and a person only when only a
+    person knows.
+  - Test each code process before you keep it: `flint ite process test "<program>" <id>` runs the code one time,
+    checks each line against the door, and writes nothing to the log. Never invent a process that you did not check.
+  - A process touches reality outside the model. Code that only finds a part of this program proves only that the
+    model has the part: do not write it.
   - After you write a process, run `flint ite process list "<program>"`: a process with a problem shows it, and
     it does not run. Then run it one time: `flint ite process run "<program>" <id>`.
 
@@ -82,32 +66,7 @@ description: "A process of a program: Steel/Programs/<Program>/Reality/<id>/proc
   - One to three short paragraphs: what the process checks, why, and what a person does when it fails.
 */
 
-## A code process with a ready process
-
-````markdown
----
-format: steel-process/1
-id: forecast
-by: code
-parts:
-  - 3c72c262-0a5e-4460-b158-f286f97234e0
-uses: http
-settings:
-  url: https://api.open-meteo.com/v1/forecast?latitude=-33.87&longitude=151.21&daily=precipitation_probability_max&timezone=Australia%2FSydney
-  expect:
-    status: 200
-    json:
-      path: daily.precipitation_probability_max
-      exists: true
-expect-every: 12h
----
-
-# The forecast of the night
-
-The forecast of Open-Meteo for Sydney gives the highest chance of rain for each of the next seven days. When the chance of rain on the night is high, the founders move the queue inside.
-````
-
-## A code process with its own entry
+## A code process
 
 ````markdown
 ---

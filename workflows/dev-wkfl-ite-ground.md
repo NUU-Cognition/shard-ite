@@ -27,33 +27,26 @@ Give parts their processes. For each part, find where its claim touches reality,
 
 ## Stage 2: Find the Processes
 
-For each claim, find the place where reality shows it, and select the form. Prefer a form that a command can check with no mind:
+For each claim, find the place where reality shows it, and select the form. Prefer code: a check with no mind. A code process is always its own code in its folder:
 
 | When the claim is about | Select | Example |
 |---|---|---|
-| A file, a folder, or a symbol of a codebase | `by: code`, `uses: file` | `path: "@Steel/apps/nuu-steel/src/ite/canvas/"` |
-| A state that a command prints (a branch, a build, a count) | `by: code`, `uses: command` with `expect` | `run: git -C "../Repos/flint" rev-parse --verify canon` |
-| A public page or an API that answers | `by: code`, `uses: http` with `expect` | the page of the venue, a status API |
-| Notes of the Mesh (a count, a state of tasks) | `by: code`, `uses: mesh` with `expect.count` | each task of the launch is done |
-| The stories of a product | `by: code`, `uses: orbtest` | `stories: [setup.steps]` |
-| A record that is the evidence (a meeting, a report) | `by: code`, `uses: note` | `ref: "(Meeting) 2026-09-28 Venue Call"` |
-| A codebase or another Flint that must be on this machine | `by: code`, `uses: reference` | `ref: "rf-cb-flint"` |
-| A check that needs its own logic | `by: code` with `runtime` and `entry` | a script that reads an export and counts |
+| A fact that code can read: a file of a codebase, a public page or an API, a state that a command prints, a count of records | `by: code` with `runtime` and `entry`: a short script in the process folder | a script that reads the page of the venue and checks its title |
 | A fact that an agent can check by reading | `by: agent` with `prompt` | "Read the sponsor sheet and say if two sponsors signed." |
 | A fact that only a person knows or sees | `by: person` with `claim` | "Nathan walked through the venue." |
 
 1. Give each process an `id` (a short slug: `booking-email`), its `parts` (the part ids, never the titles), and an `expect-every` when reality changes (`12h` for a status, `7d` for a plan, `30d` for a booking).
-2. **Check each code process one time before you write it**: the path exists, the command runs and matches, the URL answers, the note exists, the query matches. Never invent a process that you did not check. A `command` must be cheap and must not change the world: a process observes, and it never acts.
-3. A process touches reality outside the model. A `mesh` query that only finds a part of this program (for example the part of a person, to prove a role) proves only that the model has the part: do not write it. A `mesh` process counts records of the work or of the world: tasks, meetings, reports, or the `status` that a person writes on a part.
+2. **Test each code process before you keep it** with `flint ite process test "<program>" <id>`: the code runs, and each line of its output passes the door. Never invent a process that you did not check. The code must be cheap and must not change the world: a process observes, and it never acts.
+3. A process touches reality outside the model. Code that only finds a part of this program (for example the part of a person, to prove a role) proves only that the model has the part: do not write it. Code can count records of the work or of the world: tasks, meetings, reports, or the `status` that a person writes on a part.
 4. When no process is possible, write no process, and say the gap in the prose of the part.
 5. Show the person the list: each process, its form, its parts, and its claim. Ask: write them, or change them.
 6. Once the person agrees, progress to the next stage.
 
 ## Stage 3: Write and Run
 
-1. For each process, write `Steel/Programs/<program>/Reality/<id>/process.md` with the form of [[tmp-ite-process-v0.1]]. A code process with its own entry gets its file (`check.mjs`, `check.py`) in the same folder.
+1. For each process, write `Steel/Programs/<program>/Reality/<id>/process.md` with the form of [[tmp-ite-process-v0.1]]. A code process gets its code (`index.js`, `check.py`) in the same folder.
 2. Run `flint ite process list "<program>"`. Repair each process that shows a problem: it does not run until its manifest is correct.
-3. Run each code process one time: `flint ite process run "<program>" <id>`. This step is required: before it, each new process is `unobserved`. Run a `command` process only when the person agreed that the command runs.
+3. Test each code process (`flint ite process test "<program>" <id>`), then run it one time: `flint ite process run "<program>" <id>`. This step is required: before it, each new process is `unobserved`. Run a new code process only when the person agreed to its code.
 4. Read the result. A process that fails now is not an error of the workflow: it is a fact for the person. A process that gives `error` has a wrong form: repair it and run it again.
 5. Run `flint ite check "<program>"`. Repair each `process-invalid` and `process-no-part` finding.
 6. Show the person each part with its processes and their states. Propose [[wkfl-ite-observe]] for the `agent` and `person` processes.

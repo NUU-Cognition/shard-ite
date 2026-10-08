@@ -14,7 +14,7 @@ Check parts against reality now, with no person in the session. Each observation
 
 - The program
 - The selected parts. With no part: each part that a process checks.
-- (Optional) The instructions of the person: the processes to run. A `command` process runs only when the instructions name it.
+- (Optional) The instructions of the person: the processes to run.
 
 # Actions
 
@@ -29,7 +29,7 @@ Check parts against reality now, with no person in the session. Each observation
 ## Stage 2: Run the Code Processes
 
 1. Run `flint orbh session set phase running`.
-2. Run each one: `flint ite process run "<program>" <id> --json`. Run a `command` process only when the instructions name it.
+2. Run each one: `flint ite process run "<program>" <id> --json`.
 3. Keep the counts: holds, fails, error, and the runs that failed (with the message).
 4. Once each run is done, progress to the next stage.
 

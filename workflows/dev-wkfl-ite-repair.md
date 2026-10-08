@@ -42,7 +42,7 @@ For each failing process, decide one cause, with evidence:
 
 ## Stage 3: Change the Model
 
-1. A wrong process: edit its `process.md` in `Steel/Programs/<program>/Reality/<id>/` (the settings, the entry, the prompt, or the claim) with the form of [[tmp-ite-process-v0.1]]. Check it one time, run `flint ite process list "<program>"` to see that it has no problem, and run it (`flint ite process run "<program>" <id>`).
+1. A wrong process: edit its `process.md` in `Steel/Programs/<program>/Reality/<id>/` (its code, the prompt, or the claim) with the form of [[tmp-ite-process-v0.1]]. Test its code with `flint ite process test "<program>" <id>`, run `flint ite process list "<program>"` to see that it has no problem, and run it (`flint ite process run "<program>" <id>`).
 2. A wrong part: change its text or its fields with `flint ite part set`, and its links with `flint ite link`. Keep its id. A change of the tree (a move, a rename, a merge) is a map change: propose it with `flint ite map change propose`.
 3. A wrong view node: write a candidate with [[wkfl-ite-reshape]]. Apply it only when the person agrees.
 4. Never remove a process only because it fails. Remove its folder only when its claim is no longer a claim of the part, and say so to the person.

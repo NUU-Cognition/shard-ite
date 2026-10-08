@@ -44,8 +44,7 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     id: a slug, unique in the program (not only in the part).
     mode: is (a claim about now or the past), ought (an expectation that must hold), or will (a prediction).
     about: the claim in words, for a person.
-    is:    a process that names the claim in its `feeds` gives the value; property names the property of that
-           process. A person, an agent, or a run can also report the value with flint ite observe --claim;
+    is:    the code of a process that names the claim in its `feeds` gives the value. A person, an agent, or a run can also report the value with flint ite observe --claim;
            that report needs a process that names the claim in its `feeds` too.
            type: number | text | boolean | time | version | sha | json | verdict.
            fresh-for: how long an accepted value stays fresh (1h, 6h, 7d). Omit it only for a fact that never changes.
@@ -57,7 +56,7 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     will:  holds-when as an ought, p (0 to 1), and resolves (a quoted date or date-time).
   - owner defaults to the owner of the part, else the first owner of the system.
   - The claims hold meaning only: no value, no state, and no time of a read. A command computes them.
-  - In a living system, a change of holds-when, fresh-for, property, selection, or limit, and the removal of a claim,
+  - In a living system, a change of holds-when, fresh-for, selection, or limit, and the removal of a claim,
     is a protected change: it goes only through a revision that a person applies (flint ite revision propose).
 
   THE BODY
@@ -121,7 +120,7 @@ What the example does:
 - The file name gives the program, the type `Step`, and the title. The H1 repeats the type and the title.
 - `parent` puts the step inside the system "The week of the garden". `next` and `uses` are connections: each wikilink is one link.
 - `owner` names a part of the same program (an actor), so the link has a target.
-- Two processes in `Steel/Programs/Garden Share/Reality/` check the part: `rain` (code, `uses: http`) and `roster` (a person's check). Each names the part by its id. The part file holds no process and no state.
+- Two processes in `Steel/Programs/Garden Share/Reality/` check the part: `rain` (its own code) and `roster` (a person's check). Each names the part by its id. The part file holds no process and no state.
 
 ## A complete example with claims
 
@@ -140,7 +139,6 @@ claims:
   - id: pull-debt
     mode: is
     about: "The count of the commits of origin/canon that nathan-main does not have"
-    property: origin/canon...nathan-main.left
     type: number
     fresh-for: 1h
   - id: no-pull-debt
@@ -159,6 +157,6 @@ authors:
 
 What the example does:
 
-- `pull-debt` is an `is` claim: the process `git-flint-remote` names it in its `feeds`, and the property `origin/canon...nathan-main.left` of its read gives the value. The value is old after 1 hour.
+- `pull-debt` is an `is` claim: the process `git-flint-remote` names it in its `feeds`, and its code prints the value (the count of `git rev-list --left-right --count origin/canon...nathan-main`). The value is old after 1 hour.
 - `no-pull-debt` is an `ought` claim and a goal of the system (the system block names it in `goals`). It holds when the debt is 0. When `pull-debt` is old, it is `unknown`, never `holds`.
 - The part prose names the claims in words, and holds no value.
