@@ -813,7 +813,7 @@ criteria: [setup.steps#2]
 
 ### The Processes of a Software Program
 
-A process of a software product is a view of the map `flow` or `streams`. The Workbench lists each such view under Processes, with its proof dot and its count of steps. "Show on map" lights the parts of the steps on the main map with the numbers of the steps and the path, and the strip below the main map shows the steps in order, in lanes by actor (Who acts) or by system (Systems).
+A process of a software product is a view of the map `flow` or `streams`. The Workbench lists each such view under Process views, a list inside the section Views, with its proof dot and its count of steps. The section Processes is another list: the Steel processes of `Steel/Programs/<P>/Processes/`, which a person or a trigger runs. "Show on map" lights the parts of the steps on the main map with the numbers of the steps and the path, and the strip below the main map shows the steps in order, in lanes by actor (Who acts) or by system (Systems).
 
 | Map | It fits when | How to write it |
 |---|---|---|
