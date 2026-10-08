@@ -36,7 +36,6 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
   - status: a short word as the person uses it: active, todo, in-progress, done, open, closed.
   - claims: optional, a part of a type with the capability has-claims (see THE CLAIMS).
   - template, authors, orbh-sessions: the Flint conventions.
-  - A part has no field kind, program, contact, include, or place.
   - The part holds no grounding, no observation, no finding, and no position. A command computes these facts.
     A process in Steel/Programs/<Name>/Reality/ checks the part against reality ([[tmp-ite-process-v0.1]]).
 

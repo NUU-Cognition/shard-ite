@@ -1,5 +1,5 @@
 ---
-description: "Headless: the rules of an ITE job with no person in the session, the focus, and the result shape ite-result/1"
+description: "Headless: the rules of an ITE job with no person in the session, the focus, and the result shape steel-result/1"
 required-reading:
   - "[[init-ite]]"
 ---
@@ -61,9 +61,9 @@ The section Instruction Maps and Runs of [[init-ite]] applies. In a headless ses
 The section Living Systems of [[init-ite]] applies. In a headless session, these rules are added:
 
 1. **Take the instruction from the system.** When your prompt names a living system, run `flint ite prompt "<program>" --json` (with `--flow <id> --step <id>` for a step of an instruction map) and follow the text in its field `prompt`. Do not follow a copy of the instruction in another text: a copy can be old. The command records that an agent took a prompt (the vital sign "use").
-2. **An agent step returns only its result.** When the engine dispatched you for an agent step of a run, your result is the value of the one `text` output of the step. Return only that text, with `flint orbh session return --finish "<text>"`: this result rule replaces the shape `ite-result/1`. The run takes the result of your session only.
+2. **An agent step returns only its result.** When the engine dispatched you for an agent step of a run, your result is the value of the one `text` output of the step. Return only that text, with `flint orbh session return --finish "<text>"`: this result rule replaces the shape `steel-result/1`. The run takes the result of your session only.
 3. **A report is not evidence.** Report the value of a claim (a check receipt, for example) with `flint ite observe "<program>" --claim <id> --value <v> --type <t> --summary "<text>"`. The claim needs a process that names it in `feeds`. Never report a value that you did not see. A report never confirms an effect: only a process does.
-4. **Read; do not decide for a person.** You can run `flint ite read`, `flint ite flow reconcile <run>` with no `--decision`, `flint ite brief`, `flint ite statements`, and `flint ite evidence`. Never run `flint ite flow approve`, `waive`, `dispatch`, or `reconcile --decision`, never acknowledge an item of the brief, and never run `flint ite revision apply`, `revert`, or `discard`, unless the prompt of the person asks for exactly that. The authority layer refuses an agent for an approval, a waiver, and a retry.
+4. **Read; do not decide for a person.** You can run `flint ite read`, `flint ite flow reconcile <run>` with no `--decision`, `flint ite brief`, `flint ite claims`, and `flint ite evidence`. Never run `flint ite flow approve`, `waive`, `dispatch`, or `reconcile --decision`, never acknowledge an item of the brief, and never run `flint ite revision apply`, `revert`, or `discard`, unless the prompt of the person asks for exactly that. The authority layer refuses an agent for an approval, a waiver, and a retry.
 5. **A protected change goes through a revision.** To change a goal, a predicate, `fresh-for`, a process that feeds a claim, a completion, a precondition, or the authority, write the full new file and run `flint ite revision propose`. Never apply it. A direct edit of such a field refuses with `protected-change`, or shows as a finding.
 6. **Never act on the world** (a ship, a push, a publish, a release) in a living system unless the step that you execute says so, and the run has its approval.
 7. **Never write the log, a run record, or a proposal by hand.**
@@ -81,7 +81,7 @@ Check each item. A job that skips an item gives the person a result that the Wor
 - [ ] Parts and processes: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `process-invalid`, or `process-no-part` for a part or a process that you changed.
 - [ ] Each code process that you wrote ran one time, and it holds, or its prose says why it fails.
 - [ ] A living system: you took the instruction from `flint ite prompt`, and you approved, waived, retried, and applied nothing that the prompt of the person did not ask for.
-- [ ] The result is one line of JSON of the schema `ite-result/1`, and nothing else.
+- [ ] The result is one line of JSON of the schema `steel-result/1`, and nothing else.
 
 ## The Result
 
@@ -91,10 +91,10 @@ The last action of the turn is:
 flint orbh session return --finish '<json>'
 ```
 
-The payload is one line of JSON of the schema `ite-result/1`, with no other text:
+The payload is one line of JSON of the schema `steel-result/1`, with no other text:
 
 ```json
-{"schema":"ite-result/1","program":"<program name>","view_id":"<uuid or null>","candidate_id":"<candidate id or null>","base_hash":"<sha256 hex or null>","summary":"<one to three short sentences for the person>"}
+{"schema":"steel-result/1","program":"<program name>","view_id":"<uuid or null>","candidate_id":"<candidate id or null>","base_hash":"<sha256 hex or null>","summary":"<one to three short sentences for the person>"}
 ```
 
 - `program` is the name of the program.

@@ -1,5 +1,5 @@
 ---
-description: "Headless: make or extend the map of a system from the words of a person and from sources, propose the parts as one map change, write the links of the parts that exist with flint ite, and return one ite-result/1 JSON value"
+description: "Headless: make or extend the map of a system from the words of a person and from sources, propose the parts as one map change, write the links of the parts that exist with flint ite, and return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -70,7 +70,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 ## Stage 5: Check
 
 1. Run `flint orbh session set phase checking`.
-2. Run `flint ite check "<program>"`. Repair each error of the parts that you changed (`format`, `link-missing`). A `no-contact` note is correct for a new part: the job `ground` gives it a process.
+2. Run `flint ite check "<program>"`. Repair each error of the parts that you changed (`format`, `link-missing`). A `no-process` note is correct for a new part: the job `ground` gives it a process.
 3. Read the tree after of the change (`flint ite map change show "<program>" <change id>`). Check the new parts against the quality rules of [[init-ite]].
 4. Once the check has no error of your parts, progress to the next stage.
 
@@ -82,7 +82,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 4. End the turn with the result, and nothing else:
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":null,"candidate_id":"<change id>","base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":"<change id>","base_hash":null,"summary":"<summary>"}'
    ```
 
    When you proposed no change, `candidate_id` is `null`, and the `summary` starts with `No change:` and gives the reason.
@@ -90,4 +90,4 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 # Output
 
 - One map change with the new parts in `Steel/Programs/<program>/Proposals/`, with the state `proposed`, and the links of the parts that exist, written with `flint ite`
-- One `ite-result/1` JSON value as the result of the turn, with the change id as `candidate_id`
+- One `steel-result/1` JSON value as the result of the turn, with the change id as `candidate_id`

@@ -7,7 +7,7 @@ tags:
 
 # Claim
 
-A statement that the research makes. It links to its evidence.
+Something that the research says is true. It links to its evidence.
 
 A part of a program can have this type. The type gives the fields, the capabilities, the connections, and the look of the part in Steel.
 
@@ -16,7 +16,7 @@ format: steel-type/1
 id: claim
 name: Claim
 plural: Claims
-description: "A statement that the research makes. It links to its evidence."
+description: "Something that the research says is true. It links to its evidence."
 fields:
   status: { type: text }
 capabilities: [has-claims, has-status]

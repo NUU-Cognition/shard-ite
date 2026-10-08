@@ -13,14 +13,14 @@ Give parts their processes. For each part, find where its claim touches reality,
 # Input
 
 - The program
-- (Optional) The part ids. With no part: each part of the map that makes a claim and has the grounding `no-contact`.
+- (Optional) The part ids. With no part: each part of the map that makes a claim and has the grounding `no-process`.
 
 # Actions
 
 ## Stage 1: Read the Parts
 
 1. Set the focus: `flint ite focus <part ids>` ([[sk-ite-focus]]).
-2. Read the map: `flint ite map "<program>" --json`, and the processes: `flint ite process list "<program>"`. With no part ids, select each part with the grounding `no-contact` that is not of the type `note`.
+2. Read the map: `flint ite map "<program>" --json`, and the processes: `flint ite process list "<program>"`. With no part ids, select each part with the grounding `no-process` that is not of the type `note`.
 3. For each part, read its note and write its claim in one sentence: what is true in reality when the part is true. A part that makes no claim (a group, a remark, a person) needs no process: say so, and skip it.
 4. A process can check many parts. When one check answers for many parts (one page, one query, one script), plan one process with each of those parts in `parts`.
 5. Once each selected part has its claim, progress to the next stage.

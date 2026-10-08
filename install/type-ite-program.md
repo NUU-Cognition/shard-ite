@@ -14,11 +14,11 @@ A Program is the model of one system, so that a person can think about the syste
 | Property | Value |
 |----------|-------|
 | Tag | `#ite/program` |
-| Format | `ite-program/2` |
+| Format | `steel-program/1` |
 | Naming | `(Program) <Name>.md` |
 | Location | `Mesh/Programs/(Program) <Name>/` |
 | Parts | Each note whose `parent` chain reaches the root note (tag `#ite/part`); a new part goes to `Map/(Program) <Name> . (<Type>) <Title>.md` |
-| Views | `Steel/Programs/<Name>/Views/(View) <Title>.md` (tag `#ite/view`, format `ite-view/2`) |
+| Views | `Steel/Programs/<Name>/Views/(View) <Title>.md` (tag `#ite/view`, format `steel-view/1`) |
 | Processes | `Steel/Programs/<Name>/Reality/<id>/process.md` (format `steel-process/1`) |
 | Proposals | `Steel/Programs/<Name>/Proposals/`: map changes, view candidates, revisions (only the engines write them) |
 | Log | `.flint/steel/logs/<program id>.jsonl`: only the one door (`flint ite process observe`, Run now, the routes) writes it |

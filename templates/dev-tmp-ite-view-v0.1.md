@@ -1,5 +1,5 @@
 ---
-description: "A view of a program (format ite-view/2): the frontmatter with the map and the slice, the headings with ids (the part id for a node that stands for a part), the node blocks, the eight builtin shapes and the maps of Steel/Maps, and one complete example of a view that is not about software"
+description: "A view of a program (format steel-view/1): the frontmatter with the map and the slice, the headings with ids (the part id for a node that stands for a part), the node blocks, the eight builtin shapes and the maps of Steel/Maps, and one complete example of a view that is not about software"
 ---
 
 # Filename: Steel/Programs/[Name]/Proposals/[candidate-id].md
@@ -15,8 +15,8 @@ description: "A view of a program (format ite-view/2): the frontmatter with the 
   candidate-id: <view-slug>-<UTC yyyymmdd-hhmmss>, for example run-sheet-of-the-night-20261001-013000.
   The view slug is the H1 title in lower case; each run of characters other than a-z and 0-9 becomes one "-".
 
-  FRONTMATTER CONTRACT (format ite-view/2). Replace the VALUES, keep the shapes. No comment in the frontmatter.
-  - format: always "ite-view/2".
+  FRONTMATTER CONTRACT (format steel-view/1). Replace the VALUES, keep the shapes. No comment in the frontmatter.
+  - format: always "steel-view/1".
   - id: a NEW UUID v4, always: the id of the candidate file. Write it with no quotes (id: <uuid>).
     In a view that a person writes directly in Views/, id is the id of the view.
   - view_id: the id of the view. For a new view, a second new UUID (the view gets it at the apply).
@@ -54,8 +54,8 @@ description: "A view of a program (format ite-view/2): the frontmatter with the 
 
   THE NODE BLOCK (each field is optional)
   - kind: the type id of the node (`flint ite types`). A node of a part takes the type of the part when it has no kind.
-  - No ref and no part: the heading id names the part.
-  - No contact: a process of Steel/Programs/<Name>/Reality/ checks a part. The node shows the grounding of its part.
+  - The heading id names the part, so the block names no part.
+  - A process of Steel/Programs/<Name>/Reality/ checks a part. The node shows the grounding of its part.
   - layer: the layer of the node, when it is not the layer of its type.
   - A key whose value is a list of node ids of this view is a relation: next, uses, blocks, informs, depends-on.
     A node id is a heading id: a part id or a slug.
@@ -89,7 +89,7 @@ description: "A view of a program (format ite-view/2): the frontmatter with the 
 
 ````markdown
 ---
-format: "ite-view/2"
+format: "steel-view/1"
 id: GENERATE-UUID4
 view_id: "UUID-OF-THE-VIEW"
 state: proposed
@@ -139,7 +139,7 @@ File: `Steel/Programs/Garden Share/Views/(View) How the Harvest Reaches Each Hou
 
 ````markdown
 ---
-format: "ite-view/2"
+format: "steel-view/1"
 id: 8d2e5b19-0f47-4a3c-9c61-5e7a2b4d0f18
 tags:
   - "#ite/view"

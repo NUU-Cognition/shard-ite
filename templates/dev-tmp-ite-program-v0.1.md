@@ -1,5 +1,5 @@
 ---
-description: "The root note of an ITE program (format ite-program/2): the frontmatter, the text for a person, the optional system block of a living system (ite-system/1), and complete examples"
+description: "The root note of an ITE program (format steel-program/1): the frontmatter, the text for a person, the optional system block of a living system (steel-system/1), and complete examples"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/(Program) [Name].md
@@ -21,8 +21,8 @@ description: "The root note of an ITE program (format ite-program/2): the frontm
       Proposals/<id>.md                          map changes, view candidates, revisions (only the engines write here)
       Runs/, History/, State/                    run records, replaced forms of views, positions (only the engines write here)
 
-  FRONTMATTER CONTRACT (format ite-program/2). Replace the VALUES, keep the shapes. No comment in the frontmatter.
-  - format: always "ite-program/2".
+  FRONTMATTER CONTRACT (format steel-program/1). Replace the VALUES, keep the shapes. No comment in the frontmatter.
+  - format: always "steel-program/1".
   - id: a new UUID v4 (uuidgen | tr A-Z a-z). It never changes. It is the id of the program in Steel/ and in the log.
     Write it with no quotes (id: <uuid>), so that grep "^id: <uuid>" finds the note.
   - tags: always "#ite/program".
@@ -34,7 +34,6 @@ description: "The root note of an ITE program (format ite-program/2): the frontm
   - main-map (optional): max-children and coverage-ignore (see The Main Map of init-ite).
   - codebase, product-root (software only): the codebase and the folder of the product.
   - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
-  - The root note has no framework, include, sources, or place.
   - The root note holds no grounding, no observation, no finding, no position, and no agent.
     A command computes these facts.
 
@@ -43,12 +42,12 @@ description: "The root note of an ITE program (format ite-program/2): the frontm
   - One to three short paragraphs for a person: what the system is, what the map shows, and how to read it.
     Name the views that a person reads first. Say what the program leaves out.
 
-  THE SYSTEM BLOCK (optional: a living system only, format ite-system/1)
+  THE SYSTEM BLOCK (optional: a living system only, format steel-system/1)
   - A program becomes a living system with one fenced block with the info string `system`, under the H1 and the
-    first paragraph. The root note keeps `format: ite-program/2`. A program with no block is not living.
+    first paragraph. The root note keeps `format: steel-program/1`. A program with no block is not living.
   - Add the block only when the person wants the system watched: claims, processes that feed them, and the brief.
   - The keys are kebab-case:
-    format: always ite-system/1.
+    format: always steel-system/1.
     owners: the wikilinks of the persons who own the system. They are the default approvers and owners.
     timezone: the IANA timezone of the system. A `resolves` date of a will claim ends in this timezone. Default UTC.
     boundary: inside (a list of { name, parts }: the words of the person and the wikilinks of the parts of the map
@@ -70,7 +69,7 @@ description: "The root note of an ITE program (format ite-program/2): the frontm
 
 ````markdown
 ---
-format: "ite-program/2"
+format: "steel-program/1"
 id: GENERATE-UUID4
 tags:
   - "#ite/program"
@@ -96,7 +95,7 @@ File: `Mesh/Programs/(Program) Garden Share/(Program) Garden Share.md`.
 
 ````markdown
 ---
-format: "ite-program/2"
+format: "steel-program/1"
 id: 0b7d8e2a-4c15-4f63-9a0e-6d2c1b8f5e37
 tags:
   - "#ite/program"
@@ -126,7 +125,7 @@ The root note of Flint Release in this Flint (`Mesh/Programs/(Program) Flint Rel
 This program models how a change of Flint reaches a release. [...]
 
 ```system
-format: ite-system/1
+format: steel-system/1
 owners: ["[[@Nathan]]"]
 timezone: Australia/Sydney
 boundary:

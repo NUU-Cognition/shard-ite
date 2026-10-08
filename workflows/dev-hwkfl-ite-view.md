@@ -1,5 +1,5 @@
 ---
-description: "Headless: answer one question of a person with a candidate view of a program, verify it, and return one ite-result/1 JSON value"
+description: "Headless: answer one question of a person with a candidate view of a program, verify it, and return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -23,7 +23,7 @@ Write one new candidate view that answers one question of a person, with no pers
 1. Run the `flint ite focus` command of the prompt ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Say the question again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`. With selected nodes and no question, the question is "How do these parts work together?".
-4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program, follow the workflow `hwkfl-orbc-view` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `ite-result/1`.
+4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program, follow the workflow `hwkfl-orbc-view` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1`.
 5. Read the views that exist (`flint ite list --json`). When a view already answers the question, still write the new candidate, and name that view in the `summary`.
 6. Once you know the question and the parts that can answer it, progress to the next stage.
 
@@ -46,8 +46,8 @@ Write one new candidate view that answers one question of a person, with no pers
 
 1. Run `flint orbh session set phase writing`. Set the focus on the parts that the view names.
 2. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`, with `date -u +%Y%m%d-%H%M%S`) and two new UUIDs (`uuidgen | tr A-Z a-z`) for `view_id` and `id`.
-3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `ite-view/2`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `curation: "proposed"`, `derived-from: ""`.
-4. For a claim that no part holds, say the gap in the prose. A view node has no contact: a process of a part checks the part.
+3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `curation: "proposed"`, `derived-from: ""`.
+4. For a claim that no part holds, say the gap in the prose. A process of a part checks the part; a view node holds no check.
 5. Check the candidate against the quality rules of [[init-ite]] (the list of Stage 4 of [[wkfl-ite-view]]).
 6. Once the candidate passes each rule, progress to the next stage.
 
@@ -71,10 +71,10 @@ Write one new candidate view that answers one question of a person, with no pers
 4. End the turn with the result, and nothing else. `view_id` is the `view_id` of the candidate:
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":"<view_id>","candidate_id":"<candidate-id>","base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":"<view_id>","candidate_id":"<candidate-id>","base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - One candidate in `Steel/Programs/<Program>/Proposals/`, with a new `view_id`, its own `id`, `state: proposed`, and `base_hash: null`
-- One `ite-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the turn

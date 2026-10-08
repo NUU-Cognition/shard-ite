@@ -1,5 +1,5 @@
 ---
-description: "An instruction map: a root part with the instruction-map block, and the step parts below it (worksteps and decisions) that point to their instructions; with ite-flow/2, the executors, the effects, and the authority of a living system"
+description: "An instruction map: a root part with the instruction-map block, and the step parts below it (worksteps and decisions) that point to their instructions, with the executors, and the effects and the authority of a living system"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/Map/(Program) [Name] . ([Type]) [Title].md
@@ -20,15 +20,16 @@ description: "An instruction map: a root part with the instruction-map block, an
   - `parent`: as each part. The steps are the parts below the root (`parent` is the root or a part
     below it).
   - `instruction-map`:
-      format: ite-flow/1 (or no format): only steps of a person. ite-flow/2: a living system only (the
-        program has a `system` block); agent and command steps, effects, and authority.
+      format: always steel-flow/1. One set of rules for each instruction map. The parts that name a claim
+        (the claim of an input, a precondition, an effect) and the authority need a living system: the
+        program has a `system` block.
       id: a slug; unique in a living system.
       title: the title of a run. Default: the title of the root part.
       entry: a wikilink to the first step.
       exits: wikilinks to the steps whose completion ends the run with success. At least one.
       inputs: the inputs of a run: name, kind (text | number | choice | note | notes), required, prompt;
-        with ite-flow/2, `statement: <is claim>`: the start form offers its fresh value.
-      authority (ite-flow/2): { run, execute, approve, irreversible, approvers }. The steps are wikilinks.
+        in a living system, `claim: <is claim>`: the start form offers its fresh value.
+      authority (a living system): { run, execute, approve, irreversible, approvers }. The steps are wikilinks.
         An actor is person:<Name>, agent:*, or agent:<runtime/profile>. Name each step whose effect cannot
         be undone in `irreversible`: it needs an approval of a person.
 
@@ -37,7 +38,7 @@ description: "An instruction map: a root part with the instruction-map block, an
       next: one wikilink to the next step. An exit has none. A `next` to a part outside the map is a
         warning, and a run does not follow it.
       does: { by, who, instruction, executor }
-        by: person (default) | agent | command. agent and command need ite-flow/2.
+        by: person (default) | agent | command.
         who: the person or the role, for a person to read.
         instruction: the text that the actor reads, a wikilink to a skill or a workflow, or a path in a
           repository. ${inputs.<name>} in the text is for a person or an agent only.
@@ -49,11 +50,11 @@ description: "An instruction map: a root part with the instruction-map block, an
       outputs: name, kind, required, prompt; a note output has part_kind (the type id of the new part),
         min, and link: { relation, to: <input name> | $choice }; a choice output has choices or of.
       done-when: one sentence: when the step is done.
-      precondition (ite-flow/2): ought claims that must hold at the approval and at the dispatch.
-      effect (ite-flow/2): [{ claim: <is claim that a process feeds>, equals: <a literal, ${inputs.<name>},
+      precondition (a living system): ought claims that must hold at the approval and at the dispatch.
+      effect (a living system): [{ claim: <is claim that a process feeds>, equals: <a literal, ${inputs.<name>},
         or ${values.<step part id>.<output>}> }]. The step stays pending until the log of the process
         confirms each value. A Done is only a report.
-      completion (ite-flow/2): { after: dispatched | reported, within: 2h, on-timeout: unknown | failed }:
+      completion (a living system): { after: dispatched | reported, within: 2h, on-timeout: unknown | failed }:
         the timing of the effect.
   - A DECISION is a part of a type with the capability `decides` (for example Decision):
       question: the question to the person.
@@ -71,7 +72,7 @@ description: "An instruction map: a root part with the instruction-map block, an
 id: GENERATE-UUID4
 parent: "[[(Program) NAME]]"
 instruction-map:
-  format: ite-flow/1
+  format: steel-flow/1
   id: MAP-ID
   title: "TITLE"
   entry: "[[(Program) NAME . (Step) FIRST STEP]]"
@@ -122,22 +123,22 @@ does: { by: person }
 
 ## A complete example
 
-The instruction map "Decide" of the program Thinking of this Flint is the first map of `ite-flow/1`: the root `(Program) Thinking . (Instruction Map) Decide` and seven steps (clarify, options, the decision "Are the options enough", compare, critique, decide, commit), with one loop back to the options. Read it as the reference form.
+The instruction map "Decide" of the program Thinking of this Flint is a map with only steps of a person: the root `(Program) Thinking . (Instruction Map) Decide` and seven steps (clarify, options, the decision "Are the options enough", compare, critique, decide, commit), with one loop back to the options. Read it as the reference form.
 
-## A complete example of `ite-flow/2`
+## A complete example in a living system
 
 The instruction map "Ship Flint to canon" of the living system Flint Release has the root `(Program) Flint Release . (Step) Shipping to Canon`:
 
 ```yaml
 instruction-map:
-  format: ite-flow/2
+  format: steel-flow/1
   id: ship
   title: Ship Flint to canon
   entry: "[[(Program) Flint Release . (Step) Write the ship summary]]"
   exits:
     - "[[(Program) Flint Release . (Step) Ship to canon]]"
   inputs:
-    - { name: head, kind: text, prompt: "The head of nathan-main to ship", statement: machine-head }
+    - { name: head, kind: text, prompt: "The head of nathan-main to ship", claim: machine-head }
   authority:
     run: ["person:Nathan"]
     approve: ["[[(Program) Flint Release . (Step) Ship to canon]]"]

@@ -69,7 +69,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 
 ## Stage 5: Check and Show
 
-1. Run `flint ite check "<program>"` and `flint ite map check "<program>"`. Repair each error of your parts (`format`, `link-missing`): a link or a field with `flint ite link` and `flint ite part set`, the structure with a new map change. A `no-contact` note is correct for a new map: the workflow [[wkfl-ite-ground]] writes the processes.
+1. Run `flint ite check "<program>"` and `flint ite map check "<program>"`. Repair each error of your parts (`format`, `link-missing`): a link or a field with `flint ite link` and `flint ite part set`, the structure with a new map change. A `no-process` note is correct for a new map: the workflow [[wkfl-ite-ground]] writes the processes.
 2. Run `flint ite map "<program>"` and read it as the person will: the top level, the containers, the links.
 3. Check the map against each quality rule of [[init-ite]]: the words of the person, prose first, one idea for each part, the types of the program, select and do not dump, the truth about gaps.
 4. Show the person: the count of the parts and of the links, the top level, each part of the type `note` because no type fits, and the list of what you left out and why. Propose the next job: [[wkfl-ite-ground]] for the processes of the claims, or [[wkfl-ite-view]] for the first question.

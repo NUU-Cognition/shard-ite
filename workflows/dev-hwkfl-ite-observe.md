@@ -1,5 +1,5 @@
 ---
-description: "Headless: run the code processes of parts, do each agent process and report it through the door, list each person check, and return one ite-result/1 JSON value with each part that fails"
+description: "Headless: run the code processes of parts, do each agent process and report it through the door, list each person check, and return one steel-result/1 JSON value with each part that fails"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -50,10 +50,10 @@ For each `agent` process:
 4. End the turn with the result, and nothing else:
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Observations in the log of this machine, recorded by `flint ite process run` and `flint ite process observe`
-- One `ite-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the turn

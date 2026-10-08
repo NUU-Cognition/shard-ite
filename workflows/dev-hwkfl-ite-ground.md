@@ -1,5 +1,5 @@
 ---
-description: "Headless: find the processes of parts with reality, write their process.md files, run each one time, and return one ite-result/1 JSON value"
+description: "Headless: find the processes of parts with reality, write their process.md files, run each one time, and return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -13,7 +13,7 @@ Give parts their processes, with no person in the session. The process forms are
 # Input
 
 - The program
-- The selected parts. With no part: each part of the map with the grounding `no-contact` that is not of the type `note`.
+- The selected parts. With no part: each part of the map with the grounding `no-process` that is not of the type `note`.
 - (Optional) The instructions of the person: the sources to use, or the forms to prefer
 
 # Actions
@@ -51,10 +51,10 @@ Give parts their processes, with no person in the session. The process forms are
 3. End the turn with the result, and nothing else (`candidate_id` is the candidate of a view, else null):
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Processes in `Steel/Programs/<program>/Reality/`, each checked one time, and their first observations
-- One `ite-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the turn

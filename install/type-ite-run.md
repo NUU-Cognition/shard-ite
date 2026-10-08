@@ -14,7 +14,7 @@ A Run is the record of one walk of an instruction map: which instruction map ran
 | Property | Value |
 |----------|-------|
 | Tag | `#ite/run` |
-| Format | `ite-flow-run/1` |
+| Format | `steel-run/1` |
 | Naming | `(Run) <title> <yyyy-mm-dd hh-mm>.md` |
 | Location | `Steel/Programs/<Name>/Runs/` (not in the Mesh) |
 | Body | The rendered summary, one fenced `run` block (`{ snapshot, events }`), and `# Remarks` for a person |

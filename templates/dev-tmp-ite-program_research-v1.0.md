@@ -24,7 +24,7 @@ Use only the types of this template. When a part fits no type, use the type `not
 |------|----|----------------|
 | Question | `question` | A question that the research must answer. |
 | Hypothesis | `hypothesis` | A possible answer that a test can support or refute. |
-| Claim | `claim` | A statement that the research makes. It links to its evidence. |
+| Claim | `claim` | Something that the research says is true. It links to its evidence. |
 | Source | `source` | A paper, a book, a person, or a site that gives evidence. |
 | Dataset | `dataset` | A set of data that the research reads. |
 | Method | `method` | A way to get evidence or to test it. |

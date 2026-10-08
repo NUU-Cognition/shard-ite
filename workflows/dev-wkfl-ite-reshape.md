@@ -38,7 +38,7 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
 ## Stage 3: Write the Candidate
 
 1. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`) and one new UUID for `id`. `view_id` is the `id` of the view. `base_hash` is the hash of Stage 1.
-2. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with `state: proposed`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]] (format `ite-view/2`).
+2. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with `state: proposed`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]] (format `steel-view/1`).
 3. Check the candidate against the quality rules of [[init-ite]]. The last node is still the note of what the view leaves out; change its prose when the change moves the edge of the view.
 4. Once the candidate passes each rule, progress to the next stage.
 

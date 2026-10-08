@@ -6,7 +6,7 @@ description: "A map of Steel/Maps (format steel-map/1): the manifest map.md, the
 
 /*
   A map is a renderer: code that draws the parts and the connections of a program for a view. It lives in
-  Steel/Maps/<Map Name>/ of the Flint (not in the Mesh). A view names it with `map: <map id>` (format ite-view/2).
+  Steel/Maps/<Map Name>/ of the Flint (not in the Mesh). A view names it with `map: <map id>` (format steel-view/1).
   Steel runs the module in a sandboxed iframe (sandbox="allow-scripts"): the map cannot read a file, call a route,
   or reach the network. The host of Steel gives it the read model and does the work of its intents.
 

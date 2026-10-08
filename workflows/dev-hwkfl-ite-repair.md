@@ -1,5 +1,5 @@
 ---
-description: "Headless: for each failing or stale part, find whether the model or reality is wrong, change the model or name the work, and return one ite-result/1 JSON value"
+description: "Headless: for each failing or stale part, find whether the model or reality is wrong, change the model or name the work, and return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -51,10 +51,10 @@ Make the model true again, with no person in the session. For each failing or st
 3. End the turn with the result, and nothing else (`candidate_id` and `base_hash` of the candidate when you wrote one, else null):
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
    ```
 
 # Output
 
 - Changed parts and processes, and at most one candidate
-- One `ite-result/1` JSON value as the result of the turn
+- One `steel-result/1` JSON value as the result of the turn

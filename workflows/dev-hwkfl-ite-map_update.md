@@ -75,7 +75,7 @@ The focus of this job: the selected part.
 4. End the turn with the result, and nothing else:
 
    ```bash
-   flint orbh session return --finish '{"schema":"ite-result/1","program":"<program>","view_id":null,"candidate_id":"<change id>","base_hash":null,"summary":"<summary>"}'
+   flint orbh session return --finish '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":"<change id>","base_hash":null,"summary":"<summary>"}'
    ```
 
    When you proposed no change, `candidate_id` is `null`, and the `summary` starts with `No change:` and gives the reason.
@@ -83,4 +83,4 @@ The focus of this job: the selected part.
 # Output
 
 - One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`
-- One `ite-result/1` JSON value as the result of the turn, with the change id as `candidate_id`
+- One `steel-result/1` JSON value as the result of the turn, with the change id as `candidate_id`

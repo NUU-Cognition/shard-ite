@@ -42,11 +42,11 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | View | One map for one question of one program: a file of `Steel/Programs/<P>/Views/`. It names its map and its slice. |
 | Map | A renderer of `Steel/Maps/`. A builtin shape (`flow`, `streams`, `layers`, `tree`, `table`, `free`, `timeline`, `board`) is a map that Steel draws natively. |
 | Node | One card on a canvas: a part, or a section of a view. |
-| Claim | A statement of a part about reality: `is`, `ought`, or `will`. It is meaning, in the field `claims` of the part. |
+| Claim | What a part says about reality, in one of three modes: `is`, `ought`, or `will`. It is meaning, in the field `claims` of the part. |
 | Process | One way that the model touches reality: code, an agent request, or a person's check. It writes observations, and it never changes the system. It owns its trigger. |
 | Observation | One record that a process writes: what it saw, about which part, when. |
 | Log | The records of one program on this machine: `.flint/steel/logs/<program id>.jsonl`. |
-| Grounding | The summary state of a part from its processes: `grounded`, `partial`, `failing`, `stale`, `unobserved`, `no-contact`. |
+| Grounding | The summary state of a part from its processes: `grounded`, `partial`, `failing`, `stale`, `unobserved`, `no-process`. |
 | Instruction | What makes the system move: a text, a skill or a workflow of a shard, a script of a repository, or a person. It stays outside the model. |
 | Instruction map | A branch of the main map: a root part with the block `instruction-map`, and steps below it that point to their instructions. |
 | Run | One walk of an instruction map, with its record. |
@@ -95,7 +95,7 @@ Mesh/Programs/
 
 Steel/Programs/<Name>/
 ├── program.md                                       # id = the id of the root note
-├── Views/(View) <Title>.md                          # one file for each view (ite-view/2)
+├── Views/(View) <Title>.md                          # one file for each view (steel-view/1)
 ├── Reality/<folder>/process.md                      # one folder for each process (steel-process/1), with its code
 ├── Proposals/<id>.md                                # map changes (mc-*), view candidates, revisions (only the engines write here)
 ├── Runs/(Run) <title> <stamp>.md                    # one record for each run (only the run engine writes here)
@@ -118,7 +118,7 @@ An OrbCode project (`Mesh/OrbCode/(OrbCode Project) <Name>/`) is a program of th
 
 | Field | Value |
 |---|---|
-| `format` | `ite-program/2` |
+| `format` | `steel-program/1` |
 | `id` | A UUID v4. It never changes. It is the id of the program in `Steel/` and in the log. |
 | `tags` | `"#ite/program"` |
 | `purpose` | One sentence: what the system is, and why a person models it |
@@ -129,13 +129,13 @@ An OrbCode project (`Mesh/OrbCode/(OrbCode Project) <Name>/`) is a program of th
 | `codebase`, `product-root` | Software only: the codebase and the folder of the product |
 | `template`, `authors`, `orbh-sessions` | The Flint conventions |
 
-A living system adds one fenced `system` block to the body (see Living Systems). The root note has no `framework`, `include`, `sources`, or `place`.
+A living system adds one fenced `system` block to the body (see Living Systems).
 
 Example (the program Club Launch Night of this Flint):
 
 ```yaml
 ---
-format: ite-program/2
+format: steel-program/1
 id: dc6779bd-6476-4837-a444-aea795713354
 tags: ["#ite/program"]
 purpose: "An example that shows how the ITE models an event: the launch night of a new makers club in Sydney on Thursday 12 November 2026."
@@ -182,7 +182,7 @@ The rules of the read:
 2. **The membership and the parent.** `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note. A part has no field `program`, `include`, or `place`.
 3. **The id.** The frontmatter `id` (a UUID) is the key everywhere: each view heading, process, record, state, and proposal names the part by its id. Never change it.
 4. **The links.** Each frontmatter key whose value is one wikilink or a list of wikilinks gives one link for each wikilink, with the key as the connection (`next`, `uses`, `depends-on`, `informs`, `owner`). These keys give no link: `id`, `tags`, `parent`, `template`, `from-template`, `authors`, `orbh-sessions`, `artifacts-created`, `generated-by`, `run-step`, `run-visit`. A wikilink in the prose gives a link of the connection `mentions`.
-5. **The claims.** `claims`: a list of `{ id, mode: is|ought|will, about, ... }`. A process gives the value of an `is` claim. A part has no field `contact`: a process holds what a contact held.
+5. **The claims.** `claims`: a list of `{ id, mode: is|ought|will, about, ... }`. A process gives the value of an `is` claim. The process names the parts that it checks; a part names no process.
 6. **The text.** The body below the H1, up to the first heading `# Contact` or `## For a developer`. The H1 is for a person; no code reads it.
 7. **The title.** The file name after the `(<Type>)` word, with no number at its start: a number there reads as the number of an artifact, as in `(Task) 1099 ...`. Start a title with a word: "A full hall and 30 new members", not "80 guests".
 
@@ -261,11 +261,11 @@ questions: ["Who does what on the night?"]
 
 ## The View File
 
-A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/Views/(View) <Title>.md`, in the format `ite-view/2`. It has the grammar of an OrbCode view. The form, the eight builtin shapes, and one complete example are in [[tmp-ite-view-v0.1]].
+A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/Views/(View) <Title>.md`, in the format `steel-view/1`. It has the grammar of an OrbCode view. The form, the eight builtin shapes, and one complete example are in [[tmp-ite-view-v0.1]].
 
 | Field | Value |
 |---|---|
-| `format` | `ite-view/2` |
+| `format` | `steel-view/1` |
 | `id` | The UUID of the view. A candidate has its own new `id`, and `view_id` names its view. |
 | `tags` | `"#ite/view"` |
 | `question` | The question of the person, as one sentence |
@@ -283,7 +283,7 @@ The body:
 1. One H1: the name of the view. The prose after it answers the question in one to three sentences.
 2. Each H2 to H6 heading ends with a stable id. A node that stands for a part has the part id as its heading id: `## Doors open {#66d9ddb1-384a-46d7-ae27-1d4061868b88}`. A node with no part has a slug id: `## Set up the hall {#set-up}`, and the check says so (`anchor-missing`).
 3. Depth is containment. A section with one fenced block `node` is a node. A section with no block is a group, or the node of its part.
-4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). It has no `ref`, no `part`, and no `contact`.
+4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). The heading id names the part, so the block names no part.
 
 The nodes of a view are its headings, and each part of its `slice` that has no heading (with the title and the prose of the part). A node of a part shows the type, the note, the fields, and the grounding of the part: the grounding comes from the processes of the part. The prose of the view stays under the part id, so it survives each refactor of the main map.
 
@@ -324,24 +324,22 @@ Each process names its parts by their ids (`parts`), and it can name the claims 
 
 **One door.** Each observation comes in through one door: `flint ite process observe`, or the route `POST /api/steel/programs/<program>/observations`. The door checks the observation against the process (the process exists, the part is a part of the process, the observation has a `state` or a `value`), and it records the actor: `person:<Name>`, `agent:<session id>`, `process:<id>`, or `run:<id>`. An agent or a person never writes an observation into a file.
 
-**The log.** Each program has one log on this machine: `.flint/steel/logs/<program id>.jsonl` (the header `ite-system-log/1`, then one record for each line with `seq`, `at`, and `kind`). An observation record holds `process`, `part`, `claim`, `state` or `value`, `summary`, `evidence`, `observed_at`, `received_at`, and `by`. The log of a living system holds its other records too (`read`, `notice`, `ack`, `detection`, `clearance`, `escalation`, `prompt`, `brief-opened`). Git ignores the log: it is a fact of this machine.
+**The log.** Each program has one log on this machine: `.flint/steel/logs/<program id>.jsonl` (the header `steel-log/1`, then one record for each line with `seq`, `at`, and `kind`). An observation record holds `process`, `part`, `claim`, `state` or `value`, `summary`, `evidence`, `observed_at`, `received_at`, and `by`. The log of a living system holds its other records too (`read`, `notice`, `ack`, `detection`, `clearance`, `escalation`, `prompt`, `brief-opened`). Git ignores the log: it is a fact of this machine.
 
 **Who starts a process.** The core never starts a process by itself, and `flint sync` does not schedule it. A person or a run asks for it (Run now in Steel, or `flint ite process run`). A process that must run on a schedule starts itself with its own means: a schedule of the module `crons`, an Orbh cron, a live module, or a hook that calls `flint ite process run "<program>" <id>`.
 
-**The grounding.** The grounding of a part comes from the newest observation of each (process, part) pair in the log. A pair with no observation is `unobserved`. An observation that is older than `expect-every` is `stale`. A value observation counts as `holds`. An `orbtest` process counts each criterion. The grounding of a part is, in this order: `no-contact` (no process checks the part), `failing`, `stale`, `grounded`, `partial`, `unobserved`. A group, a view, and a program add the counts of their parts.
+**The grounding.** The grounding of a part comes from the newest observation of each (process, part) pair in the log. A pair with no observation is `unobserved`. An observation that is older than `expect-every` is `stale`. A value observation counts as `holds`. An `orbtest` process counts each criterion. The grounding of a part is, in this order: `no-process` (no process checks the part), `failing`, `stale`, `grounded`, `partial`, `unobserved`. A group, a view, and a program add the counts of their parts.
 
 **The findings.** `flint ite check` gives the findings of the processes, and runs no process:
 
 | Code | Level | When |
 |---|---|---|
-| `no-contact` | note | A part that makes a claim has no process. |
+| `no-process` | note | A part that makes a claim has no process. |
 | `process-no-part` | warning | A process names a part that is not a part of the program. |
 | `process-late` | warning | A process with `expect-every` has no observation that new. |
 | `process-fails` | error | The newest observation of a process for a part fails, or the check had an error. |
 | `process-unobserved` | note | A process has no observation yet for a part. |
 | `process-invalid` | error | The manifest of a process has a problem. The process does not run. |
-
-**The migration.** `flint ite migrate` (the step `processes`) makes each `contact` item of a part or of a view node into one process folder (`human` gives a person check, `agent` an agent request, each other kind a code process with `uses`; `fresh-for` gives `expect-every`), drops the field `contact`, and moves the prose of the `# Contact` section into the process. Each record of `.flint/ite/observations/` goes into the archive of this machine, `.flint/steel/archive/observations/<program id>.jsonl` (machine records; the core never reads them), and the newest 10 observations of each (process, part) pair also go into the live log. An old store goes only when the archive has each of its records. A program that fails makes the step fail.
 
 ### The Commands of a Process
 
@@ -356,7 +354,7 @@ Each process names its parts by their ids (`parts`), and it can name the claims 
 
 Each change that waits for a person is a file of `Steel/Programs/<P>/Proposals/`: a map change (`mc-*`, see The Main Map), a view candidate, or a revision of a living system. Each engine keeps its own file form. A proposal outside the Mesh is safe from a rename of the Mesh, so its bytes stay exact for a revert.
 
-A person changes a view directly (the Workbench, or by hand). **An agent changes a view only through a candidate**: a complete view file `Proposals/<candidate-id>.md` in the format `ite-view/2`, with `view_id`, `base_hash`, and `state: proposed`.
+A person changes a view directly (the Workbench, or by hand). **An agent changes a view only through a candidate**: a complete view file `Proposals/<candidate-id>.md` in the format `steel-view/1`, with `view_id`, `base_hash`, and `state: proposed`.
 
 1. The candidate id is `<view-slug>-<UTC yyyymmdd-hhmmss>`. The view slug is the H1 in lower case, with each run of other characters than `a-z` and `0-9` replaced by one `-`.
 2. A new view: `view_id` is a new UUID, `id` is a second new UUID, `base_hash: null`.
@@ -411,7 +409,7 @@ In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and
 
 ### The Map Change
 
-Each change of the tree is a **map change** (`ite-map-change/1`): one file `Steel/Programs/<P>/Proposals/mc-<yyyymmdd-hhmmss>-<slug of the reason>.md`, with the list of operations, the hash of each file at the propose, and a preview of the tree before and after. Only the change engine writes a map change.
+Each change of the tree is a **map change** (`steel-map-change/1`): one file `Steel/Programs/<P>/Proposals/mc-<yyyymmdd-hhmmss>-<slug of the reason>.md`, with the list of operations, the hash of each file at the propose, and a preview of the tree before and after. Only the change engine writes a map change.
 
 The operations are one JSON array. They apply in order. A part is named by its id, its note name, or a unique title. `parent: null` is the root. `kind` is a type id. `sources` are the `code-refs` of a software program, else the `sources` of the part (wikilinks or URLs).
 
@@ -473,7 +471,7 @@ The prompt of a map job holds the level of the focus (the cards, the relations, 
 
 ## Instruction Maps and Runs
 
-A program of the ITE is executable. An **instruction map** is a branch of the main map whose steps point to their instructions. A person runs it step by step, with the Workbench as the externalized working memory; an agent or a command runs a step of an `ite-flow/2` map of a living system. A view with `map: flow` and `slice: { below: <root part id> }` draws the map. The view does not say the order: `next` and `outcomes` on the parts say it. The form is [[tmp-ite-instruction_map-v0.1]].
+A program of the ITE is executable. An **instruction map** is a branch of the main map whose steps point to their instructions. A person runs it step by step, with the Workbench as the externalized working memory; an agent or a command runs a step of an instruction map of a living system. A view with `map: flow` and `slice: { below: <root part id> }` draws the map. The view does not say the order: `next` and `outcomes` on the parts say it. The form is [[tmp-ite-instruction_map-v0.1]].
 
 ### The Terms of a Run
 
@@ -496,12 +494,12 @@ A program of the ITE is executable. An **instruction map** is a branch of the ma
 
    ```yaml
    instruction-map:
-     format: ite-flow/2          # ite-flow/1 (or no format): only steps of a person
+     format: steel-flow/1
      id: ship                    # unique in a living system
      title: "Ship Flint to canon"
      entry: "[[(Program) Flint Release . (Step) Write the ship summary]]"
      exits: ["[[(Program) Flint Release . (Step) Ship to canon]]"]
-     inputs: [{ name: head, kind: text, required: true, statement: machine-head }]
+     inputs: [{ name: head, kind: text, required: true, claim: machine-head }]
      authority: { run: ["person:Nathan"], approve: ["[[(Program) Flint Release . (Step) Ship to canon]]"], irreversible: ["[[(Program) Flint Release . (Step) Ship to canon]]"], approvers: ["person:Nathan"] }
    ```
 
@@ -525,13 +523,12 @@ A program of the ITE is executable. An **instruction map** is a branch of the ma
 
    `effect` makes the completion `evidence`: the step stays pending until the log of a process that feeds the claim confirms the value. A `next` to a part that is not a step of the map is a warning, and a run does not follow it.
 3. **A decision** is a part below the root, of a type with `decides` (for example Decision): `question`, `outcomes: { "<outcome>": "[[<step>]]" }`, and `does: { by: person }`. Its answer is the value `<step id>.answer`.
-4. **The transitions.** A workstep that is not an exit has exactly one `next` in the map. A decision has one step for each outcome. A loop goes only out of a decision; the engine bounds each step at 20 visits for each run. A step `by: agent` or `by: command` is a refusal in an `ite-flow/1` map.
-5. **The run keeps a snapshot.** The record holds the resolved map (each step by its part id, with its instruction) and its sha256 as the revision. An edit of a step after the start makes a new revision for the next run; an active run stays on its snapshot. A run record of a flow view of before Task 1235 keeps its snapshot and stays readable.
+4. **The transitions.** A workstep that is not an exit has exactly one `next` in the map. A decision has one step for each outcome. A loop goes only out of a decision; the engine bounds each step at 20 visits for each run.
+5. **The run keeps a snapshot.** The record holds the resolved map (each step by its part id, with its instruction) and its sha256 as the revision. An edit of a step after the start makes a new revision for the next run; an active run stays on its snapshot.
 6. **The record is an append-only event log.** The state is derived from the events. Each write runs in the lock of the Flint with `expected_seq` and `request_id`.
 7. **The engine is the only writer of a run record.** Never create, edit, or delete a file in `Steel/Programs/<P>/Runs/`. A person writes below `# Remarks` only.
 8. **Outputs.** A small value (`text`, `number`, `choice`) lives in the events. An output of the kind `note` or `notes` is a part of the program (`parent` is the root note), with `generated-by`, `run-step`, `run-visit`, and the `link` relation of the output spec.
-9. **"Done" has one mode in an `ite-flow/1` map.** A person confirms, with outputs that pass the output schema. In an `ite-flow/2` map, the Done of a step with an `effect` is only a report.
-10. **The migration.** `flint ite migrate` turns each flow view into an instruction map: a root part (the one parent of the step parts, or a new part `(Instruction Map) <title>` in `Map/`), one part for each step, and the instruction of each step library workstep copied into its step. The view keeps `map: flow` and gets `slice.below`. The step libraries go.
+9. **"Done" is a report.** A person confirms the Done of a step of a person, with outputs that pass the output schema. The Done of a step with an `effect` is only a report: the effect waits for a process.
 
 ### The Commands of an Instruction Map
 
@@ -571,16 +568,16 @@ These terms add to The Terms and to The Terms of a Run. One term has one meaning
 | Root | The root note of a system: the boundary, the owners, the goals, the maps, and the connections. It is an index, not the one truth. |
 | Boundary | What is inside the system, what is outside, and what is unknown: a decision of a person, with a date and a reason |
 | Connection | What crosses the boundary to another system: imports, exports, and the integration that carries them |
-| Claim | Something that the map asserts about the system, with a **mode**. One item of the `claims` list of a part. (Old: statement.) |
+| Claim | Something that the map asserts about the system, with a **mode**. One item of the `claims` list of a part. |
 | `is` | The mode of a claim about the present or the past. A process, a person, an agent, or a run gives its value. |
 | `ought` | The mode of an expectation that must hold, with an owner |
 | Goal | An `ought` with an owner and a reason, named in `goals` of the system block |
 | Limit | An `ought` that the system must never leave. It escalates at once. |
 | `will` | The mode of a prediction, with a probability `p` and an instant `resolves` |
-| Process | One way that the model touches reality (`Steel/Programs/<P>/Reality/<folder>/process.md`). A process **feeds** a claim when it names the claim in `feeds`. (Old: instrument.) |
+| Process | One way that the model touches reality (`Steel/Programs/<P>/Reality/<folder>/process.md`). A process **feeds** a claim when it names the claim in `feeds`. |
 | Ready process | A process of the core that a process folder names with `uses`. A living system adds `git` and `npm`. |
-| Late | A process whose newest observation is older than its `expect-every`. Its claims get old. (Old: a dead instrument.) |
-| Observation | One record of the log (`ite-observation/2`): the process, the part, the claim, a `state` or a typed `value`, the time it was observed, and the time it was received |
+| Late | A process whose newest observation is older than its `expect-every`. Its claims get old. |
+| Observation | One record of the log (`steel-observation/1`): the process, the part, the claim, a `state` or a typed `value`, the time it was observed, and the time it was received |
 | Log | The append-only file of one program on this machine: `.flint/steel/logs/<program id>.jsonl`. It holds the observations and the attention records. |
 | Accepted value | The value that the reducer selects for an `is` claim from its observations |
 | Evaluation | The state of a claim now, computed from its declaration, the log, and the time |
@@ -592,7 +589,7 @@ These terms add to The Terms and to The Terms of a Run. One term has one meaning
 | Protected change | A change that can weaken a check. Only a person applies it, and only through a revision. |
 | Vital signs | Five measures, each from independent evidence: freshness, closure, use, surprise, coverage. No single score. |
 
-Do not use "environment" (it is an Information Environment or an Orbtest environment), "statement" or "instrument" (old words), "turn" for an Orbh run, or "live" for "fresh".
+Do not use "environment" (it is an Information Environment or an Orbtest environment), "turn" for an Orbh run, or "live" for "fresh".
 
 ### One Authority for Each Fact
 
@@ -608,13 +605,13 @@ Do not use "environment" (it is an Information Environment or an Orbtest environ
 
 No file holds an accepted value, a state of a claim, an item of the brief, or a vital sign. Never write the log by hand, and never edit or remove a line of it.
 
-### The System Block (`ite-system/1`)
+### The System Block (`steel-system/1`)
 
 One fenced ` ```system ` YAML block in the root note, under the H1 and the first paragraph. The keys are kebab-case.
 
 ````markdown
 ```system
-format: ite-system/1
+format: steel-system/1
 owners: ["[[@Nathan]]"]
 timezone: Australia/Sydney
 boundary:
@@ -676,7 +673,6 @@ claims:
 5. **`ought`** and **`will`** have one or more `holds-when` predicates. Each must be true. A predicate has `of` (an `is` claim), `op` (`eq`, `ne`, `lt`, `le`, `gt`, `ge`, `match`, `exists`, `age-lt`, `age-gt`), and `value` or `value-of` (another `is` claim). `path` is a dot path into a `json` value.
 6. **`will`** has `p` (0 to 1) and `resolves`: a date (it resolves at the end of that date in the `timezone` of the system) or a date-time. Quote a date, so that YAML keeps it as text.
 7. **`owner`** defaults to the `owner` of the part, else the first owner of the system. Give a goal an owner and a `reason`.
-8. The field `instrument` of a claim is gone. `flint ite migrate` moves it into the `feeds` of the process.
 
 The states: an `is` claim is `fresh`, `stale`, `unobserved`, `conflict`, or `error`. An `ought` is `holds`, `at-risk`, or `unknown`. A `will` is `open`, `came-true`, `came-false`, or `unresolved`.
 
@@ -701,8 +697,8 @@ settings:
   compare:
     - [origin/canon, nathan-main]
 ---
-# Git read of the remote
-The prose for a person.
+# The remote branches canon and main
+The prose for a person: what the process checks, and why.
 ```
 
 | `uses` | `settings` | The values of one run |
@@ -747,7 +743,7 @@ The five vital signs come from evidence, each on its own. There is no single sco
 
 ### Revisions
 
-A revision is a candidate change of one file of the system: a file in `Steel/Programs/<P>/Proposals/` (`ite-revision/1`). `flint ite revision propose` writes it. The id is `<kind>-<slug>-<yyyymmdd-hhmmss>`, and the kind is `part`, `statement`, `instruction`, `goal`, or `system`.
+A revision is a candidate change of one file of the system: a file in `Steel/Programs/<P>/Proposals/` (`steel-revision/1`). `flint ite revision propose` writes it. The id is `<kind>-<slug>-<yyyymmdd-hhmmss>`, and the kind is `part`, `claim`, `instruction`, `goal`, or `system`.
 
 1. **The targets:** the root note, a part file, and a new part file. A revision of an instruction changes the root part or a step part of an instruction map. Never a file of `Steel/`, a file outside the program, or a symbolic link.
 2. **The check** reads the whole system with the new bytes in place. A finding of the level error, or a refusal of an instruction map, stops the apply.
@@ -782,9 +778,8 @@ Each command takes `--json`. `<program>` is the name or the id of a program with
 | Command | Result | Writes |
 |---|---|---|
 | `flint ite system "<program>"` | The root: the owners, the boundary, the goals with their state, the maps, the connections, the processes, the instructions, the vital signs | Nothing |
-| `flint ite statements "<program>"` | Each claim with its state, its value, its source, and its age | Nothing |
+| `flint ite claims "<program>"` | Each claim with its state, its value, its source, and its age | Nothing |
 | `flint ite evidence "<program>" <claim>` | The evidence of one claim: the observations, the process, the inputs of an `ought` | Nothing |
-| `flint ite instruments "<program>"` | Each process of the system with its health (`late` when `expect-every` passed) | Nothing |
 | `flint ite read "<program>" [--process <id>]...` | Run now: runs the `code` processes of the system once | The log |
 | `flint ite observe "<program>" --claim <id> --value <v> [--type <t>] --summary "<text>"` | Reports the value of one claim | The log |
 | `flint ite log "<program>" [--since-seq <n>] [--kind <k>] [--limit <n>]` | The records of the log | Nothing |
@@ -800,10 +795,6 @@ Each command takes `--json`. `<program>` is the name or the id of a program with
 The run commands of a living system (`flint ite flow dispatch`, `approve`, `reconcile`, `waive`) are in Instruction Maps and Runs.
 
 The exit codes: 0 done; 1 a conflict, a refusal, or a process run that failed; 2 a refusal of the input.
-
-## The Migration
-
-`flint ite migrate [--dry-run] [--program <p>]` moves the programs of a Flint to this model once. It runs seven steps in order: the stores (`Proposals/`, `Runs/`, `History/`, `State/` to `Steel/`), the types (`framework` becomes `types` and `from-template`; `kind` goes), the membership (`parent` to the root note; `include`, `place`, `sources`, and `program` go), the views (`ite-view/2`), the processes (each contact becomes a process), the systems (instruments become processes, statements become claims, the system log moves into the log of the program), and the instruction maps (each flow view becomes an instruction map). A real run copies the old files to `.flint/steel/backup-<stamp>/` first. After the migration, the old forms are not read any more. Run `--dry-run` first, and read the report.
 
 ## The Commands
 
@@ -832,12 +823,11 @@ The exit codes: 0 done; 1 a conflict, a refusal, or a process run that failed; 2
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
 | `flint ite process list\|show\|run\|observe ...` | The processes of a program, Run now, and the one door (see Processes and the Log) | The log, or nothing |
 | `flint ite flow ...` | The instruction maps and their runs (see Instruction Maps and Runs) | A run record, or nothing |
-| `flint ite system\|statements\|evidence\|instruments\|read\|log\|brief\|vitals\|prompt\|adopt\|observe\|revision ...` | A living system (see Living Systems) | The log, a revision, or nothing |
+| `flint ite system\|claims\|evidence\|read\|log\|brief\|vitals\|prompt\|adopt\|observe\|revision ...` | A living system (see Living Systems) | The log, a revision, or nothing |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A decision of a person. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A decision of a person. | The program folder |
 | `flint ite focus <node id>... [--program <name>]` | Sets the interface key `ite-focus` of this Orbh session | The session interface |
 | `flint ite job <program> --template <id> [--document <doc>] [--node <id>...] [--prompt "<text>"] [--target <t>] [--account <name>]` | Starts a job | An Orbh session |
-| `flint ite migrate [--dry-run] [--program <p>]` | Moves the programs to this model once (see The Migration) | The programs, `Steel/`, the log |
 
 The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server.
 
@@ -868,7 +858,7 @@ A program is for a person. A model that breaks these rules does not help that pe
 |---|---|
 | [[tmp-ite-program-v0.1]] | You write a root note |
 | [[tmp-ite-part-v0.1]] | You write a part |
-| [[tmp-ite-view-v0.1]] | You write a view or a candidate (`ite-view/2`) |
+| [[tmp-ite-view-v0.1]] | You write a view or a candidate (`steel-view/1`) |
 | [[tmp-ite-map-v0.1]] | You write a map of `Steel/Maps/` |
 | [[tmp-ite-process-v0.1]] | You write a process (`steel-process/1`) |
 | [[tmp-ite-instruction_map-v0.1]] | You write an instruction map: the root block and the steps |
