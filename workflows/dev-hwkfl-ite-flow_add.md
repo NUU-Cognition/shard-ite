@@ -15,7 +15,7 @@ The focus of this job: the selected parts.
 # Input
 
 - The program
-- (Optional) The selected parts: the parts that the steps use
+- (Optional) The selected parts: the parts that the steps work on. They go into the `about` of the steps.
 - The text of the person: the work that the map must put in order. It can name a process that has no map yet ("Write the instruction map of the process `<id>`.").
 
 # Actions
@@ -39,7 +39,7 @@ The focus of this job: the selected parts.
    - `wait`: until a claim holds, until a time, for a time, or for a hook.
    - `parallel` and `join`: branches that run at the same time.
    - `sub-map`: a process that has its own map.
-3. Give a step `precondition` (the claims that must hold before it) and `effect` (the claims that show that it worked) only with claims that exist. Give a step `parts` with the ids of the parts that it uses.
+3. Give a step `precondition` (the claims that must hold before it) and `effect` (the claims that show that it worked) only with claims that exist. Give a step `about`: the refs that it works on. `about` names what the step works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`).
 4. **The rules of a map.** Loops go only out of a decision. Each node has a way to an exit. A `join` has a `parallel` before it. A `sub-map` names a process with a map. A step that changes the world outside this machine does a process with `irreversible: true`, so a person approves it.
 5. Select `entry` (the first node), `exits` (the nodes where a run ends), and the `inputs` of the run.
 6. Once the plan puts the work in order, progress to the next stage.

@@ -13,7 +13,7 @@ Add one process to a program: a small instruction that the program owns and can 
 # Input
 
 - The program
-- (Optional) The selected parts: the parts that the process uses
+- (Optional) The selected parts: the parts that the process works on. They go into `about`.
 - The words of the person: the work that the process must do
 
 # Actions
@@ -32,21 +32,22 @@ Add one process to a program: a small instruction that the program owns and can 
 1. Select the form: `code` when code can do the work on this machine, `agent` when the work needs reading and judgement, `person` when a person must act.
 2. When the work needs steps and decisions in order, or more than one actor, the process needs an instruction map: propose [[wkfl-ite-flow_add]] after this workflow.
 3. Select a short slug `id` (`send-reminders`). Check that it is free: `flint ite process show "<program>" <id>` refuses with `not-found`.
-4. Select the `inputs`, the `outputs`, and the `effect` (the claims that show that the work worked; only claims that exist).
-5. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run. The trigger stays `manual`: the person enables a trigger with `flint ite enable`.
-6. Show the person the plan: the id, the form, the inputs and the outputs, the effect, and the authority. Ask: write it, or change it.
-7. Once the person agrees, progress to the next stage.
+4. Select `about`: the selected parts, and each other ref that the process works on. `about` names what the process works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`).
+5. Select the `inputs`, the `outputs`, and the `effect` (the claims that show that the work worked; only claims that exist).
+6. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run. The trigger stays `manual`: the person enables a trigger with `flint ite enable`.
+7. Show the person the plan: the id, the form, `about`, the inputs and the outputs, the effect, and the authority. Ask: write it, or change it.
+8. Once the person agrees, progress to the next stage.
 
 ## Stage 3: Write the Process
 
 1. Make the process:
 
    ```bash
-   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--part <part id>...] [--text "<prose>"]
+   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--about <ref>...] [--text "<prose>"]
    ```
 
    It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, with `trigger: manual`.
-2. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose, `inputs`, `outputs`, `effect`, `authority`, and `timeout`.
+2. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose, `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`.
 3. Write the work: the code (`index.js` with `runtime: node`) for `code`, the `prompt` for `agent`, or the `task` for `person`.
 4. Run `flint ite process list "<program>"`. Repair each problem of the process.
 5. Once the process is written, progress to the next stage.

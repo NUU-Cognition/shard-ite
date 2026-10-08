@@ -15,7 +15,7 @@ The focus of this job: the selected parts.
 # Input
 
 - The program
-- (Optional) The selected parts: the parts that the process uses
+- (Optional) The selected parts: the parts that the process works on. They go into `about`.
 - The text of the person: the work that the process must do
 
 # Actions
@@ -39,9 +39,10 @@ The focus of this job: the selected parts.
    - `person` when a person must act: a call, a signature, a decision.
 3. When the work needs steps and decisions in order, or more than one actor, the process needs an instruction map. Add the process now, and propose the action `flow-add` in the `summary`.
 4. Select the `id`: a short, readable slug (`send-reminders`). Check that it is free: `flint ite process show "<program>" <id>` must refuse with `not-found`.
-5. Select the `inputs` and the `outputs` (each a name and a kind), and the `effect`: the ids of the claims that show that the work worked. Name only claims that exist. When no claim shows the work, propose the action `claim-add` in the `summary`.
-6. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run. The trigger stays `manual`: only a person enables a trigger.
-7. Once the form is selected, progress to the next stage.
+5. Select `about`: the selected parts, and each other ref that the process works on. `about` names what the process works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`). Name only refs that exist.
+6. Select the `inputs` and the `outputs` (each a name and a kind), and the `effect`: the ids of the claims that show that the work worked. Name only claims that exist. When no claim shows the work, propose the action `claim-add` in the `summary`.
+7. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run. The trigger stays `manual`: only a person enables a trigger.
+8. Once the form is selected, progress to the next stage.
 
 ## Stage 3: Write the Process
 
@@ -49,11 +50,11 @@ The focus of this job: the selected parts.
 2. Make the process:
 
    ```bash
-   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--part <part id>...] [--text "<prose>"]
+   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--about <ref>...] [--text "<prose>"]
    ```
 
    It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, with `trigger: manual`, and records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again.
-3. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose (what the process does, why, and what it changes), `inputs`, `outputs`, `effect`, `authority`, and `timeout`. Keep `format`, `id`, `by`, and `trigger`.
+3. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose (what the process does, why, and what it changes), `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`. Keep `format`, `id`, `by`, and `trigger`.
 4. Write the work:
    - `code`: the entry `index.js` in the process folder (`runtime: node`), or another entry with its `runtime`. It prints one JSON line for each record: `{ "output": { "<name>": <value> } }`, `{ "state": { ... } }`, or `{ "log": "<text>" }`. Exit 0 is `done`. A file that it writes on this machine goes into `.flint/steel/state/<program id>/`.
    - `agent`: the `prompt`, with `${inputs.<name>}` for each input.

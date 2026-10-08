@@ -13,7 +13,7 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 # Input
 
 - The program
-- (Optional) The selected parts: the parts that the steps use
+- (Optional) The selected parts: the parts that the steps work on. They go into the `about` of the steps.
 - The words of the person: the work that the map must put in order, or the process that has no map yet
 
 # Actions
@@ -30,7 +30,7 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 ## Stage 2: Plan the Nodes
 
 1. Write the nodes in order, each with a slug id and a title: `step` (a process of the program, or an inline instruction for a person or an agent), `decision` (a question with its outcomes), `wait`, `parallel` and `join`, and `sub-map`.
-2. Give a step `precondition` and `effect` only with claims that exist, and `parts` with the ids of the parts that it uses.
+2. Give a step `precondition` and `effect` only with claims that exist, and `about` with the refs that it works on: a part id, `process:<id>`, `process:<id>#<node>`, or `data:<id>`.
 3. **The rules of a map.** Loops go only out of a decision. Each node has a way to an exit. A `join` has a `parallel` before it. A step that changes the world outside this machine does a process with `irreversible: true`.
 4. Select `entry`, `exits`, and the `inputs` of the run.
 5. Show the person the plan: the nodes in order, who acts in each, and the decisions. Ask: write it, or change it.

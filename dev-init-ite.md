@@ -438,7 +438,7 @@ For a person: what the process does, and why.
 |---|---|---|
 | `flint ite process list "<program>"` | The processes of a program, with the form, the mode, the trigger, and the enable on this machine | Nothing |
 | `flint ite process show "<program>" <process>` | One process: its file, its form, its problems, and its newest runs with their outputs and effects | Nothing |
-| `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" [--part <id>...] [--text "<prose>"]` | Writes a new `process.md` from the form `steel-process/1`, with `trigger: manual`: code gets `runtime: node` and `entry: index.js`; agent gets a `prompt`; person gets a `task`. It writes no code. | `Processes/<id>/process.md`, and one activity record for an agent |
+| `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" [--about <ref>...] [--text "<prose>"]` | Writes a new `process.md` from the form `steel-process/1`, with `about: [...]` and `trigger: manual`. A ref of `about` is a part id, `process:<id>`, `process:<id>#<node>`, or `data:<id>`. code gets `runtime: node` and `entry: index.js`; agent gets a `prompt`; person gets a `task`. It writes no code. | `Processes/<id>/process.md`, and one activity record for an agent |
 | `flint ite process run "<program>" <process> [--input k=v]...` | Run now. A process with a map starts a run. | The log, the state of the process |
 | `flint ite process test "<program>" <process> [--input k=v]... [--dry]` | Runs the code once and prints each record and its problems | Nothing |
 
