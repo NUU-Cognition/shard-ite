@@ -41,7 +41,7 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
       timeout: optional, at most this time for one check (default 60s).
     The core runs the entry in the claim folder with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_CLAIM_ID, STEEL_PARTS
     (a JSON list of the ids of about), STEEL_INPUTS (JSON: the inputs of the run when the check runs for a step,
-    else {}), STEEL_RUN_ID (or empty), and the values of flint.env and flint.env.local. Each line of its output
+    else {}), STEEL_RUN_ID and STEEL_NODE (or empty), and the values of flint.env and flint.env.local. Each line of its output
     that is one JSON object is one result: { "state": "holds|fails|error", "part"?: "<an id of about>",
     "values"?: { ... }, "summary": "<text>", "evidence"?: [{ "kind": "url|file|note|text|output", "value", "label"? }] }.
     With no part, the result is for the whole claim. A check of many parts prints one result for each part.

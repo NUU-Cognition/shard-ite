@@ -345,7 +345,7 @@ Prose for a person: why it matters, and what the check reads.
 6. **A `will` claim** has `p` (0 to 1) and `resolves` (a date; quote it, so that YAML keeps it as text).
 7. **A mirror is a claim too.** "The code of each part exists" (`code-refs` of an OrbCode project) is an `is` claim whose check reads the codebase.
 
-**The code of a check.** The core runs `entry` in the claim folder (`node`, `python3`, or the file) with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_CLAIM_ID`, `STEEL_PARTS` (JSON: the ids of `about`), `STEEL_INPUTS` (JSON: the inputs of the run when the check runs for a step, else `{}`), `STEEL_RUN_ID` (the run, or empty), and the values of `flint.env` and `flint.env.local`, at most `timeout`. Each output line that is one JSON object is one result:
+**The code of a check.** The core runs `entry` in the claim folder (`node`, `python3`, or the file) with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_CLAIM_ID`, `STEEL_PARTS` (JSON: the ids of `about`), `STEEL_INPUTS` (JSON: the inputs of the run when the check runs for a step, else `{}`), `STEEL_RUN_ID` (the run, or empty), `STEEL_NODE` (the node of the run, or empty), and the values of `flint.env` and `flint.env.local`, at most `timeout`. Each output line that is one JSON object is one result:
 
 ```json
 { "state": "holds|fails|error", "part": "<a part id of about>", "values": { "rsvps": 23 }, "summary": "23 of 30 RSVPs.", "evidence": [{ "kind": "url|file|note|text|output", "value": "...", "label": "..." }] }
@@ -387,7 +387,7 @@ With no `part`, the result is for the whole claim. A check of many parts prints 
 | `flint ite claim show "<program>" <claim>` | One claim: its file, its check, its problems, its state, and its newest results | Nothing |
 | `flint ite claim check "<program>" <claim>` | Check now: a code check runs on this machine; an agent check starts one Orbh session; a person check gives `pending` | The log |
 | `flint ite claim test "<program>" <claim>` | Runs the check once, and prints each line and its problems. Exit 1 when a line has a problem. | Nothing |
-| `flint ite claim report "<program>" <claim> --state holds\|fails\|error [--part <id>] --summary "<text>" [--value k=v]... [--evidence kind=value]... [--observed-at <time>]` | The one door: records one result. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. | The log |
+| `flint ite claim report "<program>" <claim> --state holds\|fails\|error [--part <id>] --summary "<text>" [--value k=v]... [--evidence kind=value]... [--observed-at <time>] [--run <run id> --node <node id>]` | The one door: records one result. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. A result for a precondition of a run names the run and the node (`--node` only with `--run`); only such a result counts for that node. | The log |
 
 ## Processes
 
