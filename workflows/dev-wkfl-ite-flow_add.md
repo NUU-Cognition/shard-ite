@@ -41,10 +41,10 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 1. Make the map:
 
    ```bash
-   flint ite flow new "<program>" <process id> --title "<title>" [--text "<prose>"]
+   flint ite flow new "<program>" <process id> --title "<title>" [--about <ref>...] [--text "<prose>"]
    ```
 
-   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, and writes `process.md` when the process has none.
+   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, and writes `process.md` when the process has none. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
 2. Write the nodes of the plan into `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with the prose for a person, and one H2 for each node with its instruction and its fenced block. Replace the step `start` when the plan does not use it.
 3. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
 4. Once the map is written, progress to the next stage.

@@ -50,10 +50,10 @@ The focus of this job: the selected parts.
 2. Make the map:
 
    ```bash
-   flint ite flow new "<program>" <process id> --title "<title>" [--text "<prose>"]
+   flint ite flow new "<program>" <process id> --title "<title>" [--about <ref>...] [--text "<prose>"]
    ```
 
-   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, writes `process.md` when the process has none, and records you in the activity.
+   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, writes `process.md` when the process has none, and records you in the activity. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
 3. Write the nodes of your plan into `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with one to three sentences for a person, and one H2 for each node (`## Title {#id}`) with the instruction for a person and one fenced block whose info word is the kind of the node. Replace the step `start` when your plan does not use it.
 4. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
 5. Once the map is written, progress to the next stage.

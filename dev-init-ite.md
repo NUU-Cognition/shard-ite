@@ -811,7 +811,7 @@ Each command takes `--json`. `<run>` is the run id.
 |---|---|---|
 | `flint ite flow list "<program>"` | The instruction maps of the program, with the mode and the active runs | Nothing |
 | `flint ite flow show "<program>" <process>` | The resolved map: the nodes, the kinds, `run`, the modes, and the problems | Nothing |
-| `flint ite flow new "<program>" <process id> --title "<title>" [--text "<prose>"]` | Writes a new `map.md` (`steel-flow/1`) with one step `start` of a person whose instruction is the title, and writes `process.md` when the process has none | `Processes/<id>/map.md` (and `process.md`), and one activity record for an agent |
+| `flint ite flow new "<program>" <process id> --title "<title>" [--about <ref>...] [--text "<prose>"]` | Writes a new `map.md` (`steel-flow/1`) with one step `start` of a person whose instruction is the title, and writes `process.md` when the process has none, with `about` from `--about` (the refs of `process new`) | `Processes/<id>/map.md` (and `process.md`), and one activity record for an agent |
 | `flint ite flow start "<program>" <process> [--input k=v]... [--title "<t>"]` | Starts a run, and prints the run id | A run |
 | `flint ite flow runs "<program>" [--status <s>] [--process <id>]` | The runs, the newest first | Nothing |
 | `flint ite flow status <run>` | The state of the run and of each node | Nothing |
