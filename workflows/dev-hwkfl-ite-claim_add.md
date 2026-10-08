@@ -51,10 +51,10 @@ The focus of this job: the selected parts.
 2. Make the claim:
 
    ```bash
-   flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--text "<prose>"]
+   flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--text "<prose>"] [--p <0 to 1> --resolves <YYYY-MM-DD>]
    ```
 
-   It writes `Steel/Programs/<program>/Reality/<id>/claim.md` from the form and records you in the activity. It refuses an id that is not a slug, an id that exists, and a part that is not a part of the program: repair the input and run it again.
+   It writes `Steel/Programs/<program>/Reality/<id>/claim.md` from the form and records you in the activity. It refuses an id that is not a slug, an id that exists, a part that is not a part of the program, and a `will` claim with no `--resolves`: repair the input and run it again.
 3. Complete `claim.md` with the form of [[tmp-ite-claim-v0.1]]: the prose (why it matters, what the check reads, and what a person does when it fails), `fresh-for`, `owner`, `fixed-by`, and `p` and `resolves` for a `will` claim. Keep `format`, `id`, `mode`, `about`, and `by`.
 4. Write the check:
    - `code`: the entry `check.js` in the claim folder (`runtime: node`), or `check.py` with `runtime: python`. It reads only. It prints one JSON line for each result (`state`, `part`, `values`, `summary`, `evidence`), and one `error` line when it cannot read its source.

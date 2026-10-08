@@ -44,10 +44,10 @@ Add one claim to a program: what must be true, about the selected parts, with it
 1. Make the claim:
 
    ```bash
-   flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--text "<prose>"]
+   flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--text "<prose>"] [--p <0 to 1> --resolves <YYYY-MM-DD>]
    ```
 
-   It writes `Steel/Programs/<program>/Reality/<id>/claim.md` from the form. A refusal (an id that is not a slug, an id that exists, a part that is not a part of the program) writes nothing: repair the input.
+   It writes `Steel/Programs/<program>/Reality/<id>/claim.md` from the form. A refusal (an id that is not a slug, an id that exists, a part that is not a part of the program, a `will` claim with no `--resolves`) writes nothing: repair the input.
 2. Complete `claim.md` with the form of [[tmp-ite-claim-v0.1]]: the prose, `fresh-for`, `owner`, `fixed-by`, and `p` and `resolves` for a `will` claim.
 3. Write the check: the code (`check.js` with `runtime: node`, or `check.py` with `runtime: python`) for `code`, the `prompt` for `agent`, or the `question` for `person`. A code check reads only, and prints one JSON line for each result.
 4. Run `flint ite claim list "<program>"`. Repair each problem of the claim.
