@@ -105,7 +105,7 @@ The last action of each job is:
 flint orbh session return --await '<json>'
 ```
 
-Use `--await`, never `--finish`: the agent session stays ready for the next job, and the person ends it with End in the Workbench. The next job comes to you as a new prompt.
+Use `--await`, never `--finish`: the agent session stays ready for the next job. A finished agent session takes no new job, so the person must start a new agent. The person ends the agent session with End in the Workbench. The next job comes to you as a new prompt. A message of the person during a job: answer it in the result of the job, never with `flint orbh message send`.
 
 The payload is one line of JSON of the schema `steel-result/1`, with no other text:
 
