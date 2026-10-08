@@ -855,7 +855,7 @@ A review says that a person or an agent compared a node with its code at one com
 reviewed: { commit: 19ad162cf, at: "2026-10-08T22:10:00Z", meaning_hash: "<sha256>", contract_hash: "<sha256>", by: "person:Nathan", commits: { Steel: 243fbb2 } }
 ```
 
-- `commit` is the HEAD of the codebase of the program at the review. `commits` gives one commit for each other codebase that a `@<Codebase>/` code-ref names. `by` is `person:<Name>` or `agent:<session id>`.
+- `commit` is the HEAD of the codebase of the program at the review. **An anchor is a commit**: a file under a code-ref with changes that are not committed stays `review-due` after a new review, and the reason says so. Commit the change of the code first, then review the node. `commits` gives one commit for each other codebase that a `@<Codebase>/` code-ref names. `by` is `person:<Name>` or `agent:<session id>`.
 - `meaning_hash` is the hash of the text of the node and of its fields that are not references (for a view node: `kind`, `action`, `result`, `actor`, and the others). `contract_hash` is the hash of its references: `code-refs`, `stories`, `criteria`, and `part`. The place and the title of the node are in no hash, so a move keeps the anchor.
 - **Only the review writes `reviewed`**: `flint ite review`, or Mark as reviewed in the Workbench. Never write or edit a value of `reviewed` with your own tools. A candidate copies the mapping of a node unchanged when the text and the references of the node do not change. When they change, the candidate removes the mapping of that node.
 

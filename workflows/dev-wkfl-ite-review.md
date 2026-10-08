@@ -41,7 +41,7 @@ The focus of this workflow: the nodes of the job.
 ## Stage 3: Review the True Nodes
 
 1. Run `flint ite review "<program>" <ref>...` with each node that the person agreed is true: the part id, or `view:<view id>#<node id>`. Give `--commit <sha>` only when the person names a commit; the default is the HEAD of the codebase.
-2. Never review a node that you did not compare, and never review a node that the next stage changes.
+2. Never review a node that you did not compare, and never review a node that the next stage changes. An anchor is a commit: when a reason says that files have changes that are not committed, do not commit the work of another person. Do not review that node; name it, and the person commits the change and then reviews it.
 3. A refusal: `invalid-input` (a node with no code and no stories, or a block that does not parse), `changed` (a file changed during the write), or `unavailable` (the codebase is not a Git repository). Read the reason, repair or read the file again, and run the command again.
 4. Read the review again (Stage 1, step 2): each reviewed node is `reviewed`.
 5. Once the true nodes are reviewed, progress to the next stage.
