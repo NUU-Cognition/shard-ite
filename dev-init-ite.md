@@ -14,14 +14,14 @@ An IDE gives a person one loop for software: write, navigate, run, test, and kee
 | A language and its libraries | **Types** and **connections**: Mesh notes that say what each part is and how parts link. A **template** gives the start of a new program. |
 | Source files | **Parts**: one Mesh note for each part of the system, of any type |
 | Editor tabs | **Views** on a canvas: one map for one question |
-| Run and debug | **Processes**: the small instructions that the program can run. **Instruction maps**: large processes, with steps and decisions in order; a **run** walks one. A **job**: an agent session that works on parts and shows on the map. |
+| Run and debug | **Processes**: the small instructions that the program can run. **Instruction maps**: large processes, with steps and decisions in order; a **run** walks one. An **agent session**: an agent that does the jobs of a person, one at a time, and shows on the map. |
 | Tests | **Claims**: what must be true, each with a **check** (code, an agent, or a person) that reads reality. Each result goes into the **log**. |
 | The Problems panel | **Findings**, and the **grounding** of each part |
 | Source control | **Proposals**, history, and Git |
 
 Example: Nathan makes the program "Club Launch Night" from the template `event`. An agent reads his notes and proposes the first level of the main map: the goal, the milestones, the roles, the venue, the risks. Nathan applies it. He asks "What must be true one week before?", and an agent writes a view with the map `table`. Each condition is a claim with a check: the council page, the count of the RSVPs, a check that a founder confirms. "Check now" runs a check, and the canvas shows which parts hold. When the claim `rsvps-30` fails, the brief offers its fix: "23 of 30 RSVPs. Run `send-reminders`?"
 
-The surface is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side: the model, the file forms, the quality rules, and the workflows of the jobs.
+The surface is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side: the model, the file forms, the quality rules, the agent sessions, and the workflows of the actions.
 
 ## The Terms
 
@@ -59,7 +59,13 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Proposal | A change that waits for a person: a map change, a view candidate, or a revision. It is a file of `Steel/Programs/<P>/Proposals/`. |
 | Candidate | A complete view file that an agent wrote and that waits for the apply of a person. |
 | Finding | One problem that a command computes about a program. |
-| Job | One agent session that a person starts on nodes. |
+| Agent session | One Orbh session that Steel starts for one program. It does one or more jobs, one at a time. The Workbench calls it "an agent". |
+| Job | One piece of work that a person gives to an agent session: an action or free text, the nodes, and the text of the person. |
+| Action | A kind of job with its own instruction, for example `claim-add` or `map-expand`. Do not call an action a template: a template is the start of a new program. |
+| Orientation | The first prompt of each agent session: the program and the ITE shard, with no job. |
+| Dock | A person keeps an agent session at the top of the agent panel of its program, to give it the next job. |
+| Activity | The writes of an agent session through `flint ite`, one record each: a part, a link, a proposal, a result, or a new claim, process, or instruction map. |
+| Agent log | `.flint/steel/agents.jsonl`: the jobs, the dock records, and the activity of the agent sessions. A fact of this machine. |
 | Presence | The mark of a live agent session on the nodes of its focus. |
 | Focus | The nodes that a person selected to see alone. For an agent: the nodes that it works on now. |
 | Workbench | The ITE surface in Steel. |
@@ -73,7 +79,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Claims | What must be true, and is it? | `Steel/Programs/<P>/Reality/<claim>/claim.md` and the code of its check | A person or an agent |
 | Processes | What work can the program do, and in which order? | `Steel/Programs/<P>/Processes/<process>/process.md`, its code, and its `map.md` | A person or an agent |
 | Log and runs | What did the checks see, and what did the processes and the runs do? | The log `.flint/steel/logs/<program id>.jsonl` on this machine, and the runs in `Steel/Programs/<P>/Runs/` | Only a command: the one door of the results, a process run, and the run engine |
-| Work | Who works on which node now? | Orbh sessions with a focus | Orbh and `flint ite focus` |
+| Work | Who works on which node now, and what did each agent do? | Agent sessions with a focus, and the agent log `.flint/steel/agents.jsonl` on this machine | Orbh and `flint ite focus`; the agent log: only the agent routes and the `flint ite` commands |
 
 ## A Writer Writes Meaning, a Command Computes Facts
 
@@ -82,10 +88,10 @@ A program holds **meaning**: the root note, the parts, their prose, their types,
 - No result of a check, no state of a claim, no grounding state, no count of checks, and no time of a check.
 - No finding.
 - No position of a card. Only the engine writes `State/*.json`.
-- No presence of an agent.
+- No presence of an agent, and no job, dock record, or activity of an agent session.
 - No item of the brief, and no vital sign of a living system.
 
-**Only a command writes a result.** A check, a person, and an agent each send a result through the one door: `flint ite claim report` (or the route). Never write a result into a file of the Mesh or of `Steel/`. Never edit or remove a line of the log (`.flint/steel/logs/<program id>.jsonl`): it is a record of this machine, as the runs of Orbtest are. Never write a file of `Runs/`: only the run engine writes there.
+**Only a command writes a result.** A check, a person, and an agent each send a result through the one door: `flint ite claim report` (or the route). Never write a result into a file of the Mesh or of `Steel/`. Never edit or remove a line of the log (`.flint/steel/logs/<program id>.jsonl`): it is a record of this machine, as the runs of Orbtest are. Never write a file of `Runs/`: only the run engine writes there. Never write the agent log (`.flint/steel/agents.jsonl`): the `flint ite` commands and the agent routes write it.
 
 You can tell a person the facts in a conversation or in your result. Do not write them into a program.
 
@@ -114,6 +120,7 @@ Steel/Programs/<Name>/
 Steel/Maps/<Map Name>/map.md + index.js              # a map (a renderer)
 
 .flint/steel/logs/<program id>.jsonl                 # the one log of a program (this machine): results and process runs
+.flint/steel/agents.jsonl                            # the agent log (this machine): the jobs, the dock records, and the activity of the agent sessions
 .flint/steel/enabled.json                            # the enables of the triggers on this machine
 .flint/steel/state/<program id>/                     # the state of each process, and the files that a process writes
 .flint/steel/runs/                                   # the leases and the pending files of the run engine
@@ -385,6 +392,7 @@ With no `part`, the result is for the whole claim. A check of many parts prints 
 |---|---|---|
 | `flint ite claim list "<program>" [--part <id>]` | The claims of a program, with the mode, the form, the parts, the state, and the age of the newest result | Nothing |
 | `flint ite claim show "<program>" <claim>` | One claim: its file, its check, its problems, its state, and its newest results | Nothing |
+| `flint ite claim new "<program>" <id> --about <part>... --mode is\|ought\|will --by code\|agent\|person\|none --title "<title>" [--text "<prose>"]` | Writes a new `claim.md` from the form `steel-claim/1`: code gets `runtime: node`, `entry: check.js`, `timeout: 30s`; agent gets a `prompt`; person gets a `question`; none gets no check. It writes no check code. It refuses an id that is not a slug, an id that exists, and a part of `about` that is not a part of the program. | `Reality/<id>/claim.md`, and one activity record for an agent |
 | `flint ite claim check "<program>" <claim>` | Check now: a code check runs on this machine; an agent check starts one Orbh session; a person check gives `pending` | The log |
 | `flint ite claim test "<program>" <claim>` | Runs the check once, and prints each line and its problems. Exit 1 when a line has a problem. | Nothing |
 | `flint ite claim report "<program>" <claim> --state holds\|fails\|error [--part <id>] --summary "<text>" [--value k=v]... [--evidence kind=value]... [--observed-at <time>] [--run <run id> --node <node id>]` | The one door: records one result. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. A result for a precondition of a run names the run and the node (`--node` only with `--run`); only such a result counts for that node. | The log |
@@ -430,6 +438,7 @@ For a person: what the process does, and why.
 |---|---|---|
 | `flint ite process list "<program>"` | The processes of a program, with the form, the mode, the trigger, and the enable on this machine | Nothing |
 | `flint ite process show "<program>" <process>` | One process: its file, its form, its problems, and its newest runs with their outputs and effects | Nothing |
+| `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" [--part <id>...] [--text "<prose>"]` | Writes a new `process.md` from the form `steel-process/1`, with `trigger: manual`: code gets `runtime: node` and `entry: index.js`; agent gets a `prompt`; person gets a `task`. It writes no code. | `Processes/<id>/process.md`, and one activity record for an agent |
 | `flint ite process run "<program>" <process> [--input k=v]...` | Run now. A process with a map starts a run. | The log, the state of the process |
 | `flint ite process test "<program>" <process> [--input k=v]... [--dry]` | Runs the code once and prints each record and its problems | Nothing |
 
@@ -502,13 +511,13 @@ In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and
 | `map-parent-missing` | error | The `parent` of a part names no note. The part shows under the root with a marker. | `move` to the correct parent |
 | `map-parent-outside` | error | The `parent` names a note that is not a part of the program. | `move` |
 | `map-cycle` | error | The parents of a part make a cycle. | `move` |
-| `map-too-many-children` | warning | A level has more than `max-children` parts. | `split`, `merge`, `move` (the job `map-refactor`) |
+| `map-too-many-children` | warning | A level has more than `max-children` parts. | `split`, `merge`, `move` (the action `map-refactor`) |
 | `map-single-child` | note | A part has exactly one child. | `merge`, or `add` the siblings |
 | `anchor-missing` | warning | A view node names no part of the main map. | Reshape the view, or `add` the part |
 | `anchor-none` | note | A view node has no part (a slug heading id). | Give it its part, or keep it as a concept of the view only |
-| `coverage-gap` | note | Files that no part covers (one finding on the root, with the count). | The job `map-cover` |
+| `coverage-gap` | note | Files that no part covers (one finding on the root, with the count). | The action `map-cover` |
 | `coverage-overlap` | warning | Two leaves cover one file. | `edit` the sources of one leaf |
-| `code-ref-missing` | warning | A `code-refs` entry matches no file. | `edit` the sources (the job `map-update`) |
+| `code-ref-missing` | warning | A `code-refs` entry matches no file. | `edit` the sources (the action `map-update`) |
 | `map-change-stuck` | error | A map change is `applying` or `reverting`: a write did not finish. | The next write of the change engine recovers it |
 
 ### The Map Change
@@ -555,23 +564,24 @@ Each verb takes `--json`. `flint ite map <program>` with no verb gives the map: 
 
 ### The Rules of the Main Map
 
-1. **A job of the main map changes the main map only through a map change.** It never writes a part file with its own tools.
+1. **A job of a map action changes the main map only through a map change.** It never writes a part file with its own tools.
 2. **Never apply a map change, and never revert one.** Only a person does. A headless session never discards the change that it returns.
 3. **One change for one job, and read the waiting changes first.** Run `flint ite map change list <program> --state proposed`, then `flint ite map change show <program> <change id>` for each one. Do not propose what a waiting change does already. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
 4. **Read the preview before you return.** The tree after must have no new finding of the level error, and no new `map-too-many-children` that the job could avoid.
 5. **The quality rules apply to each new part**: the words of the person, a type of the program, a title of two to six words, one sentence that says what the part is, and sources that you read (never invented paths).
 
-### The Jobs of the Main Map
+### The Actions of the Main Map
 
-| Template | Nodes | Workflow (headless / interactive) | The agent does |
+| Action | Nodes | Workflow (headless / interactive) | The agent does |
 |---|---|---|---|
 | `map-create` | None | [[hwkfl-ite-map_create]] / [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: 3 to 9 parts, each with one sentence and its sources |
 | `map-expand` | 1 part | [[hwkfl-ite-map_expand]] / [[wkfl-ite-map_expand]] | Takes one part one level deeper: 3 to 9 children that cover the sources of the part |
 | `map-refactor` | 0 or 1 (the focus) | [[hwkfl-ite-map_refactor]] / [[wkfl-ite-map_refactor]] | Brings one level to the size limit: split, merge, move, rename |
 | `map-cover` | 0 or 1 | [[hwkfl-ite-map_cover]] / [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
 | `map-update` | 1 part | [[hwkfl-ite-map_update]] / [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
+| `parts-add` | 0 or 1 (the parent) | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
 
-The prompt of a map job holds the level of the focus (the cards, the relations, the findings), the coverage gaps (at most 200 paths), the form of each operation, and the last step: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`.
+The prompt of a job of a map action holds only the data: the level of the focus (the cards, the relations, the findings) and the coverage gaps (at most 200 paths). The workflow of the action holds the steps, the form of each operation, and the last step: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`.
 
 ## Instruction Maps and Runs
 
@@ -639,7 +649,7 @@ effect: [canon-shipped]
 1. A step is **mirrored** when its block has `source`, or when its `does` names a process with `source`. Else it is **native**.
 2. A map with `source` in its frontmatter is **external**: each node is mirrored, the map is read-only and only for view, and a run of the process runs the source as one unit.
 3. A map is **native** when each step is native, **external** when each is mirrored, else **blended**. The mode is counted, never written. Steel shows it as a mark: "Blended: 1 of 2 steps mirrors `ndv repo ship flint ...`".
-4. **The drift of a mirror.** On each read, the core compares `hash` with the source now. A difference is the finding `mirror-drift`, and the brief lists it in `drift`. The job `map-update` draws the map again from its source.
+4. **The drift of a mirror.** On each read, the core compares `hash` with the source now. A difference is the finding `mirror-drift`, and the brief lists it in `drift`. The action `map-update` draws the map again from its source.
 
 | | Native | Blended | External |
 |---|---|---|---|
@@ -665,6 +675,7 @@ Each command takes `--json`. `<run>` is the run id.
 |---|---|---|
 | `flint ite flow list "<program>"` | The instruction maps of the program, with the mode and the active runs | Nothing |
 | `flint ite flow show "<program>" <process>` | The resolved map: the nodes, the kinds, `run`, the modes, and the problems | Nothing |
+| `flint ite flow new "<program>" <process id> --title "<title>" [--text "<prose>"]` | Writes a new `map.md` (`steel-flow/1`) with one step `start` of a person whose instruction is the title, and writes `process.md` when the process has none | `Processes/<id>/map.md` (and `process.md`), and one activity record for an agent |
 | `flint ite flow start "<program>" <process> [--input k=v]... [--title "<t>"]` | Starts a run, and prints the run id | A run |
 | `flint ite flow runs "<program>" [--status <s>] [--process <id>]` | The runs, the newest first | Nothing |
 | `flint ite flow status <run>` | The state of the run and of each node | Nothing |
@@ -716,6 +727,7 @@ Do not use "environment" (it is an Information Environment or an Orbtest environ
 | Run control, attempts, approvals, the copy of the evidence | The run folder in `Steel/Programs/<P>/Runs/` | The run engine only |
 | Results, process runs, acknowledgements, escalations, prompts | The log `.flint/steel/logs/<program id>.jsonl` | The commands only (the one door of the results) |
 | Enables | `.flint/steel/enabled.json` | A person, through `flint ite enable` |
+| The jobs, the dock records, and the activity of the agent sessions | The agent log `.flint/steel/agents.jsonl` (append-only) | The agent routes and the `flint ite` commands only |
 | Revisions and their exact old bytes | `Steel/Programs/<P>/Proposals/` | The revision commands only |
 | The states of the claims, the findings, the brief, the vital signs | Nobody: a command computes them on each read | Nobody |
 
@@ -854,14 +866,55 @@ The claims, the processes, the triggers, and the runs of a living system use the
 | `flint ite system\|log\|brief\|vitals\|prompt\|revision ...` | A living system (see Living Systems) | The log, a revision, or nothing |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A decision of a person. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A decision of a person. | The program folder |
-| `flint ite focus <node id>... [--program <name>]` | Sets the interface key `ite-focus` of this Orbh session | The session interface |
-| `flint ite job <program> --template <id> [--document <doc>] [--node <id>...] [--prompt "<text>"] [--target <t>] [--account <name>]` | Starts a job | An Orbh session |
+| `flint ite focus <node id>... [--program <name>]`, `flint ite focus --clear` | Sets the interface key `ite-focus` of this Orbh session; `--clear` writes an empty focus | The session interface |
+| `flint ite actions` | The actions: the id, the title, the object, the workflow, and what each one needs | Nothing |
+| `flint ite agent start <program> [--target <t>] [--account <a>] [--interactive] [--document <doc>] [--action <id>] [--node <id>...] [--text "<text>"]` | Starts an agent session. With no `--action` and no `--text`, it gets only the orientation. With them, it gets the orientation and its first job. | An Orbh session; a job record in the agent log when it has a job |
+| `flint ite agent list <program> [--since <time>]` | The agent sessions of a program: the docked ones, then the live ones, then the newest; each with its jobs | Nothing |
+| `flint ite agent show <session>` | One agent session with its jobs and the result of each job | Nothing |
+| `flint ite agent activity <session>` | The activity of one agent session, with the job of each record | Nothing |
+| `flint ite agent dock <session>`, `agent undock <session>` | Docks or undocks an agent session. A person only. | One dock record in the agent log |
+| `flint ite job <program> --action <id> [--session <id>] [--node <id>...] [--document <doc>] [--text "<text>"]` | Gives a job. With no `--session`, it starts a new agent session with the job. With `--session`, it gives the job to that agent session; a session that works refuses with `agent-busy`. `--template` and `--prompt` are the old names of `--action` and `--text`. | A resume of the session or a new session; one job record in the agent log |
 
 The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server.
 
+## Agent Sessions and Jobs
+
+An **agent session** is one Orbh session that Steel starts for one program. A person starts it in the agent panel of the Workbench (the tab Agents of the right column) with "New agent", or with `flint ite agent start`. One agent session does many jobs, one at a time. Keep what you learn about the program for the next job.
+
+1. **The orientation.** The first prompt of each agent session gives the program (its name, its id, its types, its folders, and its counts) and tells the agent to load this shard. It holds no job. With no job, the agent reads the program, then ends with one to three sentences: what the program is, and what needs work.
+2. **A job.** Each job comes as a new prompt: the action and its workflow, the document, the nodes, the text of the person, the first `flint ite focus` command, and the form of the result. The prompt of a job never repeats the orientation. Read each prompt of a job fully: a new job can name another action, other nodes, or another document. Do not carry the focus or the instructions of an older job into a new job.
+3. **The end of a job.** A headless agent session ends each job with `flint orbh session return --await "<result>"`. Never use `--finish`: the person ends the agent session with End in the Workbench. An interactive agent session writes the result in the chat, then waits for the person. The result form is in [[hinit-ite]].
+4. **One job at a time.** A job for an agent session that works now is refused with `agent-busy`. A message of the person can still reach the session in its queue.
+5. **Dock.** A person docks an agent session to keep it at the top of the agent panel, and gives it the next job from its jobs, from its activity, or from a node. An agent never docks or undocks.
+6. **Activity.** Each write of an agent session through `flint ite` adds one activity record to the agent log: `part set`, `link`, a map change (`propose`, `discard`, `part add`, `part remove`), a view candidate, a revision, `claim report`, and `claim new`, `process new`, and `flow new`. The person clicks a record to open its object. Write through `flint ite` each time a command exists, so that the person sees what you changed.
+7. **Agent checks, agent processes, and agent steps** of a run each keep one Orbh session for one dispatch. They show in the agent panel and on the map, and they take no job.
+
+The actions:
+
+| Action | Title | Needs | Workflow (headless / interactive) | Ends with a proposal |
+|---|---|---|---|---|
+| `free` | Free text | Text | None: the prompt of the job gives the steps | No |
+| `model` | Model this system | — | [[hwkfl-ite-model]] / [[wkfl-ite-model]] | Yes: a map change |
+| `update` | Bring this program up to date | — | None: the prompt of the job gives the steps | No |
+| `explain` | Explain these nodes | Nodes | None: the prompt of the job gives the steps. It changes no file. | No |
+| `do` | Do the work of these nodes | Nodes | None: the prompt of the job gives the steps | No |
+| `parts-add` | Add parts | — | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Yes: a map change |
+| `map-create`, `map-expand`, `map-refactor`, `map-cover`, `map-update` | See The Actions of the Main Map | One part for `map-expand` and `map-update` | `hwkfl-ite-map_*` / `wkfl-ite-map_*` | Yes: a map change |
+| `view` | Answer a question with a view | Text | [[hwkfl-ite-view]] / [[wkfl-ite-view]] | Yes: a candidate |
+| `reshape` | Change this view | Text | [[hwkfl-ite-reshape]] / [[wkfl-ite-reshape]] | Yes: a candidate |
+| `claim-add` | Add a claim | — | [[hwkfl-ite-claim_add]] / [[wkfl-ite-claim_add]] | No |
+| `ground` | Write the claims of these parts | Nodes | [[hwkfl-ite-ground]] / [[wkfl-ite-ground]] | No |
+| `observe` | Check the claims | — | [[hwkfl-ite-observe]] / [[wkfl-ite-observe]] | No |
+| `repair` | Repair what fails | — | [[hwkfl-ite-repair]] / [[wkfl-ite-repair]] | Yes, when it changes the tree or a view |
+| `process-add` | Add a process | — | [[hwkfl-ite-process_add]] / [[wkfl-ite-process_add]] | No |
+| `flow-add` | Add an instruction map | — | [[hwkfl-ite-flow_add]] / [[wkfl-ite-flow_add]] | No |
+| `revise` | Write a revision | Text | None: the prompt of the job gives the steps | Yes: a revision |
+
+`flint ite actions` gives the list of this machine. A headless agent session follows the headless workflow (`hwkfl-ite-<name>`). An interactive agent session follows the interactive workflow (`wkfl-ite-<name>`), and it can ask the person.
+
 ## The Focus of an Agent
 
-A person sees each live agent session on the map, as an orb on the nodes of its focus. The focus is the union of the metadata `ite-focus` that the job wrote at the start, and the interface key `ite-focus` that the agent sets. Each workflow of this shard starts with `flint ite focus <node ids>`, and changes the focus when its work moves to other nodes. Follow [[sk-ite-focus]].
+A person sees each live agent session on the map, as an orb on the nodes of its focus. The focus is the union of the metadata `ite-focus` (the nodes of the current job: Steel writes it at each new job) and the interface key `ite-focus` that the agent sets. Each prompt of a job starts with `flint ite focus <node ids>`, or `flint ite focus --clear` for a job with no nodes. Each workflow of this shard changes the focus when its work moves to other nodes. Follow [[sk-ite-focus]].
 
 ## Quality Rules of a Program
 
@@ -904,6 +957,10 @@ A program is for a person. A model that breaks these rules does not help that pe
 | [[wkfl-ite-map_refactor]] | A level has too many children, one child, or parts at the wrong level |
 | [[wkfl-ite-map_cover]] | Files or items have no part (`coverage-gap`), or two leaves cover one file |
 | [[wkfl-ite-map_update]] | The sources of a part changed, and the part is not true now |
+| [[wkfl-ite-parts_add]] | The person names the parts to add below one part, or below the root |
+| [[wkfl-ite-claim_add]] | The person says what must be true about some parts, and wants one claim with a tested check |
+| [[wkfl-ite-process_add]] | The person names work that the program must be able to do: one process |
+| [[wkfl-ite-flow_add]] | The person names work that needs steps and decisions in order: one instruction map |
 | [[sk-ite-focus]] | Each workflow: show the person which nodes you work on |
 
-Each workflow has a headless form (`hwkfl-ite-<name>`) that a job of the Workbench starts. The job templates `revise`, `do`, `explain`, and `free` have no workflow: the prompt of the job gives the work.
+Each workflow has a headless form (`hwkfl-ite-<name>`) that a headless agent session follows for a job of its action, and an interactive form (`wkfl-ite-<name>`). The actions `free`, `update`, `explain`, `do`, and `revise` have no workflow: the prompt of the job gives the steps.
