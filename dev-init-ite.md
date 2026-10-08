@@ -665,11 +665,11 @@ Each command takes `--json`. `<run>` is the run id.
 |---|---|---|
 | `flint ite flow list "<program>"` | The instruction maps of the program, with the mode and the active runs | Nothing |
 | `flint ite flow show "<program>" <process>` | The resolved map: the nodes, the kinds, `run`, the modes, and the problems | Nothing |
-| `flint ite flow start "<program>" <process> [--input k=v]...` | Starts a run, and prints the run id | A run |
-| `flint ite flow runs "<program>" [--status <s>]` | The runs, the newest first | Nothing |
+| `flint ite flow start "<program>" <process> [--input k=v]... [--title "<t>"]` | Starts a run, and prints the run id | A run |
+| `flint ite flow runs "<program>" [--status <s>] [--process <id>]` | The runs, the newest first | Nothing |
 | `flint ite flow status <run>` | The state of the run and of each node | Nothing |
 | `flint ite flow events <run> [--at <seq>]` | The events, or the state after one event | Nothing |
-| `flint ite flow begin\|done\|answer\|approve\|refuse\|skip\|retry\|pause\|resume\|cancel <run> [--node <id>] ...` | One action on the run. `approve` and `refuse` are for a person only. | The events of the run |
+| `flint ite flow begin\|done\|answer\|approve\|refuse\|skip\|retry\|pause\|resume\|cancel <run> [--node <id>] ...` | One action on the run: `done --output k=v`, `answer --outcome <o>`, and `--reason "<text>"` for `approve`, `refuse`, `skip`, `pause`, and `cancel`. `approve` and `refuse` are for a person only. | The events of the run |
 
 ## Living Systems
 

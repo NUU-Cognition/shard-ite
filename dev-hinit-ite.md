@@ -78,9 +78,9 @@ Check each item. A job that skips an item gives the person a result that the Wor
 - [ ] You did each stage of the workflow, in order, and set its phase.
 - [ ] A candidate: `flint ite check --candidate <candidate-id>` exits 0 (no error finding), and `flint ite diff --candidate <candidate-id>` says that it can be applied (no conflict).
 - [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows the state `proposed`, no conflict, and no new finding of the level error in the tree after.
-- [ ] Parts and processes: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `process-invalid`, or `process-no-part` for a part or a process that you changed.
-- [ ] Each code process that you wrote ran one time, and it holds, or its prose says why it fails.
-- [ ] A living system: you took the instruction from `flint ite prompt`, and you approved, waived, retried, and applied nothing that the prompt of the person did not ask for.
+- [ ] Parts, claims, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, or `claim-fixed-by` for a part, a claim, or a map that you changed, and `flint ite flow show` gives no problem for a map that you changed.
+- [ ] Each code check that you wrote passed `flint ite claim test` and ran one time, and its claim holds, or its prose says why it fails.
+- [ ] A living system: you took the instruction from `flint ite prompt`, and you approved, refused, enabled, and applied nothing that the prompt of the person did not ask for.
 - [ ] The result is one line of JSON of the schema `steel-result/1`, and nothing else.
 
 ## The Result
