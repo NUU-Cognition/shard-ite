@@ -69,6 +69,8 @@ description: "A piece of data of a program: Steel/Programs/<Program>/Data/<id>/d
   RULES
   - A reader only reads. It never writes, sends, pushes, publishes, or fetches.
   - A calculated value is never stored as truth: give it by: code and from, and the core computes it.
+  - A maker never calculates from a missing input: an input with the state none, pending, or error stops it (exit 1,
+    with the reason). A custom store does the same in its outputs op.
   - What a person or a process decides is written in Git (value, the native store). What is pulled or calculated is
     a fact of this machine.
   - When two claims read one source, make the source one piece of data, and let both claims read it.
@@ -144,9 +146,13 @@ The count of the sign-ups. The rule of the count is in the model, so the data is
 The file `count.js` in the same folder:
 
 ```js
-const inputs = JSON.parse(process.env.STEEL_DATA || '{}');
-const rows = (inputs['data:signups'] || {}).outputs?.rows || [];
-console.log(JSON.stringify({ output: { count: new Set(rows.map((row) => row.email)).size } }));
+const signups = JSON.parse(process.env.STEEL_DATA || '{}')['data:signups'];
+// An input with the state none, pending, or error gives no value: the maker fails, and never counts 0.
+if (!signups || ['none', 'pending', 'error'].includes(signups.state)) {
+  console.error(`The sign-ups have no value (${signups ? signups.state : 'missing'}).`);
+  process.exit(1);
+}
+console.log(JSON.stringify({ output: { count: new Set(signups.outputs.rows.map((row) => row.email)).size } }));
 ```
 
 ## A native value that a person writes

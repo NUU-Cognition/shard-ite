@@ -77,7 +77,9 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
   - A check only reads. A write, a send, a push, or a fetch is not a read. Before a check, the core pulls each
     external data that the claim reads and that is old, when its trigger is enabled on this machine; else the
     check gets the value that is there, with its state and its age.
-  - A check that gets a value in the state none, pending, or error prints one error line, never an old value.
+  - A check that gets a value in the state none (never pulled), pending (a person must write it), or error (its last
+    pull or calculation failed) prints one error line that names the value. It never judges with a default (an
+    amount that was not pulled is not 0) or with an old value.
   - Do not write a claim for a mirror. Each source with a hash is a mirror claim (claim:mirror:<reference>) that the
     core gives: it has no file.
   - A check that cannot read its source prints one error line, never an old value.
@@ -119,11 +121,14 @@ The file `check.js` in the same folder:
 
 ```js
 const values = JSON.parse(process.env.STEEL_DATA || '{}');
-const count = (values['data:rsvps#count'] || {}).outputs?.count;
-const target = (values['data:rsvp-target'] || {}).outputs?.value;
-if (typeof count !== 'number' || typeof target !== 'number') {
-  console.log(JSON.stringify({ state: 'error', summary: 'The count or the target has no value: pull the sign-ups first.' }));
+const refs = ['data:rsvps#count', 'data:rsvp-target'];
+// none, pending, and error give no value to judge: never take a default.
+const missing = refs.filter((ref) => !values[ref] || ['none', 'pending', 'error'].includes(values[ref].state));
+if (missing.length > 0) {
+  console.log(JSON.stringify({ state: 'error', summary: `No value to judge: ${missing.join(', ')}. Pull it first.` }));
 } else {
+  const count = values['data:rsvps#count'].outputs.count;
+  const target = values['data:rsvp-target'].outputs.value;
   console.log(JSON.stringify({ state: count >= target ? 'holds' : 'fails', values: { rsvps: count, target }, summary: `${count} of ${target} RSVPs.` }));
 }
 ```
