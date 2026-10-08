@@ -1,5 +1,5 @@
 ---
-description: "The Integrated Thinking Environment: model any system as a program of typed parts in the Mesh, see it through views and maps of Steel, check it against reality with claims and their checks, and run its processes and instruction maps"
+description: "The Integrated Thinking Environment: model any system as a program of typed parts in the Mesh, see it through views and maps of Steel, check it against reality with claims and their checks, run its processes and instruction maps, and for software see the proof and the review of each node"
 ---
 
 # ITE
@@ -30,7 +30,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 
 | Term | Meaning |
 |---|---|
-| Program | The model of one system: a root note in the Mesh (type `(Program)`), and the tree of parts below it. An OrbCode project is a program of the template `software`. |
+| Program | The model of one system: a root note in the Mesh (format `steel-program/1`), and the tree of parts below it. |
 | Part | One note of the main map: what the system is made of. Any Mesh type. A note is a part when its `parent` chain reaches the root note. |
 | Type | The type of a note: the last `(Type)` word of its file name. A type note in `Mesh/Metadata/Types/` with a `type` block gives its fields, capabilities, connections, and look. The wire field `kind` is the type id. |
 | Capability | One thing that the core does with a part of a type: `covers-files`, `covers-boundary`, `dated`, `has-status`, `owner`, `container`. |
@@ -53,7 +53,11 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Instruction map | A large instruction: the nodes of a process (steps, decisions, waits, branches, sub-maps) in order, with claims before and after each step. The file `map.md` in the folder of the process. |
 | Step | One node of an instruction map that does work: a process of the program, or an inline instruction for a person or an agent. |
 | Mirror | A thing of the model that describes a truth outside: a mirrored step, an external map, a process with a `source`, the parts of a software program. |
-| Mirror claim | The claim `claim:mirror:<reference>` that the core gives each `source` with a `hash`. It holds when the source now has that hash. It has no file. |
+| Mirror claim | The claim `claim:mirror:<reference>` that the core gives each `source` with a `hash`, and each review of a node. It holds when the source now has that hash, or when the code of the node did not change after the review. It has no file. |
+| Software program | A program of the template `software`: the model of a software product. Its root note names its codebase, and its parts and view nodes name the code (`code-refs`) and the stories of Orbtest (`stories`, `criteria`). See Software Programs. |
+| Code-ref | One entry of `code-refs`: a folder, a file, a symbol, a line range, or a path of another codebase |
+| Proof | The state of a node from the coverage of Orbtest: `proven`, `partial`, `unproven`, `failing`, `stale`, or `no-contract`. The core computes it at each read. It is not a claim. |
+| Review | The anchor `reviewed` of a node: a person or an agent compared the node with its code at one commit. The review is a mirror claim: it fails with `review-due` when the code, the stories, or the text of the node changed after it. |
 | Element | Each thing of the model that a link can name: a part, a claim, a process, a node of an instruction map, the runs of a process, a piece of data, an output of data, a view |
 | Reference | The one form of a link to an element, for example `claim:rsvps-30`, `process:ship-flint#ship`, or `data:rsvps#count`. A part is its id. See References. |
 | Data | One piece of state of the system: one value, a table, a series, or any shape. A folder of `Steel/Programs/<P>/Data/` with `data.md`. Its mode is counted from its `source`. |
@@ -99,6 +103,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 A program holds **meaning**: the root note, the parts, their prose, their types, their links, the views, the claims, the processes, and the instruction maps. A program never holds a **fact** that a command computes:
 
 - No result of a check, no state of a claim, no grounding state, no count of checks, and no time of a check.
+- No proof of a node and no state of a review. Only the review (`flint ite review`) writes the anchor `reviewed`.
 - No finding.
 - No position of a card. Only the engine writes `State/*.json`.
 - No presence of an agent, and no job, dock record, or activity of an agent session.
@@ -148,7 +153,7 @@ Steel/Maps/<Map Name>/map.md + index.js + data.js    # a data map (kind: data): 
 
 A folder is for a person: the identity of a part is its `id`, and its membership is its `parent` chain. A part can live anywhere in the Mesh. A Task or a Person can be a part: its `parent` names a part of the program. Each note has one home: another program links to it with a connection, and does not contain it.
 
-An OrbCode project (`Mesh/OrbCode/(OrbCode Project) <Name>/`) is a program of the template `software`. Its parts are in `Map/`, its root is the project note, and its main map changes only through a map change that a person applies. Its map changes are in `Steel/Programs/<Name>/Proposals/`. Its views stay in the project (`Views/`, `Candidates/`, `History/`) and change only through the OrbCode shard (`flint shard start orbc`). Never write a file of an OrbCode project with an ITE workflow in another way.
+**The root note gives the program, not the folder.** The ITE finds each program by its form: each Mesh note with `format: steel-program/1` is a root note. The name of the program is the file stem with no first `(<Type words>) ` prefix: `(Program) Club Launch Night` gives `Club Launch Night`, and a root note `(Product) Flint` gives `Flint`. A new part goes to `Map/` in the folder of the root note, with the name `<stem of the root note> . (<Type>) <Title>.md`. Two root notes with one name give the finding `format` on both, and neither loads.
 
 ## The Root Note
 
@@ -164,7 +169,7 @@ An OrbCode project (`Mesh/OrbCode/(OrbCode Project) <Name>/`) is a program of th
 | `types` | The type names that the program uses, for example `[Goal, Milestone, Risk]` |
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
 | `main-map` | Optional: `max-children` and `coverage-ignore` (see The Main Map) |
-| `codebase`, `product-root` | Software only: the codebase and the folder of the product |
+| `codebase`, `product-root` | Software only: the codebase and the folder of the product that holds `orbtest/` (see Software Programs) |
 | `template`, `authors`, `orbh-sessions` | The Flint conventions |
 
 A living system adds one fenced `system` block to the body (see Living Systems).
@@ -294,7 +299,7 @@ questions: ["Who does what on the night?"]
 
 ## The View File
 
-A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/Views/(View) <Title>.md`, in the format `steel-view/1`. It has the grammar of an OrbCode view. The form, the eight builtin shapes, and one complete example are in [[tmp-ite-view-v0.1]].
+A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/Views/(View) <Title>.md`, in the format `steel-view/1`. The form, the eight builtin shapes, and one complete example are in [[tmp-ite-view-v0.1]].
 
 | Field | Value |
 |---|---|
@@ -316,9 +321,21 @@ The body:
 1. One H1: the name of the view. The prose after it answers the question in one to three sentences.
 2. Each H2 to H6 heading ends with a stable id. A node that stands for a part has the part id as its heading id: `## Doors open {#66d9ddb1-384a-46d7-ae27-1d4061868b88}`. A node with no part has a slug id: `## Set up the hall {#set-up}`, and the check says so (`anchor-missing`).
 3. Depth is containment. A section with one fenced block `node` is a node. A section with no block is a group, or the node of its part.
-4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). The heading id names the part, so the block names no part.
+4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). A node with a slug id can also have `part` (the id of the part where a step runs: see The Anchor of a Step), `code-refs`, `stories`, and `criteria` (see Software Programs), and `reviewed` (only the review writes it: see The Review).
+5. A node of a part names no part and holds no code: its heading id names the part, and the part holds its code and its stories. `part`, `code-refs`, `stories`, or `criteria` in the block of a node of a part is the error `format`: "The part holds its code and its stories."
 
 The nodes of a view are its headings, and each part of its `slice` that has no heading (with the title and the prose of the part). A node of a part shows the type, the note, the fields, and the grounding of the part: the grounding comes from the claims about the part. The prose of the view stays under the part id, so it survives each refactor of the main map.
+
+### Lifetime and Curation
+
+| Field | Values | Rule |
+|---|---|---|
+| `lifetime` | `draft`, `kept` | A new view is `draft`. A reshape keeps the value of the view. `kept` means that the person wants to keep the view true: the check gives `never-reviewed` for each node of a kept view that has code or stories and no review. |
+| `curation` | `proposed`, `accepted` | An agent always writes `proposed`. `accepted` means that the person read the view and agrees with it. The acceptance blocks nothing. An apply keeps the curation of the view. |
+
+- **Only a person decides `kept` and `accepted`**: `flint ite view set "<view>" --lifetime kept --curation accepted`, or Keep and Accept in the Workbench. Only these two keys of the file change. An agent runs `flint ite view set` only when the person asks for it in the session.
+- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses a `kept` view with `refused-state` (exit 2): "Set the view to draft first." An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
+- `History/` keeps the newest 5 replaced forms of each view. An apply, a restore, and a remove write one. A direct edit of a person (with Undo) writes none.
 
 ## Maps
 
@@ -349,13 +366,14 @@ Each link of the model names one **element** with one form, the **reference**. S
 |---|---|
 | A part | `<part id>` (no prefix) |
 | A claim | `claim:<id>` |
-| A mirror claim | `claim:mirror:<reference of the mirrored process or node>`, for example `claim:mirror:process:ship-flint#ship` |
+| A mirror claim | `claim:mirror:<reference of the mirrored process or node>`, for example `claim:mirror:process:ship-flint#ship`. The review of a node: `claim:mirror:<part id>` or `claim:mirror:view:<view id>#<node id>` |
 | A process | `process:<id>` |
 | A node of an instruction map | `process:<id>#<node>` |
 | The runs of a process (data that the core makes) | `process:<id>#runs` |
 | A piece of data | `data:<id>` |
 | An output of a piece of data | `data:<id>#<output>`, for example `data:rsvps#count` or `data:budget#total:planned` |
 | A view | `view:<id>` |
+| A node of a view | `view:<view id>#<node id>` |
 
 1. **The fields that take references:** `about` (claims, processes, steps, data), `reads` (claims, processes, steps), `writes` (processes and steps; data only), and `from` (data; data only). `fixed-by` names processes (`send-reminders` or `process:send-reminders`). `effect` and `precondition` name claim ids.
 2. **Quote a reference in YAML** when it has a `:` or a `#`: `reads: ["data:rsvps#count", "data:rsvp-target"]`.
@@ -482,7 +500,7 @@ Prose for a person: why it matters, and what the check reads.
 4. **A claim reads data.** `reads` names the data that the check reads, and the core gives the values to the check as `STEEL_DATA`. Two claims that read one source read one piece of data: the source is pulled one time. The check still judges with its own code.
 5. **Four forms.** `by: code` runs its own code (`runtime`, `entry`). `by: agent` starts one Orbh session with `prompt` (and `target`, optional), and the agent reports through the door. `by: person` gives `pending`, and Steel asks the person the `question` (`who`, optional: `person:<Name>`). `by: none`: the claim has no check yet; it is `unchecked`, and the brief lists it in `unwatched`.
 6. **A `will` claim** has `p` (0 to 1) and `resolves` (a date; quote it, so that YAML keeps it as text).
-7. **A mirror is a claim too.** Each `source` with a `hash` (of a step, of an instruction map, or of a process) is the mirror claim `claim:mirror:<reference>` (`mode: is`, `by: core`). The core computes its state at each read: `holds` when the hash of the source now is the `hash`, else `fails` with both hashes. Its `fixed-by` is the `redraw` of the source (a process that draws the mirror again, for example `redraw-mirror`), else the action `map-update`. It is listed with the claims, it has no file, and its results are not logged. "The code of each part exists" (`code-refs` of an OrbCode project) is an `is` claim whose check reads the codebase.
+7. **A mirror is a claim too.** Each `source` with a `hash` (of a step, of an instruction map, or of a process) is the mirror claim `claim:mirror:<reference>` (`mode: is`, `by: core`). The core computes its state at each read: `holds` when the hash of the source now is the `hash`, else `fails` with both hashes. Its `fixed-by` is the `redraw` of the source (a process that draws the mirror again, for example `redraw-mirror`), else the action `map-update`. It is listed with the claims, it has no file, and its results are not logged. "The code of each part exists" (`code-refs` of a software program) is an `is` claim whose check reads the codebase. Each review of a node is a mirror claim too (see The Review).
 
 **The code of a check.** The core runs `entry` in the claim folder (`node`, `python3`, or the file) with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_CLAIM_ID`, `STEEL_PARTS` (JSON: the part ids of `about`), `STEEL_ABOUT` (JSON: each reference of `about`), `STEEL_DATA` (JSON: `{ "<reference as written>": { ref, mode, state, at, age_s, outputs, error? } }` for each reference of `reads`; for `data:<id>#<output>`, `outputs` holds only that output), `STEEL_INPUTS` (JSON: the inputs of the run when the check runs for a step, else `{}`), `STEEL_RUN_ID` (the run, or empty), `STEEL_NODE` (the node of the run, or empty), and the values of `flint.env` and `flint.env.local`, at most `timeout`. Each output line that is one JSON object is one result:
 
@@ -492,7 +510,7 @@ Prose for a person: why it matters, and what the check reads.
 
 **Before a check**, the core pulls each external data that the claim reads and that is old, when the trigger of that data is enabled on this machine. A check for a run (a precondition or an effect of a step) and the effect checks after a process run pull each external data that the claim reads, whatever its age, when its trigger is enabled. Else the check runs with the value that is there, and the value says its age. **A check that gets a value with the state `none`, `pending`, or `error` gives `error`** and names the value: it never judges with a default (an amount that was not pulled is not 0) or with the old value of a failed pull. A maker and a custom store follow the same rule for their inputs.
 
-With no `part`, the result is for the whole claim. A check of many parts prints one result for each part (the claim `code-refs` of an OrbCode project does). A line that is not valid is a problem of the check, and gives `error`. Test a check with `flint ite claim test "<program>" <claim>`: it runs the check once, prints each line and its problems, and writes nothing.
+With no `part`, the result is for the whole claim. A check of many parts prints one result for each part (the claim `code-refs` of a software program does). A line that is not valid is a problem of the check, and gives `error`. Test a check with `flint ite claim test "<program>" <claim>`: it runs the check once, prints each line and its problems, and writes nothing.
 
 **The meaning of a failure.** The mode says what must change:
 
@@ -504,7 +522,7 @@ With no `part`, the result is for the whole claim. A check of many parts prints 
 
 **The state of a claim** is computed, never stored. It comes from the newest result (of each part, when the results name parts; the claim takes the worst part state): `holds`, `fails`, `error`, `old` (older than `fresh-for`, or a value that it reads is old: the state names that data), `pending` (a person or an agent check waits), or `unchecked`. A `will` claim is `open` until `resolves`, then `came-true` or `came-false` from the first result after `resolves`, else `unresolved`.
 
-**The grounding of a part** comes from the claims about it: `holds` (each claim holds), `failing` (a claim fails or has an error), `old`, `partial`, `unchecked`, or `no-claim`. A group, a view, and a program add the counts of their parts.
+**The grounding of a part** comes from the claims about it: `holds` (each claim holds), `failing` (a claim fails or has an error), `old`, `partial`, `unchecked`, or `no-claim`. A review that fails makes the grounding `old`, not `failing`. A group, a view, and a program add the counts of their parts.
 
 **One door.** Each result comes in through one door: `flint ite claim report`, or the route `POST /api/steel/programs/<program>/claims/<claim>/results`. The door checks the claim, the part, and the state, and it records the actor: `person:<Name>`, `agent:<session id>`, `check:<claim>`, or `run:<run id>`. An agent or a person never writes a result into a file.
 
@@ -608,24 +626,24 @@ A person changes a view directly (the Workbench, or by hand). **An agent changes
 1. The candidate id is `<view-slug>-<UTC yyyymmdd-hhmmss>`. The view slug is the H1 in lower case, with each run of other characters than `a-z` and `0-9` replaced by one `-`.
 2. A new view: `view_id` is a new UUID, `id` is a second new UUID, `base_hash: null`.
 3. A reshape: `view_id` is the `id` of the view, `id` is a new UUID, and `base_hash` is the SHA-256 hex of the bytes of the view file (`shasum -a 256 "<view file>"`), computed before you read the view.
-4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate.
+4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate. `flint ite diff` names each changed node with the kinds of its change: `title`, `claim` (the text, or a field that is not a reference, for example `actor`), `contract` (`part`, `code-refs`, `stories`, or `criteria`), `links`, and `level`. `flint ite view --candidate <id>` shows the candidate as the view will show it, with the proof of each node, and `flint ite diff --candidate <id> --against-candidate <id>` compares two candidates of one view.
 5. The apply (`flint ite apply --candidate <id>`, or the Workbench) replaces the view only when the hash of the view file is `base_hash`, and writes the replaced form to `History/`. A conflict writes nothing. The apply and the discard keep the candidate file: they set `state: applied` or `state: discarded`.
 6. In an interactive session, apply only when the person agrees. In a headless session, never apply and never discard the candidate that you return.
 
 ## The Main Map
 
-The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it by zoom in the Workbench. The views of the program name the parts of the main map by their ids. An OrbCode project is a program of the template `software`, and its static map is its main map: the code is its sources.
+The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it by zoom in the Workbench. The views of the program name the parts of the main map by their ids. For a software program, the code is the sources of the parts (`code-refs`).
 
 ### The Tree
 
 - **The root is the root note.** Each part has one `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note.
 - **The 100% rule.** The children of a part together are the whole part: each source of the part belongs to one child. Nothing of the system is outside the tree, and nothing is in it two times.
 - **The size limit.** A level holds at most `max-children` parts (default 9). A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
-- **Relations are free, and they roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`, `artifact-refs` of OrbCode) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
-- **Coverage.** Software (a part of a type with `covers-files`, in an OrbCode project or a program with `codebase`): each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. A living system: each item of `boundary.inside` is covered when one of its `parts` names a part. Another program: the coverage is not computed.
+- **Relations are free, and they roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
+- **Coverage.** Software (a part of a type with `covers-files`, in a program with `codebase`): each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. A living system: each item of `boundary.inside` is covered when one of its `parts` names a part. Another program: the coverage is not computed.
 - **Views name parts by id.** A view node that stands for a part has the part id as its heading id. Each part lists the view nodes that look at it.
 
-The configuration is in the frontmatter of the root note (or of the OrbCode project file). Each key is optional:
+The configuration is in the frontmatter of the root note. Each key is optional:
 
 ```yaml
 main-map:
@@ -718,6 +736,184 @@ Each verb takes `--json`. `flint ite map <program>` with no verb gives the map: 
 | `parts-add` | 0 or 1 (the parent) | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
 
 The prompt of a job of a map action holds only the data: the level of the focus (the cards, the relations, the findings) and the coverage gaps (at most 200 paths). The workflow of the action holds the steps, the form of each operation, and the last step: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`.
+
+## Software Programs
+
+A **software program** is a program of the template `software`: the model of a software product. Its parts are the systems, the modules, the features, and the data of the product (the types `system`, `module`, `feature`, and `data` of this shard), and its views show the processes that run through the product. Each part and each view node can name the code with `code-refs` and the stories of Orbtest with `stories` and `criteria`. With these links, the core shows the **proof** of each node (does the product do what the node says?), and the **review** of each node (did the code change after a person or an agent compared the node with it?). The check after a task finds the nodes that a product task changed.
+
+### The Root Note and the Code
+
+The root note of a software program has two more fields:
+
+| Field | Value |
+|---|---|
+| `codebase` | A wikilink to a codebase marker: `"[[rf-cb-<slug>]]"`. The markers are in `Mesh/Metadata/References/Codebases/`. The `name` of the marker is the codebase name. `flint resolve codebase <name>` prints its path on this machine on the first line. Each `code-refs` path is relative to this path. |
+| `product-root` | The folder that holds `orbtest/`, relative to the codebase. The value is `"."` when it is the codebase root. The `--root` of each `flint orbtest` command is the codebase path joined with `product-root`. Omit the field when the product has no `orbtest/` folder: then the program has no proof. |
+
+When the product has no codebase marker, the person adds the reference: `flint reference codebase "<Name>" <path>`, then `flint sync` (the sync writes the marker). When the marker exists but its path is not known on this machine, the person runs `flint fulfill codebase "<Name>" <path>`. `flint reference list` shows each codebase name and its state.
+
+### The Grammar of `code-refs`
+
+A part has `code-refs` in its frontmatter. A view node with a slug id has `code-refs` in its block. A view node of a part has none: the part holds its code.
+
+```
+"src/auth/"                            # a folder of the codebase of the program
+"src/auth/session.ts"                  # a file
+"src/auth/session.ts#SessionManager"   # a symbol in a file
+"src/auth/session.ts:L20-L80"          # a line range: a weak anchor
+"@Steel/apps/steel-cli/src/serve.ts"   # a file of another codebase of the Flint
+```
+
+- A path with no `@` is relative to the codebase of the program. Each path must exist: else the finding `code-ref-missing`.
+- `@<Codebase name>/<path>` names a path in another codebase of the Flint. The name after `@` is the `name` of its codebase marker (`flint reference list` shows the names), for example `@Steel/`. Use it when one part of the answer is in another repository.
+- A path that leaves the codebase (`../plates/...`, or an absolute path) gives `code-ref-missing`. Use `@<Codebase name>/<path>` in its place.
+- A symbol (`#Name`) is a name that the file declares: a function, a class, a type, or a constant. The check only looks for the name as a whole word in the file, so a symbol is a weak anchor. Prefer the file when the whole file holds the claim. Do not use a line range in a kept view.
+- **Name files, not large folders.** A code-ref matches each spec of Orbtest whose `components` path is equal to it, inside it, or a parent of it. A broad code-ref (a large folder such as `packages/flint/src/`) gives the person hundreds of related cases that tell nothing. After a review, each change of a file in that folder also gives `review-due`. Name the one file or the small folder that holds the claim of the node.
+- The coverage of the main map reads the `code-refs` of each part of a type with `covers-files` (see The Main Map).
+
+### Stories and Criteria
+
+The contract of a product is in its Orbtest stories (`orbtest/stories/`). A part has `stories` and `criteria` in its frontmatter. A view node with a slug id has them in its block.
+
+| Field | Value |
+|---|---|
+| `stories` | Orbtest story ids, for example `[setup.steps]` |
+| `criteria` | Criterion addresses `<story-id>#<index>`, 0-based, for example `[setup.steps#0, setup.steps#3]`. Use it only when the node needs some criteria of a story, not all. An explicit list, also an empty list, replaces the criteria of the `stories`. An address gives its story, so the story need not be in `stories`. |
+
+Take each id and each address from `flint orbtest story list --root <product root>` and `flint orbtest story show <id> --root <product root>`. Never invent a story id or a criterion address: an unknown id gives `story-missing` (an error). The ITE writes no story, no spec, and no case: when a node needs a story that does not exist, say the gap in the prose of the node, and tell the person. The Orbtest shard adds stories.
+
+### The Anchor of a Step
+
+A step of a process view names the part where it runs with `part`, and who acts with `actor`. The anchor joins the view and the main map: the Workbench lights the part of each step on the main map, and the card of a part lists the steps that run in it.
+
+````markdown
+### Create the first Flint {#create-the-first-flint}
+
+A Flint is one folder for notes and for shards. The person runs one command with a name for the Flint.
+
+```node
+kind: step
+actor: "Person"
+part: 6b0e2f4c-1d3a-4c5b-9e8f-7a6d5c4b3a21
+action: 'flint create "<name>"'
+next: [check-the-inputs]
+criteria: [setup.steps#2]
+```
+````
+
+1. **The value of `part`** is the id of one part of the same program (its frontmatter `id`). Take it from `flint ite map "<program>" --json`. A `part` that names no part of the program gives `anchor-missing`.
+2. **Only a node with a slug id has `part`.** A node that stands for a part has the part id as its heading id and needs no `part`. Use the part id as the heading id when the node is the part (a node of a `tree` or a `layers` view). Use a slug id and `part` when the node is a step that runs in the part: many steps can run in one part.
+3. **The part owns the description of the capability.** The step says only what occurs at this moment of the process. Do not copy the rules and the edge cases of the part into the step.
+4. **Name the part that holds the whole step.** Usually this is a feature. A coarse step can name a module or a system. A step that only keeps state can name a data part.
+5. **Select the part by its text, not only by its code.** `flint ite view "<view>" --json` gives each step with no `part` its proposed parts (`parts`, each with `source: proposed`, at most 5, the nearest first; `parts_total` counts each match): the parts whose `code-refs` match a code-ref of the step. A proposal is not a claim. Read the note of the part. Name it only when its text says what the step does.
+6. **Never invent a part.** When the main map has no part for a step, leave `part` out, and name the gap in your result. The Workbench shows the step with "No part on the map" and its proposed parts. The main map changes only through a map change. A part of another program is not a part of this program, also when the two programs have one codebase: leave `part` out, and name that part and its program in your result.
+7. **The part owns the wide anchor to the code.** A step keeps its own `code-refs` only when its claim is narrower than the part: one file or one symbol.
+8. **`actor`** is who acts at this moment, as a short name that a person reads: `Person` when the person acts, the name of the product (`Flint`) when the product acts, or the name of another actor (`Agent`, `Git`). Write it when the prose says who acts. Use one name for one actor in the whole view: the strip of the Workbench draws one lane for each name.
+9. **Both fields are in the review.** `part` is a reference: it is in the `contract_hash`. `actor` is a field of the text: it is in the `meaning_hash`. When a candidate adds or changes one of them, remove the `reviewed` mapping of that node.
+
+### The Processes of a Software Program
+
+A process of a software product is a view of the map `flow` or `streams`. The Workbench lists each such view under Processes, with its proof dot and its count of steps. "Show on map" lights the parts of the steps on the main map with the numbers of the steps and the path, and the strip below the main map shows the steps in order, in lanes by actor (Who acts) or by system (Systems).
+
+| Map | It fits when | How to write it |
+|---|---|---|
+| `flow` | The question is "how does X happen?", and the answer is one sequence | H2 nodes of `kind: step` in the order of the process, each with `next` to the step that follows, and with its `part` and `actor`. A `kind: decision` node has two or more `next`. A step that happens one time before the process (a setup) is a step at the start, with `next` to the first step; say "one time" in its prose. Use `uses` only for a node that is not a step. |
+| `streams` | The answer has two or more sequences with separate purposes: "split the flow into streams", "what does each role do?" | One H2 for each stream: a group, or a node of `kind: stream`. H3 steps inside, with `next` in each stream, and with their `part` and `actor`. A `next` to a step of another stream shows a hand-over. |
+| `layers` | The question is "how is it built?" | One H2 group for each layer, the layer nearest to the person first. H3 nodes of the parts (the part id as the heading id) inside, with `uses` to the layers below. |
+| `tree` | The question is "what are the parts of X?" | The main map is the tree of the parts. Write a tree view only for another tree than the main map. |
+| `table` | The question compares items on the same properties | One H2 node for each item, with the same fields in each block and the same order of sentences in each prose |
+
+Each view ends with one node of `kind: note` that names what the view leaves out (quality rule 10). A node of the kind `note` with no story and no criterion has no proof, and it gets no `no-contract`.
+
+**The quality rules of a software program** add to the quality rules of a program:
+
+1. **Anchor each claim.** Each part and each view node that makes a claim about the product has `code-refs` or `stories`, and when you can, both. Name files, not large folders. Only a node of `kind: note` and a group have neither.
+2. **Anchor each step of a process to the main map** with `part` and `actor` (see The Anchor of a Step).
+3. **Prefer stories to criteria.** Name `criteria` only when the node needs some criteria of a story, not all.
+4. **The words of the person, not of the code.** A command that the person types, such as `flint setup`, is a word of the person. A function, a file, a package, a type, or a variable of the code is not: put it in `code-refs` only.
+5. **Tell the truth about gaps.** When a node has no story, say so in its prose: "No story proves this." Never invent a story id, a criterion address, a part, or a path.
+
+### The Proof of a Node
+
+The proof says if the product does what a node says, from the coverage of Orbtest. **The core computes the proof at each read, as it computes the grounding. Never write it into a file.** The proof is not a claim: a claim gives `holds` or `fails`, and the proof has six states.
+
+1. **The criteria of a node** are its `criteria`; an explicit list, also an empty list, wins. Else they are each criterion of each of its `stories`. A part takes them from its frontmatter. A view node with a slug id takes them from its block. A view node of a part has the proof of the part.
+2. **The state of a criterion** comes from Orbtest as it is: `proven`, `failing`, `stale`, `gap`, `not-run`, or `waived`.
+3. **The proof of a node**, in this order: no criterion: `no-contract`; else a criterion is `failing`: `failing`; else a criterion is `stale`: `stale`; else each criterion is `proven`: `proven`; else one criterion or more is `proven`: `partial`; else `unproven`. An address that Orbtest does not know counts in the total only. A node of the kind `note` with no story and no criterion has no proof.
+4. **A part with children** has its own proof, and the proof below: the union of the criteria of its subtree, with the count of the parts below that have no criterion. A closed card of the main map shows the proof below. A group of a view takes the union of its nodes.
+5. **Related cases never prove a node.** They are the cases of each spec whose `components` path matches a `code-refs` path of the node, only for the paths of the codebase of the program: at most the 20 nearest, with the total. Only the link from a node to a story, a criterion, and a case gives proof. A node with hundreds of related cases has a code-ref that is too broad.
+6. **The report of a case** opens in the Workbench, in the section Proof of the node.
+7. **The program needs `product-root`.** With no `product-root`, the program has no proof. When the product root is outside the codebase, or its Orbtest definitions do not load, the finding is `proof-unavailable`.
+
+The Workbench shows the proof as a dot on each card of the main map and of a view, beside the grounding: proven, partial, unproven, failing, stale, or no-contract. `flint ite proof "<program>"` gives the proof of each part and each view node; `flint ite proof "<program>" <ref>` gives the criteria, the cases, and the related cases of one node. A claim can read the proof: its check runs `flint ite proof "<program id>" --json`.
+
+### The Review
+
+A review says that a person or an agent compared a node with its code at one commit, and found the text of the node true. The anchor is one YAML flow mapping under the key `reviewed`: in the frontmatter of a part, or in the `node` block of a view node with a slug id. A view node of a part has the review of the part.
+
+```yaml
+reviewed: { commit: 19ad162cf, at: "2026-10-08T22:10:00Z", meaning_hash: "<sha256>", contract_hash: "<sha256>", by: "person:Nathan", commits: { Steel: 243fbb2 } }
+```
+
+- `commit` is the HEAD of the codebase of the program at the review. `commits` gives one commit for each other codebase that a `@<Codebase>/` code-ref names. `by` is `person:<Name>` or `agent:<session id>`.
+- `meaning_hash` is the hash of the text of the node and of its fields that are not references (for a view node: `kind`, `action`, `result`, `actor`, and the others). `contract_hash` is the hash of its references: `code-refs`, `stories`, `criteria`, and `part`. The place and the title of the node are in no hash, so a move keeps the anchor.
+- **Only the review writes `reviewed`**: `flint ite review`, or Mark as reviewed in the Workbench. Never write or edit a value of `reviewed` with your own tools. A candidate copies the mapping of a node unchanged when the text and the references of the node do not change. When they change, the candidate removes the mapping of that node.
+
+The state of a review is computed at each read, never written:
+
+| State | When | The review mirror claim |
+|---|---|---|
+| `reviewed` | Nothing changed after the anchor | `holds` |
+| `review-due` | The text of the node changed after the review ("The text changed after the review."); its references changed ("The references changed after the review."); a file under a code-ref changed after `commit` (committed, staged, unstaged, or a new file); a referenced story changed after `commit`; or, for another codebase, its commit is missing from `commits` or its files changed. Each reason is listed, with at most 20 changed files. | `fails` |
+| `anchor-unknown` | The codebase does not resolve, it is not a Git repository, or Git does not have the commit (for example after a rewrite of the history) | `error` |
+| `never-reviewed` | A view node with a slug id in a `kept` view, with `code-refs` or `stories`, and no anchor. A finding only: no claim. | — |
+
+A part with no anchor has no review state and no finding.
+
+**The review is a mirror claim.** Each node with an anchor is the claim `claim:mirror:<reference>`: `claim:mirror:<part id>` for a part, or `claim:mirror:view:<view id>#<node id>` for a view node. Its mode is `is`, it is `by: core`, and it has no file and no log. A review that fails gives the finding `review-due` (a warning), not `claim-fails`: a review is necessary, but the text is not shown false. It makes the grounding of its part `old`, not `failing`. The brief of a living system lists it in `drift`.
+
+**`review-due` does not mean that the node is false.** Compare the text of the node with the diff of its code after the anchor: `git -C "<codebase path>" diff <reviewed.commit> -- <code-ref path>` (for a code-ref of another codebase, use that codebase and its commit in `commits`), and read each changed story with `flint orbtest story show <id> --root <product root>`. The claim is the text, not the names in the code: a new name of a function or a change of its inner logic often keeps the text true. `flint ite review "<program>" <ref>... --show` gives the state, the anchor, the reasons, and the changed files of each node. When the text is still true, review the node: `flint ite review "<program>" <ref>...`. When it is not true, change the node: a candidate for a view node, or a map change (`edit`) for a part. The action `review` does this work ([[hwkfl-ite-review]] / [[wkfl-ite-review]]). Review only a node that you compared with its code.
+
+### The Check After a Task
+
+`flint ite check [<program>] --paths <path...> [--checkout <dir>] [--json]` gives the findings of each part and each view that names one of the paths. It writes nothing. At the end of a product task, follow [[sk-ite-check_after_task]].
+
+1. A path is absolute, or relative to the codebase of a program. A relative path that starts with `..` is dropped. Give absolute paths: then each path matches only the code of its own repository.
+2. A path matches a code-ref when both are in one repository, and one path is the other or holds it at a `/` boundary. No glob.
+3. A code-ref of a part that matches selects the part, with the findings of the part. A code-ref of a view node that matches selects the whole view, with all the findings of the view.
+4. The findings: `review-due`, `anchor-unknown`, `never-reviewed`, `code-ref-missing`, `story-missing`, `no-contract`, `anchor-missing`, and `anchor-none`.
+5. When no part and no view names a path, the command prints `No part or view names <paths>. Nothing to check.` and exits 0. Exit 1: a finding of the level error. Exit 2: a refusal (an unknown program, or a `--checkout` that is not a worktree of the repository or that has a link that leaves it).
+6. `--checkout <dir>` reads the code and the Orbtest definitions of a worktree of the same repository, in place of the checkout of the codebase. The cases of a checkout that is not the primary checkout have no report.
+
+The text output gives, for each program, each selected part and view with `✓ no findings`, or one line for each finding (`<mark> <level> <code>  <detail>`), then `N part(s), M view(s): E error, W warning, N note`. The check is an aid: it never blocks a landing or a release.
+
+### The Findings of a Software Program
+
+`flint ite check "<program>"` gives these findings with the other findings of the program. A software program with no anchor and no story gives no new warning.
+
+| Code | Level | Meaning |
+|---|---|---|
+| `code-ref-missing` | warning | A `code-refs` path or symbol of a part or of a view node does not exist, a path leaves its codebase, or the codebase after `@` does not resolve |
+| `story-missing` | error | A story id or a criterion address of a part or of a view node does not exist in Orbtest, or an address is not canonical |
+| `no-contract` | note | A view node with a slug id names no story and no criterion, and it is not of the kind `note` |
+| `proof-unavailable` | warning | The program has `product-root`, but the product root is outside the codebase, or its Orbtest definitions do not load |
+| `review-due` | warning | The text, the references, the referenced code, or the referenced stories of a node changed after its review |
+| `anchor-unknown` | warning | The codebase of a review does not resolve, or Git does not have its commit |
+| `never-reviewed` | warning | A node of a kept view has code or stories, and no review |
+| `anchor-missing` | warning | A view node names no part of the main map, or a `part` names no part of the program |
+| `anchor-none` | note | A view node has no part (a slug heading id) |
+
+### The Commands of a Software Program
+
+| Command | Result | Writes |
+|---|---|---|
+| `flint ite proof "<program>" [<ref>] [--candidate <id>] [--checkout <dir>]` | With no `<ref>`: each part and each view node with its proof and its counts. With a `<ref>` (a part id, or `view:<view id>#<node id>`): its criteria with their states, its cases, its tasks, and its related cases with the total | Nothing |
+| `flint ite review "<program>" <ref>... [--commit <sha>] [--show]` | Writes the anchor `reviewed` of each node: a part id, `view:<view id>#<node id>`, or `view:<view id>` (each node of the view that has a block). The default commit is the HEAD of the codebase. It refuses (exit 2) a node with no `code-refs` and no `stories` or a block that does not parse (`invalid-input`), a file that changed during the write (`changed`: run it again), and a codebase that is not a Git repository (`unavailable`). With `--show`, it writes nothing and prints the review of each node: its state, its anchor, its reasons, its changed files, and its changed stories. In an Orbh session the actor is `agent:<session id>`, and the review adds one activity record. | The frontmatter key `reviewed` of a part, or the block lines of a view node; nothing with `--show` |
+| `flint ite check [<program>] --paths <path...> [--checkout <dir>]` | The check after a task | Nothing |
+| `flint ite view --candidate <id>` | The document of a candidate as the view will show it, with the proof of each node | Nothing |
+| `flint ite diff --candidate <id> --against-candidate <id>` | The difference of two candidates of one view | Nothing |
+
+The Orbtest commands that an agent reads (each with `--root <product root>`): `flint orbtest story list`, `flint orbtest story show <id>`, `flint orbtest coverage --json`, and `flint orbtest behaviour list --json`. The `components` of a spec are in the frontmatter of `orbtest/behaviour/specs/<spec-id>.md`.
 
 ## Instruction Maps and Runs
 
@@ -991,10 +1187,16 @@ The claims, the data, the processes, the triggers, and the runs of a living syst
 | `flint ite view <view>` | One view, joined | Nothing |
 | `flint ite view history <view>` | The saved forms of one view, the newest first | Nothing |
 | `flint ite view restore <view> --from <history id> [--base-hash <hash>]` | Restores a saved form; the current form goes to the history | The view, one history file |
-| `flint ite view remove <view> [--base-hash <hash>]` | Keeps the view in the history, then removes it and its candidates. A decision of a person. | One history file; it removes the view |
+| `flint ite view remove <view> [--base-hash <hash>]` | Keeps the view in the history, then removes it and its candidates. It refuses a `kept` view (exit 2). A decision of a person. | One history file; it removes the view |
+| `flint ite view set <view> [--lifetime draft\|kept] [--curation proposed\|accepted]` | Sets the lifetime and the curation of a view. A decision of a person. | The two keys of the view |
+| `flint ite view --candidate <id>` | The document of a candidate as the view will show it, with the proof of each node | Nothing |
 | `flint ite check [<program>]` | The findings of the main map, the views, the claims, the processes, the instruction maps, the data, and the references. Exit 1 for an error finding. It runs no check and no process. | Nothing |
 | `flint ite check --candidate <id>` | The findings of one candidate only. Exit 1 for an error finding. | Nothing |
+| `flint ite check [<program>] --paths <path...> [--checkout <dir>]` | The check after a task: the findings of each part and each view that names one of the paths (see The Check After a Task) | Nothing |
+| `flint ite proof <program> [<ref>]` | The proof of each part and each view node, or of one node (see The Proof of a Node) | Nothing |
+| `flint ite review <program> <ref>... [--commit <sha>] [--show]` | Reviews nodes against their code; `--show` only reads the review of each node (see The Review) | The anchor `reviewed` of each node, or nothing |
 | `flint ite diff [<view>] --candidate <id>` | The difference of a candidate and its view | Nothing |
+| `flint ite diff --candidate <id> --against-candidate <id>` | The difference of two candidates of one view | Nothing |
 | `flint ite apply [<view>] --candidate <id>` | Applies a candidate. A conflict writes nothing and exits 1. | The view, one history file, the candidate (`state: applied`) |
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
 | `flint ite claim list\|show\|check\|test\|report ...` | The claims of a program, Check now, the test of a check, and the one door of the results (see Claims and Checks) | The log, or nothing |
@@ -1012,7 +1214,7 @@ The claims, the data, the processes, the triggers, and the runs of a living syst
 | `flint ite agent show <session>` | One agent session with its jobs and the result of each job | Nothing |
 | `flint ite agent activity <session>` | The activity of one agent session, with the job of each record | Nothing |
 | `flint ite agent dock <session>`, `agent undock <session>` | Docks or undocks an agent session. A person only. | One dock record in the agent log |
-| `flint ite job <program> --action <id> [--session <id>] [--node <id>...] [--document <doc>] [--text "<text>"]` | Gives a job. With no `--session`, it starts a new agent session with the job. With `--session`, it gives the job to that agent session; a session that works refuses with `agent-busy`. `--template` and `--prompt` are the old names of `--action` and `--text`. | A resume of the session or a new session; one job record in the agent log |
+| `flint ite job <program> --action <id> [--session <id>] [--node <id>...] [--document <doc>] [--text "<text>"]` | Gives a job. With no `--session`, it starts a new agent session with the job. With `--session`, it gives the job to that agent session; a session that works refuses with `agent-busy`. | A resume of the session or a new session; one job record in the agent log |
 
 The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server.
 
@@ -1048,6 +1250,7 @@ The actions:
 | `process-add` | Add a process | — | [[hwkfl-ite-process_add]] / [[wkfl-ite-process_add]] | No |
 | `flow-add` | Add an instruction map | — | [[hwkfl-ite-flow_add]] / [[wkfl-ite-flow_add]] | No |
 | `revise` | Write a revision | Text | None: the prompt of the job gives the steps | Yes: a revision |
+| `review` | Review these nodes against their code | Nodes | [[hwkfl-ite-review]] / [[wkfl-ite-review]] | Only for a node that is not true: a candidate or a map change |
 
 `flint ite actions` gives the list of this machine. A headless agent session follows the headless workflow (`hwkfl-ite-<name>`). An interactive agent session follows the interactive workflow (`wkfl-ite-<name>`), and it can ask the person.
 
@@ -1101,6 +1304,8 @@ A program is for a person. A model that breaks these rules does not help that pe
 | [[wkfl-ite-claim_add]] | The person says what must be true about some parts, and wants one claim with a tested check |
 | [[wkfl-ite-process_add]] | The person names work that the program must be able to do: one process |
 | [[wkfl-ite-flow_add]] | The person names work that needs steps and decisions in order: one instruction map |
+| [[wkfl-ite-review]] | Nodes have `review-due`, or the person asks to compare nodes with their code |
+| [[sk-ite-check_after_task]] | A product task ends: check the parts and the views that name the changed files |
 | [[sk-ite-focus]] | Each workflow: show the person which nodes you work on |
 
 Each workflow has a headless form (`hwkfl-ite-<name>`) that a headless agent session follows for a job of its action, and an interactive form (`wkfl-ite-<name>`). The actions `free`, `update`, `explain`, `do`, and `revise` have no workflow: the prompt of the job gives the steps.

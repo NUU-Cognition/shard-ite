@@ -67,7 +67,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 3. When no part fits, `add` a new part of a type of the program, with the files, under the correct parent.
 4. **Overlaps**: a file that two leaves cover stays in one leaf only: `edit` the sources of the other leaf.
 5. **Missing sources** (`code-ref-missing`): `edit` the source to the path now, or remove it from the list.
-6. Do not cover a file that no person needs to see (a generated file, a lock file, a fixture). Name those files in the result: the person can add them to `main-map.coverage-ignore` of the root note (or of the OrbCode project file). `coverage-ignore` takes plain paths and globs: `**/test/` is a folder of that name at any depth, `**/package.json` is a file name at any depth, `*` does not cross `/`, `?` is one character, and `{a,b}` is one of the words.
+6. Do not cover a file that no person needs to see (a generated file, a lock file, a fixture). Name those files in the result: the person can add them to `main-map.coverage-ignore` of the root note. `coverage-ignore` takes plain paths and globs: `**/test/` is a folder of that name at any depth, `**/package.json` is a file name at any depth, `*` does not cross `/`, `?` is one character, and `{a,b}` is one of the words.
 7. **Only two leaves make an overlap.** A folder ref on a part that is not a leaf covers its files for the part and its ancestors, and makes no overlap.
 8. **A folder ref that makes an overlap becomes a list of files.** When the folder ref of a leaf covers a file that another leaf also covers, replace the folder ref with the list of the files that belong to that leaf.
 9. **A shared file can stay in the common ancestor.** A file that two or more leaves use can be a source of their common ancestor (a part that is not a leaf), not of each leaf.
@@ -90,8 +90,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 4. Read the preview of the output (`flint ite map change show "<program>" <change id> --json`): the tree after, `findings.added`, `files`, `dangling`, and `conflicts`.
    - The tree after must hold your plan. It must have no new finding of the level error.
    - When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times.
-5. When `flint ite map` has no verbs in the CLI (an older build), propose nothing. Keep the file of the operations, and say in the `summary` that the CLI has no map verbs, with the path of the file.
-6. Never apply the change. Once one change is proposed and its preview is correct, progress to the next stage.
+5. Never apply the change. Once one change is proposed and its preview is correct, progress to the next stage.
 
 ## Stage 5: Return the Result
 

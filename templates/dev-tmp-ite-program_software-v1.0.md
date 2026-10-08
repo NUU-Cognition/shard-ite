@@ -4,17 +4,17 @@ description: "The template software of a program: a software product: its system
 
 # Software
 
-A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this template.
+A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. The parts and the views name the code and the stories of Orbtest, so the Workbench shows the proof and the review of each node. See Software Programs of [[init-ite]].
 
 ## How to model a system of this kind
 
 You are an agent that models one system of the kind "Software" as a program of Steel. Follow these steps:
 
-1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`.
-2. Find the first level of the main map: at most 9 parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Propose them as one map change with `flint ite map change propose`. A person applies it.
+1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`. Give it `codebase` (a wikilink to the codebase marker `"[[rf-cb-<slug>]]"`) and, when the product has an `orbtest/` folder, `product-root` (the folder that holds it, relative to the codebase).
+2. Find the first level of the main map: at most 9 parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Give each part the `code-refs` of its code (name files, not large folders) and the `stories` of Orbtest that prove it. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below. A connection is a frontmatter key of a part, with a wikilink to the other part.
 4. Write each statement that must be true as a claim about its parts (`Steel/Programs/<Name>/Reality/<id>/claim.md`, [[tmp-ite-claim-v0.1]]), with a check that reads reality. When the work of the system runs in an order that a person or an agent follows, write it as the instruction map of a process ([[tmp-ite-instruction_map-v0.1]]): steps of a run are nodes of a map, not parts.
-5. Answer the questions below with views. Each view is one map for one question.
+5. Answer the questions below with views. Each view is one map for one question. A process of the product is a view of the map `flow` or `streams`: each step names the part where it runs with `part` and who acts with `actor` (see The Anchor of a Step of [[init-ite]]).
 
 Use only the types of this template. When a part fits no type, use the type `note` and tell the person.
 
@@ -56,7 +56,7 @@ Use only the types of this template. When a part fits no type, use the type `not
 format: steel-template/1
 id: software
 title: "Software"
-description: "A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An OrbCode project is a program of this template."
+description: "A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it."
 types: [system, module, feature, data, actor, step, decision, process, stream, note]
 connections: [next, uses, depends-on, owner, informs, mentions]
 views:

@@ -23,7 +23,7 @@ Change one view as a person asks, with no person in the session. The person revi
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Compute the `base_hash` before you read the file: `shasum -a 256 "<view file>"` (the first word). When it is not the `base_hash` of the prompt, the view changed after the start of the job: use the new hash, and say so in the `summary`.
-4. Read the view: `flint ite view <view id> --json` and the view file in full. For an OrbCode view, follow the workflow `hwkfl-orbc-reshape` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1` with `flint orbh session return --await`.
+4. Read the view: `flint ite view <view id> --json` and the view file in full. For a view of a software program, follow The Anchor of a Step of [[init-ite]]: give each step its `part` and its `actor`, and keep the `reviewed` mapping of each node whose text and references do not change.
 5. Say the change again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`.
 6. Once you know the change and the base hash, progress to the next stage.
 

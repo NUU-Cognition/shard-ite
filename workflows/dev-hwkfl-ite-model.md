@@ -23,7 +23,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]). With no node, focus on the top parts of the map. When the map is empty, you set the focus in Stage 4, step 3.
 2. Run `flint orbh session set phase reading`.
 3. Say the system again in one or two sentences: what it is, where it starts and ends, and who acts in it. When the boundary is not clear, select the reading that best helps the person, and keep it for the `summary`.
-4. Read the program: `flint ite map "<program>" --json` and the root note. Keep the parts, their types, their parents, and their links, and the `types` of the root note. For an OrbCode project (a program of the template `software` in `Mesh/OrbCode/`), stop and write nothing: return `No change:` with the change that you would make, and the next step "use the OrbCode shard, or a map action" (rule 6 of [[hinit-ite]]).
+4. Read the program: `flint ite map "<program>" --json` and the root note. Keep the parts, their types, their parents, and their links, and the `types` of the root note.
 5. Once you can say the system in one or two sentences, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -64,8 +64,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 6. Read the preview (`flint ite map change show "<program>" <change id> --json`): the tree after must hold your plan, with no new finding of the level error. When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times. Never apply the change.
 7. Write each link that starts at a part that exists now: `flint ite link "<program>" <from id> <to id> --relation <key>`. Set the other fields of a part that exists with `flint ite part set "<program>" <id> --field <key>=<value>` (never `title`, `kind`, or `parent`). A link of a new part waits for the apply: the part has no file yet, and `flint ite link` refuses it. Keep the count of the waiting links for the `summary`.
 8. When the root note has no text for a person, write it below the H1: what the system is, how to read the map, and what the map leaves out. Change no other line of the root note, and keep a `system` block when it has one.
-9. When `flint ite map change` is not a command of the CLI (an older build), propose nothing, and write no part file by hand. Keep the file of the operations, and say in the `summary` that the CLI has no map changes, with the path of the file.
-10. Once the change is proposed and each link of the parts that exist is written, progress to the next stage.
+9. Once the change is proposed and each link of the parts that exist is written, progress to the next stage.
 
 ## Stage 5: Check
 

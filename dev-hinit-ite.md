@@ -1,5 +1,5 @@
 ---
-description: "Headless: the rules of a headless agent session of the ITE: the orientation, one job at a time, the focus, the end of each job with return --await, and the result shape steel-result/1"
+description: "Headless: the rules of a headless agent session of the ITE: the orientation, one job at a time, the focus, the review of a node, the end of each job with return --await, and the result shape steel-result/1"
 required-reading:
   - "[[init-ite]]"
 ---
@@ -43,6 +43,7 @@ The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`
 | `map-refactor` | [[hwkfl-ite-map_refactor]] | One map change (one level to the size limit) |
 | `map-cover` | [[hwkfl-ite-map_cover]] | One map change (the sources of the gap files) |
 | `map-update` | [[hwkfl-ite-map_update]] | One map change (one part from its sources now) |
+| `review` | [[hwkfl-ite-review]] | The anchor of each node that is still true (`flint ite review`), and at most one candidate or one map change for the nodes that are not true |
 | `free`, `update`, `explain`, `do`, `revise` | None: the prompt of the job gives the steps | What the prompt of the job asks for. `explain` changes no file. |
 
 ## The Rules of a Headless Session
@@ -52,7 +53,7 @@ The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`
 3. **Ask no question during a job.** When the instructions are not clear, select the reading that best helps the person, and write that reading in the `summary`.
 4. **A view changes only through a candidate.** Never write a file in `Views/` or in `History/` of `Steel/Programs/<P>/`. Never apply a candidate, and never discard the candidate that you return. The person reviews it in the Workbench.
 5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. `flint ite part set` changes the prose and the fields that are not structure. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return.
-6. **Never change an OrbCode project, except through a map change.** A program of the template `software` in `Mesh/OrbCode/` changes only through the OrbCode shard, or through a map change of its main map that a person applies. For such a program, the workflows `model`, `ground`, `claim_add`, and `repair` name the change in the `summary` and write nothing. The `map-*` and `parts_add` workflows propose a map change.
+6. **Review only what you compared.** `flint ite review` writes the anchor `reviewed` of a node. Run it only for a node whose text you compared with the diff of its code and of its stories after the anchor, and found true ([[hwkfl-ite-review]], [[sk-ite-check_after_task]]). When you cannot decide, do not review the node: name it in the `summary` as "review-due, not decided". Never write or edit a `reviewed` mapping with your own tools. In a candidate, copy the mapping of a node unchanged when its text and its references do not change, and remove it when they change.
 7. **Claims and processes are files; results go through the door.** Start a new claim with `flint ite claim new`, a new process with `flint ite process new`, and a new instruction map with `flint ite flow new`: each command writes the file from its form and records you in the activity. Then write the rest of the file and its code: a claim with [[tmp-ite-claim-v0.1]], a process with [[tmp-ite-process-v0.1]], a map with [[tmp-ite-instruction_map-v0.1]], and a piece of data with [[tmp-ite-data-v0.1]]. Send each result with `flint ite claim check` or `flint ite claim report`. Never write the log by hand. Never write a value of data that a person decides (`value`, the rows of a native store) with your own tools: give such data `by: person` and a `question`, and the person writes it in Steel.
 8. **Never run code that you did not read.** A code check and a code process run their own code on this machine: read the entry first. Never run a process (`flint ite process run`) unless the prompt of the person asks for exactly that: a process can change the world. Never enable a trigger: only a person does. Never rename, archive, or remove a program or a view (`flint ite rename`, `archive`, `view remove`), unless the prompt of the person asks for exactly that.
 9. **Never keep a check, a process, or a reader that you did not test.** Test each code check that you write with `flint ite claim test "<program>" <claim>`, and run it one time (`flint ite claim check`) before you return. Test each code process that you write with `flint ite process test "<program>" <process>`. Test each reader or maker of data that you write with `flint ite data test "<program>" <id>`, and pull it one time (`flint ite data pull`).
@@ -92,6 +93,7 @@ Check each item. A job that skips an item gives the person a result that the Wor
 - [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows the state `proposed`, no conflict, and no new finding of the level error in the tree after.
 - [ ] Parts, claims, data, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, `claim-fixed-by`, `unknown-reference`, `data-cycle`, or `writes-external` for a part, a claim, a piece of data, or a map that you changed, and `flint ite flow show` gives no problem for a map that you changed.
 - [ ] Each code check that you wrote passed `flint ite claim test` and ran one time, and its claim holds, or its prose says why it fails.
+- [ ] A review: you compared each node that you reviewed with the diff of its code after the anchor, and `flint ite review` wrote its anchor. You reviewed no node that your candidate or your map change changes.
 - [ ] Each reader or maker of data that you wrote passed `flint ite data test` and was pulled one time, and `flint ite data list "<program>"` shows no problem for it.
 - [ ] A living system: you took the instruction from `flint ite prompt`, and you approved, refused, enabled, and applied nothing that the prompt of the person did not ask for.
 - [ ] The result is one line of JSON of the schema `steel-result/1`, and nothing else.

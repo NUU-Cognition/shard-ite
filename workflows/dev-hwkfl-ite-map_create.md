@@ -82,8 +82,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 4. Read the preview of the output (`flint ite map change show "<program>" <change id> --json`): the tree after, `findings.added`, `files`, `dangling`, and `conflicts`.
    - The tree after must hold your plan. It must have no new finding of the level error.
    - When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times.
-5. When `flint ite map` has no verbs in the CLI (an older build), propose nothing. Keep the file of the operations, and say in the `summary` that the CLI has no map verbs, with the path of the file.
-6. Never apply the change. Once one change is proposed and its preview is correct, progress to the next stage.
+5. Never apply the change. Once one change is proposed and its preview is correct, progress to the next stage.
 
 ## Stage 5: Return the Result
 

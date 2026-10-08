@@ -23,7 +23,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Set the focus: `flint ite focus <ids of the nodes of the focus, or of the top parts>` ([[sk-ite-focus]]).
 2. Say the question again in one sentence, in your words. When the question can have two meanings, ask the person one question to select the meaning. Ask no other question in this stage.
-3. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program (template `software` in `Mesh/OrbCode/`), use the workflow `view` of the OrbCode shard in place of this workflow.
+3. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a software program (template `software`), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[init-ite]]), and give each node with a slug id its `code-refs` and `stories`.
 4. Read the views that exist: `flint ite list` and `flint ite view <id>` for each view whose question is near. When a view already answers the question, show it to the person and propose [[wkfl-ite-reshape]] in place of a new view.
 5. Once you know the question and the parts that can answer it, progress to the next stage.
 
@@ -60,8 +60,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Run `flint ite diff --candidate <candidate-id> --json`. It reads the candidate as the view will be after the apply. Then run `flint ite check --candidate <candidate-id>`: it shows only the findings of the candidate and exits 1 for an error finding. `conflict` must be `false` and `new_view` must be `true`: the text form says "new view. The candidate can be applied." A conflict for a new view means that the name is taken: change the H1 and the candidate id.
 2. Read `candidate.findings` of the same JSON. Repair each finding of the level `error` or `warning` (`format`, `link-missing`, `ref-missing`: a heading id that names no part), and run the diff again.
-3. When `flint ite` is not a command of the CLI, check by reading: each heading has a unique id, each link names an id of the view, each block parses as YAML, each heading id that is a UUID is a part id of the map. Tell the person.
-4. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
+3. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
 
 ## Stage 6: Show the Candidate and Apply It
 

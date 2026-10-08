@@ -22,7 +22,7 @@ Give parts their claims, with no person in the session. The form is in Claims an
 
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
-3. Read the map (`flint ite map "<program>" --json`) and the claims (`flint ite claim list "<program>" --json`). For an OrbCode program, stop: return `No change:` with the next step "use the OrbCode shard and Orbtest" (rule 6 of [[hinit-ite]]).
+3. Read the map (`flint ite map "<program>" --json`) and the claims (`flint ite claim list "<program>" --json`).
 4. For each part, read its note and write its claim in one sentence, with its mode (`is`, `ought`, or `will`). Skip a part that makes no claim, and keep it for the `summary`.
 5. Once each selected part has its claim, progress to the next stage.
 
@@ -39,7 +39,7 @@ Give parts their claims, with no person in the session. The form is in Claims an
 ## Stage 3: Write and Check
 
 1. Run `flint orbh session set phase writing`.
-2. Make each claim with `flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--p <0 to 1> --resolves <YYYY-MM-DD>]`. Give it a short, readable `id` (`hall-booked`): the person reads it in the Workbench. Name the parts by their ids, never by their titles. Then complete `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]] (the prose, `fresh-for`, `fixed-by`), and write the code of its check in the same folder. Write each new piece of data first (`Steel/Programs/<program>/Data/<id>/data.md` and its reader or maker), test it with `flint ite data test "<program>" <id>`, pull it one time with `flint ite data pull "<program>" <id>`, and give the claim its `reads`. Never write a value that a person decides: give such data `by: person` and a `question`. When `flint ite claim new` is not a command of the CLI (an older build), write the whole file with the form.
+2. Make each claim with `flint ite claim new "<program>" <id> --about <part id>... --mode is|ought|will --by code|agent|person|none --title "<the claim in one sentence>" [--p <0 to 1> --resolves <YYYY-MM-DD>]`. Give it a short, readable `id` (`hall-booked`): the person reads it in the Workbench. Name the parts by their ids, never by their titles. Then complete `Steel/Programs/<program>/Reality/<id>/claim.md` with the form of [[tmp-ite-claim-v0.1]] (the prose, `fresh-for`, `fixed-by`), and write the code of its check in the same folder. Write each new piece of data first (`Steel/Programs/<program>/Data/<id>/data.md` and its reader or maker), test it with `flint ite data test "<program>" <id>`, pull it one time with `flint ite data pull "<program>" <id>`, and give the claim its `reads`. Never write a value that a person decides: give such data `by: person` and a `question`.
 3. Run `flint ite claim list "<program>"`, and repair each claim that shows a problem.
 4. Test each code check before you keep it: `flint ite claim test "<program>" <id>`. Never keep a check that you did not test.
 5. Run `flint orbh session set phase checking`. Run each code check one time: `flint ite claim check "<program>" <id> --json`. This step is required: before it, each new claim is `unchecked`, and the person sees no grounding. Take the counts of the `summary` from these checks, not from your own reading. Do not run an agent check or a person check: the person starts them in Steel.

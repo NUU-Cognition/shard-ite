@@ -24,7 +24,7 @@ The focus of this job: the selected parts.
 
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
-3. Read the map (`flint ite map "<program>" --json`) and the claims of the parts (`flint ite claim list "<program>" --part <id> --json` for each part). For an OrbCode program, stop: return `No change:` with the next step "use the OrbCode shard and Orbtest" (rule 6 of [[hinit-ite]]).
+3. Read the map (`flint ite map "<program>" --json`) and the claims of the parts (`flint ite claim list "<program>" --part <id> --json` for each part).
 4. Read the note of each part, and the sources that the note names.
 5. With no selected part, find the parts that the text of the person names in the map. When no part fits, stop: return `No change:` with the next step "add the part first (the action parts-add)". A claim names at least one part.
 6. When a claim of the parts already says what the text says, add no claim: return `No change:` with the id of that claim.

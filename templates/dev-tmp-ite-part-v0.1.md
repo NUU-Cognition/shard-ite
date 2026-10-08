@@ -9,8 +9,8 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
   `flint ite part add <program> --kind <type id> --title "<title>" [--parent <part>]` makes it with a map change:
   a person's change applies at once, an agent's change is a proposal that a person applies.
   Each change of the structure (the title, the type, the parent) is a map change. Never write a new part file,
-  a `parent`, or a `(Type)` word with your own tools. `flint ite part set` changes the prose, the claims, and the
-  fields that are not structure. Write a part by hand only when `flint ite` is not a command of your CLI.
+  a `parent`, or a `(Type)` word with your own tools. `flint ite part set` changes the prose and the
+  fields that are not structure.
   A note of another type (a Task, a Person) is a part when its `parent` names a part of the program: give it its
   parent with a map change (op move).
 
@@ -23,6 +23,8 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
   - The title starts with a word, not a number: a number after the (Type) word reads as the number of an artifact,
     as in "(Task) 1099 ...". Write "A full hall and 30 new members", not "80 guests".
   - The folder Map/ is the default home of a new part. A folder is for a person only: the membership is `parent`.
+  - The name starts with the stem of the root note: "<stem of the root note> . (<Type>) <Title>.md". A root note
+    with another type word or folder gives its own stem, for example "(Product) Flint . (Feature) Local Flint.md".
 
   FRONTMATTER CONTRACT. Replace the VALUES, keep the shapes. No comment in the frontmatter.
   - id: a new UUID v4 (uuidgen | tr A-Z a-z). It never changes. Each view heading, claim, process, step, run, state, and proposal
@@ -34,8 +36,15 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     program (`flint ite types`). Name a link only when it is true.
   - owner: the person or the role that answers for the part, as a wikilink. Omit it when nobody owns the part.
   - status: a short word as the person uses it: active, todo, in-progress, done, open, closed.
+  - SOFTWARE ONLY (a program with codebase, see Software Programs of init-ite):
+    code-refs: the paths of the code of the part, relative to the codebase: a file, a small folder (ends with /),
+    a symbol (path#Name), or a path of another codebase (@<Codebase name>/<path>). Name files, not large folders.
+    Each path must exist. The coverage reads them for a type with covers-files.
+    stories: Orbtest story ids. criteria: criterion addresses <story-id>#<index> (only some criteria of a story).
+    Take them from `flint orbtest story list --root <product root>`. Never invent them.
+    reviewed: the review anchor. Only `flint ite review` writes it. Never write or edit it.
   - template, authors, orbh-sessions: the Flint conventions.
-  - The part holds no grounding, no result, no finding, and no position. A command computes these facts.
+  - The part holds no grounding, no proof, no result, no finding, and no position. A command computes these facts.
   - The part has no field claims. A claim is a folder of Steel/Programs/<Name>/Reality/ that names the part in
     its `about` ([[tmp-ite-claim-v0.1]]). One claim can be about many parts, and one part can have many claims.
   - A part says what the system is. A step of an instruction map is not a part: it is a node of the map.md of a

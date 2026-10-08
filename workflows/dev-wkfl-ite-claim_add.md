@@ -21,7 +21,7 @@ Add one claim to a program: what must be true, about the selected parts, with it
 ## Stage 1: Read the Parts
 
 1. Set the focus: `flint ite focus <part ids>` ([[sk-ite-focus]]).
-2. Read the map (`flint ite map "<program>" --json`) and the claims of the parts (`flint ite claim list "<program>" --part <id>`). For an OrbCode program, tell the person to use the OrbCode shard and Orbtest, and stop.
+2. Read the map (`flint ite map "<program>" --json`) and the claims of the parts (`flint ite claim list "<program>" --part <id>`).
 3. Read the note of each part, and the sources that the note names.
 4. With no selected part, find the parts that the person names in the map. When no part fits, propose [[wkfl-ite-parts_add]] first: a claim names at least one part.
 5. When a claim of the parts already says the same thing, show it to the person, and ask: keep it, or add a new claim.

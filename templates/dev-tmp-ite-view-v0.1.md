@@ -40,7 +40,7 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   - The view holds no grounding, no result, no finding, no position, and no agent.
   - The H1 has none of the characters \ / : * ? " < > | # ^ [ ].
 
-  THE BODY (the grammar of OrbCode views)
+  THE BODY
   - One H1: the name of the view. The prose after it answers the question in one to three sentences.
   - Each H2 to H6 heading ends with a stable id. The id matches [a-z0-9]+(-[a-z0-9]+)* and is unique in the view.
   - A node that stands for a part has the PART ID as its heading id: "## Doors open {#66d9ddb1-384a-46d7-ae27-1d4061868b88}".
@@ -54,13 +54,20 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
 
   THE NODE BLOCK (each field is optional)
   - kind: the type id of the node (`flint ite types`). A node of a part takes the type of the part when it has no kind.
-  - The heading id names the part, so the block names no part.
-  - A process of Steel/Programs/<Name>/Reality/ checks a part. The node shows the grounding of its part.
+  - The heading id names the part, so the block of a node of a part names no part and holds no code.
+  - A claim of Steel/Programs/<Name>/Reality/ is about a part. The node shows the grounding and the proof of its part.
   - layer: the layer of the node, when it is not the layer of its type.
   - A key whose value is a list of node ids of this view is a relation: next, uses, blocks, informs, depends-on.
     A node id is a heading id: a part id or a slug.
   - inside (the id of the parent heading), actor (who acts, one name for one actor), action, result.
   - date (map timeline, ISO date), status (map board: the column).
+  - ONLY ON A NODE WITH A SLUG ID (a software program, see Software Programs of init-ite):
+    part: the id of the part where a step runs (from `flint ite map <program> --json`; never invented).
+    code-refs: the paths of the code that the node is about (a file, a small folder, a symbol; @<Codebase>/<path>).
+    stories: Orbtest story ids. criteria: criterion addresses <story-id>#<index> (only some criteria of a story).
+    reviewed: the review anchor. Only `flint ite review` writes it. In a reshape, copy it unchanged when the text
+    and the references of the node do not change; remove it when they change (part and actor count too).
+    On a node of a part these fields are the error format: the part holds its code and its stories.
 
   THE EIGHT BUILTIN SHAPES
   - flow: "how does X happen?" as one sequence. H2 steps with next; a decision has two next or more.
@@ -82,7 +89,9 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   - One idea for each node. A short title: two to six words.
   - The words of the person. Explain each word of the system at its first use.
   - Select, do not dump: five to fifteen nodes. Propose a split above 25. A slice selects too: keep it small.
-  - Anchor each claim: a node of a part with a process. Never invent a part id.
+  - Anchor each claim: a node of a part, or (software) a node with code-refs or stories. Never invent a part id,
+    a path, or a story id.
+  - Anchor each step of a process of a software program: part and actor (see The Anchor of a Step of init-ite).
   - Tell the truth about gaps: say in the prose when a node has no part, or its part has no process yet.
   - End with one node of kind note: what the view leaves out, and why.
 */

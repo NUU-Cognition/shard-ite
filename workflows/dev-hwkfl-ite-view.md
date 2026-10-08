@@ -23,7 +23,7 @@ Write one new candidate view that answers one question of a person, with no pers
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Say the question again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`. With selected nodes and no question, the question is "How do these parts work together?".
-4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For an OrbCode program, follow the workflow `hwkfl-orbc-view` of the OrbCode shard (`flint shard hstart orbc`), and return its result in the schema `steel-result/1` with `flint orbh session return --await`.
+4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a software program (template `software`), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[init-ite]]), and give each node with a slug id its `code-refs` and `stories`.
 5. Read the views that exist (`flint ite list --json`). When a view already answers the question, still write the new candidate, and name that view in the `summary`.
 6. Once you know the question and the parts that can answer it, progress to the next stage.
 
@@ -59,9 +59,8 @@ Write one new candidate view that answers one question of a person, with no pers
    - Read `candidate.findings`. Repair each finding of the level `error` or `warning` (`format`, `link-missing`, `ref-missing`: a heading id that names no part) in the candidate file, and run the diff again.
    - For a conflict (the name is taken), write the candidate again with another H1 and a new candidate id, discard the first candidate, and verify again.
 3. Do not return before step 2 passes. Say in the `summary` that the diff passed.
-4. When `flint ite` is not a command of the CLI, check by reading, and say so in the `summary`.
-5. When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of [[hinit-ite]]).
-6. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
+4. When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of [[hinit-ite]]).
+5. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
 
 ## Stage 6: Return the Result
 

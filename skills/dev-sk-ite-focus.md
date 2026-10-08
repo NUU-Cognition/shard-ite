@@ -26,7 +26,6 @@ The Workbench shows each live agent session as an orb on the nodes of its **focu
    The command writes the interface key `ite-focus` of this Orbh session (a comma-separated list). It changes no file of the program.
 4. When the work moves (a new stage, a new group of parts, a new node of a view), run step 3 again with the new ids. The last focus replaces the one before it.
 5. When a new part gets its id (after `flint ite part add`), you can add it to the focus, so that the person sees the new card with you on it.
-6. When `flint ite focus` is not a command of the CLI, run `flint orbh session set ite-focus "<id>,<id>"`. It writes the same key.
 
 # Rules
 

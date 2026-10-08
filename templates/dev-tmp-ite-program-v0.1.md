@@ -8,7 +8,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   The root note is the root of one program: the model of one system. A note of the Mesh is a part of the
   program when its `parent` chain reaches the root note.
   `flint ite create "<Name>" --template <id> --purpose "<text>"` makes it, and the folder Steel/Programs/<Name>/.
-  `flint ite templates` lists the templates. Write the root note by hand only when `flint ite` is not a command of your CLI.
+  `flint ite templates` lists the templates.
 
   THE FOLDERS OF A PROGRAM
     Mesh/Programs/(Program) <Name>/

@@ -22,7 +22,7 @@ Make the model true again, with no person in the session. For each claim that fa
 
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
-3. Read the claims (`flint ite claim list "<program>" --json`). For an OrbCode program, stop: return `No change:` with the next step "use the OrbCode shard and Orbtest" (rule 6 of [[hinit-ite]]).
+3. Read the claims (`flint ite claim list "<program>" --json`).
 4. For each claim that fails, has an error, or is old, read its newest results: `flint ite claim show "<program>" <claim> --json`.
 5. Run each old code check again: `flint ite claim check "<program>" <claim>`. A claim that holds again needs no repair.
 6. Once each claim has what its check saw, progress to the next stage.

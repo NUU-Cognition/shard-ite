@@ -35,7 +35,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 
 ## Stage 3: Select the Template and the Structure
 
-1. For a new program, run `flint ite templates`. Select the template whose types fit the parts: `process` for a process of a business, `event` for an event, `research` for research, `organisation` for a team, `general` when no other fits. An OrbCode project is a program of the template `software`: for a software product with a codebase, use the OrbCode shard. A program that exists keeps its types: the `types` of its root note. `flint ite types` gives the capabilities of each type (for example `container`, `dated`, `has-status`).
+1. For a new program, run `flint ite templates`. Select the template whose types fit the parts: `process` for a process of a business, `event` for an event, `research` for research, `organisation` for a team, `general` when no other fits. A software product with a codebase is a program of the template `software`: give its root note `codebase` and `product-root`, and give its parts `code-refs` and `stories` (see Software Programs of [[init-ite]]). A program that exists keeps its types: the `types` of its root note. `flint ite types` gives the capabilities of each type (for example `container`, `dated`, `has-status`).
 2. Give each candidate part one type of the program (for a new program, a type of the template). When no type fits, use `note`, and tell the person. Never invent a type: a new type is a type note that the person agrees to. Do not add a template or a type unless the person asks.
 3. Select, do not dump: keep 12 to 40 parts for a new map. Merge parts that say one idea. Remove parts that do not help a person see the system.
 4. Select the parents: the containers of the map, of a type with the capability `container` (a system holds steps, a milestone holds deliverables). A top part has the root note as its parent. A top level of 3 to 9 parts reads well.
@@ -64,8 +64,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 5. Show the person the preview: `flint ite map change show "<program>" <change id>` (the tree before and after, the files, and the new findings). Ask the person to apply the change in the Workbench (the review of the change), or with `flint ite map change apply "<program>" <change id>` in their own terminal. You cannot apply it: in an Orbh session the engine refuses an agent with `forbidden`. When the person wants a change, discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
 6. After the apply, write each link: `flint ite link "<program>" <from id> <to id> --relation <key>`. A link starts at a part that exists, so write the links only after the apply. Set `owner` and other fields that are not structure with `flint ite part set "<program>" <id> --field owner="[[<note>]]"`. `flint ite part set` refuses `title`, `kind`, and `parent`: change them with a map change.
 7. Write the text of the root note: what the system is, how to read the map, and what the map leaves out. Edit the body of the root note (the body only, below the H1). Keep its frontmatter, and keep a `system` block when it has one.
-8. When `flint ite map change` is not a command of the CLI (an older build), propose nothing, and write no part file by hand. Keep the file of the operations, and tell the person that the CLI has no map changes, with the path of the file.
-9. Once the person applied the change and each link is written, progress to the next stage.
+8. Once the person applied the change and each link is written, progress to the next stage.
 
 ## Stage 5: Check and Show
 
