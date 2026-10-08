@@ -11,13 +11,15 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   not enough: more than one actor, a decision, a loop, a branch, or a step that waits for a claim.
 
   Steps are not parts. The main map says what the system is; an instruction map says how it moves. A step names
-  the parts that it uses by their ids (parts). Steel draws each map itself: no view names a map.
+  the elements that it acts on with about (references: a part id, process:<id>, data:<id>). Each node is an
+  element too (process:<id>#<node>): a claim can be about it, and a process can keep it up to date. Steel draws
+  each map itself: no view names a map.
 
   THE GRAMMAR (the grammar of a view file)
   - The frontmatter: format "steel-flow/1"; entry (the id of the first node); exits (the ids of the nodes where a
     run ends); inputs (a list of { name, kind, required?, prompt? }; kind: text | number | boolean | choice |
-    json); source (only for an external map: { ref: "[[<note>]]", hash } or { path: "@<Codebase>/<path>", hash }
-    or { command: "<line>" }).
+    json | date | money); source (only for an external map: { ref: "[[<note>]]", hash, redraw? } or
+    { path: "@<Codebase>/<path>", hash, redraw? } or { command: "<line>" }).
   - One H1: the title. The prose after it says what the map does, in one to three sentences.
   - One H2 for each node: "## Title {#id}" (the id is a lower-case slug), the instruction for a person under it,
     and one fenced block whose info word is the kind of the node.
@@ -26,7 +28,9 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   - step: does ({ process: <id> }, or inline { by: person | agent, instruction: "...", target? }), next ([one
     id]; none for an exit), run (auto | manual), inputs ({ <name>: "<value>" }), outputs (a list of fields, for
     an inline step), precondition (claim ids), effect (claim ids), retry ({ max, wait }), on-fail (a node id),
-    timeout, source (a mirrored step), parts (part ids).
+    timeout, source (a mirrored step: { ref | path | command, hash?, redraw? }), about (references), reads (the
+    data that the step reads), writes (the native data that the step may write). A node id runs is not allowed:
+    process:<id>#runs is the data of the runs.
   - decision: question, by (person | agent), outcomes ({ "<outcome>": <node id> }).
   - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, event: <hook id>; timeout; next.
   - parallel: next: [<id>, <id>, ...] (two or more).
@@ -43,6 +47,12 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   THE MODES (counted, never written): a step is mirrored when it has source or does a process with source, else
   native. A map with source in its frontmatter is external: each node is mirrored, and the map is only for view.
   All native: native. Both: blended.
+
+  MIRRORS: a source with a hash (sha256 of the source text when you drew it: shasum -a 256 <file>) is a mirror.
+  The core gives it a mirror claim: claim:mirror:process:<id> for the source of the map or of its process, and
+  claim:mirror:process:<id>#<node> for a step whose own block has the source. The mirror claim fails when the
+  source changes. Its fix is the process of redraw (for example redraw-mirror: an agent that proposes the new
+  map.md as a revision of Steel/), else the action map-update. Do not write a claim for a mirror.
 
   RULES
   - Loops go only out of a decision. A node gets at most 20 visits in one run.
@@ -95,7 +105,8 @@ does: { process: ship-to-canon }
 inputs: { head: "${inputs.head}", summary: "${write-summary.summary}" }
 precondition: [no-pull-debt, checks-on-head]
 effect: [canon-shipped]
+source: { path: "@NUU Dev/src/repo/verbs.ts", hash: "<sha256 of the file when you drew the step>", redraw: redraw-mirror }
 ```
 ````
 
-This map is blended: the summary and the decision are native, and the step "Ship to canon" mirrors the command `ndv repo ship flint` of its process. The program Workflow Lab of this Flint has one map with each kind of node (`lab-flow`) and one external map (`notepad-start`).
+This map is blended: the summary and the decision are native, and the step "Ship to canon" mirrors the command `ndv repo ship` (its source is the file of the command). The step has the mirror claim `claim:mirror:process:ship-flint#ship`, and its fix is the process `redraw-mirror`. The program Workflow Lab of this Flint has one map with each kind of node (`lab-flow`) and one external map (`notepad-start`).

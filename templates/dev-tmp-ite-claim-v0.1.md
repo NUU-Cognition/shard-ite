@@ -1,5 +1,5 @@
 ---
-description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.md (format steel-claim/1), what must be true and its check (code, an agent, or a person), with a complete example of each form"
+description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.md (format steel-claim/1), what must be true, the data that it reads, and its check (code, an agent, or a person), with a complete example of each form"
 ---
 
 # Filename: Steel/Programs/[Program]/Reality/[id]/claim.md
@@ -22,15 +22,20 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
   THE FOLDER
   - Steel/Programs/<Program>/Reality/<id>/ — the folder name is the id of the claim. The folder of the program is
     the folder whose program.md has the id of the root note of the program.
-  - claim.md holds the claim. A code check keeps its code in the same folder, with any data that it reads.
+  - claim.md holds the claim. A code check keeps its code in the same folder. The values that it reads are data of
+    the program (Steel/Programs/<Program>/Data/), named in reads: not files in the claim folder.
 
   FRONTMATTER CONTRACT. The keys are kebab-case. No comment in the frontmatter.
   - format: always "steel-claim/1".
   - id: a slug, unique in the program, the same as the folder name: "rsvps-30".
   - mode: is | ought | will.
-  - about: the ids (UUIDs) of the parts that the claim is about: one or more. Never a title. A part has no list of
-    claims: the claim names its parts. Find an id in the frontmatter of the part, or with
-    `flint ite map "<program>" --json`.
+  - about: the references of the elements that the claim is about: one or more. A part is its id (a UUID; find it
+    in the frontmatter of the part, or with `flint ite map "<program>" --json`). Another element has a prefix:
+    process:<id>, process:<id>#<node> (a node of an instruction map), data:<id>, view:<id>. Never a title. An element
+    has no list of claims: the claim names its subjects. Quote a reference with a colon: about: ["process:lab-flow#flip"].
+  - reads: optional, the data that the check reads: data:<id>, data:<id>#<output>, or process:<id>#runs (the data
+    of the runs of a process). The core gives the values to the check as STEEL_DATA, and to an agent in its prompt.
+    A claim is old when a value that it reads is old.
   - owner: optional, a person wikilink "[[@Name]]". Default: the owner of the first part, else the first owner of the
     system. Give an ought claim an owner.
   - by: code | agent | person | none. none: the claim has no check yet; it is unchecked, and the brief lists it in
@@ -40,8 +45,10 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
       entry: the file in the claim folder: "check.js", "check.py".
       timeout: optional, at most this time for one check (default 60s).
     The core runs the entry in the claim folder with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_CLAIM_ID, STEEL_PARTS
-    (a JSON list of the ids of about), STEEL_INPUTS (JSON: the inputs of the run when the check runs for a step,
-    else {}), STEEL_RUN_ID and STEEL_NODE (or empty), and the values of flint.env and flint.env.local. Each line of its output
+    (a JSON list of the part ids of about), STEEL_ABOUT (a JSON list of each reference of about), STEEL_DATA (JSON:
+    { "<reference as written in reads>": { ref, mode, state, at, age_s, outputs, error? } }; for
+    data:<id>#<output>, outputs holds only that output), STEEL_INPUTS (JSON: the inputs of the run when the check runs
+    for a step, else {}), STEEL_RUN_ID and STEEL_NODE (or empty), and the values of flint.env and flint.env.local. Each line of its output
     that is one JSON object is one result: { "state": "holds|fails|error", "part"?: "<an id of about>",
     "values"?: { ... }, "summary": "<text>", "evidence"?: [{ "kind": "url|file|note|text|output", "value", "label"? }] }.
     With no part, the result is for the whole claim. A check of many parts prints one result for each part.
@@ -64,9 +71,15 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
   RULES
   - Prefer code: a check with no mind. Use an agent when a reading decides, and a person only when only a person
     knows.
-  - One check for each claim. Two claims that read the same source read it two times.
-  - A check only reads. A fetch that changes only the remote-tracking refs is a read; a write, a send, or a push
-    is not.
+  - Read data, not the source. When the check needs a value of the world (a count, a version, a sheet), make the
+    source one piece of data with a reader (see [[tmp-ite-data-v0.1]]), and name it in reads. Two claims that read
+    one source then read one piece of data, and the source is pulled one time.
+  - A check only reads. A write, a send, a push, or a fetch is not a read. Before a check, the core pulls each
+    external data that the claim reads and that is old, when its trigger is enabled on this machine; else the
+    check gets the value that is there, with its state and its age.
+  - A check that gets a value in the state none, pending, or error prints one error line, never an old value.
+  - Do not write a claim for a mirror. Each source with a hash is a mirror claim (claim:mirror:<reference>) that the
+    core gives: it has no file.
   - A check that cannot read its source prints one error line, never an old value.
   - Test each code check before you keep it: `flint ite claim test "<program>" <id>` runs the check once, prints
     each line and its problems, and writes nothing. Then run `flint ite claim list "<program>"`: a claim with a
@@ -79,7 +92,7 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
   - One to three short paragraphs: why it matters, what the check reads, and what a person does when it fails.
 */
 
-## A code check
+## A code check that reads data
 
 ````markdown
 ---
@@ -87,6 +100,7 @@ format: steel-claim/1
 id: rsvps-30
 mode: ought
 about: [8ab2da5b-f95c-43d5-a388-786d06fbda1a, 0910b761-fc23-42a2-ac88-9d0cfebb54cf]
+reads: ["data:rsvps#count", "data:rsvp-target"]
 by: code
 runtime: node
 entry: check.js
@@ -98,34 +112,59 @@ fixed-by: [send-reminders]
 
 # At least 30 people RSVP by 5 November
 
-On Thursday 5 November, one week before the night, at least 30 people have an RSVP. The check counts the rows of `rsvps.csv` in this folder, the export of the RSVP page. When the claim fails, run `send-reminders`.
+On Thursday 5 November, one week before the night, the RSVPs reach the target. The check reads the count of the RSVPs (`data:rsvps#count`, calculated from the sign-ups) and the target (`data:rsvp-target`). When the claim fails, run `send-reminders`.
 ````
 
 The file `check.js` in the same folder:
 
 ```js
-const { readFileSync } = require('node:fs');
-const { join } = require('node:path');
-const rows = readFileSync(join(__dirname, 'rsvps.csv'), 'utf8').split('\n').filter((l) => l.trim()).length - 1;
-console.log(JSON.stringify({ state: rows >= 30 ? 'holds' : 'fails', values: { rsvps: rows, target: 30 }, summary: `${rows} of 30 RSVPs.` }));
+const values = JSON.parse(process.env.STEEL_DATA || '{}');
+const count = (values['data:rsvps#count'] || {}).outputs?.count;
+const target = (values['data:rsvp-target'] || {}).outputs?.value;
+if (typeof count !== 'number' || typeof target !== 'number') {
+  console.log(JSON.stringify({ state: 'error', summary: 'The count or the target has no value: pull the sign-ups first.' }));
+} else {
+  console.log(JSON.stringify({ state: count >= target ? 'holds' : 'fails', values: { rsvps: count, target }, summary: `${count} of ${target} RSVPs.` }));
+}
 ```
+
+## A claim about a node of an instruction map
+
+````markdown
+---
+format: steel-claim/1
+id: flip-step-fast
+mode: ought
+about: ["process:lab-flow#flip"]
+reads: ["process:lab-flow#runs"]
+by: code
+runtime: node
+entry: check.js
+timeout: 10s
+fresh-for: 1d
+---
+
+# The step "Flip a coin" ends in less than 30 seconds
+
+The check reads the data of the runs of `lab-flow` (for each node: the visits and the mean time of a visit) and judges the node `flip`. An `ought` claim about an instruction says that the instruction works well; an `is` claim says that it still matches reality.
+````
 
 ## An agent check
 
 ````markdown
 ---
 format: steel-claim/1
-id: budget-total
+id: invitation-clear
 mode: ought
-about: [79ba0719-0444-4280-a1db-1c8803d4511f]
+about: [e7990a8a-3ff5-46ea-b2e3-5498aa5d28a2]
 by: agent
-prompt: "Read the four budget parts of the program Club Launch Night, add the three lines, and report holds when the total is at most 1,400 AUD, else fails. Give the total as a value. Change no file."
+prompt: "Read the part (Deliverable) Invitation of the program Club Launch Night. Report holds when its text names the date Thursday 12 November 2026, the hours 17:30 to 22:00, and the community hall, else fails, and name what is missing. Change no file."
 fresh-for: 7d
 ---
 
-# The lines of the budget stay inside 1,400 AUD
+# The invitation names the date, the hours, and the hall
 
-The amounts are in the prose of the notes, so an agent reads them better than a script. The agent only reads, and it reports through the door.
+A reading decides it, so an agent checks it. The agent only reads, and it reports through the door.
 ````
 
 ## A person check

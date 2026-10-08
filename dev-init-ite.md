@@ -13,13 +13,14 @@ An IDE gives a person one loop for software: write, navigate, run, test, and kee
 | A project | A **program**: the model of one system. A root note in the Mesh, and the tree of parts below it. |
 | A language and its libraries | **Types** and **connections**: Mesh notes that say what each part is and how parts link. A **template** gives the start of a new program. |
 | Source files | **Parts**: one Mesh note for each part of the system, of any type |
+| Variables and databases | **Data**: what the system holds and measures: one value, a table, a series, or any shape. Its mode is external (pulled from a source outside), native (made in the model), or blended (both). A large piece of data has a **data map**: its store, its outputs, its edits, and its drawing. |
 | Editor tabs | **Views** on a canvas: one map for one question |
 | Run and debug | **Processes**: the small instructions that the program can run. **Instruction maps**: large processes, with steps and decisions in order; a **run** walks one. An **agent session**: an agent that does the jobs of a person, one at a time, and shows on the map. |
-| Tests | **Claims**: what must be true, each with a **check** (code, an agent, or a person) that reads reality. Each result goes into the **log**. |
+| Tests | **Claims**: what must be true, each with a **check** (code, an agent, or a person) that reads reality, often through the data that the claim `reads`. Each result goes into the **log**. |
 | The Problems panel | **Findings**, and the **grounding** of each part |
 | Source control | **Proposals**, history, and Git |
 
-Example: Nathan makes the program "Club Launch Night" from the template `event`. An agent reads his notes and proposes the first level of the main map: the goal, the milestones, the roles, the venue, the risks. Nathan applies it. He asks "What must be true one week before?", and an agent writes a view with the map `table`. Each condition is a claim with a check: the council page, the count of the RSVPs, a check that a founder confirms. "Check now" runs a check, and the canvas shows which parts hold. When the claim `rsvps-30` fails, the brief offers its fix: "23 of 30 RSVPs. Run `send-reminders`?"
+Example: Nathan makes the program "Club Launch Night" from the template `event`. An agent reads his notes and proposes the first level of the main map: the goal, the milestones, the roles, the venue, the risks. Nathan applies it. He asks "What must be true one week before?", and an agent writes a view with the map `table`. Each condition is a claim with a check: the council page, the count of the RSVPs, a check that a founder confirms. The count of the RSVPs is data: code counts the rows of the sign-up sheet (external data, pulled each hour), and the claim `rsvps-30` reads the count and the target (native data). "Check now" runs a check, and the canvas shows which parts hold. When the claim `rsvps-30` fails, the brief offers its fix: "23 of 30 RSVPs. Run `send-reminders`?"
 
 The surface is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side: the model, the file forms, the quality rules, the agent sessions, and the workflows of the actions.
 
@@ -42,16 +43,27 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | View | One map for one question of one program: a file of `Steel/Programs/<P>/Views/`. It names its map and its slice. |
 | Map | A renderer of `Steel/Maps/`. A builtin shape (`flow`, `streams`, `layers`, `tree`, `table`, `free`, `timeline`, `board`) is a map that Steel draws natively. |
 | Node | One card on a canvas: a part, a section of a view, or a node of an instruction map. |
-| Claim | A statement about reality that must be true, with a mode (`is`, `ought`, or `will`) and a check. A folder of `Steel/Programs/<P>/Reality/`. It names its parts with `about`. |
+| Claim | A statement about reality that must be true, with a mode (`is`, `ought`, or `will`) and a check. A folder of `Steel/Programs/<P>/Reality/`. It names its subjects with `about` (references), and the data that its check reads with `reads`. |
 | Check | The code, the agent, or the person that reads reality for one claim. It never changes anything. |
 | Result | What one check gave: `holds`, `fails`, or `error`, with the values that it saw. One record of the log. |
-| Mode | Of a claim: `is` (a description), `ought` (a goal or a limit), or `will` (a prediction). Of an instruction: `native` (the truth is here), `external` (the truth is outside), or `blended` (both). |
+| Mode | Of a claim: `is` (a description), `ought` (a goal or a limit), or `will` (a prediction). Of an instruction and of data: `native` (the truth is here), `external` (the truth is outside), or `blended` (both). |
 | Grounding | The state of a part from the claims about it: `holds`, `failing`, `old`, `partial`, `unchecked`, `no-claim`. |
 | Instruction | Know-how: how to do a piece of work. Inside the model (a native step, a process) or outside (a skill, a workflow, a script of a repository, a person). |
 | Process | A small instruction that the program owns and can run: one description, and code, an agent, or a person. It can change the world, so it needs authority. A folder of `Steel/Programs/<P>/Processes/`. |
 | Instruction map | A large instruction: the nodes of a process (steps, decisions, waits, branches, sub-maps) in order, with claims before and after each step. The file `map.md` in the folder of the process. |
 | Step | One node of an instruction map that does work: a process of the program, or an inline instruction for a person or an agent. |
-| Mirror | A thing of the model that describes a truth outside: a mirrored step, an external map, the parts of a software program. |
+| Mirror | A thing of the model that describes a truth outside: a mirrored step, an external map, a process with a `source`, the parts of a software program. |
+| Mirror claim | The claim `claim:mirror:<reference>` that the core gives each `source` with a `hash`. It holds when the source now has that hash. It has no file. |
+| Element | Each thing of the model that a link can name: a part, a claim, a process, a node of an instruction map, the runs of a process, a piece of data, an output of data, a view |
+| Reference | The one form of a link to an element, for example `claim:rsvps-30`, `process:ship-flint#ship`, or `data:rsvps#count`. A part is its id. See References. |
+| Data | One piece of state of the system: one value, a table, a series, or any shape. A folder of `Steel/Programs/<P>/Data/` with `data.md`. Its mode is counted from its `source`. |
+| Data map | The code of a large piece of data: its store, its outputs, its edits, and its drawing. A builtin (`table`, `list`) or a map of `Steel/Maps/` with `kind: data`. |
+| Store | The folder where a data map keeps its files: the data folder, in Git |
+| Output | A named value that a piece of data gives to others: `data:<id>#<output>` |
+| Pull | One read of a source outside by the reader of external data. It never changes the source. |
+| Snapshot | What the newest good pull gave, with its time. A fact of this machine. |
+| Maker | Who makes a native value: a person, code, an agent, or a process |
+| Metric | A piece of data that keeps each value with its time (`history: keep`) |
 | Run | One walk of an instruction map, with its record in `Steel/Programs/<P>/Runs/<run id>/`. |
 | Trigger | What starts a check or a process: nothing (manual), a schedule, a hook, or a watch. |
 | Enable | The yes of a person to a trigger on one machine. |
@@ -77,6 +89,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Main map | What is the system? | The root note and the parts, in the Mesh | A person or an agent, only through a map change (one writer of the structure) |
 | Views | How does a person want to see the system? | One view file of `Steel/Programs/<P>/Views/` for one question, drawn by a map | A person (direct), or an agent (through a candidate) |
 | Claims | What must be true, and is it? | `Steel/Programs/<P>/Reality/<claim>/claim.md` and the code of its check | A person or an agent |
+| Data | What does the system hold and measure? | `Steel/Programs/<P>/Data/<id>/data.md`, its code, and its store; the snapshots on this machine | The files: a person or an agent. A native value: a person, a process with `writes`, or the door. A pull and a calculated value: only the core. |
 | Processes | What work can the program do, and in which order? | `Steel/Programs/<P>/Processes/<process>/process.md`, its code, and its `map.md` | A person or an agent |
 | Log and runs | What did the checks see, and what did the processes and the runs do? | The log `.flint/steel/logs/<program id>.jsonl` on this machine, and the runs in `Steel/Programs/<P>/Runs/` | Only a command: the one door of the results, a process run, and the run engine |
 | Work | Who works on which node now, and what did each agent do? | Agent sessions with a focus, and the agent log `.flint/steel/agents.jsonl` on this machine | Orbh and `flint ite focus`; the agent log: only the agent routes and the `flint ite` commands |
@@ -90,8 +103,11 @@ A program holds **meaning**: the root note, the parts, their prose, their types,
 - No position of a card. Only the engine writes `State/*.json`.
 - No presence of an agent, and no job, dock record, or activity of an agent session.
 - No item of the brief, and no vital sign of a living system.
+- No snapshot of a pull and no calculated value: the core keeps them on this machine (`.flint/steel/data/`).
 
 **Only a command writes a result.** A check, a person, and an agent each send a result through the one door: `flint ite claim report` (or the route). Never write a result into a file of the Mesh or of `Steel/`. Never edit or remove a line of the log (`.flint/steel/logs/<program id>.jsonl`): it is a record of this machine, as the runs of Orbtest are. Never write a file of `Runs/`: only the run engine writes there. Never write the agent log (`.flint/steel/agents.jsonl`): the `flint ite` commands and the agent routes write it.
+
+**What a person or a process decides is written in Git** (a value of native data, the rows of a native store). **What is pulled or calculated is a fact of this machine.** A calculated value is never stored as truth.
 
 You can tell a person the facts in a conversation or in your result. Do not write them into a program.
 
@@ -112,16 +128,19 @@ Steel/Programs/<Name>/
 ├── Reality/<claim>/claim.md                         # one folder for each claim (steel-claim/1), with the code of its check
 ├── Processes/<process>/process.md                   # one folder for each process (steel-process/1), with its code
 ├── Processes/<process>/map.md                       # the instruction map of a large process (steel-flow/1)
+├── Data/<id>/data.md                                # one folder for each piece of data (steel-data/1), with its code and its native store
 ├── Runs/<run id>/run.md + events.jsonl              # one folder for each run (only the run engine writes here)
 ├── Proposals/<id>.md                                # map changes (mc-*), view candidates, revisions (only the engines write here)
 ├── History/<view-slug>-<stamp>.md                   # a replaced form of a view (the newest 5 are kept)
 └── State/main.json, <view id>.json                  # positions and pins by part id (only the engine writes here)
 
 Steel/Maps/<Map Name>/map.md + index.js              # a map (a renderer)
+Steel/Maps/<Map Name>/map.md + index.js + data.js    # a data map (kind: data): its drawing and the code of its store
 
-.flint/steel/logs/<program id>.jsonl                 # the one log of a program (this machine): results and process runs
+.flint/steel/logs/<program id>.jsonl                 # the one log of a program (this machine): results, process runs, and pulls
+.flint/steel/data/<program id>/<id>/                 # the snapshot, the cache, and the history of a pulled or calculated value (this machine)
 .flint/steel/agents.jsonl                            # the agent log (this machine): the jobs, the dock records, and the activity of the agent sessions
-.flint/steel/enabled.json                            # the enables of the triggers on this machine
+.flint/steel/enabled.json                            # the enables of the triggers on this machine (claims, processes, and data:<id>)
 .flint/steel/state/<program id>/                     # the state of each process, and the files that a process writes
 .flint/steel/runs/                                   # the leases and the pending files of the run engine
 .flint/steel/cache/                                  # caches
@@ -310,8 +329,9 @@ A map is a renderer: `Steel/Maps/<Map Name>/` with a manifest `map.md` (`format:
 3. **A map runs in a sandbox.** Steel runs it in an iframe with `sandbox="allow-scripts"`. It cannot read a file, call a route, or reach the network.
 4. **A view names its map.** `map: <map id>` in a view. Steel draws a builtin shape natively, and each other map in the sandbox.
 5. **A map says what it needs.** Steel offers a map for a program when the types of the program meet its `needs`.
+6. **A data map** (`kind: data`) draws one piece of data, not a view, and it has the code of a store (`store: data.js`). See Data Maps.
 
-This Flint has three example maps: **Outline** (`outline`: the tree of the parts with their types and grounding), **Owners** (`owners`: the parts grouped by the connection `owner`), and **Status Board** (`status-board`: columns by the field `status`).
+This Flint has three example maps: **Outline** (`outline`: the tree of the parts with their types and grounding), **Owners** (`owners`: the parts grouped by the connection `owner`), and **Status Board** (`status-board`: columns by the field `status`). It has one data map: **Seating** (`seating`: the guests of an event at their tables).
 
 | Route | What it gives |
 |---|---|
@@ -320,6 +340,113 @@ This Flint has three example maps: **Outline** (`outline`: the tree of the parts
 | `GET /api/steel/programs/:program/model[?view=<id>]` | The read model of a program, and of one view |
 | `PUT /api/steel/programs/:program/model/state` | The saved state of a map in one view: `State/<view id>.map.json` |
 | `GET /api/steel/programs/:program/candidates` | The view candidates of a program in `Proposals/`, in each state |
+
+## References
+
+Each link of the model names one **element** with one form, the **reference**. So a claim can be about a part, a process, a node of an instruction map, or a piece of data, and a process can act on each of them.
+
+| Element | Reference |
+|---|---|
+| A part | `<part id>` (no prefix) |
+| A claim | `claim:<id>` |
+| A mirror claim | `claim:mirror:<reference of the mirrored process or node>`, for example `claim:mirror:process:ship-flint#ship` |
+| A process | `process:<id>` |
+| A node of an instruction map | `process:<id>#<node>` |
+| The runs of a process (data that the core makes) | `process:<id>#runs` |
+| A piece of data | `data:<id>` |
+| An output of a piece of data | `data:<id>#<output>`, for example `data:rsvps#count` or `data:budget#total:planned` |
+| A view | `view:<id>` |
+
+1. **The fields that take references:** `about` (claims, processes, steps, data), `reads` (claims, processes, steps), `writes` (processes and steps; data only), and `from` (data; data only). `fixed-by` names processes (`send-reminders` or `process:send-reminders`). `effect` and `precondition` name claim ids.
+2. **Quote a reference in YAML** when it has a `:` or a `#`: `reads: ["data:rsvps#count", "data:rsvp-target"]`.
+3. **A node id `runs` is not allowed**: `process:<id>#runs` is the data of the runs.
+4. **The findings** of `flint ite check`: `unknown-reference` (error: a reference names no element of the program), `data-cycle` (error: the `from` of data make a cycle), `writes-external` (error: a process or a step writes external data).
+
+## Data
+
+**Data** says what the system holds and measures: one value, a table, a series, or any other shape. The parts say what the system is; a value that changes over time, comes from outside, is calculated, or has rows is data, not a field of a part. A piece of data is a folder `Steel/Programs/<P>/Data/<id>/` with `data.md` (`format: steel-data/1`). The folder is also the store of its native values. The form is [[tmp-ite-data-v0.1]].
+
+```yaml
+---
+format: steel-data/1
+id: signups                  # a slug, unique in the program; the name of the folder
+about: [04264f99-ff43-4d03-a867-e3634a085813]   # optional: references
+map: table                   # optional: table | list | <id of a data map of Steel/Maps>; absent: a value
+source: { path: "Media/Club Launch Night/signups-export.csv" }   # external: one of command, path, url, ref
+by: code                     # the reader (with source) or the maker (no source): code | agent | person
+runtime: node                # code: node | python | exec
+entry: pull.js               # code
+timeout: 30s
+trigger: { every: 1h }       # optional: when the pull or the maker runs again
+fresh-for: 2h                # optional: a value older than this is old
+shape:                       # a table: the fields of the rows, each with its kind
+  - { name: email, kind: text, key: true }
+  - { name: signed_up, kind: date }
+---
+# The sign-ups
+Prose for a person: what this data is, and where it comes from.
+```
+
+The other fields: `prompt` and `target` (an agent), `question` and `who` (a person), `from` (the inputs of a made value: data references), `value` (a value that a person writes), `outputs` (what others read, each with its kind; the default is one output `value`), `history: keep` (a metric), `list-of` (the type of the builtin `list`), and `native: true` on a field of `shape` (a column that a person or a process writes in external data). The kinds of a value are `text`, `number`, `boolean`, `choice`, `json`, `date`, and `money` (`{ "amount": 450, "currency": "AUD" }`, or the short form `450 AUD`).
+
+**The mode** is counted, never written. It answers one question: where is the truth of the value?
+
+| Mode | When | Example in this Flint |
+|---|---|---|
+| External | The data has a `source`, and its reader pulls each value | `signups` (Club Launch Night), `origin-refs` and `npm-versions` (Flint Release) |
+| Native | The data has no `source`: a person writes it, code calculates it, an agent writes it, or a process writes it. A value calculated from external inputs is native: its rule is in the model. | `rsvp-target`, `rsvps`, `reminder-answers`, `seating` (Club Launch Night) |
+| Blended | The data has a `source` and a field with `native: true` (or a custom data map that says so) | `budget` (Club Launch Night): `planned` is native, `paid` is pulled |
+
+**How a value is made and kept:**
+
+| What | Who | When | Where |
+|---|---|---|---|
+| A pull (external, blended) | The reader: code, an agent, or a person | By its trigger, by Pull now, before a check that reads old data (when the trigger is enabled), and before a check of a run or an effect check (when the trigger is enabled) | The snapshot, on this machine |
+| A calculated value (`by: code`, no `source`) | The core runs the maker | When a reader needs it and an input is newer than the cache | Only a cache, on this machine |
+| A value that a person writes (`value`) | A person | `flint ite data set`, or Steel (with Undo) | `data.md`, in Git |
+| A value by an agent or a person (`by: agent`, `by: person`, no `source`) | The agent or the person, through the door | `flint ite data report`, or Steel ("Waiting for you") | `data.md` or the native store, in Git |
+| Rows that a process writes | A process that names the data in `writes` | At the end of a run that is `done` | The native store, in Git |
+| The history of a metric | The core | At each new value | With the value: in Git (`history.jsonl` of the data folder) for a written value, on this machine for a pulled or calculated value |
+
+1. **The code of a reader or a maker.** The core runs `entry` in the data folder with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_DATA_ID`, `STEEL_SOURCE` (JSON: the `source`), `STEEL_DATA` (JSON: the values of `from`), and the env files, at most `timeout`. Each output line that is one JSON object is one record: `{ "row": {...} }` (one row), `{ "output": { "<name>": <value> } }`, or `{ "log": "<text>" }`. Exit 0 with no line that is not valid is a good pull: the core writes the snapshot, a `pull` record in the log, and a history line for a metric. A row that lacks a pulled field of `shape` gives `error` with "The source changed its shape", and the old snapshot stays.
+2. **A pull never changes the source.** A reader only reads, as a check does. Only the process `fetch-flint` of Flint Release fetches, for example: the reader of `origin-refs` reads only the local refs.
+3. **The state of a value**: `fresh`, `old` (older than `fresh-for`), `none` (never pulled or made), `pending` (a person must write it), or `error` (the last pull or maker failed; the old value stays).
+4. **A process writes data** only when it names it in `writes`, and only native data. Its code prints `{ "data": { "id": "<data id>", "value": <value> } }` or `{ "data": { "id": "<data id>", "rows": [...], "how": "append" | "replace" } }`. The core writes the store at the end of a run that is `done`, never after `failed`.
+5. **An agent writes data only as a process with `writes`, or as the reader or the maker of the data** (through the door). An agent never writes `data.md` or a store with its own tools, and never decides a value for a person.
+6. **A test writes nothing.** `flint ite data test` runs the reader or the maker once and prints each record and its problems. Test each reader and each maker before you keep it.
+7. **The runs are data too.** `process:<id>#runs` gives the outputs `count`, `succeeded`, `failed`, `cancelled`, `success_rate` (0 to 1, or null), `last_at`, and `nodes` (for each node: `visits`, `done`, `failed`, `mean_s`), from the runs of the process in the last 30 days. A claim about how well an instruction works reads it.
+
+### Data Maps
+
+A large piece of data names a **data map** in `map`. The core has two builtins:
+
+- **`table`**: rows with a `shape`. The native store is `rows.csv` in the data folder. A blended table joins the pulled rows and the native rows by the field with `key: true`; a pulled cell is read-only in Steel, and a native cell can be edited. The outputs are `rows`, `count`, and `total:<field>` for each `number` or `money` field.
+- **`list`**: the parts of the program of one type (`list-of: <Type>`) with their fields. It has no source, and it is read-only. The outputs are `rows`, `count`, and `total:<field>`.
+
+A metric needs no data map: Steel draws its history as a series. Any other shape is a **custom data map**: a map of `Steel/Maps/` with `kind: data`, `entry: index.js` (the drawing in Steel, in the sandbox of the maps), and `store: data.js` (the code of the store, that the core runs in Node). The form is in [[tmp-ite-map-v0.1]].
+
+The protocol of `store`: the core runs `node data.js <op>` in the data folder, with one JSON object on stdin, at most 30 seconds. Stdout is one JSON object.
+
+| `op` | stdin | stdout |
+|---|---|---|
+| `outputs` | `{ store, snapshot, data, inputs }` | `{ "outputs": {...}, "rows"?: [...], "native"?: true }` |
+| `edit` | `{ store, snapshot, data, inputs, intent }` | `{ "files": [{ "path": "<relative to the store>", "content": "<text>" }] }` |
+| `merge` | `{ store, snapshot, data, inputs }` | `{ "rows": [...] }` |
+
+`store` is the path of the store, `snapshot` is the newest snapshot (or null), `data` is the frontmatter of `data.md`, and `inputs` is the `STEEL_DATA` object of `from`. **Only the core writes a store**: it writes each file of `edit` inside the store, with the lock and the hash of the store; a path that leaves the store is refused. The drawing gets the data document in `api.model`, and sends an edit with `api.intent({ edit: <intent> })`.
+
+### The Commands of Data
+
+| Command | Result | Writes |
+|---|---|---|
+| `flint ite data list "<program>"` | The data of a program, with the mode, the state, and the age of each value | Nothing |
+| `flint ite data show "<program>" <id>` | One piece of data: its form, its problems, its value now, its rows, and its newest history | Nothing |
+| `flint ite data pull "<program>" <id>` | Pull now: runs the reader (or the maker) and keeps the value | The snapshot or the cache, the log |
+| `flint ite data test "<program>" <id>` | Runs the reader or the maker once, and prints each record and its problems | Nothing |
+| `flint ite data set "<program>" <id> --value <json> [--expect <hash>]` | A person writes the value of native data | `data.md` |
+| `flint ite data edit "<program>" <id> --intent <json> [--expect <hash>]` | A person edits the native store of a table or a custom data map with one intent | The store |
+| `flint ite data report "<program>" <id> --value <json> \| --output <name=value>... \| --rows <file> [--how append\|replace]` | The door of an agent or a person reader or maker | `data.md`, the store, or the snapshot |
+| `flint ite data history "<program>" <id> [--limit <n>]` | The history of a metric, the newest first | Nothing |
 
 ## Claims and Checks
 
@@ -330,7 +457,8 @@ A **claim** says what must be true about the system, and its **check** reads rea
 format: steel-claim/1
 id: rsvps-30                 # a slug, unique in the program
 mode: ought                  # is | ought | will
-about: [8ab2da5b-f95c-43d5-a388-786d06fbda1a, 0910b761-fc23-42a2-ac88-9d0cfebb54cf]
+about: [8ab2da5b-f95c-43d5-a388-786d06fbda1a, 0910b761-fc23-42a2-ac88-9d0cfebb54cf]   # references
+reads: ["data:rsvps#count", "data:rsvp-target"]   # optional: the data that the check reads
 owner: "[[@Nathan]]"         # optional; default: the owner of the first part, else the first owner of the system
 by: code                     # code | agent | person | none
 runtime: node                # code: node | python | exec
@@ -344,19 +472,21 @@ fixed-by: [send-reminders]   # optional: the processes that can make an ought cl
 Prose for a person: why it matters, and what the check reads.
 ```
 
-1. **A claim names its parts** with `about`: one or more part ids. A part has no list of claims. One claim can be about many parts, and one part can have many claims.
-2. **A check never changes anything.** It only reads (a `git fetch` that changes only the remote-tracking refs is a read). So anyone can run it again at any time with no harm.
+1. **A claim names its subjects** with `about`: one or more references (see References). A subject is a part, a process, a node of an instruction map, or a piece of data. A part has no list of claims. One claim can be about many elements, and one element can have many claims.
+2. **A check never changes anything.** It only reads: a write, a send, a push, or a fetch is not a read (a process fetches). So anyone can run it again at any time with no harm.
 3. **The check judges.** It gives `holds`, `fails`, or `error`. The values that it saw go with the result, as evidence. A claim never holds only a value.
-4. **One check for each claim.** Two claims that read the same source read it two times.
+4. **A claim reads data.** `reads` names the data that the check reads, and the core gives the values to the check as `STEEL_DATA`. Two claims that read one source read one piece of data: the source is pulled one time. The check still judges with its own code.
 5. **Four forms.** `by: code` runs its own code (`runtime`, `entry`). `by: agent` starts one Orbh session with `prompt` (and `target`, optional), and the agent reports through the door. `by: person` gives `pending`, and Steel asks the person the `question` (`who`, optional: `person:<Name>`). `by: none`: the claim has no check yet; it is `unchecked`, and the brief lists it in `unwatched`.
 6. **A `will` claim** has `p` (0 to 1) and `resolves` (a date; quote it, so that YAML keeps it as text).
-7. **A mirror is a claim too.** "The code of each part exists" (`code-refs` of an OrbCode project) is an `is` claim whose check reads the codebase.
+7. **A mirror is a claim too.** Each `source` with a `hash` (of a step, of an instruction map, or of a process) is the mirror claim `claim:mirror:<reference>` (`mode: is`, `by: core`). The core computes its state at each read: `holds` when the hash of the source now is the `hash`, else `fails` with both hashes. Its `fixed-by` is the `redraw` of the source (a process that draws the mirror again, for example `redraw-mirror`), else the action `map-update`. It is listed with the claims, it has no file, and its results are not logged. "The code of each part exists" (`code-refs` of an OrbCode project) is an `is` claim whose check reads the codebase.
 
-**The code of a check.** The core runs `entry` in the claim folder (`node`, `python3`, or the file) with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_CLAIM_ID`, `STEEL_PARTS` (JSON: the ids of `about`), `STEEL_INPUTS` (JSON: the inputs of the run when the check runs for a step, else `{}`), `STEEL_RUN_ID` (the run, or empty), `STEEL_NODE` (the node of the run, or empty), and the values of `flint.env` and `flint.env.local`, at most `timeout`. Each output line that is one JSON object is one result:
+**The code of a check.** The core runs `entry` in the claim folder (`node`, `python3`, or the file) with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_CLAIM_ID`, `STEEL_PARTS` (JSON: the part ids of `about`), `STEEL_ABOUT` (JSON: each reference of `about`), `STEEL_DATA` (JSON: `{ "<reference as written>": { ref, mode, state, at, age_s, outputs, error? } }` for each reference of `reads`; for `data:<id>#<output>`, `outputs` holds only that output), `STEEL_INPUTS` (JSON: the inputs of the run when the check runs for a step, else `{}`), `STEEL_RUN_ID` (the run, or empty), `STEEL_NODE` (the node of the run, or empty), and the values of `flint.env` and `flint.env.local`, at most `timeout`. Each output line that is one JSON object is one result:
 
 ```json
 { "state": "holds|fails|error", "part": "<a part id of about>", "values": { "rsvps": 23 }, "summary": "23 of 30 RSVPs.", "evidence": [{ "kind": "url|file|note|text|output", "value": "...", "label": "..." }] }
 ```
+
+**Before a check**, the core pulls each external data that the claim reads and that is old, when the trigger of that data is enabled on this machine. A check for a run (a precondition or an effect of a step) and the effect checks after a process run pull each external data that the claim reads, whatever its age, when its trigger is enabled. Else the check runs with the value that is there, and the value says its age.
 
 With no `part`, the result is for the whole claim. A check of many parts prints one result for each part (the claim `code-refs` of an OrbCode project does). A line that is not valid is a problem of the check, and gives `error`. Test a check with `flint ite claim test "<program>" <claim>`: it runs the check once, prints each line and its problems, and writes nothing.
 
@@ -368,7 +498,7 @@ With no `part`, the result is for the whole claim. A check of many parts prints 
 | `ought` | A goal or a limit | **At risk**: reality is off target | The world: a process of `fixed-by` | The owner of the claim |
 | `will` | A prediction | It came true or false | Nothing: the prediction is scored | Nobody |
 
-**The state of a claim** is computed, never stored. It comes from the newest result (of each part, when the results name parts; the claim takes the worst part state): `holds`, `fails`, `error`, `old` (older than `fresh-for`), `pending` (a person or an agent check waits), or `unchecked`. A `will` claim is `open` until `resolves`, then `came-true` or `came-false` from the first result after `resolves`, else `unresolved`.
+**The state of a claim** is computed, never stored. It comes from the newest result (of each part, when the results name parts; the claim takes the worst part state): `holds`, `fails`, `error`, `old` (older than `fresh-for`, or a value that it reads is old: the state names that data), `pending` (a person or an agent check waits), or `unchecked`. A `will` claim is `open` until `resolves`, then `came-true` or `came-false` from the first result after `resolves`, else `unresolved`.
 
 **The grounding of a part** comes from the claims about it: `holds` (each claim holds), `failing` (a claim fails or has an error), `old`, `partial`, `unchecked`, or `no-claim`. A group, a view, and a program add the counts of their parts.
 
@@ -409,7 +539,9 @@ by: code                     # code | agent | person
 runtime: node                # code: node | python | exec
 entry: index.js
 timeout: 60s
-parts: [366cc014-1f13-49f9-89f7-215623dfc872]
+about: [366cc014-1f13-49f9-89f7-215623dfc872]   # references: the elements that it acts on
+reads: ["data:rsvps#count"]  # optional: the data that it reads (STEEL_DATA)
+writes: ["data:reminder-answers"]   # optional: the native data that it may write
 inputs: [{ name: summary, kind: text, required: true }]
 outputs: [{ name: sent, kind: number }]
 effect: [rsvps-30]           # the claims that show that the work worked
@@ -421,11 +553,11 @@ concurrency: 1               # optional: at most this many runs at once
 For a person: what the process does, and why.
 ```
 
-1. **Three forms.** `code` runs its entry with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_PROCESS_ID`, `STEEL_PARTS`, `STEEL_INPUTS`, `STEEL_STATE` (JSON: the state of the process across its runs), `STEEL_RUN_ID` (or empty), and the env files. Each output line that is a JSON object is one record: `{ "output": { "<name>": <value> } }`, `{ "state": {...} }` (the new state of the process), or `{ "log": "<text>" }`. Exit 0 is `done`; another exit is `failed`. `agent` starts one Orbh session with `prompt` and the inputs (`target`, optional), and its result gives the outputs. `person` gives `waiting`: Steel shows the `task` to the person, who presses Done with the outputs.
-2. **The mode.** A process whose code or description is here is native. A process with `source` is external: it runs an instruction outside as one unit. `source` is one of `{ ref: "[[<note>]]" }` (a skill, a workflow, a note: an agent follows it), `{ path: "@<Codebase>/<path>" }`, or `{ command: "<command line>" }`; `ref` and `path` add `hash` (the sha256 of the source text at the drawing). `${inputs.<name>}` in a command names an input.
+1. **Three forms.** `code` runs its entry with `FLINT_ROOT`, `STEEL_PROGRAM_ID`, `STEEL_PROCESS_ID`, `STEEL_PARTS`, `STEEL_ABOUT`, `STEEL_DATA` (the values of `reads`), `STEEL_INPUTS`, `STEEL_STATE` (JSON: the state of the process across its runs), `STEEL_RUN_ID` (or empty), and the env files. Each output line that is a JSON object is one record: `{ "output": { "<name>": <value> } }`, `{ "state": {...} }` (the new state of the process), `{ "data": { "id": "<data id>", "value": <value> } }` or `{ "data": { "id": "<data id>", "rows": [...], "how": "append" | "replace" } }` (data of `writes`, written at the end of a run that is `done`), or `{ "log": "<text>" }`. Exit 0 is `done`; another exit is `failed`. `agent` starts one Orbh session with `prompt` and the inputs (`target`, optional), and its result gives the outputs. `person` gives `waiting`: Steel shows the `task` to the person, who presses Done with the outputs.
+2. **The mode.** A process whose code or description is here is native. A process with `source` is external: it runs an instruction outside as one unit. `source` is one of `{ ref: "[[<note>]]" }` (a skill, a workflow, a note: an agent follows it), `{ path: "@<Codebase>/<path>" }`, or `{ command: "<command line>" }`; `ref` and `path` add `hash` (the sha256 of the source text at the drawing), and then the process has a mirror claim. `redraw: <process id>` names the process that draws the mirror again. `${inputs.<name>}` in a command names an input.
 3. **The effect.** After a process is `done`, the core runs the checks of its `effect` claims once, with the same inputs. Only a check confirms an effect. The report of the process does not.
 4. **Authority.** `run` lists who may start it (default: the owners of the system, else the person of this machine). `approve: true` needs the approval of a person before each run. `irreversible: true` implies `approve: true`, and an agent never approves.
-5. **A process changes the model only through a proposal.** It has no way around the one writer of the structure.
+5. **A process changes the model only through a proposal.** It has no way around the one writer of the structure. It writes data only through `writes`. A process that keeps an instruction up to date (for example `redraw-mirror`) proposes the new file as a revision of `Steel/` (`flint ite revision propose --kind steel`).
 6. **The state of a process** across its runs is `.flint/steel/state/<program id>/<process>.json`: the code gets it as `STEEL_STATE`, and the newest `{ "state": ... }` record of a `done` run replaces it. A process that writes files on this machine writes them in `.flint/steel/state/<program id>/`.
 7. **No ready processes.** Each process holds its own code. Test it with `flint ite process test`: it runs the code once with the given inputs, prints each record and its problems, writes nothing to the log, and changes no state. A process with `irreversible: true` or a `source` refuses the test unless `--dry` is given; with `--dry` it prints what it would run.
 8. **A large process.** A process with a `map.md` in its folder runs as a run of its instruction map (see Instruction Maps and Runs). One thing at two sizes: one description, or one description and a map.
@@ -444,7 +576,7 @@ For a person: what the process does, and why.
 
 ## Triggers and Enables
 
-Checks and processes have the same triggers. The file says what it wants (in Git). The enable is a fact of the machine (not in Git).
+Checks, processes, and data (a pull or a maker) have the same triggers. The file says what it wants (in Git). The enable is a fact of the machine (not in Git).
 
 | Trigger | In the file | Who starts it |
 |---|---|---|
@@ -453,15 +585,15 @@ Checks and processes have the same triggers. The file says what it wants (in Git
 | A pushed event | `trigger: { on: hook }` | The Flint server, on `POST /api/steel/programs/<program>/hooks/<id>`. The body of the request is the input of the code (`STEEL_EVENT`). |
 | A watched source | `trigger: { on: watch }` | The Flint server keeps the entry running, restarts it after a crash (at most 5 times in 10 minutes), and stops it on disable. The entry prints records as a check or a process does. |
 
-1. **A trigger runs only on a machine where a person enabled it**: `flint ite enable "<program>" <claim|process>`, and `flint ite disable`. The record is `.flint/steel/enabled.json`. An agent cannot enable.
+1. **A trigger runs only on a machine where a person enabled it**: `flint ite enable "<program>" <claim|process|data:<id>>`, and `flint ite disable`. The record is `.flint/steel/enabled.json`. An agent cannot enable.
 2. **The core runs a check or a process only by its trigger, by Check now or Run now, or by a run.** `flint sync` does nothing for them.
-3. A trigger of a claim runs its check. A trigger of a process with a map starts a run.
+3. A trigger of a claim runs its check. A trigger of a process with a map starts a run. A trigger of data pulls it (or runs its maker). Data has no `watch` trigger.
 4. A service on the internet cannot reach `127.0.0.1`. For now, such a source is polled.
 
 | Command | Result | Writes |
 |---|---|---|
 | `flint ite triggers ["<program>"]` | Each trigger, its enable on this machine, and the next time | Nothing |
-| `flint ite enable "<program>" <claim\|process>`, `flint ite disable ...` | Enables or disables one trigger on this machine. A person only. | `.flint/steel/enabled.json` |
+| `flint ite enable "<program>" <claim\|process\|data:<id>>`, `flint ite disable ...` | Enables or disables one trigger on this machine. A person only. | `.flint/steel/enabled.json` |
 
 ## Proposals: The Candidate and the Apply
 
@@ -585,7 +717,7 @@ The prompt of a job of a map action holds only the data: the level of the focus 
 
 ## Instruction Maps and Runs
 
-An **instruction map** is a large instruction: the nodes of a process in order, with the claims that must hold before a step and the claims that show that a step worked. It is the file `map.md` in the folder of its process (`format: steel-flow/1`). Steps are not parts of the main map: the main map says what the system is, and an instruction map says how it moves. A step names the parts that it uses by their ids. Steel draws each map itself. The form is [[tmp-ite-instruction_map-v0.1]].
+An **instruction map** is a large instruction: the nodes of a process in order, with the claims that must hold before a step and the claims that show that a step worked. It is the file `map.md` in the folder of its process (`format: steel-flow/1`). Steps are not parts of the main map: the main map says what the system is, and an instruction map says how it moves. A step names the elements that it acts on with `about` (references). A node is an element too: a claim can be about it (`process:<id>#<node>`), and a process can keep it up to date. Steel draws each map itself. The form is [[tmp-ite-instruction_map-v0.1]].
 
 ### The File
 
@@ -630,7 +762,7 @@ effect: [canon-shipped]
 
 | Kind | Block fields | What the engine does |
 |---|---|---|
-| `step` | `does` (`{ process: <id> }`, or inline `{ by: person \| agent, instruction, target? }`), `next` (one id), `run` (`auto \| manual`), `inputs`, `outputs`, `precondition` (claim ids), `effect` (claim ids), `retry` (`{ max, wait }`), `on-fail` (a node id), `timeout`, `source`, `parts` (part ids) | Opens a visit, checks the preconditions, waits for a person when `manual` or when an approval is needed, runs `does`, collects the outputs, runs the effect checks, then follows `next` |
+| `step` | `does` (`{ process: <id> }`, or inline `{ by: person \| agent, instruction, target? }`), `next` (one id), `run` (`auto \| manual`), `inputs`, `outputs`, `precondition` (claim ids), `effect` (claim ids), `retry` (`{ max, wait }`), `on-fail` (a node id), `timeout`, `source` (with `hash` and `redraw`), `about` (references), `reads` (data that the step reads), `writes` (native data that the step may write) | Opens a visit, checks the preconditions, waits for a person when `manual` or when an approval is needed, runs `does`, collects the outputs, runs the effect checks, then follows `next` |
 | `decision` | `question`, `by` (`person \| agent`), `outcomes` (`{ "<outcome>": <node id> }`) | Waits for one outcome |
 | `wait` | one of `claim: <id>` (until it holds), `until: "<ISO time>"`, `for: 10m`, `event: <hook id>`; `timeout`, `next` | Waits, then follows `next`. A timeout fails the node. |
 | `parallel` | `next: [<id>, ...]` (two or more) | Starts each branch |
@@ -638,7 +770,7 @@ effect: [canon-shipped]
 | `sub-map` | `process: <id>` (a process with a `map.md`), `inputs`, `next` | Starts a child run, and waits for its end. The child run names its parent run and node. |
 
 1. **`run`.** The default is `auto` for a step that does a code process or an agent with no approval, and for each `wait`, `parallel`, `join`, and `sub-map`. It is `manual` for a step of a person, for a decision of a person, and for each step whose process needs an approval. A person presses Begin on a `manual` step.
-2. **The data.** `${inputs.<name>}` names an input of the run. `${<node id>.<output>}` names an output of an earlier node. `${<decision id>.answer}` names an answer. The value kinds are `text`, `number`, `boolean`, `choice`, and `json`.
+2. **The data.** `${inputs.<name>}` names an input of the run. `${<node id>.<output>}` names an output of an earlier node. `${<decision id>.answer}` names an answer. The value kinds are `text`, `number`, `boolean`, `choice`, `json`, `date`, and `money`.
 3. **Loops** go only out of a decision. A node gets at most 20 visits in one run.
 4. **Failures.** A failed node retries up to `retry.max` times, with `retry.wait` between; then it follows `on-fail` when it has one; else the run fails.
 5. **Preconditions and effects are claims.** A precondition that does not hold blocks the node (the person can retry or skip it). An effect waits for its checks, and `effect.failed` fails the node. A Done of a person is a report: only a check confirms an effect.
@@ -649,7 +781,7 @@ effect: [canon-shipped]
 1. A step is **mirrored** when its block has `source`, or when its `does` names a process with `source`. Else it is **native**.
 2. A map with `source` in its frontmatter is **external**: each node is mirrored, the map is read-only and only for view, and a run of the process runs the source as one unit.
 3. A map is **native** when each step is native, **external** when each is mirrored, else **blended**. The mode is counted, never written. Steel shows it as a mark: "Blended: 1 of 2 steps mirrors `ndv repo ship flint ...`".
-4. **The drift of a mirror.** On each read, the core compares `hash` with the source now. A difference is the finding `mirror-drift`, and the brief lists it in `drift`. The action `map-update` draws the map again from its source.
+4. **The drift of a mirror.** Each `source` with a `hash` is a mirror claim (`claim:mirror:process:<id>`, or `claim:mirror:process:<id>#<node>` for a step whose own block has the source). On each read, the core compares `hash` with the source now. A difference fails the mirror claim, and the brief lists it in `drift` with its fix: the process of `redraw` ("Run redraw-mirror?"), else the action `map-update`. The fix proposes the new drawing as a revision, and a person applies it.
 
 | | Native | Blended | External |
 |---|---|---|---|
@@ -706,7 +838,7 @@ These terms add to The Terms. One term has one meaning.
 | Boundary | What is inside the system, what is outside, and what is unknown: a decision of a person, with a date and a reason |
 | Connection | What crosses the boundary to another system: imports, exports, and the integration that carries them |
 | Goal | An `ought` claim with an owner, named in `goals` of the system block |
-| Drift | An `is` claim that fails, or a mirror whose source changed: the model is out of date |
+| Drift | An `is` claim that fails (a mirror claim too), or external data whose source changed its shape: the model is out of date |
 | At risk | An `ought` claim that fails: reality is off target |
 | Effect | The change in the world that a process or a step must cause. It is pending until a check of an `effect` claim confirms it. |
 | Brief | The page of attention: six sections of items, and the vital signs |
@@ -723,6 +855,8 @@ Do not use "environment" (it is an Information Environment or an Orbtest environ
 |---|---|---|
 | Parts, links, the system block, prose | The Mesh | A person, an agent, or an applied revision. A protected change: a revision only. |
 | Claims and their checks | `Steel/Programs/<P>/Reality/<claim>/` | A person or an agent |
+| Data: its file, its code, and its native values | `Steel/Programs/<P>/Data/<id>/` | The file and the code: a person or an agent. A native value: a person, a process with `writes`, or the door. |
+| Snapshots, caches, and the history of pulled and calculated values | `.flint/steel/data/<program id>/<id>/` | The core only |
 | Processes and instruction maps | `Steel/Programs/<P>/Processes/<process>/` | A person or an agent |
 | Run control, attempts, approvals, the copy of the evidence | The run folder in `Steel/Programs/<P>/Runs/` | The run engine only |
 | Results, process runs, acknowledgements, escalations, prompts | The log `.flint/steel/logs/<program id>.jsonl` | The commands only (the one door of the results) |
@@ -771,11 +905,11 @@ The brief is the centre of a living system in Steel. It has six sections, in thi
 
 | Section | Items |
 |---|---|
-| `drift` | An `is` claim that fails, and a mirror whose source changed (`mirror-drift`) |
+| `drift` | An `is` claim that fails, a mirror claim that fails (with "Run <redraw>?"), and external data whose last pull gave "The source changed its shape" |
 | `at-risk` | An `ought` claim that fails, with the processes of its `fixed-by` |
-| `old` | A claim whose newest result is older than its `fresh-for` |
-| `unwatched` | A part that no claim is about, a claim with `by: none`, and a boundary item with no part |
-| `pending` | A person check, an approval, an effect that waits for its check, a task of a person, and a revision that waits |
+| `old` | A claim whose newest result is older than its `fresh-for`, a claim that is old because a value that it reads is old, and data whose value is old or whose last pull failed (with Pull now) |
+| `unwatched` | A part that no claim is about, a claim with `by: none`, a boundary item with no part, and external data that nothing reads (no `reads`, no `from`) |
+| `pending` | A person check, an approval, an effect that waits for its check, a task of a person, a revision that waits, and data that waits for a person (`by: person`: "Write the value") |
 | `surprises` | A `will` claim that came false, and a claim that changed from `holds` to `fails` with no run |
 
 Each item names its source, its age, and its owner. An item belongs to one **episode**: the interval in which its condition is true. An acknowledgement binds to one episode and stops only its escalation. A later failure of the same subject opens a new episode. An item that nobody acknowledges escalates after `escalate-after`. The brief writes nothing.
@@ -784,7 +918,7 @@ The five vital signs come from the results and the runs, each on its own. There 
 
 | Vital sign | What it counts |
 |---|---|
-| Freshness | The claims by state |
+| Freshness | The claims by state, and the data by state |
 | Closure | The effects that a check confirmed, over the effects that need confirmation |
 | Use | The runs and the process runs, the prompts that agents took from the system, and the days that a person opened the brief |
 | Surprise | The `will` claims that came false, and the claims that changed from `holds` to `fails` with no run |
@@ -792,9 +926,9 @@ The five vital signs come from the results and the runs, each on its own. There 
 
 ### Revisions
 
-A revision is a candidate change of one file of the Mesh of the system: a file in `Steel/Programs/<P>/Proposals/` (`steel-revision/1`). `flint ite revision propose` writes it, with the kind `part`, `goal`, or `system`. A claim or a map of `Steel/` is not a revision: a person or an agent edits it, and the checks of the core read it.
+A revision is a candidate change of one file of the system: a file in `Steel/Programs/<P>/Proposals/` (`steel-revision/1`). `flint ite revision propose` writes it, with the kind `part`, `goal`, `system`, or `steel`. The kind `steel` targets a model file of the program in `Steel/Programs/<P>/`: `Processes/<id>/map.md`, `Processes/<id>/process.md`, `Reality/<id>/claim.md`, or `Data/<id>/data.md`. A process that keeps an instruction up to date (for example `redraw-mirror`) proposes its new file this way; only a person applies it.
 
-1. **The targets:** the root note, a part file, and a new part file.
+1. **The targets:** the root note, a part file, a new part file, and (kind `steel`) a model file of the program in `Steel/`.
 2. **The check** reads the whole system with the new bytes in place. A finding of the level error stops the apply.
 3. **The apply** writes the target only when its hash is the base hash, and keeps the exact old bytes in the revision file. **The revert** writes the old bytes back only when the target has the hash of the apply.
 4. **A protected change** is a change of `goals`, `authority`, or `governor` of the system block. Only a person applies it, through a revision, with `--protected`. A change of these keys by hand is the finding `protected-change`.
@@ -829,10 +963,10 @@ Each command takes `--json`. `<program>` is the name or the id of a program with
 | `flint ite prompt "<program>"` | The reconciliation prompt of the system for an agent: the root, the brief, the check of the old claims, and the return of the brief | The log (an agent only) |
 | `flint ite adopt "<program>"` | A person adopts the protected declarations of the system as they are now | The baseline beside the log |
 | `flint ite revision list "<program>" [--state <s>]`, `show "<program>" <id>` | The revisions; one revision with its diff | Nothing |
-| `flint ite revision propose "<program>" --kind <k> --target <file> --content-file <path> --reason "<text>" [--base-hash <h>]` | Proposes a revision | `Proposals/` |
+| `flint ite revision propose "<program>" --kind part\|goal\|system\|steel --target <file> --content-file <path> --reason "<text>" [--trigger person\|drift\|at-risk\|surprise] [--base-hash <h>]` | Proposes a revision | `Proposals/` |
 | `flint ite revision apply\|revert "<program>" <id> [--protected]`, `discard "<program>" <id>` | Applies, reverts, or discards a revision | The target, `Proposals/` |
 
-The claims, the processes, the triggers, and the runs of a living system use the commands of Claims and Checks, Processes, Triggers and Enables, and Instruction Maps and Runs.
+The claims, the data, the processes, the triggers, and the runs of a living system use the commands of Claims and Checks, Data, Processes, Triggers and Enables, and Instruction Maps and Runs.
 
 ## The Commands
 
@@ -854,12 +988,13 @@ The claims, the processes, the triggers, and the runs of a living system use the
 | `flint ite view history <view>` | The saved forms of one view, the newest first | Nothing |
 | `flint ite view restore <view> --from <history id> [--base-hash <hash>]` | Restores a saved form; the current form goes to the history | The view, one history file |
 | `flint ite view remove <view> [--base-hash <hash>]` | Keeps the view in the history, then removes it and its candidates. A decision of a person. | One history file; it removes the view |
-| `flint ite check [<program>]` | The findings of the main map, the views, the claims, the processes, and the instruction maps. Exit 1 for an error finding. It runs no check and no process. | Nothing |
+| `flint ite check [<program>]` | The findings of the main map, the views, the claims, the processes, the instruction maps, the data, and the references. Exit 1 for an error finding. It runs no check and no process. | Nothing |
 | `flint ite check --candidate <id>` | The findings of one candidate only. Exit 1 for an error finding. | Nothing |
 | `flint ite diff [<view>] --candidate <id>` | The difference of a candidate and its view | Nothing |
 | `flint ite apply [<view>] --candidate <id>` | Applies a candidate. A conflict writes nothing and exits 1. | The view, one history file, the candidate (`state: applied`) |
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
 | `flint ite claim list\|show\|check\|test\|report ...` | The claims of a program, Check now, the test of a check, and the one door of the results (see Claims and Checks) | The log, or nothing |
+| `flint ite data list\|show\|pull\|test\|set\|edit\|report\|history ...` | The data of a program, Pull now, the test of a reader or a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data) | A snapshot, a value, a store, or nothing |
 | `flint ite process list\|show\|run\|test ...` | The processes of a program, Run now, and the test (see Processes) | The log, or nothing |
 | `flint ite triggers\|enable\|disable ...` | The triggers and their enables on this machine (see Triggers and Enables) | `.flint/steel/enabled.json`, or nothing |
 | `flint ite flow ...` | The instruction maps and their runs (see Instruction Maps and Runs) | A run, or nothing |
@@ -927,8 +1062,8 @@ A program is for a person. A model that breaks these rules does not help that pe
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
 6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds 3 to 9 parts (`max-children`); a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
 7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When a claim has no check yet, give it `by: none`. A model with an honest gap is better than a model with an invented fact.
-8. **Give each claim a check when you can.** A claim about reality has a check: its own code that reads a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value.
-9. **Never keep a check or a process that you did not test.** Before you keep a code check, test it with `flint ite claim test "<program>" <claim>`; before you keep a code process, test it with `flint ite process test "<program>" <process>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
+8. **Give each claim a check when you can.** A claim about reality has a check: its own code that reads data, a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value. When two claims read one source, make the source one piece of data, and let both claims read it.
+9. **Never keep a check, a process, or a reader that you did not test.** Before you keep a code check, test it with `flint ite claim test "<program>" <claim>`; before you keep a code process, test it with `flint ite process test "<program>" <process>`; before you keep a reader or a maker of data, test it with `flint ite data test "<program>" <id>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
 10. **End each view with what it leaves out.** The last section of a view is one node of the type `note` that names what the view does not show, and why.
 11. **Meaning only.** No grounding, no result, no state of a claim, no finding, no position, and no presence in a file.
 12. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.
@@ -940,8 +1075,9 @@ A program is for a person. A model that breaks these rules does not help that pe
 | [[tmp-ite-program-v0.1]] | You write a root note |
 | [[tmp-ite-part-v0.1]] | You write a part |
 | [[tmp-ite-view-v0.1]] | You write a view or a candidate (`steel-view/1`) |
-| [[tmp-ite-map-v0.1]] | You write a map of `Steel/Maps/` |
+| [[tmp-ite-map-v0.1]] | You write a map of `Steel/Maps/`: a map of views, or a data map (`kind: data`) |
 | [[tmp-ite-claim-v0.1]] | You write a claim and its check (`steel-claim/1`) |
+| [[tmp-ite-data-v0.1]] | You write a piece of data and its reader or maker (`steel-data/1`) |
 | [[tmp-ite-process-v0.1]] | You write a process (`steel-process/1`) |
 | [[tmp-ite-instruction_map-v0.1]] | You write an instruction map: the `map.md` of a process (`steel-flow/1`) |
 | [[tmp-ite-template-v0.1]] | You write a template of this Flint (`Mesh/Metadata/Templates/`) |

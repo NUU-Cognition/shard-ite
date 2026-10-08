@@ -22,9 +22,15 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   - format: always "steel-process/1".
   - id: a slug, unique in the program, the same as the folder name: "send-reminders".
   - by: code | agent | person.
-  - parts: optional, the ids (UUIDs) of the parts that the process uses. Never a title.
+  - about: optional, the references of the elements that the process acts on: a part id (a UUID), process:<id>,
+    process:<id>#<node> (a node of an instruction map that the process keeps up to date), data:<id>. Never a title.
+    Quote a reference with a colon: about: ["process:ship-flint#ship"].
+  - reads: optional, the data that the process reads (data:<id>, data:<id>#<output>, process:<id>#runs). The code
+    gets the values as STEEL_DATA, and an agent gets them in its prompt.
+  - writes: optional, the native data that the process may write (data:<id>). External data is never written by
+    a process: only its pull writes it (the finding writes-external).
   - inputs, outputs: optional, lists of { name, kind, required?, prompt? }. kind: text | number | boolean |
-    choice | json (choice adds choices: [...]).
+    choice | json | date | money (choice adds choices: [...]).
   - effect: optional, the ids of the claims that show that the work worked. After a done run, the core runs their
     checks once, with the same inputs. Only a check confirms an effect.
   - trigger: manual, { every: 10m }, { cron: "0 9 * * *" }, { on: hook }, or { on: watch }. A trigger runs only
@@ -34,12 +40,15 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   - concurrency: optional, at most this many runs at once.
   - code (a code process is always its own code):
       runtime: node | python | exec. entry: the file in the folder. timeout: optional (default 60s).
-    The core runs the entry with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID, STEEL_PARTS, STEEL_INPUTS,
-    STEEL_STATE (JSON: the state of the process across its runs), STEEL_RUN_ID (or empty), STEEL_EVENT (a hook
-    or a watch), and the values of flint.env and flint.env.local. Each line of its output that is one JSON
-    object is one record: { "output": { "<name>": <value> } }, { "state": { ... } } (the new state of the
-    process), or { "log": "<text>" }. Exit 0 is done; another exit is failed. A file that the process writes on
-    this machine goes into .flint/steel/state/<program id>/.
+    The core runs the entry with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID, STEEL_PARTS (the part ids of
+    about), STEEL_ABOUT (each reference of about), STEEL_DATA (the values of reads), STEEL_INPUTS, STEEL_STATE
+    (JSON: the state of the process across its runs), STEEL_RUN_ID (or empty), STEEL_EVENT (a hook or a watch),
+    and the values of flint.env and flint.env.local. Each line of its output that is one JSON object is one
+    record: { "output": { "<name>": <value> } }, { "state": { ... } } (the new state of the process),
+    { "data": { "id": "<data id of writes>", "value": <value> } } or { "data": { "id": "<data id of writes>",
+    "rows": [...], "how": "append" | "replace" } } (the core writes it at the end of a run that is done, never
+    after failed), or { "log": "<text>" }. Exit 0 is done; another exit is failed. A file that the process writes
+    on this machine goes into .flint/steel/state/<program id>/.
   - agent:
       prompt: the request, with ${inputs.<name>} for an input. One Orbh session starts, and its result gives
               the outputs.
@@ -51,14 +60,18 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   - source: optional. The process runs an instruction outside as one unit, so it is external: { command: "<a
     command line, with ${inputs.<name>}>" }, { path: "@<Codebase>/<path>", hash: "<sha256>" }, or
     { ref: "[[<a skill, a workflow, or a note>]]", hash: "<sha256>" } (an agent follows it). The hash is the
-    sha256 of the source text when you wrote the process; a later change of the source is the finding
-    mirror-drift.
+    sha256 of the source text when you wrote the process (shasum -a 256 <file>). A source with a hash is a mirror:
+    the core gives the process the mirror claim claim:mirror:process:<id>, which fails when the source changes.
+    Add redraw: <process id> to name the process that draws the mirror again (for example redraw-mirror: an
+    agent that proposes the new file as a revision); with no redraw, the fix is the action map-update.
 
   RULES
   - Test each code process before you keep it: `flint ite process test "<program>" <id> [--input k=v]` runs the
     code once, prints each record and its problems, writes nothing to the log, and changes no state. A process
     with irreversible: true or a source refuses the test unless --dry is given.
   - A process that changes the world outside this machine (a push, a send, a publish) is irreversible.
+  - A process changes the model only through a proposal: a map change, or a revision of a file of Steel/
+    (`flint ite revision propose --kind steel`). It writes data only through writes.
   - Give the claims that show the result in effect. The record of a process never confirms its own work.
   - After you write a process, run `flint ite process list "<program>"`: a process with a problem shows it, and
     it does not run.
@@ -78,7 +91,8 @@ by: code
 runtime: node
 entry: index.js
 timeout: 30s
-parts: [366cc014-1f13-49f9-89f7-215623dfc872]
+about: [366cc014-1f13-49f9-89f7-215623dfc872]
+writes: ["data:reminder-answers"]
 outputs: [{ name: sent, kind: number }]
 effect: [rsvps-30]
 trigger: manual
@@ -87,15 +101,16 @@ authority: { run: ["person:Nathan"], approve: false, irreversible: false }
 
 # Send the reminders
 
-Mei sends a reminder to each person on the mailing list who has no RSVP yet. After the run, the check of `rsvps-30` runs once.
+Mei sends a reminder to each person on the mailing list who has no RSVP yet, and the process records each answer in the native data `reminder-answers`. After the run, the check of `rsvps-30` runs once.
 ````
 
 The file `index.js` in the same folder:
 
 ```js
-const sent = 8; // send the reminders here
-console.log(JSON.stringify({ log: `Sent ${sent} reminders.` }));
-console.log(JSON.stringify({ output: { sent } }));
+const answers = [{ name: 'Nina Walker', email: 'nina.walker@example.org' }]; // send the reminders here
+console.log(JSON.stringify({ log: `Recorded ${answers.length} answers.` }));
+console.log(JSON.stringify({ data: { id: 'reminder-answers', rows: answers, how: 'append' } }));
+console.log(JSON.stringify({ output: { sent: answers.length } }));
 ```
 
 ## An agent process
@@ -107,7 +122,7 @@ id: write-ship-summary
 by: agent
 prompt: "Read the commits of origin/canon..${inputs.head} in the repository flint. Write one line that says what the ship holds. Change no file."
 target: claude/o55xh
-parts: [02586506-e1e8-4674-a72b-eeca885c9bc8]
+about: [02586506-e1e8-4674-a72b-eeca885c9bc8]
 inputs: [{ name: head, kind: text, required: true }]
 outputs: [{ name: summary, kind: text }]
 trigger: manual
