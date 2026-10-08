@@ -248,7 +248,7 @@ style: dependency
 ```
 ````
 
-The connection capabilities: `rolls-up` (the main map shows the link at each level as a relation with a count) and `orders-run` (`next`: an order of the parts, which the shape `flow` draws; a run follows the `map.md` of a process, not the parts). A connection with no capability is a plain reference. `mentions` (a prose link) is a builtin connection. `parent` is not a connection.
+The connection capability: `rolls-up` (the main map shows the link at each level as a relation with a count). `next` is a plain connection: an order of the parts that the shape `flow` draws. No run follows a connection: a run follows the `map.md` of a process. A connection with no capability is a plain reference. `mentions` (a prose link) is a builtin connection. `parent` is not a connection.
 
 **A template** is the start of a new program: `Mesh/Metadata/Templates/(Template) <Name>.md` (this Flint), or `Shards/<Shard>/templates/tmp-<sh>-program_<id>-v<X.Y>.md` (a shard). A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
 

@@ -7,7 +7,7 @@ tags:
 
 # then
 
-The next node in a flow. A step goes to its next step.
+The part that comes after this part, in an order that a person reads, for example the steps of a process that the shape `flow` draws. No run follows it: a run follows the `map.md` of a process.
 
 A part links to another part with the frontmatter key `next`: a wikilink, or a list of wikilinks.
 
@@ -16,7 +16,7 @@ format: steel-connection/1
 id: next
 key: next
 title: then
-description: "The next node in a flow. A step goes to its next step."
-capabilities: [orders-run]
+description: "The part that comes after this part, in an order that a person reads."
+capabilities: []
 style: flow
 ```
