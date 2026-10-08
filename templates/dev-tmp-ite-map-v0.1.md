@@ -192,7 +192,9 @@ A data map is the custom code of a large piece of data: a graph, a document, a s
 
   THE RULES
   - The store code only reads files. It never writes: the core writes each file of edit inside the store, with the
-    lock and the hash of the store. A path that leaves the store is refused.
+    lock and the hash of the store. A path that leaves the store is refused. The core runs data.js with
+    node --permission: it may read only the Flint and write only its store, and it has no child process, no worker,
+    and no network.
   - One edit gives the full new text of each changed file. Keep the files easy to read in a diff of Git.
   - Test the store code with a JSON file on stdin: node data.js outputs < input.json
 */

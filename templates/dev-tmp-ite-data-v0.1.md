@@ -67,7 +67,9 @@ description: "A piece of data of a program: Steel/Programs/<Program>/Data/<id>/d
   error ("The source changed its shape"), and the old snapshot stays.
 
   RULES
-  - A reader only reads. It never writes, sends, pushes, publishes, or fetches.
+  - A reader only reads. It never writes, sends, pushes, publishes, or fetches. The core runs a node reader or maker
+    with node --permission: a write of a file outside its temporary folder (TMPDIR) fails. A child process (git) and
+    a python or exec reader are not limited: start only commands that read.
   - A calculated value is never stored as truth: give it by: code and from, and the core computes it.
   - A maker never calculates from a missing input: an input with the state none, pending, or error stops it (exit 1,
     with the reason). A custom store does the same in its outputs op.
