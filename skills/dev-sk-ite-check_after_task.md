@@ -36,7 +36,7 @@ A product task changes code. A part or a view node that names that code can then
    - Emit the event, with each path, the name of the task note (for example `(Task) 1245 ITE MVP - Events In, the Plan of Future Notes, Dev Versions, and the Program Agent After a Task`), one sentence for a person, and the commits:
 
      ```bash
-     flint ite event emit --kind task.finished --path <absolute path>... --task "<the name of the task note>" --summary "<one sentence: what the task changed>" --payload '{"commits":["<sha>"],"repos":["<repo>"]}' --json
+     flint ite event emit --kind task.finished --path <absolute path>... --task "<the name of the task note>" --summary "<one sentence: what the task changed>" --payload '{"commits":["<sha>"],"repos":["<repo>"]}' --source projects --json
      ```
 
      The output is the event and its routes. Each route names a program, a target (`process:<id>`), and a status: `started`, `queued`, `refused`, `not-enabled`, or `no-match`. The event goes to the log of events on this machine. It changes no file of the Flint, and it never blocks.
