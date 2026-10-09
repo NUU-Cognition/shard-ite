@@ -33,8 +33,9 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
     choice | json | date | money (choice adds choices: [...]).
   - effect: optional, the ids of the claims that show that the work worked. After a done run, the core runs their
     checks once, with the same inputs. Only a check confirms an effect.
-  - trigger: manual, { every: 10m }, { cron: "0 9 * * *" }, { on: hook }, or { on: watch }. A trigger runs only
-    on a machine where a person enabled it (`flint ite enable "<program>" <id>`).
+  - trigger: manual, { every: 10m }, { cron: "0 9 * * *" }, { on: hook }, { on: watch }, or
+    { on: event, kinds: [task.finished, commit.landed] } (add scope: any for each event of the kinds, also with
+    no match). A trigger runs only on a machine where a person enabled it (`flint ite enable "<program>" <id>`).
   - authority: optional, { run: ["person:<Name>"], approve: true|false, irreversible: true|false }. irreversible
     implies approve, and an agent never approves.
   - concurrency: optional, at most this many runs at once.
@@ -42,7 +43,7 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
       runtime: node | python | exec. entry: the file in the folder. timeout: optional (default 60s).
     The core runs the entry with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_PROCESS_ID, STEEL_PARTS (the part ids of
     about), STEEL_ABOUT (each reference of about), STEEL_DATA (the values of reads), STEEL_INPUTS, STEEL_STATE
-    (JSON: the state of the process across its runs), STEEL_RUN_ID (or empty), STEEL_EVENT (a hook or a watch),
+    (JSON: the state of the process across its runs), STEEL_RUN_ID (or empty), STEEL_EVENT (a hook, a watch, or an event),
     and the values of flint.env and flint.env.local. Each line of its output that is one JSON object is one
     record: { "output": { "<name>": <value> } }, { "state": { ... } } (the new state of the process),
     { "data": { "id": "<data id of writes>", "value": <value> } } or { "data": { "id": "<data id of writes>",
@@ -53,6 +54,10 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
       prompt: the request, with ${inputs.<name>} for an input. One Orbh session starts, and its result gives
               the outputs.
       target: optional, the Orbh target "runtime/profile". timeout: optional.
+      agent: optional, own (the default: one new Orbh session) or program (the agent session of the program
+             does the work as one job of the action update, with the text task and the event, through a queue).
+             With agent: program, give the request in task. The standing process of a program (keep-map-true)
+             has by: agent, agent: program, and an event trigger. See [[knw-ite-loop]].
   - person:
       task: what the person does. The run gives waiting; Steel shows the task, and the person presses Done with
             the outputs.

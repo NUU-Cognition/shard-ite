@@ -46,6 +46,8 @@ The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`
 | `review` | [[hwkfl-ite-review]] | The anchor of each node that is still true (`flint ite review`), and at most one candidate or one map change for the nodes that are not true |
 | `free`, `update`, `explain`, `do`, `revise` | None: the prompt of the job gives the steps | What the prompt of the job asks for. `explain` changes no file. |
 
+**The job of an event.** A process with `agent: program` (for example the standing process `keep-map-true`) gives you a job of the action `update`. Its prompt holds the `task` of the process and the event (`STEEL_EVENT`). Follow the `task`. Make one proposal for each event, with all the parts that the event touches. Set each future note that the work made true with `flint ite plan set` (`doing` or `done`), and never run `flint ite plan realize`. When more jobs wait in your queue, the next job comes after you return. See [[knw-ite-loop]].
+
 ## The Rules of a Headless Session
 
 1. **Show the person where you work.** Run the `flint ite focus` command of the prompt of the job first. Run `flint ite focus <node ids>` again each time your work moves to other nodes. Follow [[sk-ite-focus]].

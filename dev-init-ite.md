@@ -69,7 +69,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Maker | Who makes a native value: a person, code, an agent, or a process |
 | Metric | A piece of data that keeps each value with its time (`history: keep`) |
 | Run | One walk of an instruction map, with its record in `Steel/Programs/<P>/Runs/<run id>/`. |
-| Trigger | What starts a check or a process: nothing (manual), a schedule, a hook, or a watch. |
+| Trigger | What starts a check or a process: nothing (manual), a schedule, a hook, a watch, or an event. |
 | Enable | The yes of a person to a trigger on one machine. |
 | Log | What the checks saw and what the processes did, on this machine: `.flint/steel/logs/<program id>.jsonl`. |
 | Proposal | A change that waits for a person: a map change, a view candidate, or a revision. It is a file of `Steel/Programs/<P>/Proposals/`. |
@@ -84,6 +84,17 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Agent log | `.flint/steel/agents.jsonl`: the jobs, the dock records, and the activity of the agent sessions. A fact of this machine. |
 | Presence | The mark of a live agent session on the nodes of its focus. |
 | Focus | The nodes that a person selected to see alone. For an agent: the nodes that it works on now. |
+| Kernel | The five words of a system: thing, state, process, event, and plan. See [[knw-ite-loop]]. |
+| Event | A fact in time: this happened, here, now. One line of the form `steel-event/1` in the event log of this machine, with what it is about: paths, references, and tasks. |
+| Route | The way of one event to one target of one program, with its status: `started`, `queued`, `refused`, `not-enabled`, or `no-match`. |
+| Standing process | The process of a program with `by: agent`, `agent: program`, and an event trigger, for example `keep-map-true`. It gives each event to the agent of the program as one job. |
+| Agent of the program | The agent session of a program that does the jobs of its processes with `agent: program`, one at a time, from a queue. |
+| Plan | What a program must be next: the set of its future notes. |
+| Future note | The future state of one thing: a note of the form `steel-future/1` beside the true note, with the name `<name of the thing> . (Future) Next`. It is not a part. |
+| Dev version | The draft of a process or an instruction map in `Processes/<id>/dev/`. Only a person runs it, by hand, and it writes only a dev state. |
+| Version | The sha256 of the files of a process. Each run records its channel (`production` or `dev`) and its version. |
+| Promotion | A revision that replaces the production files of a process with its dev files. Only a person applies it. |
+| Pulse | What a person reads first about a program: the plan, the machinery of the loop, and at most five sentences of attention. |
 | Workbench | The ITE surface in Steel. |
 
 ## The Planes
@@ -96,6 +107,8 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Data | What does the system hold and measure? | `Steel/Programs/<P>/Data/<id>/data.md`, its code, and its store; the snapshots on this machine | The files: a person or an agent. A native value: a person, a process with `writes`, or the door. A pull and a calculated value: only the core. |
 | Processes | What work can the program do, and in which order? | `Steel/Programs/<P>/Processes/<process>/process.md`, its code, and its `map.md` | A person or an agent |
 | Log and runs | What did the checks see, and what did the processes and the runs do? | The log `.flint/steel/logs/<program id>.jsonl` on this machine, and the runs in `Steel/Programs/<P>/Runs/` | Only a command: the one door of the results, a process run, and the run engine |
+| Plan | What must the system be next? | The future notes beside the true notes, in the Mesh | A person. An agent drafts a future note only in a session that a person drives; the agent of the program sets `doing` and `done`. |
+| Events | What happened? | The event log and the routes in `.flint/steel/events/` on this machine | Only the one door: `flint ite event emit` and its route |
 | Work | Who works on which node now, and what did each agent do? | Agent sessions with a focus, and the agent log `.flint/steel/agents.jsonl` on this machine | Orbh and `flint ite focus`; the agent log: only the agent routes and the `flint ite` commands |
 
 ## A Writer Writes Meaning, a Command Computes Facts
@@ -583,6 +596,8 @@ For a person: what the process does, and why.
 6. **The state of a process** across its runs is `.flint/steel/state/<program id>/<process>.json`: the code gets it as `STEEL_STATE`, and the newest `{ "state": ... }` record of a `done` run replaces it. A process that writes files on this machine writes them in `.flint/steel/state/<program id>/`.
 7. **No ready processes.** Each process holds its own code. Test it with `flint ite process test`: it runs the code once with the given inputs, prints each record and its problems, writes nothing to the log, and changes no state. A process with `irreversible: true` or a `source` refuses the test unless `--dry` is given; with `--dry` it prints what it would run.
 8. **A large process.** A process with a `map.md` in its folder runs as a run of its instruction map (see Instruction Maps and Runs). One thing at two sizes: one description, or one description and a map.
+9. **The agent of the program.** `by: agent` with `agent: program` gives the work to the agent session of the program as one job (the action `update`, with the `task` of the process and the event), in place of a new session. The default is `agent: own`. See [[knw-ite-loop]].
+10. **A dev version.** A process and an instruction map can have one dev version in `Processes/<id>/dev/`. Only a person runs it (`--dev`), and a person promotes it through a revision. See [[knw-ite-loop]].
 
 **The log record** of a process run (`kind: process-run`) holds `process`, `run` (or null), `step` (or null), `state` (`done`, `failed`, `waiting`, `cancelled`), `outputs`, `summary`, `started_at`, `ended_at`, and `by`.
 
@@ -595,6 +610,7 @@ For a person: what the process does, and why.
 | `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" [--about <ref>...] [--text "<prose>"]` | Writes a new `process.md` from the form `steel-process/1`, with `about: [...]` and `trigger: manual`. A ref of `about` is a part id, `process:<id>`, `process:<id>#<node>`, or `data:<id>`. code gets `runtime: node` and `entry: index.js`; agent gets a `prompt`; person gets a `task`. It writes no code. | `Processes/<id>/process.md`, and one activity record for an agent |
 | `flint ite process run "<program>" <process> [--input k=v]...` | Run now. A process with a map starts a run. | The log, the state of the process |
 | `flint ite process test "<program>" <process> [--input k=v]... [--dry]` | Runs the code once and prints each record and its problems | Nothing |
+| `flint ite process dev "<program>" <process>`, `process run ... --dev`, `process promote "<program>" <process>` | Makes the dev version, runs it (a person only), and proposes its promotion (see [[knw-ite-loop]]) | The dev files, a dev state, or one revision |
 
 ## Triggers and Enables
 
@@ -605,6 +621,7 @@ Checks, processes, and data (a pull or a maker) have the same triggers. The file
 | Manual | No trigger (`trigger: manual` for a process) | A person (Check now, Run now), or a run (an effect, a precondition, or a wait for a claim) |
 | Schedule (and poll) | `trigger: { every: 10m }` or `{ cron: "0 9 * * *" }` | The Flint server |
 | A pushed event | `trigger: { on: hook }` | The Flint server, on `POST /api/steel/programs/<program>/hooks/<id>`. The body of the request is the input of the code (`STEEL_EVENT`). |
+| An event | `trigger: { on: event, kinds: [task.finished, commit.landed] }` (`scope: any`: each event of the kinds) | The ITE, at each event that is about the program (see [[knw-ite-loop]]). The event is `STEEL_EVENT`. |
 | A watched source | `trigger: { on: watch }` | The Flint server keeps the entry running, restarts it after a crash (at most 5 times in 10 minutes), and stops it on disable. The entry prints records as a check or a process does. |
 
 1. **A trigger runs only on a machine where a person enabled it**: `flint ite enable "<program>" <claim|process|data:<id>>`, and `flint ite disable`. The record is `.flint/steel/enabled.json`. An agent cannot enable.
@@ -629,6 +646,17 @@ A person changes a view directly (the Workbench, or by hand). **An agent changes
 4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate. `flint ite diff` names each changed node with the kinds of its change: `title`, `claim` (the text, or a field that is not a reference, for example `actor`), `contract` (`part`, `code-refs`, `stories`, or `criteria`), `links`, and `level`. `flint ite view --candidate <id>` shows the candidate as the view will show it, with the proof of each node, and `flint ite diff --candidate <id> --against-candidate <id>` compares two candidates of one view.
 5. The apply (`flint ite apply --candidate <id>`, or the Workbench) replaces the view only when the hash of the view file is `base_hash`, and writes the replaced form to `History/`. A conflict writes nothing. The apply and the discard keep the candidate file: they set `state: applied` or `state: discarded`.
 6. In an interactive session, apply only when the person agrees. In a headless session, never apply and never discard the candidate that you return.
+
+## The Loop: Events, the Plan, Dev Versions, and the Pulse
+
+A program is live when events keep it true. The full reference is [[knw-ite-loop]]. Read it before you emit an event, write a future note, make a dev version, or do the job of an event.
+
+1. **The kernel.** Five words describe each system: thing, state, process, event, and plan. Use them, and the words of each type, with a person. A proposal is how a change reaches a person. It is not a kernel word.
+2. **Events.** An event (`steel-event/1`) is a fact in time, with what it is about: paths, references, and tasks. All events come in through one door: `flint ite event emit` (or `POST /api/steel/events`). The ITE routes each event to the programs that it is about, and starts each enabled process whose trigger is `{ on: event, kinds: [...] }`. The events and their routes are facts of this machine (`.flint/steel/events/`).
+3. **The agent of the program.** A process with `by: agent` and `agent: program` gives each event to the agent session of the program as one job (the action `update`), through a queue. The standing process `keep-map-true` asks for one proposal for each event, and for the future notes that the work made true. At the end of a product task, [[sk-ite-check_after_task]] emits `task.finished`.
+4. **The plan.** A future note (`steel-future/1`, `<name of the thing> . (Future) Next`) beside the true note holds the full text of the thing as it must be. It is not a part. `flint ite plan` reads the plan, and `plan add` and `plan set` write it. `plan realize` proposes one map change that makes a future true, and only a person applies it. The findings: `plan-behind`, `plan-orphan`, `plan-twice`, and `plan-stale`.
+5. **Dev versions.** A process and an instruction map can have a dev version in `Processes/<id>/dev/`. Only a person runs it (`--dev`). It writes a dev state, and it does no irreversible step. Each run records its channel and its version, and it ends on the version that it started with. `flint ite process promote` writes a revision that only a person applies.
+6. **The pulse.** `flint ite pulse "<program>"` gives the plan counts, the machinery (the events, the standing process, the open proposals, the share of applied proposals, and the triggers), and at most five sentences of attention. The brief of a living system has the same plan and machinery.
 
 ## The Main Map
 
@@ -876,7 +904,7 @@ A part with no anchor has no review state and no finding.
 
 ### The Check After a Task
 
-`flint ite check [<program>] --paths <path...> [--checkout <dir>] [--json]` gives the findings of each part and each view that names one of the paths. It writes nothing. At the end of a product task, follow [[sk-ite-check_after_task]].
+`flint ite check [<program>] --paths <path...> [--checkout <dir>] [--json]` gives the findings of each part and each view that names one of the paths. It writes nothing. At the end of a product task, follow [[sk-ite-check_after_task]]: it emits the event `task.finished` first, and it runs this check only for a program with no standing process that took the event.
 
 1. A path is absolute, or relative to the codebase of a program. A relative path that starts with `..` is dropped. Give absolute paths: then each path matches only the code of its own repository.
 2. A path matches a code-ref when both are in one repository, and one path is the other or holds it at a `/` boundary. No glob.
@@ -1201,7 +1229,10 @@ The claims, the data, the processes, the triggers, and the runs of a living syst
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
 | `flint ite claim list\|show\|check\|test\|report ...` | The claims of a program, Check now, the test of a check, and the one door of the results (see Claims and Checks) | The log, or nothing |
 | `flint ite data list\|show\|pull\|test\|set\|edit\|report\|history ...` | The data of a program, Pull now, the test of a reader or a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data) | A snapshot, a value, a store, or nothing |
-| `flint ite process list\|show\|run\|test ...` | The processes of a program, Run now, and the test (see Processes) | The log, or nothing |
+| `flint ite process list\|show\|run\|test\|dev\|promote ...` | The processes of a program, Run now (`--dev`: a dev run), the test, the dev version, and the promotion (see Processes) | The log, a dev version, a revision, or nothing |
+| `flint ite event emit\|list\|show ...` | The one door of the events, and the events with their routes (see [[knw-ite-loop]]) | The event log and the routes, or nothing |
+| `flint ite plan [show\|add\|set\|realize] <program> ...` | The plan of a program and its future notes (see [[knw-ite-loop]]) | A future note, one proposal, or nothing |
+| `flint ite pulse <program>` | The pulse of a program: the plan, the machinery, and the attention sentences | Nothing |
 | `flint ite triggers\|enable\|disable ...` | The triggers and their enables on this machine (see Triggers and Enables) | `.flint/steel/enabled.json`, or nothing |
 | `flint ite flow ...` | The instruction maps and their runs (see Instruction Maps and Runs) | A run, or nothing |
 | `flint ite system\|log\|brief\|vitals\|prompt\|revision ...` | A living system (see Living Systems) | The log, a revision, or nothing |
@@ -1305,7 +1336,8 @@ A program is for a person. A model that breaks these rules does not help that pe
 | [[wkfl-ite-process_add]] | The person names work that the program must be able to do: one process |
 | [[wkfl-ite-flow_add]] | The person names work that needs steps and decisions in order: one instruction map |
 | [[wkfl-ite-review]] | Nodes have `review-due`, or the person asks to compare nodes with their code |
-| [[sk-ite-check_after_task]] | A product task ends: check the parts and the views that name the changed files |
+| [[sk-ite-check_after_task]] | A product task ends: emit `task.finished`, and check the parts and the views that name the changed files for each program with no standing process that took the event |
+| [[knw-ite-loop]] | You emit an event, write a future note, make a dev version, read a pulse, or do the job of an event |
 | [[sk-ite-focus]] | Each workflow: show the person which nodes you work on |
 
 Each workflow has a headless form (`hwkfl-ite-<name>`) that a headless agent session follows for a job of its action, and an interactive form (`wkfl-ite-<name>`). The actions `free`, `update`, `explain`, `do`, and `revise` have no workflow: the prompt of the job gives the steps.
