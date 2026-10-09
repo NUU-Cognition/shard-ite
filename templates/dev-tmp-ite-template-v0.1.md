@@ -8,9 +8,9 @@ description: "A template of this Flint (steel-template/1): the start of a new pr
   A template is the start of a new program. It is an instruction for the agent that models a system of one kind,
   with one fenced `template` block that Steel reads for the New program dialog. `flint ite create --template <id>`
   copies its types into the `types` of the root note and writes `from-template`. After that, nothing reads it.
-  The shards give templates too: `Shards/<Shard>/templates/tmp-<sh>-program_<id>-v<X.Y>.md` (the ITE shard gives
-  software, process, event, research, organisation, and general). A template of this Flint with the id of a shard
-  template replaces it in this Flint.
+  A shard gives templates as install files into `Mesh/Metadata/Templates/` (the ITE shard installs software,
+  process, event, research, organisation, and general as `(Template) <Title> (ITE Shard).md`, mode force). Give a
+  template of this Flint its own id: an update of the shard writes its own templates again.
   Before you write one, run `flint ite templates` and `flint ite types`. Write a template only when no template fits,
   and when the person agrees. A new type is a type note of Mesh/Metadata/Types/, not a part of a template.
 

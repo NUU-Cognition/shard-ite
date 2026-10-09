@@ -3,7 +3,7 @@ shard: "@nuucognition/ite"
 id: 963b5c54-ddcf-4a74-b776-059c06432948
 source:
   id: 31bb4bb5-cebf-4cc2-9a7e-0caeee6a96fb
-version: "0.4.0"
+version: "0.4.1"
 name: ITE
 shorthand: ite
 description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, claims with checks that read reality, processes and instruction maps that run, and for software the proof and the review of each node"
@@ -74,6 +74,24 @@ folders:
   - Mesh/Metadata/Templates
 
 install:
+  - source: inst-ite-template_software.md
+    dest: "Mesh/Metadata/Templates/(Template) Software (ITE Shard).md"
+    mode: force
+  - source: inst-ite-template_process.md
+    dest: "Mesh/Metadata/Templates/(Template) Business process (ITE Shard).md"
+    mode: force
+  - source: inst-ite-template_event.md
+    dest: "Mesh/Metadata/Templates/(Template) Event (ITE Shard).md"
+    mode: force
+  - source: inst-ite-template_research.md
+    dest: "Mesh/Metadata/Templates/(Template) Research (ITE Shard).md"
+    mode: force
+  - source: inst-ite-template_organisation.md
+    dest: "Mesh/Metadata/Templates/(Template) Organisation (ITE Shard).md"
+    mode: force
+  - source: inst-ite-template_general.md
+    dest: "Mesh/Metadata/Templates/(Template) General (ITE Shard).md"
+    mode: force
   - source: inst-ite-connection_next.md
     dest: "Mesh/Metadata/Types/(Connection) Next (ITE Shard).md"
     mode: force

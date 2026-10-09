@@ -22,11 +22,11 @@ Shards/(Source Remote) ITE/
 │   ├── dev-tmp-ite-map-v0.1.md              # a map of Steel/Maps
 │   ├── dev-tmp-ite-process-v0.1.md          # a process (steel-process/1)
 │   ├── dev-tmp-ite-instruction_map-v0.1.md  # an instruction map
-│   ├── dev-tmp-ite-template-v0.1.md         # a template of a Flint
-│   └── dev-tmp-ite-program_<id>-v1.0.md     # the six templates of a new program
+│   └── dev-tmp-ite-template-v0.1.md         # a template of a Flint
 └── install/
     ├── type-ite-<type>.md                   # the type notes (steel-type/1)
-    └── inst-ite-connection_<id>.md          # the connection notes (steel-connection/1)
+    ├── inst-ite-connection_<id>.md          # the connection notes (steel-connection/1)
+    └── inst-ite-template_<id>.md            # the six templates of a new program (Mesh/Metadata/Templates)
 ```
 
 Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts it.

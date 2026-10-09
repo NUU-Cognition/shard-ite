@@ -1,5 +1,7 @@
 ---
-description: "The template research of a program: a research pipeline and the research itself: the questions, the hypotheses and the claims, the evidence, the methods and the experiments, and the results. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: 1b6059b6-e860-4bfe-94bb-3c72a07994f8
+tags:
+  - "#ite/template"
 ---
 
 # Research

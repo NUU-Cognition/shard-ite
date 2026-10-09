@@ -1,5 +1,7 @@
 ---
-description: "The template process of a program: a process of a business: the people and the tools that do the work, the steps and the decisions in order, what goes in and what comes out, and the rules and numbers that control it. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: f8edffba-aae1-4e75-8eda-9b6373f9654c
+tags:
+  - "#ite/template"
 ---
 
 # Business process

@@ -281,7 +281,7 @@ style: dependency
 
 The connection capability: `rolls-up` (the main map shows the link at each level as a relation with a count). `next` is a plain connection: an order of the parts that the shape `flow` draws. No run follows a connection: a run follows the `map.md` of a process. A connection with no capability is a plain reference. `mentions` (a prose link) is a builtin connection. `parent` is not a connection.
 
-**A template** is the start of a new program: `Mesh/Metadata/Templates/(Template) <Name>.md` (this Flint), or `Shards/<Shard>/templates/tmp-<sh>-program_<id>-v<X.Y>.md` (a shard). A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
+**A template** is the start of a new program: one note `Mesh/Metadata/Templates/(Template) <Name>.md`. A shard gives its templates as install files into that folder: the ITE shard installs `(Template) <Title> (ITE Shard).md` with the mode `force`, so each new version of the shard writes them again. A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
 
 ````markdown
 ```template
@@ -295,7 +295,7 @@ questions: ["Who does what on the night?"]
 ```
 ````
 
-`flint ite create` copies the types of the template into the root note (`types`) and writes `from-template`. After that, nothing reads the template. The ITE shard gives six templates: `software`, `process`, `event`, `research`, `organisation`, and `general` ([[tmp-ite-program_event-v1.0]] and the others). Follow the instruction of the template when you model a new program. Add a type, a connection, or a template only when none fits, and when the person agrees.
+`flint ite create` copies the types of the template into the root note (`types`) and writes `from-template`. After that, nothing reads the template. The ITE shard gives six templates: `software`, `process`, `event`, `research`, `organisation`, and `general` ([[(Template) Event (ITE Shard)]] and the others). To change one, write your own template in a new note with another id: an update of the shard writes its own six again. Follow the instruction of the template when you model a new program. Add a type, a connection, or a template only when none fits, and when the person agrees.
 
 ## The View File
 
@@ -1288,7 +1288,7 @@ A program is for a person. A model that breaks these rules does not help that pe
 | [[tmp-ite-process-v0.1]] | You write a process (`steel-process/1`) |
 | [[tmp-ite-instruction_map-v0.1]] | You write an instruction map: the `map.md` of a process (`steel-flow/1`) |
 | [[tmp-ite-template-v0.1]] | You write a template of this Flint (`Mesh/Metadata/Templates/`) |
-| `tmp-ite-program_<id>-v1.0` | The six templates of a new program: `software`, `process`, `event`, `research`, `organisation`, `general` |
+| `inst-ite-template_<id>` (install) | The six templates of a new program, installed as `Mesh/Metadata/Templates/(Template) <Title> (ITE Shard).md`: `software`, `process`, `event`, `research`, `organisation`, `general` |
 | [[wkfl-ite-model]] | A person wants the map of a system: a new program, or more parts on a map |
 | [[wkfl-ite-view]] | A person asks a question about a program, and no view answers it |
 | [[wkfl-ite-reshape]] | A person asks for a change of a view in words |

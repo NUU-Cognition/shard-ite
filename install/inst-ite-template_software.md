@@ -1,5 +1,7 @@
 ---
-description: "The template software of a program: a software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: df4118e8-3257-437f-8a83-d6acf31ba027
+tags:
+  - "#ite/template"
 ---
 
 # Software

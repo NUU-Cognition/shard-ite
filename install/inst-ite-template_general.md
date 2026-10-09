@@ -1,5 +1,7 @@
 ---
-description: "The template general of a program: a system of any kind. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: efe7e52e-6719-4a59-bdea-01d0c9c19a31
+tags:
+  - "#ite/template"
 ---
 
 # General

@@ -1,5 +1,7 @@
 ---
-description: "The template event of a program: an event, from the first idea to the last thank-you message: its goals and milestones, the people, the places, and the things it needs, the work to do, the run of the day, and the risks and the budget. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: 981fba84-7ecf-4441-992f-2d2ac585cb56
+tags:
+  - "#ite/template"
 ---
 
 # Event

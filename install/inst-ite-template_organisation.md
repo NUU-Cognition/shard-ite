@@ -1,5 +1,7 @@
 ---
-description: "The template organisation of a program: a team or an organisation: its teams, roles, and people, the duties, the meetings, and the decisions that run it, and the goals and numbers that direct it. An instruction for an agent that models a system of this kind, and the template block that Steel reads"
+id: 92deef82-1111-401b-89a8-1fee90c245e3
+tags:
+  - "#ite/template"
 ---
 
 # Organisation
