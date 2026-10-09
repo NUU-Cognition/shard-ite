@@ -10,7 +10,7 @@ Run `flint shard start ite` (headless: `flint shard hstart ite`) if you haven't 
 
 A product task changes code. A part or a view node that names that code can then say a thing that is no longer true. This skill tells the ITE that the task finished: it emits the event `task.finished` with the changed files. The ITE routes the event to each program that the files touch, and the standing process of each program gives the work to the agent of that program. That agent proposes the change of the map. Thus the coding agent does no map work, and the map has one writer. The event is in [[knw-ite-loop]].
 
-**The fallback.** Steps 3 to 9 are the old steps of this skill. They run only for a program with no standing process that took the event: no standing process of the program is enabled on this machine, or the route of the event was refused. For such a program, the coding agent finds the parts and the views that name the changed files, compares each node that needs a review with the code, and then reviews the node or changes it through a candidate (a view node) or a map change (a part). The rules of the review are in The Review of [[init-ite]].
+**The fallback.** Steps 3 to 9 are the old steps of this skill. They run only for a program with no standing process that took the event. A standing process has `by: agent`, `agent: program`, and an event trigger. It takes the event when its route is `started` or `queued`. It does not take the event when it is not enabled on this machine, or when its route is `refused`. For such a program, the coding agent does the map work. It finds the parts and the views that name the changed files. It compares each node that needs a review with the code. Then it reviews the node, or it changes the node through a candidate (a view node) or a map change (a part). The rules of the review are in The Review of [[init-ite]].
 
 **The skill is an aid.** It never blocks a landing, the review of a task, the close of a task, or a release. A finding that stays is a line in the result, not a stop.
 
@@ -26,7 +26,7 @@ A product task changes code. A part or a view node that names that code can then
 - The task committed in the checkout of the codebase path: run the skill after the WIP commits, before the task goes to review.
 - The task committed on a worktree branch: do not emit the event before the landing. Before the landing, you can run steps 3 to 6 with `--checkout "<worktree path>"`, and name each finding that the work caused in the result. Do not review a node before the landing: the landing can give the commits new ids, and an anchor with an old id gives `anchor-unknown`. After the landing, run steps 1 and 2, and then steps 7 to 9 for the fallback programs, with no `--checkout`. When the session that ends the task does not land, it writes the line `ITE: run sk-ite-check_after_task after the landing` in its result, and the session that lands runs the skill.
 - A link in the worktree that leaves the worktree: `--checkout` refuses with exit 2. Run the skill after the landing.
-- No part and no view names the changed files: the event has no route to a standing process, and the command of step 3 prints `No part or view names <paths>. Nothing to check.` and exits 0. The skill is then done after step 9.
+- No part and no view names the changed files: the event has no route to a standing process. The command of step 3 prints `No part or view names <paths>. Nothing to check.` and exits 0. The skill is then done after step 9.
 
 # Actions
 
@@ -39,10 +39,14 @@ A product task changes code. A part or a view node that names that code can then
      flint ite event emit --kind task.finished --path <absolute path>... --task "<the name of the task note>" --summary "<one sentence: what the task changed>" --payload '{"commits":["<sha>"],"repos":["<repo>"]}' --source projects --json
      ```
 
-     The output is the event and its routes. Each route names a program, a target (`process:<id>`), and a status: `started`, `queued`, `refused`, `not-enabled`, or `no-match`. The event goes to the log of events on this machine. It changes no file of the Flint, and it never blocks.
+     The output is the event and its routes. Each route names a program, a target (`process:<id>`, `claim:<id>`, `data:<id>`, or none), a status (`started`, `queued`, `refused`, `not-enabled`, or `no-match`), a run, and a job.
+
+     The emit writes on this machine. It appends the event to `.flint/steel/events/log.jsonl`. It appends one line for each route to `.flint/steel/events/routes.jsonl`. A route that starts a target can write more. A process can start a run, a check can write a result, and a pull can write a snapshot. A standing process puts a job in the queue of the agent of the program. Later, that agent can write one proposal (a map change or a candidate) and set the status of future notes. The emit never blocks the task.
 2. **Read the routes, and find the fallback programs.**
-   - A program is **taken** when one of its routes has the status `started` or `queued`. A standing process of that program took the event, and the agent of that program does the map work. Do no map work for a taken program: do not review, edit, or propose for it.
-   - Each other program is a **fallback program**: its routes are `not-enabled`, `no-match`, or `refused`, or it has no route. Steps 3 to 9 run only for the fallback programs.
+   - A program is **taken** only when one of its routes went to a standing process and that route is `started` or `queued`. Such a route has a `job`: the job of the agent of the program. Only a process with `by: agent` and `agent: program` gives a route a job. When you are not sure, read the target: `flint ite process show "<program>" <process id> --json` must give `by: agent` and `agent: program`.
+   - A route to another target does not take the map work, also when it is `started`. Such a target is a code process, an agent process with `agent: own`, a check (`claim:<id>`), or a pull (`data:<id>`).
+   - Do no map work for a taken program: the agent of that program does it. Do not review, edit, or propose for a taken program.
+   - Each other program is a **fallback program**. Steps 3 to 9 run only for the fallback programs.
    - When `flint ite event emit` is not a command of this Flint (an older Flint CLI), or when it fails, write the error in the result. Then each program is a fallback program.
    - When no program is a fallback program, go to step 9.
 3. **Run the check.**
@@ -71,7 +75,7 @@ A product task changes code. A part or a view node that names that code can then
    - A view node: follow the workflow reshape for the kept view, with the request "Make the nodes <ids> true to the code after <task>". In an interactive session, use [[wkfl-ite-reshape]]. In a headless session, use Stages 1 to 4 of [[hwkfl-ite-reshape]] (see Headless Use).
    - A part: propose one map change with the operation `edit` (a new sentence, new prose, or new `sources`: the `code-refs` of a software part) with `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`. Change the `stories` or the `criteria` of a part with `flint ite part set "<program>" <part id> --field 'stories=["<story id>"]'`.
    - Do not review a node that your change changes: the person applies the candidate or the map change, then the node gets its review.
-9. **Record the result.** Add one line to the Task Log of the task: the event id, each taken program with its process and its job or run, and for the fallback programs the parts and the views that the check selected, the nodes that you reviewed, the candidates and the map changes that you wrote, and each finding that stays. Example: `ITE: event 3f2a… task.finished; Flint took it (keep-map-true, job 9c1d…); CLI Core: 1 part and 2 views checked; reviewed view:4c1e…#select-the-agent; candidate onboarding-20261002-101500 for Onboarding#check-the-tools.`
+9. **Record the result.** Add one line to the Task Log of the task. Name the event id, and each taken program with its process and its job. For the fallback programs, name the parts and the views that the check selected, the nodes that you reviewed, the candidates and the map changes that you wrote, and each finding that stays. Example: `ITE: event 3f2a… task.finished; Flint took it (keep-map-true, job qj-9c1d…); CLI Core: 1 part and 2 views checked; reviewed view:4c1e…#select-the-agent; candidate onboarding-20261002-101500 for Onboarding#check-the-tools.`
 
 # Headless Use
 

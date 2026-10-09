@@ -4,7 +4,15 @@ description: "The loop of a program: the kernel words, events and their routes, 
 
 # Knowledge: The Loop of a Program
 
-A program is live when events keep it true. This file gives the loop: what comes in (events), who does the work (the standing process and the agent of the program), what must be (the plan), how a process changes safely (dev versions), and what a person reads first (the pulse). The rules of [[init-ite]] apply with no change: an agent proposes, and only a person applies, approves, enables, or promotes.
+A program is live when events keep it true. This file gives the loop of a program in five parts:
+
+- **Events**: what comes in.
+- **The standing process and the agent of the program**: who does the work.
+- **The plan**: what must be.
+- **Dev versions**: how a process changes safely.
+- **The pulse**: what a person reads first.
+
+The rules of [[init-ite]] apply with no change. An agent proposes. Only a person applies, approves, enables, or promotes.
 
 ```
 event in → route by "about" → process (code, agent, or person)
@@ -102,7 +110,7 @@ agent: program      # the default is agent: own (the process starts its own agen
 ```
 
 1. `agent: program` means: the agent session of the program does the work. That agent does many jobs, one at a time (see Agent Sessions and Jobs of [[init-ite]]).
-2. When such a process starts (by an event, a schedule, or Run now), the ITE gives the agent of the program **one job**: the action `update`, with the text of the process (its `task`) and the event (`STEEL_EVENT`). The run of the process records the job id, and it ends when the job ends.
+2. Such a process can start by an event, a schedule, or Run now. Then the ITE gives the agent of the program **one job**. The job has the action `update`, the text of the process (its `task`), and the event (`STEEL_EVENT`). The run of the process records the job id. The run ends when the job ends.
 3. **The queue.** When the agent of the program works on another job, the new job waits in the queue of that agent. The agent takes the next job when it returns. When no agent of the program runs, the ITE starts one.
 4. The route of the event records the `job` and the status `queued` or `started`.
 
@@ -110,7 +118,7 @@ The **standing process** of a program is the process with `by: agent`, `agent: p
 
 **The job of an event** asks the agent for:
 
-1. **One proposal for each event**: one map change with all the parts that the event touches, and a view candidate when a node of a kept view must change. One task gives one proposal, not one proposal for each part.
+1. **One proposal for each event.** The proposal is one map change with all the parts that the event touches. Add a view candidate only when a node of a kept view must change. One task gives one proposal, not one proposal for each part.
 2. **The plan**: which future notes the work made true, in part (`doing`) or fully (`done`), set with `flint ite plan set`.
 
 The agent never applies a proposal, and it never realizes a future note. The coding agent that did the task does no map work: at the end of a product task, [[sk-ite-check_after_task]] emits `task.finished`. Its old steps run only for a program with no standing process that took the event.
@@ -149,7 +157,7 @@ authors: ["[[@Nathan]]"]
 
 1. The name is the name of the thing, then ` . (Future) Next`. `Next` is the horizon. There is one horizon now: `Next`.
 2. The ITE finds a future note by its form, not by its name or its folder.
-3. **A future note is not a part.** It has no `parent`. It does not count for the coverage, the tree, or the claims of a part. The rule "the type of a part is the last `(Type)` word" does not apply to it: the type of the future thing is the type of the true note, or `type` for a new thing.
+3. **A future note is not a part.** It has no `parent`. It does not count for the coverage, the tree, or the claims of a part. The rule "the type of a part is the last `(Type)` word" does not apply to it. The type of the future thing is the type of the true note. For a new thing, it is the field `type`.
 4. The body holds the full text of the thing as it must be, not a diff. The ITE computes the diff.
 5. One future note changes one thing on one horizon.
 6. `based-on` is the sha256 of the bytes of the true note: `shasum -a 256 "<true note>"`.
@@ -181,7 +189,7 @@ When a person applies a map change that realizes a future note, the ITE sets the
 
 1. A person writes the plan. An agent can draft a future note only in a session that a person drives.
 2. An agent of a program sets `doing` or `done` after a task, with `flint ite plan set`. It never runs `plan realize`: a person makes a future true (Make it true in the Workbench).
-3. The Workbench draws the plan over the main map with the switch "Now / Next": a new thing is a ghost card under its parent, a changed thing has a mark, a removed thing is struck through, and a future that is behind has a warning mark.
+3. The Workbench draws the plan over the main map with the switch "Now / Next". A new thing is a ghost card under its parent. A changed thing has a mark. A removed thing is struck through. A future that is behind has a warning mark.
 
 ## Dev Versions
 
@@ -196,7 +204,7 @@ Each process and each instruction map has a production version and can have one 
 
 1. **The version** of a process is the sha256 of its files, in a fixed order. Each run records `channel: production|dev` and `version: <sha>` in `run.md`, and it keeps a copy of the definition that it started with (`Runs/<run id>/definition/`).
 2. **A run ends on the version that it started with.** A change of the process changes only new runs.
-3. **A promotion is a proposal.** `flint ite process promote` writes one revision of kind `steel`: it replaces the production files with the dev files, and it moves the old files to `Processes/<id>/history/<version>/`. Only a person applies it.
+3. **A promotion is a proposal.** `flint ite process promote` writes one revision of kind `steel`. The revision replaces the production files with the dev files. It moves the old files to `Processes/<id>/history/<version>/`. Only a person applies it.
 
 | Command or route | Result |
 |---|---|
@@ -229,4 +237,4 @@ type SteelPulse = {
 
 1. `flint ite pulse "<program>" [--json]` and `GET /api/steel/programs/:id/pulse` give the pulse. Both write nothing.
 2. The brief of a living system gets two more sections from the same read: **the plan** and **the machinery**.
-3. The pulse monitors the machinery of the loop: the age of the map, the runs of the standing process, the share of proposals that a person applied, and the age of the oldest `next` item. Read it before you start the work of a program.
+3. The pulse monitors the machinery of the loop. It gives the age of the map, the runs of the standing process, the share of proposals that a person applied, and the age of the oldest `next` item. Read it before you start the work of a program.
