@@ -82,7 +82,7 @@ Checks, processes, and data (a pull or a maker) have the same triggers. The file
 
 | Command | Result | Writes |
 |---|---|---|
-| `flint ite triggers ["<program>"]` | Each trigger, its enable on this machine, and the next time | Nothing |
+| `flint ite triggers ["<program>"] [--enabled]` | Each trigger, its enable on this machine, and the next time in local time; with no program, each trigger of this Flint, the enabled first | Nothing |
 | `flint ite enable "<program>" <claim\|process\|data:<id>>`, `flint ite disable ...` | Enables or disables one trigger on this machine. A person only. | `.flint/steel/enabled.json` |
 | `flint ite trigger fire "<program>" <id> [--event <file\|->]` | Fires a hook or a schedule of a claim or a process now, on this machine (for example from a Git hook). It fires only when a person enabled it here. Exit 1 when it did not start. | The log, a run |
 
@@ -182,7 +182,7 @@ Each command takes `--json`. `<run>` is the run id.
 | `flint ite flow set "<program>" <process> --steps "<list>" \| --from <file\|-> [--title] [--inputs <field>...] [--dry-run]` | Replaces the steps of a map in one command. The title, the prose, and the inputs stay; a map with an error writes nothing; an external map refuses; an active run keeps its copy. | `map.md` |
 | `flint ite flow check "<program>" [<process>]` | Each problem of a `map.md`, with the file, the line, the cause, and the fix. Runs nothing. Exit 1 on an error. | Nothing | `Processes/<id>/map.md` (and `process.md`), and one activity record for an agent |
 | `flint ite flow start "<program>" <process> [--input k=v]... [--title "<t>"] [--follow \| --to-end]` | Starts a run, and prints the run id. `--to-end` follows the run to its end, also through the waits of a person (it prints the command of the person one time): exit 0 or 1. `--follow` drives the run here and prints each event until the run ends or waits for a person: exit 0 succeeded, 1 failed or cancelled, 3 waits for a person or paused. With `--json`, one JSON line for each event, then `{"type":"follow.end","status","reason","exit","waits":[],"next":[]}`. | A run |
-| `flint ite flow runs "<program>" [--status <s>] [--process <id>]` | The runs, the newest first | Nothing |
+| `flint ite flow runs ["<program>"] [--status <s>] [--process <id>] [--failed] [--waiting] [--since <time>] [--limit <n>]` | The runs, the active and paused first, then the newest; with no program, the runs of each program in one read, one line each with its next command | Nothing |
 | `flint ite flow status <run> [--follow \| --to-end]` | The state of the run and of each node; `--follow` follows a run that exists, as `flow start --follow` does | Nothing |
 | `flint ite flow events <run> [--at <seq>]` | The events, or the state after one event | Nothing |
 | `flint ite flow begin\|done\|answer\|approve\|refuse\|skip\|retry\|pause\|resume\|cancel <run> [--node <id>] [--follow \| --to-end] ...` | `retry` of a run that ended (failed or cancelled) starts a new run from its failed node (or `--from <node>`), with its inputs (`--input` changes one); it reuses the outputs of the done nodes before it, and runs the version of now. One action on the run (`--follow`: then follow the run): `done --output k=v`, `answer --outcome <o>`, and `--reason "<text>"` for `approve`, `refuse`, `skip`, `pause`, and `cancel`. `approve` and `refuse` are for a person only. | The events of the run |
