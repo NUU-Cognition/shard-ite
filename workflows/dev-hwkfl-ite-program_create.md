@@ -105,6 +105,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    WAITS FOR YOU:
    - flint ite map change apply "<program>" <change id>
    - flint ite revision apply "<program>" <revision id> --protected   (a living system)
+   - flint ite process set "<program>" <id> --run-by agent   (only for a process that an agent must start)
    - flint ite enable "<program>" --all   (each trigger, also keep-map-true; or one id each)
    GAPS: <what you did not know, the items for the plan, and the question for the person>
    ```

@@ -80,7 +80,7 @@ Example: "Make a program for my weekly team meeting, with a process that sends t
 6. **The plan.** A person decides the plan. Write a future note only in a session that a person drives, or when the prompt of a builder asks for it: `flint ite plan add "<program>" --of <part> --change change --append "<the change in one sentence>"` (the future starts as the true note; the status is `next`). It needs a part that exists, so write it after the first apply. A job agent and an engine agent write no future note: they name it in the result.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
 8. **Living (when the person wants a brief).** Write the full root note with one `system` block (owners, boundary, and `goals`: the ids of `ought` claims; the form is in [[tmp-ite-program-v0.1]]), and propose it: `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"`. A person applies it with `flint ite revision apply "<program>" <id> --protected`. Then `flint ite brief "<program>"` works.
-9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id> --protected` (step 8), and `flint ite enable "<program>" --all` (each trigger that is off and has no problem; or `flint ite enable "<program>" <id>` for one trigger).
+9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id> --protected` (step 8), `flint ite process set "<program>" <id> --run-by agent` (only for a process that an agent must start), and `flint ite enable "<program>" --all` (each trigger that is off and has no problem; or `flint ite enable "<program>" <id>` for one trigger).
 
 ## The Forms on One Screen
 
@@ -136,7 +136,7 @@ trigger: { cron: "30 8 * * 1" }
 fixed-by: [send-agenda]         # the processes that can make an ought claim true
 ```
 
-`authority.run` names who may start a process: `person:<Name>`, `person:*`, `agent:*`, or `agent:<target>` (`process new --run-by agent` writes `agent:*`). With no `authority`, the owners of the system (else the person of this machine) may start it, and an agent may not. Give `agent:*` only to a process that changes nothing outside this Flint (it reads, or it writes only the native data of its `writes`).
+`authority.run` names who may start a process: `person:<Name>`, `person:*`, `agent:*`, or `agent:<target>` With no `authority`, the owners of the system (else the person of this machine) may start it, and an agent may not. Only a person gives agents a run right: `flint ite process set "<program>" <id> --run-by agent`. The engine refuses `--run-by` from an agent on each path (`process new`, `process set`, `flow new`), so an agent names this command for the person in its result. A person gives `agent:*` only to a process that changes nothing outside this Flint.
 
 A trigger runs only on a machine where a person enabled it. With no enable, a person runs the process with Run now.
 
@@ -173,7 +173,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | See what waits for a person in a program | `flint ite proposals "<program>"` (the map changes, the revisions, and the view candidates, the oldest first) |
 | Add a claim | `flint ite claim new "<program>" <id> --mode is\|ought\|will --by code\|agent\|person\|none --about <ref> --title "<title>" [--reads] [--fixed-by] [--every\|--cron\|--on] [--fresh-for]` |
 | Give an old program the standing process | `flint ite process new "<program>" keep-map-true --recipe keep-map-true [--with kinds=task.finished,commit.landed]` |
-| Test and run a check | `flint ite claim test "<program>" <claim> [--data data:<id>=<json>]`, `flint ite claim check "<program>" <claim>` |
+| Test and run a check | `flint ite claim test "<program>" <claim> [--data data:<id>=<json>]`, `flint ite claim check "<program>" <claim> [--strict]` (`--strict` exits 1 when the result fails or gives error) |
 | Report a result that you saw | `flint ite claim report "<program>" <claim> --state holds\|fails\|error --summary "<text>"` |
 | Add data | `flint ite data new "<program>" <id> [--source <kind:value> \| --from data:<id> \| --value <v>] [--task "<question>"] [--every\|--cron] [--fresh-for] [--history]` |
 | Read, test, or pull data | `flint ite data list\|show\|test\|pull "<program>" [<id>]` |
@@ -199,7 +199,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | The check after a product task | [[sk-ite-check_after_task]] |
 | Show where you work | `flint ite focus <node id>...` ([[sk-ite-focus]]) |
 
-A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
+A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `--run-by` (on `process new`, `process set`, `flow new`), `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
 
 The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run that failed or did not start (also a refusal of `process run`); 2 a refusal of the input, and nothing was written. The help of each verb names its exit codes.
 

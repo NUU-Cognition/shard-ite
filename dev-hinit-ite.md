@@ -47,7 +47,7 @@ A builder makes or changes a program for a person or a manager, with no job of t
 2. **Propose; do not decide.** Each change of the main map is a map change that waits for the person. Never apply it. Never enable a trigger, approve a run, or promote a dev version.
 3. **Test each check, process, and reader** that you write, as rule 9 says. Run `flint ite process check` and `flint ite flow check` for each process and map that you write.
 4. **The plan.** Write a future note (`flint ite plan add`, status `next`) only when your prompt asks for it, and list each one for the person. Else name what must be next in your result.
-5. **End with the list for the person.** Your result names each proposal that waits (the map change ids and the revision ids), and each command that only a person runs (`flint ite map change apply`, `flint ite revision apply --protected`, `flint ite enable "<program>" --all`), one line each.
+5. **End with the list for the person.** Your result names each proposal that waits (the map change ids and the revision ids), and each command that only a person runs (`flint ite map change apply`, `flint ite revision apply --protected`, `flint ite process set "<program>" <id> --run-by agent` for a process that an agent must start, `flint ite enable "<program>" --all`), one line each.
 6. **Return as your prompt says.** Use the return shape and the commit rules of your prompt. The result rules of a job below do not apply to you.
 
 ## Agents That the Engine Starts

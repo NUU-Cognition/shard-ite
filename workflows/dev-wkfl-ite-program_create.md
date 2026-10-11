@@ -91,6 +91,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
    ```bash
    flint ite map change apply "<program>" <change id>     # when not applied yet
+   flint ite process set "<program>" <id> --run-by agent  # only for a process that an agent must start
    flint ite enable "<program>" --all                     # each trigger that is off and has no problem, also keep-map-true
    flint ite enable "<program>" <id>                      # or one trigger: a process id, a claim id, or data:<data id>
    ```
