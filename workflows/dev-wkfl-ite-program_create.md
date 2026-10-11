@@ -71,8 +71,8 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 ## Stage 5: The Claims
 
-1. For each thing that must be true, write one claim: `flint ite claim new "<program>" <id> --about <part id> --mode is|ought|will --by code|agent|person|none --title "<title>"`. For the weekly meeting: `agenda-exists`, `ought`, about the agenda part. `claim new` takes only a part of the main map. Before the person applies the first map change, the program has no part: then write `Reality/<id>/claim.md` from [[tmp-ite-claim-v0.1]] by hand, about the data that it judges (`about: ["data:<id>"]`). A claim about data is valid at once.
-2. Write its check (`check.js` for `by: code`): it reads the data of `reads`, and prints one line `{"state":"holds|fails|error","summary":"..."}`. Add `fixed-by: [<process id>]` to an `ought` claim, and `trigger` when it must run by itself.
+1. For each thing that must be true, write one claim: `flint ite claim new "<program>" <id> --about <part id> --mode is|ought|will --by code|agent|person|none --title "<title>"`. For the weekly meeting: `agenda-exists`, `ought`, about the agenda part. `--about` takes a part (its id or its title), `root`, or `data:<id>`: before the person applies the first map change, name the data that the claim judges. Give the rest in the same command: `--reads data:<id>`, `--fixed-by <process id>` for an `ought` claim, a trigger (`--every`, `--cron`, `--on`), and `--fresh-for`.
+2. Write its check: a code claim gets a stub `check.js` that gives `error` until you write the test. The test reads the data of `reads`, and prints one line `{"state":"holds|fails|error","summary":"..."}`.
 3. Test it and run it one time: `flint ite claim test "<program>" <id>`, then `flint ite claim check "<program>" <id>`.
 4. Name the claim in the `effect` of the process that makes it true.
 5. Once each claim has a tested check, progress to the next stage.

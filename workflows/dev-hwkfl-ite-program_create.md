@@ -72,8 +72,8 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 5: The Claims
 
 1. Run `flint orbh session set phase claims`.
-2. For each thing that must be true: `flint ite claim new "<program>" <id> --about <part id> --mode is|ought|will --by code|agent|person|none --title "<title>"`. `claim new` takes only a part of the main map. Before the person applies the first map change, the program has no part: then write `Reality/<id>/claim.md` from [[tmp-ite-claim-v0.1]] by hand, about the data that it judges (`about: ["data:<id>"]`). A claim about data is valid at once.
-3. Write its check (`check.js` for `by: code`), `reads`, `fixed-by` for an `ought` claim, and `trigger`. A check only reads.
+2. For each thing that must be true: `flint ite claim new "<program>" <id> --about <part id> --mode is|ought|will --by code|agent|person|none --title "<title>"`. For the weekly meeting: `--about data:agenda --reads data:agenda --fixed-by send-agenda --cron "30 8 * * 1"`. `--about` takes a part (its id or its title), `root`, or `data:<id>`: before the person applies the first map change, name the data that the claim judges. Give the rest in the same command: `--reads data:<id>`, `--fixed-by <process id>` for an `ought` claim, a trigger (`--every`, `--cron`, `--on`), and `--fresh-for`.
+3. Write its check: replace the stub `check.js` (it gives `error` until you write the test). A check only reads.
 4. Test it and run it one time: `flint ite claim test "<program>" <id>`, then `flint ite claim check "<program>" <id>`. A claim that fails now is a true answer: say why in the result.
 5. Name each claim in the `effect` of the process that makes it true.
 6. Progress to the next stage.

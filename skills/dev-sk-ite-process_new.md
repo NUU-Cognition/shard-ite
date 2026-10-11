@@ -18,7 +18,7 @@ Make one process of a program from one sentence of a person, for example "send t
 
 # Actions
 
-1. **Look for a recipe.** Run `flint ite process recipes`. A recipe is a process that runs at once: `heartbeat`, `http-check` (a URL answers), `json-pull` (one value of a JSON URL), `command` (one shell command), `git-stats` (a Git repository), `agent-update` (the agent of the program keeps the map true after each event), `person-approve` (a person answers one question), and `daily-digest` (an agent writes a digest of the last day each morning). When one fits the sentence, use it with its values:
+1. **Look for a recipe.** Run `flint ite process recipes`. A recipe is a process that runs at once: `heartbeat`, `http-check` (a URL answers), `json-pull` (one value of a JSON URL), `command` (one shell command), `git-stats` (a Git repository), `keep-map-true` (the agent of the program keeps the map true after each event), `person-approve` (a person answers one question), and `daily-digest` (an agent writes a digest of the last day each morning). When one fits the sentence, use it with its values:
 
    ```bash
    flint ite process new "<program>" <id> --recipe <name> [--with <name>=<value>]...
@@ -49,7 +49,7 @@ Make one process of a program from one sentence of a person, for example "send t
 # Rules
 
 - Never run the process and never enable its trigger. Only a person does.
-- An agent may Run now only a process whose `authority.run` names it (`agent:*`). Give `agent:*` only to a process that only reads.
+- An agent may Run now only a process whose `authority.run` names it (`agent:*`, written by `--run-by agent`). Give it only to a process that only reads.
 - When the work has steps and decisions in order, or more than one actor, follow [[sk-ite-workflow_new]].
 - The full form is in [[tmp-ite-process-v0.1]] and in Processes of [[knw-ite-processes]].
 
