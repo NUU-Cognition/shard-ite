@@ -8,7 +8,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 
 ## The Root Note
 
-`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --template <id> --purpose "<text>"`; the form is [[tmp-ite-program-v0.1]].
+`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true`, not enabled); the form is [[tmp-ite-program-v0.1]].
 
 | Field | Value |
 |---|---|
@@ -328,7 +328,7 @@ The states: `proposed`, then `applied` (and `reverted` after a revert), or `disc
 | `flint ite map split <program> --parent <part\|root> --title <t> --kind <type id> --sentence <s> <child>...` | Proposes one `split` | One proposal |
 | `flint ite map move <program> <part> --parent <part\|root>`, `map rename <program> <part> --title <t>`, `map merge <program> <from> --into <part>` | Propose one operation; `--apply` applies it (a person only) | One proposal |
 
-Each verb takes `--json`. `flint ite map <program>` with no verb gives the map: each part with its type, its parent, its links, and its grounding. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`.
+Each verb takes `--json`. `flint ite map <program>` with no verb gives the tree with the id of each part, the totals, and three next commands; `--full` adds the text, the links, and the grounding of each part, and `--json` gives each part with its type, its parent, its links, and its grounding. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`.
 
 ### The Rules of the Main Map
 
