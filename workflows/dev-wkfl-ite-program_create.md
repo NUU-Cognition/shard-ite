@@ -57,7 +57,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    - A person writes it: `by: person` with a `question`.
    - Code calculates it from other data: `by: code` with `from`.
    - It comes from outside (a file, a page, a command): a `source` and a reader, `by: code` with `entry: pull.js`.
-3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A table that a process writes has no flag for its shape: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]].
+3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A value or a table that a process writes has no `by` and no flag of `data new`: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (a table adds `map: table` and `shape`), and name it in the `writes` of the process.
 4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Once the state is written, progress to the next stage.
 
@@ -85,7 +85,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 ## Stage 7: Check and Hand Over
 
-1. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote.
+1. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote. `claim-fails` is not an error of a file: it is a true answer about the world, so report it.
 2. Run `flint ite pulse "<program>"`.
 3. Show the person the list of what only the person does, one command each:
 

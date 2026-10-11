@@ -56,7 +56,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 1. Run `flint orbh session set phase state`.
 2. For each piece of data that the system holds or measures, select its maker or its reader: a person (`by: person` with a `question`), code from other data (`by: code` with `from`), or a reader of a source outside (`source`, `by: code`, `entry: pull.js`). Never decide a value for a person.
-3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A table that a process writes has no flag for its shape: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]].
+3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A value or a table that a process writes has no `by` and no flag of `data new`: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (a table adds `map: table` and `shape`), and name it in the `writes` of the process.
 4. Test each reader or maker that has code with `flint ite data test "<program>" <id>`, and pull it one time with `flint ite data pull "<program>" <id>`. A value that a person writes and a table that a process writes have no code to test. `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Progress to the next stage.
 
@@ -94,7 +94,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 7: Check and Return
 
 1. Run `flint orbh session set phase checking`.
-2. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote.
+2. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote. `claim-fails` is not an error of a file: it is a true answer about the world, so report it.
 3. Run `flint ite pulse "<program>"`.
 4. Return with the shape of your prompt. When the prompt gives no shape, return Markdown with these lines:
 

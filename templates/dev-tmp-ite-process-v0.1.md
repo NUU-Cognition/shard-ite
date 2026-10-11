@@ -38,8 +38,8 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
     no match). A trigger runs only on a machine where a person enabled it (`flint ite enable "<program>" <id>`).
   - authority: optional, { run: ["person:<Name>"], approve: true|false, irreversible: true|false }. irreversible
     implies approve, and an agent never approves. Each actor of run is person:<Name>, person:*, agent:* (each
-    agent), or agent:<target>. An agent may Run now only a process whose run names it: give agent:* to a process
-    that only reads, when an agent must run it.
+    agent), or agent:<target>. An agent may Run now only a process whose run names it: give agent:* only to a process
+    that changes nothing outside this Flint (it reads, or writes only the native data of its writes).
   - concurrency: optional, at most this many runs at once.
   - code (a code process is always its own code):
       runtime: node | python | exec. entry: the file in the folder. timeout: optional (default 60s).

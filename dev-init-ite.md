@@ -64,13 +64,13 @@ A part is a part when its `parent` chain reaches the root note. Its identity is 
 
 Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (headless: [[hwkfl-ite-program_create]]).
 
-1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists the six of the shard and the templates of this Flint: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true`: the agent of the program keeps the map true after each event. It is not enabled.
+1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists the templates of this Flint, with the six that the shard installs: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true`: the agent of the program keeps the map true after each event. It is not enabled.
 2. **The first map, as a proposal.** Propose 3 to 9 parts in one map change:
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
 3. **State.** One command writes each piece of data that the system holds or measures:
    `flint ite data new "<program>" agenda-topics --task "What topics go on the agenda this week?" --fresh-for 7d` (a person gives the value when Steel asks).
-   `--source command:<line>|url:<url>|path:<file>` makes external data with a reader, `--from data:<id>` a calculated value, and `--value` a value now. A table that a process writes (`agenda`) has no flag for its shape: write `Data/agenda/data.md` from [[tmp-ite-data-v0.1]]. Test each reader or maker with `flint ite data test "<program>" <id>`. A value of a person shows as `pending` in `flint ite data list`.
+   `--source command:<line>|url:<url>|path:<file>` makes external data with a reader, `--from data:<id>` a calculated value, and `--value` a value now. A value or a table that a process writes (`agenda`) has no `by` and no flag of `data new`: write `Data/agenda/data.md` from [[tmp-ite-data-v0.1]] (a table adds `map: table` and `shape`), and name it in the `writes` of the process. Test each reader or maker with `flint ite data test "<program>" <id>`. A value of a person shows as `pending` in `flint ite data list`.
 4. **Processes.** One command writes a process with its trigger, its data, and a stub of code that runs at once:
    `flint ite process new "<program>" send-agenda --by code --task "Send the agenda to the team" --reads data:agenda-topics --writes data:agenda --cron "0 8 * * 1" --irreversible`
    A recipe gives a process that runs at once: `flint ite process recipes`. Then write the work (the code, the `prompt`, or the `task`), add `effect`, and run `flint ite process check "<program>" send-agenda` and `flint ite process test "<program>" send-agenda` (`--dry` for an agent process or an irreversible process). Follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]] (`flint ite flow new "<program>" <id> --steps "<step>; <step>"`).
@@ -136,7 +136,7 @@ trigger: { cron: "30 8 * * 1" }
 fixed-by: [send-agenda]         # the processes that can make an ought claim true
 ```
 
-`authority.run` names who may start a process: `person:<Name>`, `person:*`, `agent:*`, or `agent:<target>` (`process new --run-by agent` writes `agent:*`). Give `agent:*` only to a process that only reads.
+`authority.run` names who may start a process: `person:<Name>`, `person:*`, `agent:*`, or `agent:<target>` (`process new --run-by agent` writes `agent:*`). With no `authority`, the owners of the system (else the person of this machine) may start it, and an agent may not. Give `agent:*` only to a process that changes nothing outside this Flint (it reads, or it writes only the native data of its `writes`).
 
 A trigger runs only on a machine where a person enabled it. With no enable, a person runs the process with Run now.
 
@@ -197,7 +197,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 
 A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
 
-The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written.
+The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run that failed or did not start (also a refusal of `process run`); 2 a refusal of the input, and nothing was written. The help of each verb names its exit codes.
 
 ## Read More
 
