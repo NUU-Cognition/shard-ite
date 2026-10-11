@@ -80,7 +80,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 6: The Plan
 
 1. Ask: what must be different next? When the person names a change, write one future note: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"` for a new thing.
-2. When the person names nothing, write no plan.
+2. When the person names nothing, write no plan. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. Before the person applies the first map change, write no future note: name what must be next in your result.
 3. Progress to the next stage.
 
 ## Stage 7: Check and Hand Over

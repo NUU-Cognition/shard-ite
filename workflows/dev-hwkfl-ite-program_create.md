@@ -81,7 +81,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 6: The Plan
 
 1. Run `flint orbh session set phase plan`.
-2. When the prompt names what must be different next, write one future note for each: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"`. Else write no plan.
+2. When the prompt names what must be different next, write one future note for each: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"`. Else write no plan. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. Before the person applies the first map change, write no future note: put what must be next in the line GAPS of your result.
 3. Progress to the next stage.
 
 ## Stage 7: Check and Return
