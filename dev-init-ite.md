@@ -184,7 +184,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
 | Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
-| Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`), then `flint ite flow check` |
+| Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`, or a ready map: `--recipe <name>` from `flint ite flow recipes`), then `flint ite flow check` |
 | Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person), or `--to-end` (to the end, also through the waits of a person: exit 0 or 1) |
 | See the runs | `flint ite flow runs ["<program>"] [--failed] [--waiting] [--since 2h]` (with no program: each program in one read), `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |
 | Run again from the failed step (a person asked) | `flint ite flow retry <run> [--from <node>] [--input k=v] [--follow]` |

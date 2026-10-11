@@ -18,7 +18,8 @@ Make one instruction map (a workflow: the steps of a process in order) from a li
 
 # Actions
 
-1. **Write the steps in short words**, one step for each item, in order. The kind of each step comes from its words:
+1. **Look for a ready map.** Run `flint ite flow recipes`: `release` (build, test, a person says ship, ship, a smoke check), `triage-event` (an agent reads and classes each event of one kind), `daily-check` (check the claims each day, with a digest), `fix-a-claim` (find the cause, a person approves, fix, check again), and `fleet-day` (a production day with an Orbh fleet). When one fits, write it with one command, and go to step 7: `flint ite flow new "<program>" <id> --recipe <name> [--with <name>=<value>]... [--run-by agent] --dry-run`.
+2. **Write the steps in short words**, one step for each item, in order. The kind of each step comes from its words:
 
    | Write | The step |
    |---|---|
@@ -33,7 +34,7 @@ Make one instruction map (a workflow: the steps of a process in order) from a li
    | `A & B` | A and B run at the same time (a parallel node and a join) |
    | Other text | A step that runs the process with that id when the program has one, else a step of a person |
 
-2. **Make the map with one command.** Put `;` between the steps, or write a Markdown list (one step on each line, a `#` line for the title) and give the file:
+3. **Make the map with one command.** Put `;` between the steps, or write a Markdown list (one step on each line, a `#` line for the title) and give the file:
 
    ```bash
    flint ite flow new "<program>" <process id> --steps "<step>; <step>; <step>" [--title "<title>"] [--about <ref>...] --dry-run
@@ -41,11 +42,11 @@ Make one instruction map (a workflow: the steps of a process in order) from a li
    ```
 
    `--dry-run` prints the steps as the engine reads them (each node, its kind, and its next nodes) and the problems, and writes nothing. Read each line. When a step reads wrong, change its words, and run it again. Name each outcome of a decision with the exact name of a step (`Ready? -> Send | Stop`), or give its step (`yes: Ship | no: Check`). An outcome that names no step: the first one goes on to the next step, and each other one ends the map there (an end node; the dry run shows it as "the end of the map"). `Stop`, `End`, and `Done` end the map with no warning. To loop back, name the earlier step.
-3. **Write it.** Run the same command with no `--dry-run`. For a new process, give `--run-by agent` when an agent must start runs of the map; else only the owners start it. It writes `Steel/Programs/<program>/Processes/<id>/map.md` (`steel-flow/1`), and `process.md` when the process is new. `flow new` has no trigger flag: for a map that runs by itself, make the process first with `flint ite process new "<program>" <id> --by person --task "<text>" --cron "<expression>"` (or `--every`, `--on`), then `flow new` with the same id. A process that exists keeps its fields.
-4. **Complete the steps.** Write the instruction of each step of a person or an agent under its heading in `map.md`: what to do, and what comes out. Pass data between steps with `${<node id>.<output>}` in the `inputs` of a later step: an agent step gets only the values that its map names. An agent step right after a `Shell:` step gets its output at once (`inputs: { stdout: "${<shell step>.stdout}" }`), so `Shell: git log -5; Agent: Summarize the commits` works. The form is in [[tmp-ite-instruction_map-v0.1]].
-5. **Change it later.** `flint ite flow set "<program>" <process id> --steps "<the new list>" [--dry-run]` replaces the steps in one command. The title, the prose of the map, and the inputs stay; a map with an error writes nothing; a run that is active keeps its copy. A step with the same id and the same kind keeps its title, its prose, and its block (instruction, inputs, outputs, retry); only its `next` is new, and the answer names the steps that are the same as before. A new or renamed step starts empty: complete it as in step 4.
-6. **Check it.** `flint ite flow check "<program>" <process id>`: each problem with the file, the line, the cause, and the fix. Repair each error. Then `flint ite flow show "<program>" <process id>` shows the resolved map.
-7. **Hand over.** Tell the person the map and the command that starts a run: `flint ite flow start "<program>" <process id> --follow` (a person runs it, or asks you to). The person sees the map in the Workbench.
+4. **Write it.** Run the same command with no `--dry-run`. For a new process, give `--run-by agent` when an agent must start runs of the map; else only the owners start it. It writes `Steel/Programs/<program>/Processes/<id>/map.md` (`steel-flow/1`), and `process.md` when the process is new. `flow new` has no trigger flag: for a map that runs by itself, make the process first with `flint ite process new "<program>" <id> --by person --task "<text>" --cron "<expression>"` (or `--every`, `--on`), then `flow new` with the same id. A process that exists keeps its fields.
+5. **Complete the steps.** Write the instruction of each step of a person or an agent under its heading in `map.md`: what to do, and what comes out. Pass data between steps with `${<node id>.<output>}` in the `inputs` of a later step: an agent step gets only the values that its map names. An agent step right after a `Shell:` step gets its output at once (`inputs: { stdout: "${<shell step>.stdout}" }`), so `Shell: git log -5; Agent: Summarize the commits` works. The form is in [[tmp-ite-instruction_map-v0.1]].
+6. **Change it later.** `flint ite flow set "<program>" <process id> --steps "<the new list>" [--dry-run]` replaces the steps in one command. The title, the prose of the map, and the inputs stay; a map with an error writes nothing; a run that is active keeps its copy. A step with the same id and the same kind keeps its title, its prose, and its block (instruction, inputs, outputs, retry); only its `next` is new, and the answer names the steps that are the same as before. A new or renamed step starts empty: complete it as in step 5.
+7. **Check it.** `flint ite flow check "<program>" <process id>`: each problem with the file, the line, the cause, and the fix. Repair each error. Then `flint ite flow show "<program>" <process id>` shows the resolved map.
+8. **Hand over.** Tell the person the map and the command that starts a run: `flint ite flow start "<program>" <process id> --follow` (a person runs it, or asks you to). The person sees the map in the Workbench.
 
 # Rules
 
