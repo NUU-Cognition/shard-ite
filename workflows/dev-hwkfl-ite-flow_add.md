@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Flow Add (Headless)
 
-Add one instruction map to a program: the nodes of a large process in order (steps, decisions, waits, parallel branches and joins, and sub-maps). A headless agent session follows this workflow for a job of the action `flow-add` ("+ Add an instruction map" in the Workbench), with no person in the session. The form is in Instruction Maps and Runs of [[init-ite]] and in [[tmp-ite-instruction_map-v0.1]]. The rules of a headless session are in [[hinit-ite]].
+Add one instruction map to a program: the nodes of a large process in order (steps, decisions, waits, parallel branches and joins, and sub-maps). A headless agent session follows this workflow for a job of the action `flow-add` ("+ Add an instruction map" in the Workbench), with no person in the session. The form is in Instruction Maps and Runs of [[knw-ite-processes]] and in [[tmp-ite-instruction_map-v0.1]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected parts.
 

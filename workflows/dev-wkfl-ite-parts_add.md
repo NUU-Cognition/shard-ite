@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Parts Add
 
-Add the parts that a person names below one part of the main map, or below the root. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
+Add the parts that a person names below one part of the main map, or below the root. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
 The focus of this workflow: the parent part, or the root when no node is selected.
 
@@ -27,7 +27,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 {"op":"split","parent":"<part, or null>","subsystem":{"title":"<title>","kind":"<type id>","sentence":"<one sentence>"},"children":["<part>","<part>"]}
 ```
 
-`add` and `split` take an optional `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) for a part that a later operation names. The other operations are in The Map Change of [[init-ite]].
+`add` and `split` take an optional `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) for a part that a later operation names. The other operations are in The Map Change of [[knw-ite-programs]].
 
 # Actions
 
@@ -44,7 +44,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 1. Write the list of the parts that the person names, with the words of the person for each title. Find each part that exists already (`flint ite map tree "<program>"`), and do not add it again.
 2. For each new part: a title of two to six words, a type of the program, one sentence that says what the part is, and its sources. Never invent a path, a URL, or a note name.
 3. The level after the change holds at most `max-children` parts. When it holds more, group related parts with one `split`, or add a container part with an `id` and put the new parts under it.
-4. Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
+4. Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 5. When the words of the person can have two meanings, ask the person one question.
 6. Once the plan holds each part of the list, progress to the next stage.
 

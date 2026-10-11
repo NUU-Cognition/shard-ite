@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Process Add (Headless)
 
-Add one process to a program: a small instruction that the program owns and can run, by code, an agent, or a person. A headless agent session follows this workflow for a job of the action `process-add` ("+ Add a process" in the Workbench), with no person in the session. The form is in Processes of [[init-ite]] and in [[tmp-ite-process-v0.1]]. The rules of a headless session are in [[hinit-ite]].
+Add one process to a program: a small instruction that the program owns and can run, by code, an agent, or a person. A headless agent session follows this workflow for a job of the action `process-add` ("+ Add a process" in the Workbench), with no person in the session. The form is in Processes of [[knw-ite-processes]] and in [[tmp-ite-process-v0.1]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected parts.
 

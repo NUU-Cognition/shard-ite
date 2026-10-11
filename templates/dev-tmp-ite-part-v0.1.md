@@ -36,7 +36,7 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     program (`flint ite types`). Name a link only when it is true.
   - owner: the person or the role that answers for the part, as a wikilink. Omit it when nobody owns the part.
   - status: a short word as the person uses it: active, todo, in-progress, done, open, closed.
-  - SOFTWARE ONLY (a program with codebase, see Software Programs of init-ite):
+  - SOFTWARE ONLY (a program with codebase, see Software Programs of knw-ite-software):
     code-refs: the paths of the code of the part, relative to the codebase: a file, a small folder (ends with /),
     a symbol (path#Name), or a path of another codebase (@<Codebase name>/<path>). Name files, not large folders.
     Each path must exist. The coverage reads them for a type with covers-files.

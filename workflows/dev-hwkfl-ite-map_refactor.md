@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Map Refactor (Headless)
 
-Refactor one level of the main map: the children of the focus (a part, or the root). Bring the level to the size limit: at most `max-children` children, no part with one child, and no part with a marker. A headless agent session follows this workflow for a job of the action `map-refactor`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Refactor one level of the main map: the children of the focus (a part, or the root). Bring the level to the size limit: at most `max-children` children, no part with one child, and no part with a marker. A headless agent session follows this workflow for a job of the action `map-refactor`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected part, or the root when no node is selected.
 
@@ -69,7 +69,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 5. **A marker** (`parent-missing`, `parent-outside`, `cycle`): `move` the part to its correct parent.
 6. **A part at the wrong level**: `move` it. **A title that does not say what the part is**: `rename` it. **A type that does not fit the part**: `rename` it with `kind`, the new type id (`{"op":"rename","part":"<id>","title":"<the title>","kind":"<type id>"}`). The title can stay.
 7. The level after the change has 3 to `max-children` children. Do not make a new level of one child.
-8. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
+8. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 9. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change

@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Review
 
-Compare the nodes of a software program with their code, with the person. A node that is still true gets its review (`flint ite review`). A node that is not true gets a change: a candidate for a view node, or a map change for a part. The rules of the review are in The Review of [[init-ite]].
+Compare the nodes of a software program with their code, with the person. A node that is still true gets its review (`flint ite review`). A node that is not true gets a change: a candidate for a view node, or a map change for a part. The rules of the review are in The Review of [[knw-ite-software]].
 
 The focus of this workflow: the nodes of the job.
 

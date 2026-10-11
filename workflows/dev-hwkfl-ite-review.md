@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Review (Headless)
 
-Compare the nodes of a job with their code, with no person in the session. A node that is still true gets its review (`flint ite review`). A node that is not true gets a change that the person applies: a candidate for a view node, or a map change for a part. The rules of the review are in The Review of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Compare the nodes of a job with their code, with no person in the session. A node that is still true gets its review (`flint ite review`). A node that is not true gets a change that the person applies: a candidate for a view node, or a map change for a part. The rules of the review are in The Review of [[knw-ite-software]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 

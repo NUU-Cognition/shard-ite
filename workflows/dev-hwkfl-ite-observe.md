@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Observe (Headless)
 
-Check the claims of a program against reality now, with no person in the session. Each result goes through the one door (`flint ite claim report`, or `flint ite claim check`) into the log of this machine: you never write one into a file. The claims and the grounding are in Claims and Checks of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Check the claims of a program against reality now, with no person in the session. Each result goes through the one door (`flint ite claim report`, or `flint ite claim check`) into the log of this machine: you never write one into a file. The claims and the grounding are in Claims and Checks of [[knw-ite-state]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 

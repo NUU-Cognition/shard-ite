@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Model
 
-Make the map of a system, or add parts to a map that exists. The result is a program whose map a person can read: the parts in the words of the person, their links, and a list of what the map leaves out. The parts come in as one map change that the person applies. The rules of the files and the quality rules are in [[init-ite]].
+Make the map of a system, or add parts to a map that exists. The result is a program whose map a person can read: the parts in the words of the person, their links, and a list of what the map leaves out. The parts come in as one map change that the person applies. The rules of the files and the quality rules are in [[knw-ite-programs]].
 
 # Input
 
@@ -35,7 +35,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 
 ## Stage 3: Select the Template and the Structure
 
-1. For a new program, run `flint ite templates`. Select the template whose types fit the parts: `process` for a process of a business, `event` for an event, `research` for research, `organisation` for a team, `general` when no other fits. A software product with a codebase is a program of the template `software`: give its root note `codebase` and `product-root`, and give its parts `code-refs` and `stories` (see Software Programs of [[init-ite]]). A program that exists keeps its types: the `types` of its root note. `flint ite types` gives the capabilities of each type (for example `container`, `dated`, `has-status`).
+1. For a new program, run `flint ite templates`. Select the template whose types fit the parts: `process` for a process of a business, `event` for an event, `research` for research, `organisation` for a team, `general` when no other fits. A software product with a codebase is a program of the template `software`: give its root note `codebase` and `product-root`, and give its parts `code-refs` and `stories` (see Software Programs of [[knw-ite-software]]). A program that exists keeps its types: the `types` of its root note. `flint ite types` gives the capabilities of each type (for example `container`, `dated`, `has-status`).
 2. Give each candidate part one type of the program (for a new program, a type of the template). When no type fits, use `note`, and tell the person. Never invent a type: a new type is a type note that the person agrees to. Do not add a template or a type unless the person asks.
 3. Select, do not dump: keep 12 to 40 parts for a new map. Merge parts that say one idea. Remove parts that do not help a person see the system.
 4. Select the parents: the containers of the map, of a type with the capability `container` (a system holds steps, a milestone holds deliverables). A top part has the root note as its parent. A top level of 3 to 9 parts reads well.
@@ -70,7 +70,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 
 1. Run `flint ite check "<program>"` and `flint ite map check "<program>"`. Repair each error of your parts (`format`, `link-missing`): a link or a field with `flint ite link` and `flint ite part set`, the structure with a new map change. A `no-claim` note is correct for a new map: the workflow [[wkfl-ite-ground]] writes the processes.
 2. Run `flint ite map "<program>"` and read it as the person will: the top level, the containers, the links.
-3. Check the map against each quality rule of [[init-ite]]: the words of the person, prose first, one idea for each part, the types of the program, select and do not dump, the truth about gaps.
+3. Check the map against each quality rule of [[knw-ite-programs]]: the words of the person, prose first, one idea for each part, the types of the program, select and do not dump, the truth about gaps.
 4. Show the person: the count of the parts and of the links, the top level, each part of the type `note` because no type fits, and the list of what you left out and why. Propose the next job: [[wkfl-ite-ground]] for the processes of the claims, or [[wkfl-ite-view]] for the first question.
 5. Once the person has the result, the workflow is done.
 

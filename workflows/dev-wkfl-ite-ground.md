@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Ground
 
-Give parts their claims. For each part, write what must be true in reality, find the data that shows it, select the form of the check that reads it best, write the claim and its check, and run the check one time. The form is in Claims and Checks and in Data of [[init-ite]], in [[tmp-ite-claim-v0.1]], and in [[tmp-ite-data-v0.1]].
+Give parts their claims. For each part, write what must be true in reality, find the data that shows it, select the form of the check that reads it best, write the claim and its check, and run the check one time. The form is in Claims and Checks and in Data of [[knw-ite-state]], in [[tmp-ite-claim-v0.1]], and in [[tmp-ite-data-v0.1]].
 
 # Input
 

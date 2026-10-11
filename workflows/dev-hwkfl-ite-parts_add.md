@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Parts Add (Headless)
 
-Add the parts that a person names below one part of the main map, or below the root. A headless agent session follows this workflow for a job of the action `parts-add` ("Add parts with an agent" in the Workbench), with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Add the parts that a person names below one part of the main map, or below the root. A headless agent session follows this workflow for a job of the action `parts-add` ("Add parts with an agent" in the Workbench), with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the parent part, or the root when no node is selected.
 
@@ -29,7 +29,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 
 - `add` and `split` take an optional `id` (a new UUID v4: `uuidgen | tr A-Z a-z`). Give it when a later operation of the same change names the new part: a new part below a new part.
 - `split` takes only children of its `parent` at that point of the change.
-- The other operations are in The Map Change of [[init-ite]]. Change the main map only through a map change: do not write a part file with your own tools, and do not run `flint ite part add` for each part.
+- The other operations are in The Map Change of [[knw-ite-programs]]. Change the main map only through a map change: do not write a part file with your own tools, and do not run `flint ite part add` for each part.
 
 # Actions
 
@@ -56,7 +56,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 1. Run `flint orbh session set phase planning`.
 2. Write one `add` for each new part, under the parent (`parent`: the id of the parent, or `null` for the root). For each: a title of two to six words in the words of the person, a type of the program, one sentence that says what the part is, the prose that the text gives, and its sources.
 3. **The size limit.** The level after the change holds at most `max-children` parts. When it holds more, group related parts with one `split`, or add a container part with an `id` and put the new parts under it. When a group is not clear, add the parts and name the finding `map-too-many-children` in the `summary`, with the action `map-refactor` as the next step.
-4. Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
+4. Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 5. Once the plan holds each part of the list, progress to the next stage.
 
 ## Stage 4: Propose the Change

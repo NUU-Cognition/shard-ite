@@ -61,7 +61,7 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
     A node id is a heading id: a part id or a slug.
   - inside (the id of the parent heading), actor (who acts, one name for one actor), action, result.
   - date (map timeline, ISO date), status (map board: the column).
-  - ONLY ON A NODE WITH A SLUG ID (a software program, see Software Programs of init-ite):
+  - ONLY ON A NODE WITH A SLUG ID (a software program, see Software Programs of knw-ite-software):
     part: the id of the part where a step runs (from `flint ite map <program> --json`; never invented).
     code-refs: the paths of the code that the node is about (a file, a small folder, a symbol; @<Codebase>/<path>).
     stories: Orbtest story ids. criteria: criterion addresses <story-id>#<index> (only some criteria of a story).
@@ -84,14 +84,14 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   A map of Steel/Maps/ reads the parts of the view (the headings and the slice) and the prose of each node.
   Use one when its map.md says that it answers the question better than a builtin shape.
 
-  THE QUALITY RULES (the rules of a program, in init-ite)
+  THE QUALITY RULES (the rules of a program, in knw-ite-programs)
   - Answer first. Prose first: one to three sentences of prose before each block.
   - One idea for each node. A short title: two to six words.
   - The words of the person. Explain each word of the system at its first use.
   - Select, do not dump: five to fifteen nodes. Propose a split above 25. A slice selects too: keep it small.
   - Anchor each claim: a node of a part, or (software) a node with code-refs or stories. Never invent a part id,
     a path, or a story id.
-  - Anchor each step of a process of a software program: part and actor (see The Anchor of a Step of init-ite).
+  - Anchor each step of a process of a software program: part and actor (see The Anchor of a Step of knw-ite-software).
   - Tell the truth about gaps: say in the prose when a node has no part, or its part has no process yet.
   - End with one node of kind note: what the view leaves out, and why.
 */

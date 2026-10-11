@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Map Create
 
-Draft the root and level 1 of the main map: 3 to 9 parts under the root, each with one sentence and its sources. Use it for a program with no main map, or with a flat map (many top parts: parts whose `parent` is the root note). The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
+Draft the root and level 1 of the main map: 3 to 9 parts under the root, each with one sentence and its sources. Use it for a program with no main map, or with a flat map (many top parts: parts whose `parent` is the root note). The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
 The focus of this workflow: the root (no node).
 
@@ -41,7 +41,7 @@ The focus of this workflow: the root (no node).
 2. **The 100% rule.** Together the parts cover the whole system: each top folder (or source) goes to one part. A folder that no person needs to see (a generated folder, a lock file) is not a part: name it in the result, so that the person can add it to `coverage-ignore`.
 3. **Keep the parts that exist.** When the main map has parts already, do not add a second part for one thing. Put the existing children of the root under the new parts: one `split` for each new part that groups existing parts (`parent: null`, the children are the existing parts), or `add` with an `id` and then `move`.
 4. Give an `add` an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) when a later operation of the same change names the new part.
-5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
+5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 6. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person

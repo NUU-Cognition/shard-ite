@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: View
 
-Answer one question of a person with one new view of a program. The result is a candidate that the person reads, and a view when the person agrees. The rules of the view file and the quality rules are in [[init-ite]]. The form is [[tmp-ite-view-v0.1]].
+Answer one question of a person with one new view of a program. The result is a candidate that the person reads, and a view when the person agrees. The rules of the view file and the quality rules are in [[knw-ite-programs]]. The form is [[tmp-ite-view-v0.1]].
 
 # Input
 
@@ -23,7 +23,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Set the focus: `flint ite focus <ids of the nodes of the focus, or of the top parts>` ([[sk-ite-focus]]).
 2. Say the question again in one sentence, in your words. When the question can have two meanings, ask the person one question to select the meaning. Ask no other question in this stage.
-3. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a software program (template `software`), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[init-ite]]), and give each node with a slug id its `code-refs` and `stories`.
+3. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a software program (template `software`), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[knw-ite-software]]), and give each node with a slug id its `code-refs` and `stories`.
 4. Read the views that exist: `flint ite list` and `flint ite view <id>` for each view whose question is near. When a view already answers the question, show it to the person and propose [[wkfl-ite-reshape]] in place of a new view.
 5. Once you know the question and the parts that can answer it, progress to the next stage.
 
@@ -47,7 +47,7 @@ Answer one question of a person with one new view of a program. The result is a 
 1. Make the candidate id: `<view-slug>-<UTC yyyymmdd-hhmmss>` (`date -u +%Y%m%d-%H%M%S`).
 2. Make two new UUIDs (`uuidgen | tr A-Z a-z`): one for `view_id`, one for `id`.
 3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `curation: "proposed"`, `derived-from: ""`.
-4. Check the candidate against each quality rule of [[init-ite]]:
+4. Check the candidate against each quality rule of [[knw-ite-programs]]:
    - [ ] The answer after the H1 answers the question.
    - [ ] Each node has one idea, a short title, and prose before its block.
    - [ ] Each heading id that is a UUID is the id of a part of the map.

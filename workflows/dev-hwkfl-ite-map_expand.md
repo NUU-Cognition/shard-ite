@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Map Expand (Headless)
 
-Take one part of the main map one level deeper: 3 to 9 children that together cover the sources of the part. A headless agent session follows this workflow for a job of the action `map-expand`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Take one part of the main map one level deeper: 3 to 9 children that together cover the sources of the part. A headless agent session follows this workflow for a job of the action `map-expand`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected part.
 
@@ -67,7 +67,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 3. **The 100% rule.** Together the children cover all the sources of the part: each source of the part goes to one child, as the same path or as more precise paths. No two children share a file.
 4. **Keep the children that exist.** When the part has children already, keep them and add only what is missing. Group existing children with `split` when that makes the level clearer.
 5. When the part holds fewer than 3 things, propose no change: a part with one child is a finding. Say so in the result.
-6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
+6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 7. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change

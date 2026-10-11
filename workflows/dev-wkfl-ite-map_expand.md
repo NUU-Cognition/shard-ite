@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Map Expand
 
-Take one part of the main map one level deeper: 3 to 9 children that together cover the sources of the part. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
+Take one part of the main map one level deeper: 3 to 9 children that together cover the sources of the part. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
 The focus of this workflow: the selected part.
 
@@ -43,7 +43,7 @@ The focus of this workflow: the selected part.
 2. **The 100% rule.** Together the children cover all the sources of the part: each source of the part goes to one child, as the same path or as more precise paths. No two children share a file.
 3. **Keep the children that exist.** When the part has children already, keep them and add only what is missing. Group existing children with `split` when that makes the level clearer.
 4. When the part holds fewer than 3 things, propose no change: a part with one child is a finding. Say so in the result.
-5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
+5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 6. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person

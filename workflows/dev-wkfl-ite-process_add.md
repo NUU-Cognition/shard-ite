@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Process Add
 
-Add one process to a program: a small instruction that the program owns and can run, by code, an agent, or a person. The person says the work, and you write the process and test it. The form is in Processes of [[init-ite]] and in [[tmp-ite-process-v0.1]].
+Add one process to a program: a small instruction that the program owns and can run, by code, an agent, or a person. The person says the work, and you write the process and test it. The form is in Processes of [[knw-ite-processes]] and in [[tmp-ite-process-v0.1]].
 
 # Input
 

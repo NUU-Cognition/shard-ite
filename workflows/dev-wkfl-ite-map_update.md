@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Map Update
 
-Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[init-ite]].
+Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
 The focus of this workflow: the selected part.
 
@@ -44,7 +44,7 @@ The focus of this workflow: the selected part.
 3. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child of a type of the program.
 4. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
 5. Change only the part and its subtree.
-6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
+6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 7. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person

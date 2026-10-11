@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Claim Add
 
-Add one claim to a program: what must be true, about the selected parts, with its check. The person says what must be true, and you write the claim and its check, test the check, and run it one time. The form is in Claims and Checks of [[init-ite]] and in [[tmp-ite-claim-v0.1]].
+Add one claim to a program: what must be true, about the selected parts, with its check. The person says what must be true, and you write the claim and its check, test the check, and run it one time. The form is in Claims and Checks of [[knw-ite-state]] and in [[tmp-ite-claim-v0.1]].
 
 # Input
 

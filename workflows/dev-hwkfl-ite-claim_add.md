@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Claim Add (Headless)
 
-Add one claim to a program: what must be true, about the selected parts, with its check. A headless agent session follows this workflow for a job of the action `claim-add` ("+ Add a claim" in the Workbench), with no person in the session. The form is in Claims and Checks of [[init-ite]] and in [[tmp-ite-claim-v0.1]]. The rules of a headless session are in [[hinit-ite]].
+Add one claim to a program: what must be true, about the selected parts, with its check. A headless agent session follows this workflow for a job of the action `claim-add` ("+ Add a claim" in the Workbench), with no person in the session. The form is in Claims and Checks of [[knw-ite-state]] and in [[tmp-ite-claim-v0.1]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected parts.
 

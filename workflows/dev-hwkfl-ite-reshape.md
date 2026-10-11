@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Reshape (Headless)
 
-Change one view as a person asks, with no person in the session. The person reviews the candidate in the Workbench and applies it. The rules of the view file and the quality rules are in [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Change one view as a person asks, with no person in the session. The person reviews the candidate in the Workbench and applies it. The rules of the view file and the quality rules are in [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 
@@ -23,7 +23,7 @@ Change one view as a person asks, with no person in the session. The person revi
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Compute the `base_hash` before you read the file: `shasum -a 256 "<view file>"` (the first word). When it is not the `base_hash` of the prompt, the view changed after the start of the job: use the new hash, and say so in the `summary`.
-4. Read the view: `flint ite view <view id> --json` and the view file in full. For a view of a software program, follow The Anchor of a Step of [[init-ite]]: give each step its `part` and its `actor`, and keep the `reviewed` mapping of each node whose text and references do not change.
+4. Read the view: `flint ite view <view id> --json` and the view file in full. For a view of a software program, follow The Anchor of a Step of [[knw-ite-software]]: give each step its `part` and its `actor`, and keep the `reviewed` mapping of each node whose text and references do not change.
 5. Say the change again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`.
 6. Once you know the change and the base hash, progress to the next stage.
 
@@ -39,7 +39,7 @@ Change one view as a person asks, with no person in the session. The person revi
 1. Run `flint orbh session set phase writing`. Set the focus on the nodes that change.
 2. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`) and one new UUID for `id`. `view_id` is the `id` of the view. `base_hash` is the hash of Stage 1.
 3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with `state: proposed`: the complete view file after the change, in the form of [[tmp-ite-view-v0.1]] (format `steel-view/1`).
-4. Check the candidate against the quality rules of [[init-ite]].
+4. Check the candidate against the quality rules of [[knw-ite-programs]].
 5. Once the candidate passes each rule, progress to the next stage.
 
 ## Stage 4: Verify the Candidate
@@ -50,7 +50,7 @@ Change one view as a person asks, with no person in the session. The person revi
    - Read `candidate.findings`. Repair each finding of the level `error` or `warning` in the candidate file (`format`, `link-missing`, `ref-missing`: a heading id that names no part), and run the diff again.
    - For a conflict, read the view again and write a new candidate from the current view.
 3. Do not return before step 2 passes. Say in the `summary` that the diff passed.
-4. When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of [[hinit-ite]]).
+4. When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of a Job of [[hinit-ite]]).
 5. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
 
 ## Stage 5: Return the Result

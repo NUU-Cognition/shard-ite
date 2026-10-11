@@ -53,7 +53,7 @@ description: "A map of Steel/Maps (format steel-map/1): the manifest map.md, the
   - api.saveState(state): keep a small JSON object for this view (a collapsed column, a filter). Never a fact of a part.
 
   A DATA MAP (kind: data) draws one piece of data, not a view, and it keeps the store of that data. See the section
-  "A data map" below, and Data Maps in [[init-ite]].
+  "A data map" below, and Data Maps in [[knw-ite-state]].
 
   THE RULES
   - A map only draws. The core computes the tree, the links, the grounding, and the claim states.

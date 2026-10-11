@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Map Update (Headless)
 
-Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. A headless agent session follows this workflow for a job of the action `map-update`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. A headless agent session follows this workflow for a job of the action `map-update`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected part.
 
@@ -68,7 +68,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 4. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child of a type of the program.
 5. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
 6. Change only the part and its subtree.
-7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
+7. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 8. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change

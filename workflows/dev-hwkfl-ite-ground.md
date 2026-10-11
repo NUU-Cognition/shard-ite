@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Ground (Headless)
 
-Give parts their claims, with no person in the session. The form is in Claims and Checks and in Data of [[init-ite]], in [[tmp-ite-claim-v0.1]], and in [[tmp-ite-data-v0.1]]. The rules of a headless session are in [[hinit-ite]].
+Give parts their claims, with no person in the session. The form is in Claims and Checks and in Data of [[knw-ite-state]], in [[tmp-ite-claim-v0.1]], and in [[tmp-ite-data-v0.1]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 

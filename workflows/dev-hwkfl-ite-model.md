@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Model (Headless)
 
-Make the map of a system, or add parts to a map that exists, with no person in the session. The new parts go into one map change that the person reviews and applies. The rules of the files and the quality rules are in [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Make the map of a system, or add parts to a map that exists, with no person in the session. The new parts go into one map change that the person reviews and applies. The rules of the files and the quality rules are in [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 
@@ -51,7 +51,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
    {"op":"add","id":"<new UUID>","title":"<title>","kind":"<type id>","parent":"<parent id, or null for the root note>","sentence":"<one sentence: what the part is>","prose":"<one or two short paragraphs more>"}
    ```
 
-   Give each parent an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`), so that its children name it as `parent`. `kind` is the type id of a type of the program (`Milestone` gives `milestone`). The prose follows the sentence: do not write the sentence again. Say in the prose how the part connects to other parts. This workflow uses only `add` and `move`; the other operations are in The Map Change of [[init-ite]]. Check that the file parses: `python3 -m json.tool < /tmp/ite-model-$ORBH_SESSION_ID.json`.
+   Give each parent an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`), so that its children name it as `parent`. `kind` is the type id of a type of the program (`Milestone` gives `milestone`). The prose follows the sentence: do not write the sentence again. Say in the prose how the part connects to other parts. This workflow uses only `add` and `move`; the other operations are in The Map Change of [[knw-ite-programs]]. Check that the file parses: `python3 -m json.tool < /tmp/ite-model-$ORBH_SESSION_ID.json`.
 3. Set the focus on the parents of the new parts, so that the person sees where you work: `flint ite focus <id> <id> ...` with the ids of the selected nodes, or the ids that you gave to the new top parts ([[sk-ite-focus]]).
 4. Each note of the Mesh that exists and that is a part of the system (a Task, a Person, a meeting) joins the program in the same change: add `{"op":"move","part":"<note name>","parent":"<part id, or null for the root note>"}` to the array. The move writes the `parent` of the note, so that its `parent` chain reaches the root note. Do not copy a note that exists. The engine refuses the move of a note of another program: a note has one home, so link to it.
 5. Propose all the parts as one map change:
@@ -70,7 +70,7 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 
 1. Run `flint orbh session set phase checking`.
 2. Run `flint ite check "<program>"`. Repair each error of the parts that you changed (`format`, `link-missing`). A `no-claim` note is correct for a new part: the action `ground` or `claim-add` gives it a claim.
-3. Read the tree after of the change (`flint ite map change show "<program>" <change id>`). Check the new parts against the quality rules of [[init-ite]].
+3. Read the tree after of the change (`flint ite map change show "<program>" <change id>`). Check the new parts against the quality rules of [[knw-ite-programs]].
 4. Once the check has no error of your parts, progress to the next stage.
 
 ## Stage 6: Return the Result

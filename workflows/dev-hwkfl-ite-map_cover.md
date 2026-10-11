@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Map Cover (Headless)
 
-Cover the gap: give each file (or boundary item) that no part covers a part of the main map. Remove the overlaps, and repair the sources that match no file. A headless agent session follows this workflow for a job of the action `map-cover`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[init-ite]]. The rules of a headless session are in [[hinit-ite]].
+Cover the gap: give each file (or boundary item) that no part covers a part of the main map. Remove the overlaps, and repair the sources that match no file. A headless agent session follows this workflow for a job of the action `map-cover`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected part, or the root when no node is selected.
 
@@ -73,7 +73,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 9. **A shared file can stay in the common ancestor.** A file that two or more leaves use can be a source of their common ancestor (a part that is not a leaf), not of each leaf.
 10. **A slice never makes an overlap.** A slice is a code ref with a symbol or a line range: `path#symbol` or `path:Lx-Ly`. It covers the file. A slice and a whole-file ref of one file make no overlap. Give a slice to each leaf that is one part of a shared file, with a symbol that you read in the file.
 11. **Do not edit a part that a waiting change moves.** The `move` (or the `split`) of the waiting change writes the `parent` of the same file, so your `edit` gets a conflict (`changed`) at the apply. Leave that part, or name it in the result for a later job.
-12. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[init-ite]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
+12. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 13. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change

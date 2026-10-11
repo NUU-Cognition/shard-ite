@@ -32,7 +32,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   - types: the names of the types that the program uses, from its template: [Goal, Milestone, Step, Note].
     `flint ite types` lists the types of this Flint. Each part has one of these types.
   - from-template: the id of the template that made the program. History only: nothing decides with it.
-  - main-map (optional): max-children and coverage-ignore (see The Main Map of init-ite).
+  - main-map (optional): max-children and coverage-ignore (see The Main Map of knw-ite-programs).
   - codebase, product-root (software only): the codebase and the folder of the product.
   - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
   - The root note holds no grounding, no result, no finding, no position, and no agent.

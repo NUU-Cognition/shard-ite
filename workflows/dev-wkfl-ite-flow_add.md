@@ -8,7 +8,7 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Flow Add
 
-Add one instruction map to a program: the nodes of a large process in order (steps, decisions, waits, parallel branches and joins, and sub-maps). The person says the work, and you plan the nodes with the person, write the map, and check it. The form is in Instruction Maps and Runs of [[init-ite]] and in [[tmp-ite-instruction_map-v0.1]].
+Add one instruction map to a program: the nodes of a large process in order (steps, decisions, waits, parallel branches and joins, and sub-maps). The person says the work, and you plan the nodes with the person, write the map, and check it. The form is in Instruction Maps and Runs of [[knw-ite-processes]] and in [[tmp-ite-instruction_map-v0.1]].
 
 # Input
 
