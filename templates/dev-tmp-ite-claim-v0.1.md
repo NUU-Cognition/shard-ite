@@ -82,9 +82,9 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
     pull or calculation failed) prints one error line that names the value. It never judges with a default (an
     amount that was not pulled is not 0). One case reads none as evidence: a claim that native data exists (a
     value or a row that a person or a process writes) prints fails for none, because nobody wrote it yet. The
-    stub check.js gives error for none: change that line for such a claim. A scheduled check can judge an old value (the claim is then old). A
-    check for a run (STEEL_RUN_ID is set: a precondition or an effect) prints error for an input that is old, with
-    the command that refreshes it: an old value never confirms a step or an effect.
+    stub check.js gives error for none: change that line for such a claim. A scheduled check can judge an old value (the claim is then old). In a
+    run (a precondition, an effect, a wait for a claim), the engine turns holds into error when a value that the
+    claim reads is old, not there, or waits for a person: an old value never confirms a step or an effect.
   - Do not write a claim for a mirror. Each source with a hash is a mirror claim (claim:mirror:<reference>) that the
     core gives: it has no file.
   - A check that cannot read its source prints one error line, never an old value.
