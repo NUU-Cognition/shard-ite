@@ -38,7 +38,7 @@ Make one instruction map (a workflow: the steps of a process in order) from a li
    flint ite flow new "<program>" <process id> --from <file|-> --dry-run
    ```
 
-   `--dry-run` prints the steps as the engine reads them (each node, its kind, and its next nodes) and the problems, and writes nothing. Read each line. When a step reads wrong, change its words, and run it again.
+   `--dry-run` prints the steps as the engine reads them (each node, its kind, and its next nodes) and the problems, and writes nothing. Read each line. When a step reads wrong, change its words, and run it again. Name each outcome of a decision with the exact name of a step (`Ready? -> Send | Stop`, not `yes: Send`): an outcome that names no step ends the map there, and the dry run shows it as "the end of the map". To loop back, name the earlier step.
 3. **Write it.** Run the same command with no `--dry-run`. It writes `Steel/Programs/<program>/Processes/<id>/map.md` (`steel-flow/1`), and `process.md` when the process is new.
 4. **Complete the steps.** Write the instruction of each step of a person or an agent under its heading in `map.md`: what to do, and what comes out. Pass data between steps with `${<node id>.<output>}` in the `inputs` of a later step. The form is in [[tmp-ite-instruction_map-v0.1]].
 5. **Check it.** `flint ite flow check "<program>" <process id>`: each problem with the file, the line, the cause, and the fix. Repair each error. Then `flint ite flow show "<program>" <process id>` shows the resolved map.
