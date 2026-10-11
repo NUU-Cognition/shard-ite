@@ -50,7 +50,7 @@ description: "A piece of data of a program: Steel/Programs/<Program>/Data/<id>/d
     pulled rows and the native rows of a blended table). native: true marks a column that a person or a process
     writes in external data.
   - outputs: optional, what others read: - { name, kind }. Default: one output value; a table and a list give
-    rows, count, and total:<field> for each number or money field.
+    rows, count, and total:<field> for each money field and each number field with total: true in shape.
   - kinds: text | number | boolean | choice | json | date | money. A money value is { "amount": 450,
     "currency": "AUD" }; the short form "450 AUD" is accepted in a frontmatter field and in a CSV cell.
   - trigger: optional, { every: 1h }, { cron: "0 9 * * *" }, or { on: hook }: when the pull or the maker runs

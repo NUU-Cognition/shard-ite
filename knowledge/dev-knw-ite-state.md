@@ -68,8 +68,8 @@ The other fields: `prompt` and `target` (an agent), `question` and `who` (a pers
 
 A large piece of data names a **data map** in `map`. The core has two builtins:
 
-- **`table`**: rows with a `shape`. The native store is `rows.csv` in the data folder. A blended table joins the pulled rows and the native rows by the field with `key: true`; a pulled cell is read-only in Steel, and a native cell can be edited. The outputs are `rows`, `count`, and `total:<field>` for each `number` or `money` field.
-- **`list`**: the parts of the program of one type (`list-of: <Type>`) with their fields. It has no source, and it is read-only. The outputs are `rows`, `count`, and `total:<field>`.
+- **`table`**: rows with a `shape`. The native store is `rows.csv` in the data folder. A blended table joins the pulled rows and the native rows by the field with `key: true`; a pulled cell is read-only in Steel, and a native cell can be edited. The outputs are `rows`, `count`, and `total:<field>` for each `money` field and each `number` field with `total: true` in the shape (`{ name, kind: number, total: true }`): a status code or a count of days has no sum.
+- **`list`**: the parts of the program of one type (`list-of: <Type>`) with their fields. It has no source, and it is read-only. The outputs are `rows`, `count`, and `total:<field>` (the same rule as a table).
 
 A metric needs no data map: Steel draws its history as a series. Any other shape is a **custom data map**: a map of `Steel/Maps/` with `kind: data`, `entry: index.js` (the drawing in Steel, in the sandbox of the maps), and `store: data.js` (the code of the store, that the core runs in Node). The form is in [[tmp-ite-map-v0.1]].
 

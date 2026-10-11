@@ -28,7 +28,8 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   - step: does ({ process: <id> }, or inline { by: person | agent, instruction: "...", target? }), next (one id, or a list of one
     id; none for an exit), run (auto | manual), inputs ({ <name>: "<value>" }), outputs (a list of fields, for
     an inline step), precondition (claim ids), effect (claim ids), retry ({ max, wait }), on-fail (a node id),
-    timeout, source (a mirrored step: { ref | path | command, hash?, redraw? }), about (references), reads (the
+    timeout, session (an agent step: the id of an earlier agent step whose session it continues, with its context),
+    source (a mirrored step: { ref | path | command, hash?, redraw? }), about (references), reads (the
     data that the step reads), writes (the native data that the step may write). A node id runs is not allowed:
     process:<id>#runs is the data of the runs.
   - decision: question, by (person | agent; default person), outcomes ({ "<outcome>": <node id> }).
