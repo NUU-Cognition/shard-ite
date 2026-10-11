@@ -56,6 +56,12 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   source changes. Its fix is the process of redraw (for example redraw-mirror: an agent that proposes the new
   map.md as a revision of Steel/), else the action map-update. Do not write a claim for a mirror.
 
+  THE HASH: the sha256 of the bytes of the source file. The file of a ref "[[<name>]]" is the Mesh note with that
+  name, else the shard file with that name (for example Shards/<Shard>/workflows/<name>.md). The file of a path
+  "@<Codebase>/<path>" is <path> in the folder that flint resolve codebase "<Codebase>" prints. Get the hash with:
+    shasum -a 256 "<file>" | cut -d" " -f1
+  and paste the 64 hex characters. A command has no hash: it is not a mirror.
+
   RULES
   - Loops go only out of a decision. A node gets at most 20 visits in one run.
   - Each node has a way to an exit. A join has a parallel before it. A sub-map names a process with a map.

@@ -71,6 +71,11 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
     the core gives the process the mirror claim claim:mirror:process:<id>, which fails when the source changes.
     Add redraw: <process id> to name the process that draws the mirror again (for example redraw-mirror: an
     agent that proposes the new file as a revision); with no redraw, the fix is the action map-update.
+    THE HASH: the sha256 of the bytes of the source file. The file of a ref "[[<name>]]" is the Mesh note with that
+    name, else the shard file with that name (for example Shards/<Shard>/workflows/<name>.md). The file of a path
+    "@<Codebase>/<path>" is <path> in the folder that flint resolve codebase "<Codebase>" prints. Get the hash with:
+      shasum -a 256 "<file>" | cut -d" " -f1
+    and paste the 64 hex characters. A command has no hash: it is not a mirror.
 
   RULES
   - Test each code process before you keep it: `flint ite process test "<program>" <id> [--input k=v]` runs the

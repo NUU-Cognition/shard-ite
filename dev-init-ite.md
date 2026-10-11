@@ -142,7 +142,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | To do this | Run this |
 |---|---|
 | See the programs, and what waits for a person | `flint ite` (no verb); `flint ite list` for the counts |
-| Read one program first | `flint ite pulse "<program>"`, then `flint ite map tree "<program>"` |
+| Read one program first | `flint ite pulse "<program>"`, then `flint ite map "<program>"` (the tree with the id of each part) |
 | See the types and the templates | `flint ite types`, `flint ite templates` |
 | Make a program | `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
 | Add one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"]` |
