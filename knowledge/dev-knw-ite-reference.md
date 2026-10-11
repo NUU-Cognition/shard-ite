@@ -150,7 +150,7 @@ Steel/Programs/<Name>/
 ├── Processes/<process>/map.md                       # the instruction map of a large process (steel-flow/1)
 ├── Data/<id>/data.md                                # one folder for each piece of data (steel-data/1), with its code and its native store
 ├── Runs/<run id>/run.md + events.jsonl              # one folder for each run (only the run engine writes here)
-├── Proposals/<id>.md                                # map changes (mc-*), view candidates, revisions (only the engines write here)
+├── Proposals/<id>.md                                # map changes (mc-*) and revisions (only the engines write them), view candidates (an agent writes them)
 ├── History/<view-slug>-<stamp>.md                   # a replaced form of a view (the newest 5 are kept)
 └── State/main.json, <view id>.json                  # positions and pins by part id (only the engine writes here)
 
