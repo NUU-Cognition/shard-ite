@@ -58,7 +58,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    - Code calculates it from other data: `by: code` with `from`.
    - It comes from outside (a file, a page, a command): a `source` and a reader, `by: code` with `entry: pull.js`.
 3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A value or a table that a process writes: `--by process` (a table adds `--table <name:kind>... --key <field>`), and name it in the `writes` of the process.
-4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
+4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. Then pull it one time: `flint ite data pull "<program>" <id>`. A test writes nothing, and a check does not pull data whose trigger is not enabled, so the processes and the claims of the next stages need this first value. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Once the state is written, progress to the next stage.
 
 ## Stage 4: The Processes
