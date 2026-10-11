@@ -64,9 +64,9 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 1. Run `flint orbh session set phase processes`.
 2. For each piece of work that the system does again and again, follow [[sk-ite-process_new]]. For steps and decisions in order, follow [[sk-ite-workflow_new]].
-3. Write the trigger in `process.md`, for example `trigger: { cron: "0 8 * * 1" }`. Never enable it.
-4. A process that sends something outside this machine gets `authority: { irreversible: true }`.
-5. Test each process with `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process). Never run it.
+3. Give the trigger with a flag of `process new` (for example `--cron "0 8 * * 1"`), or write it in `process.md`. Never enable it.
+4. A process that sends something outside this machine gets `--irreversible`.
+5. Check and test each process: `flint ite process check "<program>" <id>`, then `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process). Never run it.
 6. Progress to the next stage.
 
 ## Stage 5: The Claims
@@ -78,15 +78,23 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 5. Name each claim in the `effect` of the process that makes it true.
 6. Progress to the next stage.
 
-## Stage 6: The Plan
+## Stage 6: The Plan and the Living System
 
-1. A headless agent writes no future note: an agent drafts the plan only in a session that a person drives. When the prompt names what must be different next, put each item in the line GAPS of your result, as a proposal for the plan.
-2. Progress to the next stage.
+1. Run `flint orbh session set phase plan`.
+2. Write a future note only when your prompt asks for it: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"` (the status is `next`). `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. So before the person applies the first map change, put each item in the line GAPS of your result.
+3. When your prompt asks for a living system (a brief for the person), write the full root note with one `system` block (owners, boundary, and `goals`: the ids of `ought` claims; the form is in [[tmp-ite-program-v0.1]]) into a file, and propose it:
+
+   ```bash
+   flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"
+   ```
+
+   Never apply it.
+4. Progress to the next stage.
 
 ## Stage 7: Check and Return
 
 1. Run `flint orbh session set phase checking`.
-2. Run `flint ite check "<program>"`. Repair each error finding of a file that you wrote.
+2. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote.
 3. Run `flint ite pulse "<program>"`.
 4. Return with the shape of your prompt. When the prompt gives no shape, return Markdown with these lines:
 
@@ -96,15 +104,14 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    TESTED: <each check, process, and reader with its test result>
    WAITS FOR YOU:
    - flint ite map change apply "<program>" <change id>
-   - flint ite enable "<program>" keep-map-true
-   - flint ite enable "<program>" <process id>
-   - flint ite enable "<program>" <claim id>
-   GAPS: <what you did not know, and the question for the person>
+   - flint ite revision apply "<program>" <revision id> --protected   (a living system)
+   - flint ite enable "<program>" --all   (each trigger, also keep-map-true; or one id each)
+   GAPS: <what you did not know, the items for the plan, and the question for the person>
    ```
 
 # Output
 
 - One program, or one extended program
-- One map change that waits for the person
+- One map change that waits for the person, and one revision for a living system when the prompt asks for it
 - The data, the processes, and the claims, each tested
 - A result that lists each apply and each enable for the person

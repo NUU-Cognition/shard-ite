@@ -64,9 +64,9 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 4: The Processes
 
 1. For each piece of work that the system does again and again, write one process. Follow [[sk-ite-process_new]] for each one. When the work has steps and decisions in order, follow [[sk-ite-workflow_new]].
-2. Write the trigger in `process.md` (for example `trigger: { cron: "0 8 * * 1" }` for each Monday at 08:00). A trigger runs only after the person enables it.
-3. A process that sends something outside this machine (an email, a message) gets `authority: { irreversible: true }`, so the person approves each run.
-4. Test each process: `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process). Never run it.
+2. Give the trigger with a flag of `process new` (for example `--cron "0 8 * * 1"` for each Monday at 08:00), or write it in `process.md`. A trigger runs only after the person enables it.
+3. A process that sends something outside this machine (an email, a message) gets `--irreversible`, so the person approves each run.
+4. Check and test each process: `flint ite process check "<program>" <id>`, then `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process). Never run it.
 5. Once each process passes its test, progress to the next stage.
 
 ## Stage 5: The Claims
@@ -85,17 +85,17 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 ## Stage 7: Check and Hand Over
 
-1. Run `flint ite check "<program>"`. Repair each error finding of a file that you wrote.
+1. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote.
 2. Run `flint ite pulse "<program>"`.
 3. Show the person the list of what only the person does, one command each:
 
    ```bash
    flint ite map change apply "<program>" <change id>     # when not applied yet
-   flint ite enable "<program>" keep-map-true             # the agent of the program keeps the map true
-   flint ite enable "<program>" <process id>              # each process with a trigger
-   flint ite enable "<program>" <claim id>                # each claim with a trigger
-   flint ite enable "<program>" data:<data id>            # each data with a trigger
+   flint ite enable "<program>" --all                     # each trigger that is off and has no problem, also keep-map-true
+   flint ite enable "<program>" <id>                      # or one trigger: a process id, a claim id, or data:<data id>
    ```
+
+   When the person wants a brief, make the program living: write the full root note with one `system` block (owners, boundary, and `goals`: the ids of `ought` claims; [[tmp-ite-program-v0.1]]), propose it with `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"`, and the person applies it with `flint ite revision apply "<program>" <id> --protected`.
 
 4. Propose the next step: Run now of one process (`flint ite process run "<program>" <id>`), a view for a question, or more parts.
 5. The workflow is done.

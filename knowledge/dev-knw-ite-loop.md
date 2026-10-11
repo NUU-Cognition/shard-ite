@@ -192,7 +192,7 @@ When a person applies a map change that realizes a future note, the ITE sets the
 
 ### Who Writes the Plan
 
-1. A person writes the plan. An agent can draft a future note only in a session that a person drives.
+1. A person writes the plan. An agent can draft a future note only in a session that a person drives, or as a builder when its prompt (the words of a person, or of a manager for a person) asks for it. The note has the status `next`, and the agent lists each one for the person. A job agent and an engine agent write no future note.
 2. An agent of a program sets `doing` or `done` after a task, with `flint ite plan set`. It never runs `plan realize`: a person makes a future true (Make it true in the Workbench).
 3. The Workbench draws the plan over the main map with the switch "Now / Next". A new thing is a ghost card under its parent. A changed thing has a mark. A removed thing is struck through. A future that is behind has a warning mark.
 

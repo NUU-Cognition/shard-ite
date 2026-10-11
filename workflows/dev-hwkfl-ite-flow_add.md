@@ -50,18 +50,20 @@ The focus of this job: the selected parts.
 2. Make the map:
 
    ```bash
-   flint ite flow new "<program>" <process id> --title "<title>" [--about <ref>...] [--text "<prose>"]
+   flint ite flow new "<program>" <process id> --steps "<step>; <step>; ..." [--title "<title>"] [--about <ref>...] --dry-run
    ```
 
-   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, writes `process.md` when the process has none, and records you in the activity. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
-3. Write the nodes of your plan into `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with one to three sentences for a person, and one H2 for each node (`## Title {#id}`) with the instruction for a person and one fenced block whose info word is the kind of the node. Replace the step `start` when your plan does not use it.
+   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`.
+
+   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with the nodes of the steps, writes `process.md` when the process has none, and records you in the activity. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
+3. Complete the nodes in `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with one to three sentences for a person, and one H2 for each node (`## Title {#id}`) with the instruction for a person and one fenced block whose info word is the kind of the node. Complete what the step list cannot say: the instruction under each heading, the `inputs` and `outputs`, `precondition` and `effect`.
 4. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
 5. Once the map is written, progress to the next stage.
 
 ## Stage 4: Check the Map
 
 1. Run `flint orbh session set phase checking`.
-2. Run `flint ite flow show "<program>" <process id>`. It must show no problem. Repair each problem (an unknown node id, a node with no way to an exit, a `join` with no `parallel`, a cycle that does not go through a decision, a node that the entry does not reach, a missing process or claim), and run it again.
+2. Run `flint ite flow check "<program>" <process id>` (each problem with the file, the line, the cause, and the fix), then `flint ite flow show "<program>" <process id>`. It must show no problem. Repair each problem (an unknown node id, a node with no way to an exit, a `join` with no `parallel`, a cycle that does not go through a decision, a node that the entry does not reach, a missing process or claim), and run it again.
 3. Run `flint ite check "<program>"`. Repair each error finding of the map and of its process.
 4. Never start a run (`flint ite flow start`): a run acts for the person.
 5. Once the map has no problem, progress to the next stage.
@@ -80,6 +82,6 @@ The focus of this job: the selected parts.
 
 # Output
 
-- One instruction map `Steel/Programs/<program>/Processes/<process id>/map.md` (and `process.md` when it was absent), with no problem in `flint ite flow show`
+- One instruction map `Steel/Programs/<program>/Processes/<process id>/map.md` (and `process.md` when it was absent), with no problem in `flint ite flow check`
 - One activity record of `flint ite flow new`
 - One `steel-result/1` JSON value as the result of the job

@@ -43,13 +43,16 @@ Add one process to a program: a small instruction that the program owns and can 
 1. Make the process:
 
    ```bash
-   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--about <ref>...] [--text "<prose>"]
+   flint ite process new "<program>" <id> --by code|agent|person --task "<the work in words>" [--about <ref>...] \
+     [--reads <ref>...] [--writes data:<id>...] [--inputs <name[:kind][!]>...] [--outputs <name[:kind][!]>...] [--irreversible] [--dry-run]
    ```
+
+   One command writes the work and the fields ([[sk-ite-process_new]]). When a recipe fits (`flint ite process recipes`), use `--recipe <name> [--with k=v]...`. A code process gets a stub `index.js` that runs at once. Give no trigger flag: the trigger stays `manual`, and only a person enables a trigger.
 
    It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, with `trigger: manual`.
 2. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose, `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`.
 3. Write the work: the code (`index.js` with `runtime: node`) for `code`, the `prompt` for `agent`, or the `task` for `person`.
-4. Run `flint ite process list "<program>"`. Repair each problem of the process.
+4. Run `flint ite process check "<program>" <id>`. Repair each problem of the process (it gives the file, the line, the cause, and the fix).
 5. Once the process is written, progress to the next stage.
 
 ## Stage 4: Test the Process

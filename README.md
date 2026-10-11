@@ -9,12 +9,21 @@ Load it with `flint shard start ite` (headless: `flint shard hstart ite`).
 ```
 Shards/(Source Remote) ITE/
 ├── shard.yaml                       # types Program, Run, System, Module, Feature, Data, and the types of the templates; folders Mesh/Programs and Mesh/Metadata/Templates
-├── dev-init-ite.md                  # the model, the files, types and templates, views and maps, processes and the log, the main map, software programs (the proof, the review, the check after a task), instruction maps, living systems, the commands, the quality rules
-├── dev-hinit-ite.md                 # the headless rules and the result shape steel-result/1
+├── dev-init-ite.md                  # short (about 200 lines): the kernel, the rules, a program end to end, the forms on one screen, jobs to commands, which knowledge file to read
+├── dev-hinit-ite.md                 # the three kinds of headless agent (a job agent, an engine agent, a builder), their rules, and the result shape steel-result/1
+├── knowledge/
+│   ├── dev-knw-ite-reference.md     # each term, the planes, meaning versus facts, the folders, every command
+│   ├── dev-knw-ite-programs.md      # the root note, parts, types and templates, views, maps, references, proposals, the main map, the quality rules
+│   ├── dev-knw-ite-state.md         # data, data maps, claims and their checks, the one door of the results
+│   ├── dev-knw-ite-processes.md     # processes, triggers and enables, instruction maps, runs
+│   ├── dev-knw-ite-loop.md          # events, the agent of a program, the plan, dev versions, the pulse, living systems, agent sessions and jobs
+│   └── dev-knw-ite-software.md      # software programs: code-refs, stories, the proof, the review, the check after a task
 ├── skills/
 │   ├── dev-sk-ite-focus.md          # show the person which nodes an agent works on
-│   └── dev-sk-ite-check_after_task.md   # the end of a product task: check the parts and views that name the changed files
-├── workflows/                       # model, view, reshape, review, ground, observe, repair, and map_create|expand|refactor|cover|update; each has a headless form
+│   ├── dev-sk-ite-check_after_task.md   # the end of a product task: emit task.finished, then check the parts and views that name the changed files
+│   ├── dev-sk-ite-process_new.md    # one process from one sentence, with one command
+│   └── dev-sk-ite-workflow_new.md   # one instruction map from a list of steps, with one command
+├── workflows/                       # program_create (a program end to end), model, view, reshape, review, ground, observe, repair, claim_add, process_add, flow_add, parts_add, and map_create|expand|refactor|cover|update; each has a headless form
 ├── templates/
 │   ├── dev-tmp-ite-program-v0.1.md          # the root note
 │   ├── dev-tmp-ite-part-v0.1.md             # a part
@@ -22,6 +31,8 @@ Shards/(Source Remote) ITE/
 │   ├── dev-tmp-ite-map-v0.1.md              # a map of Steel/Maps
 │   ├── dev-tmp-ite-process-v0.1.md          # a process (steel-process/1)
 │   ├── dev-tmp-ite-instruction_map-v0.1.md  # an instruction map
+│   ├── dev-tmp-ite-claim-v0.1.md            # a claim and its check (steel-claim/1)
+│   ├── dev-tmp-ite-data-v0.1.md             # a piece of data (steel-data/1)
 │   └── dev-tmp-ite-template-v0.1.md         # a template of a Flint
 └── install/
     ├── type-ite-<type>.md                   # the type notes (steel-type/1)
@@ -29,8 +40,8 @@ Shards/(Source Remote) ITE/
     └── inst-ite-template_<id>.md            # the six templates of a new program (Mesh/Metadata/Templates)
 ```
 
-Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts it.
+Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts the workflow of its action by name (the code of flint names each file), so keep the names.
 
 ## Origin
 
-Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task.
+Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task. Task 1260 (2026-10-12) made the init short: the depth moved into six knowledge files by topic, and the shard got the workflow `program_create` and the skills `process_new` and `workflow_new`.

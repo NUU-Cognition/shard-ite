@@ -41,8 +41,10 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 1. Make the map:
 
    ```bash
-   flint ite flow new "<program>" <process id> --title "<title>" [--about <ref>...] [--text "<prose>"]
+   flint ite flow new "<program>" <process id> --steps "<step>; <step>; ..." [--title "<title>"] [--about <ref>...] --dry-run
    ```
+
+   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`.
 
    It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, and writes `process.md` when the process has none. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
 2. Write the nodes of the plan into `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with the prose for a person, and one H2 for each node with its instruction and its fenced block. Replace the step `start` when the plan does not use it.
@@ -51,7 +53,7 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 
 ## Stage 4: Check the Map
 
-1. Run `flint ite flow show "<program>" <process id>`. It must show no problem. Repair each problem and run it again.
+1. Run `flint ite flow check "<program>" <process id>` (each problem with the file, the line, the cause, and the fix), then `flint ite flow show "<program>" <process id>`. It must show no problem. Repair each problem and run it again.
 2. Run `flint ite check "<program>"`. Repair each error finding of the map and of its process.
 3. Show the person the resolved map: the nodes, `run` of each node, and the mode. Do not start a run (`flint ite flow start`) unless the person asks for exactly that.
 4. Once the map has no problem, the workflow is done.
@@ -65,4 +67,4 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 
 # Output
 
-- One instruction map `Steel/Programs/<program>/Processes/<process id>/map.md` (and `process.md` when it was absent), with no problem in `flint ite flow show`
+- One instruction map `Steel/Programs/<program>/Processes/<process id>/map.md` (and `process.md` when it was absent), with no problem in `flint ite flow check`

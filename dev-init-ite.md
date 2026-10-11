@@ -69,11 +69,14 @@ Example: "Make a program for my weekly team meeting, with a process that sends t
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
 3. **State.** Write each piece of data that the system holds or measures: `Steel/Programs/<Name>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (there is no `data new` verb). For the meeting: `agenda-topics` (a person writes it) and `agenda` (a table that the process writes). Test each reader or maker that has code with `flint ite data test "<program>" <id>`. A value that a person writes has no code: `flint ite data list` shows it as `pending`.
-4. **Processes.** `flint ite process new "<program>" send-agenda --by code|agent|person --title "<title>" --about data:agenda` (a process can name its data; it needs no part). Then write the trigger in `process.md` (`trigger: { cron: "0 8 * * 1" }`), the `reads`, the `writes`, the `effect`, and the code, the `prompt`, or the `task`. Test it with `flint ite process test "<program>" send-agenda` (add `--dry` for an agent process or an irreversible process). For one process from one sentence, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
+4. **Processes.** One command writes a process with its trigger, its data, and a stub of code that runs at once:
+   `flint ite process new "<program>" send-agenda --by code --task "Send the agenda to the team" --reads data:agenda-topics --writes data:agenda --cron "0 8 * * 1" --irreversible`
+   A recipe gives a process that runs at once: `flint ite process recipes`. Then write the work (the code, the `prompt`, or the `task`), add `effect`, and run `flint ite process check "<program>" send-agenda` and `flint ite process test "<program>" send-agenda` (`--dry` for an agent process or an irreversible process). Follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]] (`flint ite flow new "<program>" <id> --steps "<step>; <step>"`).
 5. **Claims.** `flint ite claim new "<program>" agenda-exists --about <part id> --mode ought --by code --title "<title>"`. `claim new` takes only a part that exists, so before the first apply write `claim.md` by hand with `about: ["data:agenda"]`. Write `check.js`, add `fixed-by: [send-agenda]` and `reads`, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
-6. **The plan.** In a session that a person drives, `flint ite plan add "<program>" --of <part> --change change --text -` for each thing that must be different next. It needs a part that exists, so write the plan after the first apply. A headless agent writes no future note: it names what must be next in its result.
+6. **The plan.** A person decides the plan. Write a future note only in a session that a person drives, or when the prompt of a builder asks for it: `flint ite plan add "<program>" --of <part> --change change --text -` (the status is `next`). It needs a part that exists, so write it after the first apply. A job agent and an engine agent write no future note: they name it in the result.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
-8. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite enable "<program>" send-agenda`, `flint ite enable "<program>" agenda-exists`, and `flint ite enable "<program>" keep-map-true`.
+8. **Living (when the person wants a brief).** Write the full root note with one `system` block (owners, boundary, and `goals`: the ids of `ought` claims; the form is in [[tmp-ite-program-v0.1]]), and propose it: `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"`. A person applies it with `flint ite revision apply "<program>" <id> --protected`. Then `flint ite brief "<program>"` works.
+9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id> --protected` (step 8), and `flint ite enable "<program>" --all` (each trigger that is off and has no problem; or `flint ite enable "<program>" <id>` for one trigger).
 
 ## The Forms on One Screen
 
@@ -98,6 +101,8 @@ shape:
   - { name: week, kind: date, key: true }
   - { name: sent_at, kind: date }
 ```
+
+An agent can write native data too (`by: agent` with a `prompt`, no `source`), for example a table of the open items of the reports: it reports the rows through the door with `flint ite data report "<program>" <id> --rows <file> --how replace`.
 
 ```yaml
 # Processes/send-agenda/process.md
@@ -166,22 +171,25 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Test and run a check | `flint ite claim test "<program>" <claim>`, `flint ite claim check "<program>" <claim>` |
 | Report a result that you saw | `flint ite claim report "<program>" <claim> --state holds\|fails\|error --summary "<text>"` |
 | Read, test, or pull data | `flint ite data list\|show\|test\|pull "<program>" [<id>]` |
-| Report a value of data (an agent reader) | `flint ite data report "<program>" <id> --value <json>` |
-| Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" --about <ref>` |
+| Report a value or rows of data (an agent reader or maker) | `flint ite data report "<program>" <id> --value <json>`, or `--rows <file> --how replace\|append` |
+| Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --task "<text>" [--reads] [--writes] [--every\|--cron\|--on] [--irreversible]`, or `--recipe <name>` (`flint ite process recipes`) |
+| Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
+| Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--dry]` |
-| Add an instruction map | `flint ite flow new "<program>" <process id> --title "<title>"`, then `flint ite flow show "<program>" <process id>` |
+| Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`), then `flint ite flow check` |
 | Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person) |
 | See the runs | `flint ite flow runs "<program>"`, `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |
 | See the triggers | `flint ite triggers "<program>"` |
 | Send an event | `flint ite event emit --kind <kind> [--path <file>]... [--ref <ref>]... --summary "<text>"` |
 | Read and write the plan | `flint ite plan "<program>"`, `plan add`, `plan set`; `plan realize` proposes one map change |
 | Make a dev version of a process | `flint ite process dev "<program>" <id>`; `process promote` proposes it |
+| Make a program living | `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"` |
 | Answer a question with a view | `flint ite job "<program>" --action view --text "<question>"`, or [[wkfl-ite-view]] |
 | Find all problems | `flint ite check ["<program>"]` (it runs nothing) |
 | The check after a product task | [[sk-ite-check_after_task]] |
 | Show where you work | `flint ite focus <node id>...` ([[sk-ite-focus]]) |
 
-A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable`, `disable`, `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
+A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
 
 The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written.
 

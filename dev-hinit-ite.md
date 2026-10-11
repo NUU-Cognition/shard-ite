@@ -45,9 +45,10 @@ A builder makes or changes a program for a person or a manager, with no job of t
 
 1. **Follow the workflow that your prompt names.** For a new program, follow [[hwkfl-ite-program_create]]. For one process, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
 2. **Propose; do not decide.** Each change of the main map is a map change that waits for the person. Never apply it. Never enable a trigger, approve a run, or promote a dev version.
-3. **Test each check, process, and reader** that you write, as rule 9 says.
-4. **End with the list for the person.** Your result names each proposal that waits (the map change ids), and each command that only a person runs (`flint ite map change apply`, `flint ite enable`), one line each.
-5. **Return as your prompt says.** Use the return shape and the commit rules of your prompt. The result rules of a job below do not apply to you.
+3. **Test each check, process, and reader** that you write, as rule 9 says. Run `flint ite process check` and `flint ite flow check` for each process and map that you write.
+4. **The plan.** Write a future note (`flint ite plan add`, status `next`) only when your prompt asks for it, and list each one for the person. Else name what must be next in your result.
+5. **End with the list for the person.** Your result names each proposal that waits (the map change ids and the revision ids), and each command that only a person runs (`flint ite map change apply`, `flint ite revision apply --protected`, `flint ite enable "<program>" --all`), one line each.
+6. **Return as your prompt says.** Use the return shape and the commit rules of your prompt. The result rules of a job below do not apply to you.
 
 ## Agents That the Engine Starts
 
@@ -118,7 +119,7 @@ Check each item. A job that skips an item gives the person a result that the Wor
 - [ ] You did each stage of the workflow, in order, and set its phase.
 - [ ] A candidate: `flint ite check --candidate <candidate-id>` exits 0 (no error finding), and `flint ite diff --candidate <candidate-id>` says that it can be applied (no conflict).
 - [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows the state `proposed`, no conflict, and no new finding of the level error in the tree after.
-- [ ] Parts, claims, data, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, `claim-fixed-by`, `unknown-reference`, `data-cycle`, or `writes-external` for a part, a claim, a piece of data, or a map that you changed, and `flint ite flow show` gives no problem for a map that you changed.
+- [ ] Parts, claims, data, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, `claim-fixed-by`, `unknown-reference`, `data-cycle`, or `writes-external` for a part, a claim, a piece of data, or a map that you changed, and `flint ite process check` and `flint ite flow check` give no error for a process or a map that you changed.
 - [ ] Each code check that you wrote passed `flint ite claim test` and ran one time, and its claim holds, or its prose says why it fails.
 - [ ] A review: you compared each node that you reviewed with the diff of its code after the anchor, and `flint ite review` wrote its anchor. You reviewed no node that your candidate or your map change changes.
 - [ ] Each reader or maker of data that you wrote passed `flint ite data test` and was pulled one time, and `flint ite data list "<program>"` shows no problem for it.

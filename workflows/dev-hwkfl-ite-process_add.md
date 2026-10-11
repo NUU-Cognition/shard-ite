@@ -50,16 +50,19 @@ The focus of this job: the selected parts.
 2. Make the process:
 
    ```bash
-   flint ite process new "<program>" <id> --by code|agent|person --title "<title>" [--about <ref>...] [--text "<prose>"]
+   flint ite process new "<program>" <id> --by code|agent|person --task "<the work in words>" [--about <ref>...] \
+     [--reads <ref>...] [--writes data:<id>...] [--inputs <name[:kind][!]>...] [--outputs <name[:kind][!]>...] [--irreversible] [--dry-run]
    ```
 
-   It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, with `trigger: manual`, and records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again.
+   One command writes the work and the fields ([[sk-ite-process_new]]). When a recipe fits (`flint ite process recipes`), use `--recipe <name> [--with k=v]...`. A code process gets a stub `index.js` that runs at once. Give no trigger flag: the trigger stays `manual`, and only a person enables a trigger.
+
+   It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, and records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again.
 3. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose (what the process does, why, and what it changes), `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`. Keep `format`, `id`, `by`, and `trigger`.
 4. Write the work:
    - `code`: the entry `index.js` in the process folder (`runtime: node`), or another entry with its `runtime`. It prints one JSON line for each record: `{ "output": { "<name>": <value> } }`, `{ "state": { ... } }`, or `{ "log": "<text>" }`. Exit 0 is `done`. A file that it writes on this machine goes into `.flint/steel/state/<program id>/`.
    - `agent`: the `prompt`, with `${inputs.<name>}` for each input.
    - `person`: the `task`: what the person does, and the outputs that the person gives with Done.
-5. Run `flint ite process list "<program>"`. Repair each problem of the process: it does not run until its file is correct.
+5. Run `flint ite process check "<program>" <id>`. Repair each problem of the process (it gives the file, the line, the cause, and the fix): it does not run until its file is correct.
 6. Once the process is written, progress to the next stage.
 
 ## Stage 4: Test the Process
