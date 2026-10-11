@@ -6,7 +6,7 @@ description: "The Integrated Thinking Environment, short: the five kernel words,
 
 The ITE (Integrated Thinking Environment) lets a person model a **system** of any kind as a **program**, see it on a canvas, check it against reality, and run it. Software is a system. A weekly meeting, an event of a club, a process of a business, and a research are systems too.
 
-The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
+The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and what waits for a person. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. `flint ite --help` groups the verbs by job. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
 
 Read this file first. It is enough for most jobs. Read a knowledge file only when the table "Read More" sends you there.
 
@@ -64,17 +64,16 @@ A part is a part when its `parent` chain reaches the root note. Its identity is 
 
 Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (headless: [[hwkfl-ite-program_create]]).
 
-1. **Purpose and template.** Run `flint ite templates`, and select the template by the kind of system: `organisation` (a team, its meetings and duties), `process` (repeated work of a business), `event` (one dated event), `research`, `software`, or `general`. Then:
-   `flint ite create "Weekly Team Meeting" --template organisation --purpose "<one sentence: what the system is, and why>"`
+1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists them: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true`: the agent of the program keeps the map true after each event. It is not enabled.
 2. **The first map, as a proposal.** Propose 3 to 9 parts in one map change:
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
-   Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The other operations (`move`, `split`, `merge`, `rename`, `remove`, `edit`) are in [[knw-ite-programs]].
+   Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
 3. **State.** Write each piece of data that the system holds or measures: `Steel/Programs/<Name>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (there is no `data new` verb). Test a reader or a maker with `flint ite data test "<program>" <id>`.
-4. **Processes.** `flint ite process new "<program>" send-agenda --by code|agent|person --title "<title>" --about <part id>`. Then write the trigger in `process.md` (`trigger: { cron: "0 8 * * 1" }`), the `reads`, the `writes`, the `effect`, and the code, the `prompt`, or the `task`. Test it with `flint ite process test "<program>" send-agenda` (add `--dry` for an agent process or an irreversible process). For one process from one sentence, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
-5. **Claims.** `flint ite claim new "<program>" agenda-exists --about <part id> --mode ought --by code --title "<title>"`. Write `check.js`, add `fixed-by: [send-agenda]` and `reads`, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
+4. **Processes.** `flint ite process new "<program>" send-agenda --by code|agent|person --title "<title>" --about data:agenda` (a part id after the apply). Then write the trigger in `process.md` (`trigger: { cron: "0 8 * * 1" }`), the `reads`, the `writes`, the `effect`, and the code, the `prompt`, or the `task`. Test it with `flint ite process test "<program>" send-agenda` (add `--dry` for an agent process or an irreversible process). For one process from one sentence, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
+5. **Claims.** `flint ite claim new "<program>" agenda-exists --about <part id> --mode ought --by code --title "<title>"`. Before the first apply there is no part: write `claim.md` by hand with `about: ["data:agenda"]`. Write `check.js`, add `fixed-by: [send-agenda]` and `reads`, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
 6. **The plan.** `flint ite plan add "<program>" --of <part> --change change --text -` for each thing that must be different next.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
-8. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite enable "<program>" send-agenda`, `flint ite enable "<program>" agenda-exists`.
+8. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite enable "<program>" send-agenda`, `flint ite enable "<program>" agenda-exists`, and `flint ite enable "<program>" keep-map-true`.
 
 ## The Forms on One Screen
 
@@ -120,16 +119,32 @@ fresh-for: 7d
 
 A trigger runs only on a machine where a person enabled it. With no enable, a person runs the process with Run now.
 
+### The Operations of a Map Change
+
+`--ops` takes one JSON array. The operations apply in order. A part is its id, its note name, or a unique title; `parent: null` is the root; `kind` is a type id.
+
+| Operation | The JSON |
+|---|---|
+| `add` | `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","prose":"<optional>","sources":["..."],"id":"<optional uuid>"}` |
+| `move` | `{"op":"move","part":"<part>","parent":"<part or null>"}` |
+| `split` | `{"op":"split","parent":"<part or null>","subsystem":{"title":"<t>","kind":"<type id>","sentence":"<s>"},"children":["<part>"]}` |
+| `merge` | `{"op":"merge","from":"<part>","into":"<part>"}` |
+| `rename` | `{"op":"rename","part":"<part>","title":"<new title>","kind":"<optional type id>"}` |
+| `remove` | `{"op":"remove","part":"<part>"}` (its children move up one level) |
+| `edit` | `{"op":"edit","part":"<part>","sentence":"<s>","prose":"<p>","sources":["<the whole new list>"]}` |
+
+A map change cannot name a part that another waiting map change adds. So put a new subtree in one map change: give each new part an `id` (a UUID v4), and name it as the `parent` of its children.
+
 ## Jobs to Commands
 
 `<program>` is the name or the id of a program. In an Orbh session the CLI acts as the agent, so a structure change is a proposal.
 
 | To do this | Run this |
 |---|---|
-| See the programs | `flint ite list` |
+| See the programs, and what waits for a person | `flint ite` (no verb); `flint ite list` for the counts |
 | Read one program first | `flint ite pulse "<program>"`, then `flint ite map tree "<program>"` |
 | See the types and the templates | `flint ite types`, `flint ite templates` |
-| Make a program | `flint ite create "<name>" --template <id> --purpose "<text>"` |
+| Make a program | `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
 | Add one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"]` |
 | Change many parts at once | `flint ite map change propose "<program>" --ops - --reason "<text>"` |
 | Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` |
