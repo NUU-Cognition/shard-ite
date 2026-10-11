@@ -170,7 +170,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Change many parts at once | `flint ite map change propose "<program>" --ops - --reason "<text>"` |
 | Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` |
 | Link two parts | `flint ite link "<program>" <from> <to> --relation <key>` |
-| See what waits for a person in a program | `flint ite proposals "<program>"` (the map changes, the revisions, and the view candidates, the oldest first) |
+| See what waits for a person | `flint ite waiting` (all programs: runs, checks, values, claims that fail, and proposals, the most urgent first); `flint ite proposals ["<program>"]` (the map changes, the revisions, and the view candidates, the oldest first) |
 | Add a claim | `flint ite claim new "<program>" <id> --mode is\|ought\|will --by code\|agent\|person\|none --about <ref> --title "<title>" [--reads] [--fixed-by] [--every\|--cron\|--on] [--fresh-for]` |
 | Give an old program the standing process | `flint ite process new "<program>" keep-map-true --recipe keep-map-true [--with kinds=task.finished,commit.landed]` |
 | Test and run a check | `flint ite claim test "<program>" <claim> [--data data:<id>=<json>]`, `flint ite claim check "<program>" <claim> [--strict]` (`--strict` exits 1 when the result fails or gives error) |
@@ -186,7 +186,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
 | Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`, or a ready map: `--recipe <name>` from `flint ite flow recipes`), then `flint ite flow check` |
 | Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person), or `--to-end` (to the end, also through the waits of a person: exit 0 or 1) |
-| See the runs | `flint ite flow runs ["<program>"] [--failed] [--waiting] [--since 2h]` (with no program: each program in one read), `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |
+| See the runs | `flint ite flow runs ["<program>"] [--failed] [--waiting] [--since 2h]` (with no program: each program in one read), `flint ite flow status <run> [--follow]`, `flint ite process runs ["<program>"]` |
 | Run again from the failed step (a person asked) | `flint ite flow retry <run> [--from <node>] [--input k=v] [--follow]` |
 | See the triggers | `flint ite triggers ["<program>"] [--enabled]` (with no program: each trigger of this Flint, the enabled first with their next time) |
 | Send an event | `flint ite event emit --kind <kind> [--path <file>]... [--ref <ref>]... --summary "<text>"` |

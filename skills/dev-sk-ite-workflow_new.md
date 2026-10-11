@@ -18,7 +18,7 @@ Make one instruction map (a workflow: the steps of a process in order) from a li
 
 # Actions
 
-1. **Look for a ready map.** Run `flint ite flow recipes`: `release` (build, test, a person says ship, ship, a smoke check), `triage-event` (an agent reads and classes each event of one kind), `daily-check` (check the claims each day, with a digest), `fix-a-claim` (find the cause, a person approves, fix, check again), and `fleet-day` (a production day with an Orbh fleet). When one fits, write it with one command, and go to step 7: `flint ite flow new "<program>" <id> --recipe <name> [--with <name>=<value>]... --dry-run`.
+1. **Look for a ready map.** Run `flint ite flow recipes`: `release` (build, test, a person says ship, ship, a smoke check), `triage-event` (an agent reads and classes each event of one kind), `daily-check` (check the claims each day, with a digest), `fix-a-claim` (find the cause, a person approves, fix, check again), and `fleet-day` (a production day with an Orbh fleet). When one fits, write it with one command (`--with target=<runtime/profile>` selects the target of its agent steps), and go to step 7: `flint ite flow new "<program>" <id> --recipe <name> [--with <name>=<value>]... --dry-run`.
 2. **Write the steps in short words**, one step for each item, in order. The kind of each step comes from its words:
 
    | Write | The step |
