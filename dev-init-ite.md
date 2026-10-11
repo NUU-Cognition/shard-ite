@@ -185,7 +185,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
 | Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`), then `flint ite flow check` |
-| Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person) |
+| Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person), or `--to-end` (to the end, also through the waits of a person: exit 0 or 1) |
 | See the runs | `flint ite flow runs "<program>"`, `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |
 | See the triggers | `flint ite triggers "<program>"` |
 | Send an event | `flint ite event emit --kind <kind> [--path <file>]... [--ref <ref>]... --summary "<text>"` |
