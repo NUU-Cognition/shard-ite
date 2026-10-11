@@ -47,7 +47,8 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
     The core runs the entry in the claim folder with FLINT_ROOT, STEEL_PROGRAM_ID, STEEL_CLAIM_ID, STEEL_PARTS
     (a JSON list of the part ids of about), STEEL_ABOUT (a JSON list of each reference of about), STEEL_DATA (JSON:
     { "<reference as written in reads>": { ref, mode, state, at, age_s, outputs, error? } }; for
-    data:<id>#<output>, outputs holds only that output), STEEL_INPUTS (JSON: the inputs of the run when the check runs
+    data:<id>#<output>, outputs holds only that output; for a table, outputs.rows holds the rows and outputs.count
+    their count), STEEL_INPUTS (JSON: the inputs of the run when the check runs
     for a step, else {}), STEEL_RUN_ID and STEEL_NODE (or empty), and the values of flint.env and flint.env.local. Each line of its output
     that is one JSON object is one result: { "state": "holds|fails|error", "part"?: "<an id of about>",
     "values"?: { ... }, "summary": "<text>", "evidence"?: [{ "kind": "url|file|note|text|output", "value", "label"? }] }.
