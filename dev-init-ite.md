@@ -33,7 +33,7 @@ event in → route by "about" → process (code, an agent, or a person)
 
 ## The Rules
 
-1. **An agent proposes. Only a person decides.** Only a person applies, reverts, approves, refuses, enables, promotes, keeps or accepts a view, and removes, renames, or archives a program or a view. The engine refuses an agent with `forbidden`. Write each reason so that the person can apply it in one click.
+1. **An agent proposes. Only a person decides.** Only a person applies, reverts, approves, refuses, enables, promotes, keeps or accepts a view, and removes, renames, or archives a program or a view. The engine refuses an agent with `forbidden`. In an Orbh session, a `Next:` line that only a person may run ends with `(a person)`: name it for the person in your result, and never run it. Write each reason so that the person can apply it in one click.
 2. **One writer of the structure.** The main map changes only through a map change (`flint ite part add`, `part remove`, `map change propose`, `map split|move|rename|merge`). Never write the `parent`, the title, or the `(Type)` word of a part with your own tools.
 3. **An agent changes a view only through a candidate**, and never applies it.
 4. **Only commands write facts.** A program holds meaning: parts, prose, links, views, claims, data files, processes, maps. It never holds a result, a state, a finding, a position, or a presence. Send a result through the one door: `flint ite claim report`. Never write the log, `Runs/`, the agent log, or a map change or a revision in `Proposals/` by hand. A view candidate is the one file of `Proposals/` that an agent writes ([[wkfl-ite-view]], [[wkfl-ite-reshape]]).
