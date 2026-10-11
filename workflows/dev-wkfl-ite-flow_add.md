@@ -46,8 +46,8 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 
    Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`.
 
-   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with one step `start` of a person, and writes `process.md` when the process has none. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
-2. Write the nodes of the plan into `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with the prose for a person, and one H2 for each node with its instruction and its fenced block. Replace the step `start` when the plan does not use it.
+   It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with the nodes of the steps, and writes `process.md` when the process has none. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
+2. Complete the nodes in `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the `inputs` of the frontmatter, the prose for a person under the H1, and under each H2 the instruction, the `inputs` and `outputs`, and `precondition` and `effect`.
 3. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
 4. Once the map is written, progress to the next stage.
 
