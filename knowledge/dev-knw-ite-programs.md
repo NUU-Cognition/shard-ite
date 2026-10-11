@@ -8,7 +8,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 
 ## The Root Note
 
-`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true`, not enabled); the form is [[tmp-ite-program-v0.1]].
+`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true`, not enabled, and a starter kit of its template: one piece of state, one code process, and one code claim); the form is [[tmp-ite-program-v0.1]].
 
 | Field | Value |
 |---|---|

@@ -31,7 +31,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    flint ite create "<name>" --purpose "<purpose>" --template <id>
    ```
 
-   The program gets the process `keep-map-true` (by the agent of the program, on the events `note.added` and `task.finished`). It is not enabled.
+   The program gets the process `keep-map-true` (by the agent of the program, on the events `note.added` and `task.finished`; it is not enabled) and a starter kit of its template: one piece of state, one code process that runs at once, and one code claim that reads the state (for an organisation: the data `next-meeting`, the process `days-until-meeting`, and the claim `next-meeting-ahead`; a process template gets the runs of `keep-map-true`; a software template gets the newest commit). Read the kit with `flint ite process list` and `flint ite data list` before you add your own: use it where it fits, and change it with `process set`.
 
 6. Once the program exists, progress to the next stage.
 
