@@ -52,7 +52,7 @@ A builder makes or changes a program for a person or a manager, with no job of t
 
 ## Agents That the Engine Starts
 
-An agent check, an agent process, an agent step of a run, and an agent reader or maker of data keep one Orbh session for one dispatch. They take no job, and the run takes the result of the session only.
+An agent check, an agent process, an agent step of a run, and an agent reader or maker of data keep one Orbh session for one dispatch. They take no job, and the run takes the result of the session only. Each agent step returns with `--finish`. A later step of the map with `session: <your step>` continues your finished session as a new turn: then read its prompt as the next step of the same work.
 
 ### Living Systems
 
