@@ -36,7 +36,7 @@ event in → route by "about" → process (code, an agent, or a person)
 1. **An agent proposes. Only a person decides.** Only a person applies, reverts, approves, refuses, enables, promotes, keeps or accepts a view, and removes, renames, or archives a program or a view. The engine refuses an agent with `forbidden`. Write each reason so that the person can apply it in one click.
 2. **One writer of the structure.** The main map changes only through a map change (`flint ite part add`, `part remove`, `map change propose`, `map split|move|rename|merge`). Never write the `parent`, the title, or the `(Type)` word of a part with your own tools.
 3. **An agent changes a view only through a candidate**, and never applies it.
-4. **Only commands write facts.** A program holds meaning: parts, prose, links, views, claims, data files, processes, maps. It never holds a result, a state, a finding, a position, or a presence. Send a result through the one door: `flint ite claim report`. Never write the log, `Runs/`, `Proposals/`, or the agent log by hand.
+4. **Only commands write facts.** A program holds meaning: parts, prose, links, views, claims, data files, processes, maps. It never holds a result, a state, a finding, a position, or a presence. Send a result through the one door: `flint ite claim report`. Never write the log, `Runs/`, the agent log, or a map change or a revision in `Proposals/` by hand. A view candidate is the one file of `Proposals/` that an agent writes ([[wkfl-ite-view]], [[wkfl-ite-reshape]]).
 5. **Write through `flint ite`** each time a command exists, so that the person sees your change in the activity of the Workbench.
 6. **Test before you keep.** `flint ite claim test`, `process test`, and `data test` run the code one time and write nothing. Never keep a check, a process, or a reader that you did not test.
 7. **Read before you run.** Never run code that you did not read. Never run a process (`process run`, `flow start`) unless the person asks for exactly that: a process can change the world.
@@ -54,7 +54,7 @@ Steel/Programs/<Name>/Reality/<id>/claim.md              a claim (steel-claim/1)
 Steel/Programs/<Name>/Processes/<id>/process.md          a process (steel-process/1) and its code
 Steel/Programs/<Name>/Processes/<id>/map.md              its instruction map (steel-flow/1)
 Steel/Programs/<Name>/Views/(View) <Title>.md            a view (steel-view/1)
-Steel/Programs/<Name>/Proposals/  Runs/  History/  State/   only the engines write here
+Steel/Programs/<Name>/Proposals/  Runs/  History/  State/   only the engines write here (an agent writes a view candidate)
 .flint/steel/                                            the facts of this machine: logs, snapshots, events, enables, runs
 ```
 
