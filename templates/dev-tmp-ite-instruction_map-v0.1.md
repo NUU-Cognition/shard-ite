@@ -32,7 +32,9 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
     data that the step reads), writes (the native data that the step may write). A node id runs is not allowed:
     process:<id>#runs is the data of the runs.
   - decision: question, by (person | agent), outcomes ({ "<outcome>": <node id> }).
-  - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, event: <hook id>; timeout; next.
+  - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, event: <hook id>, or event: <event kind>
+          (a kind has a dot, for example commit.landed: the next event of that kind that routes to the program; the
+          node gets the output event); timeout; next.
   - parallel: next: [<id>, <id>, ...] (two or more).
   - join: wait: all | any; next.
   - sub-map: process: <id> (a process with a map.md), inputs, next. The child run names its parent run and node.

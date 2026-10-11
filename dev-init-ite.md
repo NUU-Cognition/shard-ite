@@ -91,7 +91,7 @@ reads: ["data:agenda-items"]    # the data it reads (STEEL_DATA)
 writes: ["data:agenda"]         # the native data it may write
 effect: [agenda-exists]         # the claims that show that the work worked
 trigger: { cron: "0 8 * * 1" }  # manual | { every: 1h } | { cron } | { on: hook } | { on: event, kinds: [...] }
-authority: { approve: false, irreversible: false }   # a send outside this machine: irreversible: true
+authority: { run: ["person:<Name>", "agent:*"], irreversible: false }   # who may start it; a send outside this machine: irreversible: true
 ```
 
 ```yaml
@@ -158,7 +158,8 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --title "<title>" --about <ref>` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--dry]` |
 | Add an instruction map | `flint ite flow new "<program>" <process id> --title "<title>"`, then `flint ite flow show "<program>" <process id>` |
-| See the runs | `flint ite flow runs "<program>"`, `flint ite flow status <run>`, `flint ite process runs "<program>"` |
+| Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person) |
+| See the runs | `flint ite flow runs "<program>"`, `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |
 | See the triggers | `flint ite triggers "<program>"` |
 | Send an event | `flint ite event emit --kind <kind> [--path <file>]... [--ref <ref>]... --summary "<text>"` |
 | Read and write the plan | `flint ite plan "<program>"`, `plan add`, `plan set`; `plan realize` proposes one map change |
