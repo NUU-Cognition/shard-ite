@@ -193,6 +193,7 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite view remove <view> [--base-hash <hash>]` | Keeps the view in the history, then removes it and its candidates. It refuses a `kept` view (exit 2). A decision of a person. | One history file; it removes the view |
 | `flint ite view set <view> [--lifetime draft\|kept] [--curation proposed\|accepted]` | Sets the lifetime and the curation of a view. A decision of a person. | The two keys of the view |
 | `flint ite view --candidate <id>` | The document of a candidate as the view will show it, with the proof of each node | Nothing |
+| `flint ite proposals <program>` | Each change that waits for a person: the map changes, the revisions, and the view candidates, the oldest first, each with its show command | Nothing |
 | `flint ite check [<program>]` | The findings of the main map, the views, the claims, the processes, the instruction maps, the data, and the references. Exit 1 for an error finding. It runs no check and no process. | Nothing |
 | `flint ite check --candidate <id>` | The findings of one candidate only. Exit 1 for an error finding. | Nothing |
 | `flint ite check [<program>] --paths <path...> [--checkout <dir>]` | The check after a task: the findings of each part and each view that names one of the paths (see The Check After a Task in [[knw-ite-software]]) | Nothing |

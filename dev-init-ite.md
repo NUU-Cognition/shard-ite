@@ -70,14 +70,14 @@ Example: "Make a program for my weekly team meeting, with a process that sends t
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
 3. **State.** One command writes each piece of data that the system holds or measures:
    `flint ite data new "<program>" agenda-topics --task "What topics go on the agenda this week?" --fresh-for 7d` (a person gives the value when Steel asks).
-   `--source command:<line>|url:<url>|path:<file>` makes external data with a reader, `--from data:<id>` a calculated value, and `--value` a value now. A value or a table that a process writes (`agenda`) has no `by` and no flag of `data new`: write `Data/agenda/data.md` from [[tmp-ite-data-v0.1]] (a table adds `map: table` and `shape`), and name it in the `writes` of the process. Test each reader or maker with `flint ite data test "<program>" <id>`. A value of a person shows as `pending` in `flint ite data list`.
+   `--source command:<line>|url:<url>|path:<file>` makes external data with a reader, `--from data:<id>` a calculated value, and `--value` a value now. A value or a table that a process writes: `flint ite data new "<program>" agenda --by process --table week:date sent_at:date --key week`, and name it in the `writes` of the process. Test each reader or maker with `flint ite data test "<program>" <id>`. A value of a person shows as `pending` in `flint ite data list`.
 4. **Processes.** One command writes a process with its trigger, its data, and a stub of code that runs at once:
    `flint ite process new "<program>" send-agenda --by code --task "Send the agenda to the team" --reads data:agenda-topics --writes data:agenda --cron "0 8 * * 1" --irreversible`
    A recipe gives a process that runs at once: `flint ite process recipes`. Then write the work (the code, the `prompt`, or the `task`), add `effect`, and run `flint ite process check "<program>" send-agenda` and `flint ite process test "<program>" send-agenda` (`--dry` for an agent process or an irreversible process). Follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]] (`flint ite flow new "<program>" <id> --steps "<step>; <step>"`).
 5. **Claims.** One command writes a claim with its data, its fix, and its trigger:
    `flint ite claim new "<program>" agenda-exists --mode ought --by code --about data:agenda --reads data:agenda --fixed-by send-agenda --cron "30 8 * * 1" --title "The agenda of this week exists"`
    `--about` takes a part (its id or its title), `root`, `data:<id>`, `process:<id>`, or `view:<id>`. A code claim gets a stub `check.js` that gives `error` until you write the test. Write it, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
-6. **The plan.** A person decides the plan. Write a future note only in a session that a person drives, or when the prompt of a builder asks for it: `flint ite plan add "<program>" --of <part> --change change --text -` (the status is `next`). It needs a part that exists, so write it after the first apply. A job agent and an engine agent write no future note: they name it in the result.
+6. **The plan.** A person decides the plan. Write a future note only in a session that a person drives, or when the prompt of a builder asks for it: `flint ite plan add "<program>" --of <part> --change change --append "<the change in one sentence>"` (the future starts as the true note; the status is `next`). It needs a part that exists, so write it after the first apply. A job agent and an engine agent write no future note: they name it in the result.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
 8. **Living (when the person wants a brief).** Write the full root note with one `system` block (owners, boundary, and `goals`: the ids of `ought` claims; the form is in [[tmp-ite-program-v0.1]]), and propose it: `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"`. A person applies it with `flint ite revision apply "<program>" <id> --protected`. Then `flint ite brief "<program>"` works.
 9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id> --protected` (step 8), and `flint ite enable "<program>" --all` (each trigger that is off and has no problem; or `flint ite enable "<program>" <id>` for one trigger).
@@ -170,7 +170,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Change many parts at once | `flint ite map change propose "<program>" --ops - --reason "<text>"` |
 | Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` |
 | Link two parts | `flint ite link "<program>" <from> <to> --relation <key>` |
-| See the waiting map changes | `flint ite map change list "<program>" --state proposed` |
+| See what waits for a person in a program | `flint ite proposals "<program>"` (the map changes, the revisions, and the view candidates, the oldest first) |
 | Add a claim | `flint ite claim new "<program>" <id> --mode is\|ought\|will --by code\|agent\|person\|none --about <ref> --title "<title>" [--reads] [--fixed-by] [--every\|--cron\|--on] [--fresh-for]` |
 | Give an old program the standing process | `flint ite process new "<program>" keep-map-true --recipe keep-map-true [--with kinds=task.finished,commit.landed]` |
 | Test and run a check | `flint ite claim test "<program>" <claim>`, `flint ite claim check "<program>" <claim>` |
@@ -179,9 +179,10 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Read, test, or pull data | `flint ite data list\|show\|test\|pull "<program>" [<id>]` |
 | Report a value or rows of data (an agent reader or maker) | `flint ite data report "<program>" <id> --value <json>`, or `--rows <file> --how replace\|append` |
 | Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --task "<text>" [--reads] [--writes] [--every\|--cron\|--on] [--irreversible]`, or `--recipe <name>` (`flint ite process recipes`) |
+| Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing) |
 | Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
 | Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
-| Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--dry]` |
+| Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
 | Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`), then `flint ite flow check` |
 | Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person) |
 | See the runs | `flint ite flow runs "<program>"`, `flint ite flow status <run> [--follow]`, `flint ite process runs "<program>"` |

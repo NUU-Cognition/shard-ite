@@ -184,7 +184,7 @@ authors: ["[[@Nathan]]"]
 |---|---|---|
 | `flint ite plan "<program>" [--json]`, `GET /api/steel/programs/:id/plan` | The plan, grouped by status, with the counts | Nothing |
 | `flint ite plan show "<program>" <future id\|ref> [--diff] [--json]`, `GET .../plan/:futureId` | One future note, with the diff to the true note | Nothing |
-| `flint ite plan add "<program>" --of <ref> \| --parent <ref> --type <Type> --title "<title>" [--text <file\|->] [--change change\|add\|remove]`, `POST .../plan` | Writes a new future note, with `based-on`. An agent uses it only in a session that a person drives. | One future note |
+| `flint ite plan add "<program>" --of <ref> \| --parent <ref> --type <Type> --title "<title>" [--text <file\|->] [--append "<paragraph>"] [--change change\|add\|remove]`, `POST .../plan` | Writes a new future note, with `based-on`. With `--of` and no `--text`, the future starts as the true note; `--append` adds one paragraph to it (the change in one sentence). An agent uses it only in a session that a person drives, or as a builder when its prompt asks for it. | One future note |
 | `flint ite plan set "<program>" <future id> [--status <s>] [--text <file\|->]`, `PATCH .../plan/:futureId` | Changes the status or the text of a future note | The future note |
 | `flint ite plan realize "<program>" <future id> [--reason "<text>"]`, `POST .../plan/:futureId/realize` | Proposes **one map change** that makes the future true: `edit` (the text and `fields` replace the true note), `add` (a new part with `plan-parent`, `type`, and the title), or `remove`. The map change records `realizes: [<future id>]`. | One proposal |
 

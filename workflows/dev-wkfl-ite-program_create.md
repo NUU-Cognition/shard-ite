@@ -57,7 +57,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    - A person writes it: `by: person` with a `question`.
    - Code calculates it from other data: `by: code` with `from`.
    - It comes from outside (a file, a page, a command): a `source` and a reader, `by: code` with `entry: pull.js`.
-3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A value or a table that a process writes has no `by` and no flag of `data new`: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (a table adds `map: table` and `shape`), and name it in the `writes` of the process.
+3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A value or a table that a process writes: `--by process` (a table adds `--table <name:kind>... --key <field>`), and name it in the `writes` of the process.
 4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Once the state is written, progress to the next stage.
 
@@ -66,7 +66,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 1. For each piece of work that the system does again and again, write one process. Follow [[sk-ite-process_new]] for each one. When the work has steps and decisions in order, follow [[sk-ite-workflow_new]].
 2. Give the trigger with a flag of `process new` (for example `--cron "0 8 * * 1"` for each Monday at 08:00), or write it in `process.md`. A trigger runs only after the person enables it.
 3. A process that sends something outside this machine (an email, a message) gets `--irreversible`, so the person approves each run.
-4. Check and test each process: `flint ite process check "<program>" <id>`, then `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process). Never run it.
+4. Check and test each process: `flint ite process check "<program>" <id>`, then `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process; `--data data:<id>=<json>` gives a sample of data that has no value yet). Never run it.
 5. Once each process passes its test, progress to the next stage.
 
 ## Stage 5: The Claims

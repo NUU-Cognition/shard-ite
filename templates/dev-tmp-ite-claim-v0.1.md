@@ -76,10 +76,13 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
     one source then read one piece of data, and the source is pulled one time.
   - A check only reads. A write, a send, a push, or a fetch is not a read. Before a check, the core pulls each
     external data that the claim reads and that is old, when its trigger is enabled on this machine; else the
-    check gets the value that is there, with its state and its age.
+    check gets the value that is there, with its state and its age. Before a check for a run (a precondition or
+    an effect), the core pulls each external data with a code reader, also when its trigger is not enabled.
   - A check that gets a value in the state none (never pulled), pending (a person must write it), or error (its last
     pull or calculation failed) prints one error line that names the value. It never judges with a default (an
-    amount that was not pulled is not 0) or with an old value.
+    amount that was not pulled is not 0). A scheduled check can judge an old value (the claim is then old). A
+    check for a run (STEEL_RUN_ID is set: a precondition or an effect) prints error for an input that is old, with
+    the command that refreshes it: an old value never confirms a step or an effect.
   - Do not write a claim for a mirror. Each source with a hash is a mirror claim (claim:mirror:<reference>) that the
     core gives: it has no file.
   - A check that cannot read its source prints one error line, never an old value.
