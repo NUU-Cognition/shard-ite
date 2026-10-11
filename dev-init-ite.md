@@ -8,7 +8,7 @@ The ITE (Integrated Thinking Environment) lets a person model a **system** of an
 
 The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and what waits for a person. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. `flint ite --help` groups the verbs by job. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
 
-Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when the table "Read More" sends you there.
+Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when a step needs more than this file, the workflow, and the template give.
 
 ## The Kernel
 
@@ -64,11 +64,13 @@ A part is a part when its `parent` chain reaches the root note. Its identity is 
 
 Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (headless: [[hwkfl-ite-program_create]]).
 
-1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists them: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true`: the agent of the program keeps the map true after each event. It is not enabled.
+1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists the six of the shard and the templates of this Flint: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true`: the agent of the program keeps the map true after each event. It is not enabled.
 2. **The first map, as a proposal.** Propose 3 to 9 parts in one map change:
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
-3. **State.** Write each piece of data that the system holds or measures: `Steel/Programs/<Name>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (there is no `data new` verb). For the meeting: `agenda-topics` (a person writes it) and `agenda` (a table that the process writes). Test each reader or maker that has code with `flint ite data test "<program>" <id>`. A value that a person writes has no code: `flint ite data list` shows it as `pending`.
+3. **State.** One command writes each piece of data that the system holds or measures:
+   `flint ite data new "<program>" agenda-topics --task "What topics go on the agenda this week?" --fresh-for 7d` (a person gives the value when Steel asks).
+   `--source command:<line>|url:<url>|path:<file>` makes external data with a reader, `--from data:<id>` a calculated value, and `--value` a value now. A table that a process writes (`agenda`) has no flag for its shape: write `Data/agenda/data.md` from [[tmp-ite-data-v0.1]]. Test each reader or maker with `flint ite data test "<program>" <id>`. A value of a person shows as `pending` in `flint ite data list`.
 4. **Processes.** One command writes a process with its trigger, its data, and a stub of code that runs at once:
    `flint ite process new "<program>" send-agenda --by code --task "Send the agenda to the team" --reads data:agenda-topics --writes data:agenda --cron "0 8 * * 1" --irreversible`
    A recipe gives a process that runs at once: `flint ite process recipes`. Then write the work (the code, the `prompt`, or the `task`), add `effect`, and run `flint ite process check "<program>" send-agenda` and `flint ite process test "<program>" send-agenda` (`--dry` for an agent process or an irreversible process). Follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]] (`flint ite flow new "<program>" <id> --steps "<step>; <step>"`).
@@ -118,7 +120,7 @@ reads: ["data:agenda-topics"]   # the data that it reads (STEEL_DATA)
 writes: ["data:agenda"]         # the native data that it may write
 effect: [agenda-exists]         # the claims that show that the work worked
 trigger: { cron: "0 8 * * 1" }  # manual | { every: 1h } | { cron } | { on: hook } | { on: event, kinds: [...] }
-authority: { run: ["person:<Name>"], irreversible: true }   # it sends outside this machine, so a person approves each run
+authority: { approve: true, irreversible: true }   # --irreversible writes this: it sends outside this machine, so a person approves each run
 ```
 
 ```yaml
@@ -150,7 +152,7 @@ A trigger runs only on a machine where a person enabled it. With no enable, a pe
 | `merge` | `{"op":"merge","from":"<part>","into":"<part>"}` |
 | `rename` | `{"op":"rename","part":"<part>","title":"<new title>","kind":"<optional type id>"}` |
 | `remove` | `{"op":"remove","part":"<part>"}` (its children move up one level) |
-| `edit` | `{"op":"edit","part":"<part>","sentence":"<s>","prose":"<p>","sources":["<the whole new list>"]}` |
+| `edit` | `{"op":"edit","part":"<part>","sentence":"<s>","prose":"<p>","sources":["<the whole new list>"],"fields":{"<key>":"<value>"}}` |
 
 A map change cannot name a part that another waiting map change adds. So put a new subtree in one map change: give each new part an `id` (a UUID v4), and name it as the `parent` of its children.
 
@@ -161,7 +163,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | To do this | Run this |
 |---|---|
 | See the programs, and what waits for a person | `flint ite` (no verb); `flint ite list` for the counts |
-| Read one program first | `flint ite pulse "<program>"`, then `flint ite map "<program>"` (the tree with the id of each part) |
+| Read one program first | `flint ite pulse "<program>"`, then `flint ite map "<program>"` (the tree with the id of each part); `flint ite pulse` with no program gives one line for each program |
 | See the types and the templates | `flint ite types`, `flint ite templates` |
 | Make a program | `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
 | Add one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"]` |
@@ -173,6 +175,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Give an old program the standing process | `flint ite process new "<program>" keep-map-true --recipe keep-map-true [--with kinds=task.finished,commit.landed]` |
 | Test and run a check | `flint ite claim test "<program>" <claim>`, `flint ite claim check "<program>" <claim>` |
 | Report a result that you saw | `flint ite claim report "<program>" <claim> --state holds\|fails\|error --summary "<text>"` |
+| Add data | `flint ite data new "<program>" <id> [--source <kind:value> \| --from data:<id> \| --value <v>] [--task "<question>"] [--every\|--cron] [--fresh-for] [--history]` |
 | Read, test, or pull data | `flint ite data list\|show\|test\|pull "<program>" [<id>]` |
 | Report a value or rows of data (an agent reader or maker) | `flint ite data report "<program>" <id> --value <json>`, or `--rows <file> --how replace\|append` |
 | Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --task "<text>" [--reads] [--writes] [--every\|--cron\|--on] [--irreversible]`, or `--recipe <name>` (`flint ite process recipes`) |

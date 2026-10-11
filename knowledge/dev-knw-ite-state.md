@@ -87,6 +87,7 @@ The protocol of `store`: the core runs `node data.js <op>` in the data folder, w
 
 | Command | Result | Writes |
 |---|---|---|
+| `flint ite data new "<program>" <id> [--title "<t>"] [--text "<prose>"] [--source command:<line>\|url:<url>\|path:<file>\|ref:[[<note>]] \| --from <ref>... \| --value <v>] [--by code\|agent\|person] [--task "<request or question>"] [--outputs <name[:kind]>...] [--about <ref>...] [--every <d> \| --cron "<e>" \| --on hook\|<kind>...] [--fresh-for <d>] [--history] [--dry-run]` | Writes a new `data.md` in one command. The mode comes from the flags: `--source` external (a reader, code by default), `--from` calculated, `--value` written now, none: a person gives the value when Steel asks. A code reader or maker gets `pull.js` or `make.js`, a stub that runs at once. A table needs its `map` and `shape` by hand. | `Data/<id>/data.md` (and its code) |
 | `flint ite data list "<program>"` | The data of a program, with the mode, the state, and the age of each value | Nothing |
 | `flint ite data show "<program>" <id>` | One piece of data: its form, its problems, its value now, its rows, and its newest history | Nothing |
 | `flint ite data pull "<program>" <id>` | Pull now: runs the reader (or the maker) and keeps the value | The snapshot or the cache, the log |

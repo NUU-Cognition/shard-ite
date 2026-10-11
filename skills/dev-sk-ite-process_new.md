@@ -35,13 +35,14 @@ Make one process of a program from one sentence of a person, for example "send t
      [--every 1h | --cron "0 8 * * 1" | --on task.finished commit.landed | --on hook] [--irreversible] [--agent program]
    ```
 
-   - `--task` is the prompt of an agent, the task of a person, or the comment of the code. The title is its first sentence.
+   - `--task` is the prompt of an agent, the task of a person, or the comment of the code. The title is its first sentence. Put the prose for a person in `--text`.
+   - `--run-by agent` lets each agent start it (`agent:*`): only for a process that only reads.
    - The trigger: `--every <duration>`, `--cron "<expression>"`, or `--on <event kind>...` (also `--on hook`, `--on watch`). With none, the trigger is `manual`.
    - `--irreversible` for a process that changes the world outside this machine (an email, a message, a push, a payment): a person approves each run.
    - `--agent program` gives each start to the agent of the program as one job.
    - The kinds of an input or an output: `text`, `number`, `boolean`, `choice`, `json`, `date`, `money`. A `!` makes an input required.
    - Add `--dry-run` first when you are not sure: it prints the files and writes nothing.
-5. **Write the work.** A code process gets a stub `index.js` that passes `process test` at once. The stub does not read the data of `--reads` and does not write the data of `--writes`: replace the stub with the work, read `STEEL_DATA["data:<id>"]`, and print one `data` record for each data that it writes, in `Steel/Programs/<program>/Processes/<id>/`. It prints one JSON line for each record: `{"output":{...}}`, `{"state":{...}}`, `{"data":{"id":"<data id>","value":...}}` for data of `writes`, or `{"log":"<text>"}`. A recipe wrote its code already. An agent or a person process needs no code.
+5. **Write the work.** A code process gets a stub `index.js` that passes `process test` at once. The stub prints sample outputs, does not read the data of `--reads`, and does not write the data of `--writes`. Never keep a stub that reports work that it did not do: replace the stub with the work, read `STEEL_DATA["data:<id>"]`, and print one `data` record for each data that it writes, in `Steel/Programs/<program>/Processes/<id>/`. It prints one JSON line for each record: `{"output":{...}}`, `{"state":{...}}`, `{"data":{"id":"<data id>","value":...}}` for data of `writes`, or `{"log":"<text>"}`. A recipe wrote its code already. An agent or a person process needs no code.
 6. **Check it.** `flint ite process check "<program>" <id>`: each problem with the file, the line, the cause, and the fix. Repair each error, and check again.
 7. **Test it.** `flint ite process test "<program>" <id> [--input <name>=<value>]...`. Add `--dry` for an agent process, an irreversible process, or a process with a `source`: it prints what it would run. Repair and test again. Never keep a process that you did not test.
 8. **Hand over.** Tell the person the id, the trigger, and the two commands that only a person runs: `flint ite enable "<program>" <id>` (the trigger) and `flint ite process run "<program>" <id>` (Run now). Name an effect claim when one shows that the work worked ([[wkfl-ite-claim_add]]).

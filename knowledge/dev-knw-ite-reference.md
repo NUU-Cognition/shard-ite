@@ -203,12 +203,12 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite apply [<view>] --candidate <id>` | Applies a candidate. A conflict writes nothing and exits 1. | The view, one history file, the candidate (`state: applied`) |
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
 | `flint ite claim list\|show\|new\|check\|test\|report ...` | The claims of a program, a new claim, Check now, the test of a check, and the one door of the results (see Claims and Checks in [[knw-ite-state]]) | The log, or nothing |
-| `flint ite data list\|show\|pull\|test\|set\|edit\|report\|history ...` | The data of a program, Pull now, the test of a reader or a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data in [[knw-ite-state]]) | A snapshot, a value, a store, or nothing |
+| `flint ite data list\|show\|new\|pull\|test\|set\|edit\|report\|history ...` | The data of a program, Pull now, the test of a reader or a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data in [[knw-ite-state]]) | A snapshot, a value, a store, or nothing |
 | `flint ite process list\|show\|new\|run\|test\|dev\|promote\|runs ...` | The processes of a program, a new process, Run now (`--dev`: a dev run), the test, the dev version, the promotion, and the process runs (see Processes in [[knw-ite-processes]]) | The log, a process file, a dev version, a revision, or nothing |
 | `flint ite process done\|fail\|approve\|refuse\|cancel <program> <run> ...` | A person ends a waiting task, approves or refuses a run, or cancels it | The log |
 | `flint ite event emit\|list\|show ...`, `event hook install\|status\|uninstall\|show` | The one door of the events, and the events with their routes (see [[knw-ite-loop]]) | The event log and the routes, or nothing |
 | `flint ite plan [show\|add\|set\|realize] <program> ...` | The plan of a program and its future notes (see [[knw-ite-loop]]) | A future note, one proposal, or nothing |
-| `flint ite pulse <program>` | The pulse of a program: the plan, the machinery, and the attention sentences | Nothing |
+| `flint ite pulse [<program>]` | The pulse of a program: the plan, the machinery, and the attention sentences. With no program: one line for each program with its first attention sentence (`--json`: `steel-pulse-list/1`) | Nothing |
 | `flint ite triggers\|enable\|disable ...` | The triggers and their enables on this machine (see Triggers and Enables in [[knw-ite-processes]]) | `.flint/steel/enabled.json`, or nothing |
 | `flint ite trigger fire <program> <id> [--event <file\|->]` | Fires an enabled hook or schedule now on this machine | The log, a run |
 | `flint ite flow ...` | The instruction maps and their runs (see Instruction Maps and Runs in [[knw-ite-processes]]) | A run, or nothing |

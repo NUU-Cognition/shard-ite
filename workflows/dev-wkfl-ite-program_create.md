@@ -37,7 +37,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 ## Stage 2: The First Map
 
-1. Read the types of the program: `flint ite map "<program>" --json` gives the root, and `flint ite types` gives each type id.
+1. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type.
 2. Select 3 to 9 parts for level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or roles, the decisions. Each part has a title of two to six words, a type of the program, and one sentence.
 3. Write the operations into one JSON array (the table "The Operations of a Map Change" of [[init-ite]]). For a deeper part, give its parent an `id` (a UUID v4) in the same change.
 4. Propose it, and read the preview:
@@ -57,7 +57,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    - A person writes it: `by: person` with a `question`.
    - Code calculates it from other data: `by: code` with `from`.
    - It comes from outside (a file, a page, a command): a `source` and a reader, `by: code` with `entry: pull.js`.
-3. Write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]]. There is no `data new` verb.
+3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A table that a process writes has no flag for its shape: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]].
 4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Once the state is written, progress to the next stage.
 

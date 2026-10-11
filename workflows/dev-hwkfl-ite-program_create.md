@@ -39,7 +39,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 ## Stage 2: The First Map
 
 1. Run `flint orbh session set phase first-map`.
-2. Read the root and the types: `flint ite map "<program>" --json`, `flint ite types`.
+2. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type.
 3. Select 3 to 9 parts for level 1, in the words of the person: a title of two to six words, a type of the program, and one sentence each. Do not invent a fact: say a gap in the sentence.
 4. Write the operations into one JSON array (the table "The Operations of a Map Change" of [[init-ite]]). Put a deeper level in the same change, and give its parent an `id` (a UUID v4): a map change cannot name a part of another waiting change. Until the person applies the change, the program has no part: the processes and the claims of this workflow name their data (`data:<id>`).
 5. Propose it, and read the preview:
@@ -56,7 +56,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 1. Run `flint orbh session set phase state`.
 2. For each piece of data that the system holds or measures, select its maker or its reader: a person (`by: person` with a `question`), code from other data (`by: code` with `from`), or a reader of a source outside (`source`, `by: code`, `entry: pull.js`). Never decide a value for a person.
-3. Write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]]. There is no `data new` verb.
+3. Write each piece of data with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --from data:<id> | --value <v>] [--task "<question or request>"] [--every|--cron] [--fresh-for <d>] [--history]`. A table that a process writes has no flag for its shape: write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]].
 4. Test each reader or maker that has code with `flint ite data test "<program>" <id>`, and pull it one time with `flint ite data pull "<program>" <id>`. A value that a person writes and a table that a process writes have no code to test. `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Progress to the next stage.
 
