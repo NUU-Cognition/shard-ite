@@ -8,7 +8,7 @@ The ITE (Integrated Thinking Environment) lets a person model a **system** of an
 
 The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and what waits for a person. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. `flint ite --help` groups the verbs by job. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
 
-Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when a step needs more than this file, the workflow, and the template give.
+Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when a step needs more than this file, the workflow, and the template give. When `flint shard hstart ite` says that the build is stale, go on with the build: the source changed after it, and a person builds it again. The CLI is the truth: check a form with `--help`.
 
 ## The Kernel
 
