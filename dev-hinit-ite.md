@@ -36,7 +36,7 @@ Read your first prompt, and find your row. Each row has its own result.
 The section Instruction Maps and Runs of [[knw-ite-processes]] applies. In a headless session, these rules are added:
 
 1. **The engine is the only writer of a run.** Never create, edit, or delete a file in `Steel/Programs/<P>/Runs/`.
-2. **An instruction map is a file.** A change of a node is an edit of `Processes/<id>/map.md` ([[tmp-ite-instruction_map-v0.1]]); check it with `flint ite flow show`. An external map is read-only: a change goes to its source. An edit never changes an active run: the run keeps its snapshot.
+2. **An instruction map is a file.** A change of a node is an edit of `Processes/<id>/map.md` ([[tmp-ite-instruction_map-v0.1]]); check it with `flint ite flow check`, and read it with `flint ite flow show`. An external map is read-only: a change goes to its source. An edit never changes an active run: the run keeps its snapshot.
 3. **Run an instruction map only when the prompt asks for exactly that.** `flint ite flow start`, `begin`, `done`, `answer`, `skip`, `retry`, `pause`, `resume`, and `cancel` act for the person. Never run `approve` or `refuse`. Read the runs with `flint ite flow list`, `show`, `runs`, `status`, and `events`.
 
 ## Builders
