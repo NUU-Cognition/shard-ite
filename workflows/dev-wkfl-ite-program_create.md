@@ -58,7 +58,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
    - Code calculates it from other data: `by: code` with `from`.
    - It comes from outside (a file, a page, a command): a `source` and a reader, `by: code` with `entry: pull.js`.
 3. Write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]]. There is no `data new` verb.
-4. Test each reader or maker: `flint ite data test "<program>" <id>`. Repair and test again. Then `flint ite data list "<program>"` must show no problem.
+4. Test each reader or maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. A value that a person writes and a table that a process writes have no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Once the state is written, progress to the next stage.
 
 ## Stage 4: The Processes

@@ -8,7 +8,7 @@ The ITE (Integrated Thinking Environment) lets a person model a **system** of an
 
 The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and what waits for a person. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. `flint ite --help` groups the verbs by job. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
 
-Read this file first. It is enough for most jobs. Read a knowledge file only when the table "Read More" sends you there.
+Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when the table "Read More" sends you there.
 
 ## The Kernel
 
@@ -68,16 +68,36 @@ Example: "Make a program for my weekly team meeting, with a process that sends t
 2. **The first map, as a proposal.** Propose 3 to 9 parts in one map change:
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
-3. **State.** Write each piece of data that the system holds or measures: `Steel/Programs/<Name>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (there is no `data new` verb). Test a reader or a maker with `flint ite data test "<program>" <id>`.
-4. **Processes.** `flint ite process new "<program>" send-agenda --by code|agent|person --title "<title>" --about data:agenda` (a part id after the apply). Then write the trigger in `process.md` (`trigger: { cron: "0 8 * * 1" }`), the `reads`, the `writes`, the `effect`, and the code, the `prompt`, or the `task`. Test it with `flint ite process test "<program>" send-agenda` (add `--dry` for an agent process or an irreversible process). For one process from one sentence, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
-5. **Claims.** `flint ite claim new "<program>" agenda-exists --about <part id> --mode ought --by code --title "<title>"`. Before the first apply there is no part: write `claim.md` by hand with `about: ["data:agenda"]`. Write `check.js`, add `fixed-by: [send-agenda]` and `reads`, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
-6. **The plan.** `flint ite plan add "<program>" --of <part> --change change --text -` for each thing that must be different next. It needs a part that exists, so write the plan after the first apply.
+3. **State.** Write each piece of data that the system holds or measures: `Steel/Programs/<Name>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]] (there is no `data new` verb). For the meeting: `agenda-topics` (a person writes it) and `agenda` (a table that the process writes). Test each reader or maker that has code with `flint ite data test "<program>" <id>`. A value that a person writes has no code: `flint ite data list` shows it as `pending`.
+4. **Processes.** `flint ite process new "<program>" send-agenda --by code|agent|person --title "<title>" --about data:agenda` (a process can name its data; it needs no part). Then write the trigger in `process.md` (`trigger: { cron: "0 8 * * 1" }`), the `reads`, the `writes`, the `effect`, and the code, the `prompt`, or the `task`. Test it with `flint ite process test "<program>" send-agenda` (add `--dry` for an agent process or an irreversible process). For one process from one sentence, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
+5. **Claims.** `flint ite claim new "<program>" agenda-exists --about <part id> --mode ought --by code --title "<title>"`. `claim new` takes only a part that exists, so before the first apply write `claim.md` by hand with `about: ["data:agenda"]`. Write `check.js`, add `fixed-by: [send-agenda]` and `reads`, then `flint ite claim test "<program>" agenda-exists` and `flint ite claim check "<program>" agenda-exists`.
+6. **The plan.** In a session that a person drives, `flint ite plan add "<program>" --of <part> --change change --text -` for each thing that must be different next. It needs a part that exists, so write the plan after the first apply. A headless agent writes no future note: it names what must be next in its result.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
 8. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite enable "<program>" send-agenda`, `flint ite enable "<program>" agenda-exists`, and `flint ite enable "<program>" keep-map-true`.
 
 ## The Forms on One Screen
 
-Each form has a template with complete examples: [[tmp-ite-process-v0.1]], [[tmp-ite-claim-v0.1]], [[tmp-ite-data-v0.1]].
+Each form has a template with complete examples: [[tmp-ite-data-v0.1]], [[tmp-ite-process-v0.1]], [[tmp-ite-claim-v0.1]]. The four forms of the example tell one story: a person writes the topics, the process sends the agenda and writes it to a table, and the claim checks the table.
+
+```yaml
+# Data/agenda-topics/data.md: a value that a person writes
+format: steel-data/1
+id: agenda-topics
+by: person                      # no source: native, and by is the maker (code | agent | person)
+question: "What topics go on the agenda this week?"   # the person writes the value in Steel
+fresh-for: 7d
+# External data adds source: { path | url | command | ref } and a reader: by: code, entry: pull.js
+```
+
+```yaml
+# Data/agenda/data.md: a table that a process writes (no by)
+format: steel-data/1
+id: agenda
+map: table
+shape:
+  - { name: week, kind: date, key: true }
+  - { name: sent_at, kind: date }
+```
 
 ```yaml
 # Processes/send-agenda/process.md
@@ -85,13 +105,13 @@ format: steel-process/1
 id: send-agenda
 by: code                        # code | agent (prompt:) | person (task:)
 runtime: node                   # code: node | python | exec
-entry: index.js
-about: [<part id>]              # what it acts on (references)
-reads: ["data:agenda-items"]    # the data it reads (STEEL_DATA)
-writes: ["data:agenda"]         # the native data it may write
+entry: index.js                 # prints {"data":{"id":"agenda","rows":[...],"how":"append"}} and {"output":{...}}
+about: ["data:agenda"]          # what it acts on (references)
+reads: ["data:agenda-topics"]   # the data that it reads (STEEL_DATA)
+writes: ["data:agenda"]         # the native data that it may write
 effect: [agenda-exists]         # the claims that show that the work worked
 trigger: { cron: "0 8 * * 1" }  # manual | { every: 1h } | { cron } | { on: hook } | { on: event, kinds: [...] }
-authority: { run: ["person:<Name>", "agent:*"], irreversible: false }   # who may start it; a send outside this machine: irreversible: true
+authority: { run: ["person:<Name>"], irreversible: true }   # it sends outside this machine, so a person approves each run
 ```
 
 ```yaml
@@ -99,23 +119,15 @@ authority: { run: ["person:<Name>", "agent:*"], irreversible: false }   # who ma
 format: steel-claim/1
 id: agenda-exists
 mode: ought                     # is (a description) | ought (a goal) | will (a prediction)
-about: [<part id>]
+about: ["data:agenda"]
 reads: ["data:agenda"]
 by: code                        # code | agent | person | none
-entry: check.js                 # prints {"state":"holds|fails|error","summary":"...","values":{...}}
-trigger: { every: 1d }
+entry: check.js                 # prints {"state":"holds|fails|error","summary":"..."}: holds when a row of this week exists
+trigger: { cron: "30 8 * * 1" }
 fixed-by: [send-agenda]         # the processes that can make an ought claim true
 ```
 
-```yaml
-# Data/agenda/data.md
-format: steel-data/1
-id: agenda
-by: person                      # no source: native, and by is the maker (code | agent | person)
-question: "What is on the agenda this week?"   # a person writes the value in Steel
-fresh-for: 7d
-# External data adds source: { path | url | command | ref } and a reader: by: code, entry: pull.js
-```
+`authority.run` names who may start a process: `person:<Name>`, `person:*`, `agent:*`, or `agent:<target>`. Give `agent:*` only to a process that only reads.
 
 A trigger runs only on a machine where a person enabled it. With no enable, a person runs the process with Run now.
 

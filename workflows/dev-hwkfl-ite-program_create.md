@@ -24,7 +24,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 1. Run `flint orbh session set phase purpose`.
 2. Write the purpose in one sentence: what the system is, and why the person models it.
-3. Run `flint ite list`. When a program already models this system, extend it: go to Stage 2 with that program, and say so in the result.
+3. Run `flint ite list`. Make a new program, unless the prompt says to extend one. An empty program with the same name (a scratch program with no parts) is not a reason to extend: name it in the result.
 4. Run `flint ite templates`, and select the template by the kind of system: `organisation` (a team, its meetings and duties), `process` (repeated work of a business), `event` (one dated event), `research` (a question), `software` (a product with code), else `general`. When the prompt names a template, use it.
 5. Make the program:
 
@@ -57,7 +57,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 1. Run `flint orbh session set phase state`.
 2. For each piece of data that the system holds or measures, select its maker or its reader: a person (`by: person` with a `question`), code from other data (`by: code` with `from`), or a reader of a source outside (`source`, `by: code`, `entry: pull.js`). Never decide a value for a person.
 3. Write `Steel/Programs/<program>/Data/<id>/data.md` from [[tmp-ite-data-v0.1]]. There is no `data new` verb.
-4. Test each reader or maker with `flint ite data test "<program>" <id>`, and pull it one time with `flint ite data pull "<program>" <id>`. `flint ite data list "<program>"` must show no problem.
+4. Test each reader or maker that has code with `flint ite data test "<program>" <id>`, and pull it one time with `flint ite data pull "<program>" <id>`. A value that a person writes and a table that a process writes have no code to test. `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
 5. Progress to the next stage.
 
 ## Stage 4: The Processes
@@ -80,9 +80,8 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 
 ## Stage 6: The Plan
 
-1. Run `flint orbh session set phase plan`.
-2. When the prompt names what must be different next, write one future note for each: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"`. Else write no plan. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. Before the person applies the first map change, write no future note: put what must be next in the line GAPS of your result.
-3. Progress to the next stage.
+1. A headless agent writes no future note: an agent drafts the plan only in a session that a person drives. When the prompt names what must be different next, put each item in the line GAPS of your result, as a proposal for the plan.
+2. Progress to the next stage.
 
 ## Stage 7: Check and Return
 
