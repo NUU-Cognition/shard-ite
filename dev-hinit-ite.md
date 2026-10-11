@@ -118,7 +118,7 @@ Check each item. A job that skips an item gives the person a result that the Wor
 - [ ] You ran `flint shard hstart ite` once in this session, and the `flint ite focus` command of the prompt of this job, and you changed the focus when the work moved.
 - [ ] You did each stage of the workflow, in order, and set its phase.
 - [ ] A candidate: `flint ite check --candidate <candidate-id>` exits 0 (no error finding), and `flint ite diff --candidate <candidate-id>` says that it can be applied (no conflict).
-- [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows the state `proposed`, no conflict, and no new finding of the level error in the tree after.
+- [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows `change.state` = `proposed`, an empty `preview.conflicts`, and no new finding of the level error in the tree after.
 - [ ] Parts, claims, data, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, `claim-fixed-by`, `unknown-reference`, `data-cycle`, or `writes-external` for a part, a claim, a piece of data, or a map that you changed, and `flint ite process check` and `flint ite flow check` give no error for a process or a map that you changed.
 - [ ] Each code check that you wrote passed `flint ite claim test` and ran one time, and its claim holds, or its prose says why it fails.
 - [ ] A review: you compared each node that you reviewed with the diff of its code after the anchor, and `flint ite review` wrote its anchor. You reviewed no node that your candidate or your map change changes.

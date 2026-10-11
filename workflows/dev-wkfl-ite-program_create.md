@@ -74,7 +74,7 @@ The kernel words are in [[init-ite]]: a thing is a part, state is data and claim
 1. For each thing that must be true, write one claim: `flint ite claim new "<program>" <id> --about <part id> --mode is|ought|will --by code|agent|person|none --title "<title>"`. For the weekly meeting: `agenda-exists`, `ought`, about the agenda part. `--about` takes a part (its id or its title), `root`, or `data:<id>`: before the person applies the first map change, name the data that the claim judges. Give the rest in the same command: `--reads data:<id>`, `--fixed-by <process id>` for an `ought` claim, a trigger (`--every`, `--cron`, `--on`), and `--fresh-for`.
 2. Write its check: a code claim gets a stub `check.js` that gives `error` until you write the test. The test reads the data of `reads`, and prints one line `{"state":"holds|fails|error","summary":"..."}`.
 3. Test it and run it one time: `flint ite claim test "<program>" <id>`, then `flint ite claim check "<program>" <id>`.
-4. Name the claim in the `effect` of the process that makes it true.
+4. Name each claim in the `effect` of the process that makes it true: add `effect: [<claim id>]` to its `process.md` (`process set` has no `--effect`; `process new --effect` needs a claim that exists).
 5. Once each claim has a tested check, progress to the next stage.
 
 ## Stage 6: The Plan

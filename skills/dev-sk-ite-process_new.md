@@ -42,7 +42,7 @@ Make one process of a program from one sentence of a person, for example "send t
    - `--agent program` gives each start to the agent of the program as one job.
    - The kinds of an input or an output: `text`, `number`, `boolean`, `choice`, `json`, `date`, `money`. A `!` makes an input required.
    - Add `--dry-run` first when you are not sure: it prints the files and writes nothing.
-5. **Write the work.** A code process gets a stub `index.js` that passes `process test` at once: it reads the data of `--reads` and shows the write of `--writes`, and its outputs are samples. Never keep a stub that reports work that it did not do: replace the sample with the work, in `Steel/Programs/<program>/Processes/<id>/`. It prints one JSON line for each record: `{"output":{...}}`, `{"state":{...}}`, `{"data":{"id":"<data id>","value":...}}` for data of `writes`, or `{"log":"<text>"}`. A recipe wrote its code already. An agent or a person process needs no code.
+5. **Write the work.** A code process gets a stub `index.js` that passes `process test` at once: it reads the data of `--reads` and shows the write of `--writes`, and its outputs are samples. Never keep a stub that reports work that it did not do: replace the sample with the work, in `Steel/Programs/<program>/Processes/<id>/`. It prints one JSON line for each record: `{"output":{...}}` (declare each output with `--outputs`, or `process test` reports an output that the process does not have), `{"state":{...}}`, `{"data":{"id":"<data id>","value":...}}` for data of `writes`, or `{"log":"<text>"}`. A recipe wrote its code already. An agent or a person process needs no code. A trigger runs by the clock of this machine (`--cron "0 8 * * 1"` is 08:00 here), but the times in the code are UTC: compute a day or a week in the time zone of the system (the `timezone` of the system block, else this machine).
 6. **Check it.** `flint ite process check "<program>" <id>`: each problem with the file, the line, the cause, and the fix. Repair each error, and check again.
 7. **Test it.** `flint ite process test "<program>" <id> [--input <name>=<value>]...`. The test gives the code the data of `reads` as it is now. When that data has no value yet, give a sample for this test only: `--data data:<id>=<json>` (an object gives the outputs). Add `--dry` for an agent process, an irreversible process, or a process with a `source`: it prints what it would run. Repair and test again. Never keep a process that you did not test.
 8. **Change it later.** `flint ite process set "<program>" <id> [--task] [--reads|--writes|--about ... | none] [--every|--cron|--on|--manual] [--irreversible|--reversible] [--run-by ...] [--dry-run]` changes only the keys that you give; a change that gives the file a problem writes nothing.
@@ -50,8 +50,8 @@ Make one process of a program from one sentence of a person, for example "send t
 
 # Rules
 
-- Never run the process and never enable its trigger. Only a person does.
-- An agent may Run now only a process whose `authority.run` names it (`agent:*`, written by `--run-by agent`). Give it only to a process that changes nothing outside this Flint (it reads, or it writes only the native data of its `writes`).
+- Never enable its trigger: only a person does. Never run the process unless the person asks for exactly that. Then the engine also needs your actor in `authority.run`: an agent may Run now only a process whose `authority.run` names it (`agent:*`, written by `--run-by agent`). The "Next" line of `process test` names `process run` for a person, not for you.
+- Give `agent:*` only to a process that changes nothing outside this Flint (it reads, or it writes only the native data of its `writes`).
 - When the work has steps and decisions in order, or more than one actor, follow [[sk-ite-workflow_new]].
 - The full form is in [[tmp-ite-process-v0.1]] and in Processes of [[knw-ite-processes]].
 
