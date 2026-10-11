@@ -176,11 +176,12 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 
 | Command | Result | Writes |
 |---|---|---|
+| `flint ite` | The start: each program in one line with what waits for a person (proposals, runs that wait, claims that fail, plan items next), then three next commands. `--json` gives `{ programs, next }`. | Nothing |
 | `flint ite list` | The programs with the counts and the grounding | Nothing |
 | `flint ite types [--type <id>]` | The types and the connections of this Flint, with their capabilities | Nothing |
 | `flint ite templates` | The templates that a new program can start from | Nothing |
-| `flint ite create <name> --template <id> --purpose "<text>"` | A new program: the root note with the `types` of the template, and its folder in `Steel/` | The root note, `Steel/Programs/<Name>/` |
-| `flint ite map <program>` | The map: each part with its type, its parent, its links, and its grounding | Nothing |
+| `flint ite create <name> --purpose "<one sentence>" [--template <id>]` | A new program: the root note with the `types` of the template, its folder in `Steel/`, and its first process `keep-map-true` (by the agent of the program, on the events `note.added` and `task.finished`, not enabled). With no `--template`, the template is a guess from the purpose. The output ends with three next commands. | The root note, `Steel/Programs/<Name>/` |
+| `flint ite map <program> [--full]` | The tree of the parts with the id of each part, the totals, and three next commands; `--full` adds the prose; `--json` gives each part with its type, its parent, its links, and its grounding | Nothing |
 | `flint ite map show\|tree\|check\|coverage\|change\|split\|move\|rename\|merge ...` | The main map (see The Main Map in [[knw-ite-programs]]) | A proposal, or nothing |
 | `flint ite part add <program> --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"] [--field k=v]...` | Adds one part: a map change. A person's change applies at once; an agent's change is a proposal. `--field` is for a person only. | One proposal (and the note, when applied) |
 | `flint ite part set <program> <node> [--text "<text>"] [--field k=v]... [--base-hash <hash>]` | Changes the text and the fields of a part. It refuses `title`, `kind`, and `parent`: propose a map change. | One note |
