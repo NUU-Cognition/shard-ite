@@ -1,5 +1,5 @@
 ---
-description: "Programs and their things: the root note, the part file, types, connections, and templates, the view file, maps, references, proposals (the candidate and the apply), the main map and the map change, and the quality rules of a program"
+description: "Programs and their things: the root note, the part file, types, connections, and templates, the view file, maps, references, proposals (the candidate and the apply), the main map, its saved places, and the map change, and the quality rules of a program"
 ---
 
 # Knowledge: Programs, Parts, the Main Map, and Views
@@ -311,6 +311,26 @@ The states: `proposed`, then `applied` (and `reverted` after a revert), or `disc
 3. **The apply checks each base hash.** A file that changed after the propose is a conflict (`changed`), and the apply writes nothing. The apply writes in two phases, and a revert writes back the exact old bytes.
 4. **A refactor keeps the links valid.** A `rename` and a `merge` rewrite each wikilink to the old part in the Mesh. The views, the claims, the processes, the instruction maps, the runs, and the log name parts by id, so a refactor breaks none of them.
 5. **A change by a person applies at once.** In the Workbench, a person adds, removes, groups, moves, renames, and merges by hand. Each hand change is one map change that is proposed and applied in one call, with Undo (a revert).
+
+### The Places of the Main Map
+
+The main map is manual: each card stays where a person or an agent puts it.
+
+- **A saved place.** Each part has one place in `Steel/Programs/<P>/State/main.json`: `positions[<part id>] = { x, y, parent }`. The place is the top left corner of the box of the part, relative to the **room** of its parent: in a group, the room inside the group box (below its title row); at the top of the root or of a layer, the canvas of that level. `parent` is the parent that the place is for (null: the top of the root). A place for another parent than the parent of the part now is old: the part shows at the place of a new card.
+- **A group or a layer.** A part with children is a group (a box on the level of its parent, with its parts inside) or a layer (one card that a person enters). The field `map-mode` of the note (`group` or `layer`) gives the mode; with no field, a part with at most 9 parts and 2 levels below it is a group, and a larger part is a layer. The size of a group follows its parts.
+- **Only a person or an agent moves a card.** Nothing pushes a card, and two cards can overlap. The canvas of the Workbench and `flint ite place` write one place. A place is not meaning: it is in `State/`, not in the Mesh, so a move applies at once, also for an agent. It is not a proposal.
+- **The place of a new card.** The engine calculates only the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts (an add, a move, a split, a merge, a removal), and when a revision of a part file applies or reverts, each part with no saved place for its parent now gets that place in the same lock. A new part that the canvas adds at a position keeps that position. Each other place stays.
+- **Arrange runs only when a person or an agent asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself.
+
+| Command | Result | Writes |
+|---|---|---|
+| `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` (no saved place for its parent now). `--deep` adds each level below, indented. | Nothing |
+| `flint ite place <program> <part> --at <x>,<y>` | Sets the place of one part, relative to the room of its parent. The place snaps to the grid of 8. In a group, a negative value is 0. | `State/main.json` |
+| `flint ite place <program> <part> --near <part> [--side right\|below]` | Puts one part beside a part with the same parent (default: to its right). A part of another parent is refused. | `State/main.json` |
+| `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep]` | One Arrange of the parts of `--in` (default: the top of the root). `--only` moves only the named parts and keeps the top left corner of their boxes. `--deep` arranges each group and layer below too. It prints how many parts moved. | `State/main.json` |
+| `flint ite arrange <program> --all` | One Arrange of each level of the program | `State/main.json` |
+
+A part reference is an id, a note name, or a title. Example: `flint ite place "Club Launch" "Venue booked" --near "Launch budget" --side below`. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
 ### The Commands of the Main Map
 

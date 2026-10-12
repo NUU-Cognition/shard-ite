@@ -20,7 +20,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
       Reality/<id>/claim.md                      one folder for each claim, with its check (tmp-ite-claim-v0.1)
       Processes/<id>/process.md (+ map.md)       one folder for each process (tmp-ite-process-v0.1), with its map (tmp-ite-instruction_map-v0.1)
       Proposals/<id>.md                          map changes, view candidates, revisions (only the engines write here)
-      Runs/, History/, State/                    run records, replaced forms of views, positions (only the engines write here)
+      Runs/, History/, State/                    run records, replaced forms of views, the saved places of the main map (only the engines, the canvas, and flint ite place and arrange write here)
 
   FRONTMATTER CONTRACT (format steel-program/1). Replace the VALUES, keep the shapes. No comment in the frontmatter.
   - format: always "steel-program/1".
