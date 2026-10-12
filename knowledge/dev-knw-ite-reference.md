@@ -191,7 +191,7 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level (default: the top of the root); `--deep` adds each level below; `--all` arranges each level of the program. It prints how many parts moved. | `State/main.json` |
 | `flint ite pointers <program> [--targets]` | The pointer cards of the main map (a card that opens a view or a process; not a part): the words, the reference, `ok` or `missing`, the level, and the place. `--targets` lists each view and process with its reference. | Nothing |
 | `flint ite pointer add <program> <reference> [--in <part>] [--title <words>] [--id <id>] [--at <x>,<y>]` / `pointer remove <program> <id>` | Add or remove one pointer card (`view:<id>` or `process:<id>`). The default level holds each part that the target names. It applies at once: a pointer is not meaning. See Pointer Cards in [[knw-ite-programs]]. | `State/main.json` |
-| `flint ite link <program> <from> <to> --relation <key> [--document <doc>] [--remove]` | Adds or removes a link of a connection | One note or the view |
+| `flint ite link <program> <from> <to> --relation <key> [--document <doc>] [--remove]` | Adds or removes a link of a connection. `--relation refers-to` gives a link that the main map always shows | One note or the view |
 | `flint ite view <view>` | One view, joined | Nothing |
 | `flint ite view history <view>` | The saved forms of one view, the newest first | Nothing |
 | `flint ite view restore <view> --from <history id> [--base-hash <hash>]` | Restores a saved form; the current form goes to the history | The view, one history file |

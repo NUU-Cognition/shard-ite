@@ -132,6 +132,8 @@ style: dependency
 
 The connection capability: `rolls-up` (the main map shows the link at each level as a relation with a count). `next` is a plain connection: an order of the parts that the shape `flow` draws. No run follows a connection: a run follows the `map.md` of a process. A connection with no capability is a plain reference. `mentions` (a prose link) is a builtin connection. `parent` is not a connection.
 
+The field `shown` of a `connection` block says when the canvas shows a link: `selected` (the default: when a person selects a card at one end, or points at it) or `always` (at each time). `refers-to` is a builtin connection with `shown: always`: the link that a person draws from a dot of a card on the main map (see Two Kinds of Links). Each program has it, as each program has `mentions`.
+
 **A template** is the start of a new program: one note `Mesh/Metadata/Templates/(Template) <Name>.md`. A shard gives its templates as install files into that folder: the ITE shard installs `(Template) <Title> (ITE Shard).md` with the mode `force`, so each new version of the shard writes them again. A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
 
 ````markdown
@@ -349,6 +351,17 @@ A **pointer card** is a card of the main map that opens a view or a process of t
 | `flint ite pointer remove <program> <id>` | Removes one pointer card and its place. The view or the process does not change. | `State/main.json` |
 
 Example: `flint ite pointer add "NUU Steel" process:smoke-check-steel`.
+
+### Two Kinds of Links
+
+The main map has two kinds of links. The field `shown` of the connection gives the kind.
+
+- **A link that shows on a click** (`shown: selected`, the default): `uses`, `depends-on`, and each other connection. The canvas shows it for the selected card and for the card below the pointer. The switch Links shows each one.
+- **A link that always shows** (`shown: always`): the builtin `refers-to`. The canvas shows it at each time, as a quiet line with a small arrow head, and as a strong line when a card at one end is selected.
+- **A person draws a `refers-to` link.** Select one card: four small dots show, one at the middle of each side. Drag from a dot to another card. The line shows at once, and Cmd+Z removes it. The inspector of the part lists the link and can remove it.
+- **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person and an agent write it at once with `flint ite link`; it is not a proposal.
+
+Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers-to`. Add `--remove` to remove the link. A part is an id or a note name.
 
 ### The Commands of the Main Map
 

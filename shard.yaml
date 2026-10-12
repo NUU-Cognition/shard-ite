@@ -152,3 +152,6 @@ install:
   - source: inst-ite-connection_protects.md
     dest: "Mesh/Metadata/Types/(Connection) Protects (ITE Shard).md"
     mode: force
+  - source: inst-ite-connection_refers_to.md
+    dest: "Mesh/Metadata/Types/(Connection) Refers To (ITE Shard).md"
+    mode: force
