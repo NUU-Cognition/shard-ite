@@ -21,6 +21,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
 | `main-map` | Optional: `max-children` and `coverage-ignore` (see The Main Map) |
 | `codebase`, `product-root` | Software only: the codebase and the folder of the product that holds `orbtest/` (see Software Programs in [[knw-ite-software]]) |
+| `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
 | `template`, `authors`, `orbh-sessions` | The Flint conventions |
 
 A living system adds one fenced `system` block to the body (see Living Systems in [[knw-ite-loop]]).
