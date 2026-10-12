@@ -120,7 +120,7 @@ A program holds **meaning**: the root note, the parts, their prose, their types,
 - No result of a check, no state of a claim, no grounding state, no count of checks, and no time of a check.
 - No proof of a node and no state of a review. Only the review (`flint ite review`) writes the anchor `reviewed`.
 - No finding.
-- No place of a card in a note. The saved places of the main map are in `State/main.json` (see The Places of the Main Map in [[knw-ite-programs]]). A person (the canvas) or an agent writes a place with `flint ite place` and `flint ite arrange`; the engine writes the place of each new part. A place is not meaning, so a move applies at once, also for an agent.
+- No place of a card in a note. The saved places of the main map are in `State/main.json` (see The Places of the Main Map in [[knw-ite-programs]]). A person (the canvas) or an agent writes a place with `flint ite place` and `flint ite arrange`; the engine writes the place of each new part. A place is not meaning, so a move applies at once, also for an agent. The pointer cards (a card that opens a view or a process) are there too: `flint ite pointer add`.
 - No presence of an agent, and no job, dock record, or activity of an agent session.
 - No item of the brief, and no vital sign of a living system.
 - No snapshot of a pull and no calculated value: the core keeps them on this machine (`.flint/steel/data/`).
@@ -189,6 +189,8 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite places <program> [--in <part>] [--deep]` | The place of each part of one level of the main map (default: the top of the root): the id, the title, the type, the mode (card, group, or layer), x, y, the width, the height, and `saved` or `new`. Each place is relative to the room of the parent. `--deep` adds each level below. | Nothing |
 | `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below])` | Sets the place of one part, relative to the room of its parent, on the grid of 8. `--near` needs a part with the same parent. It applies at once, for a person and for an agent. | `State/main.json` |
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level (default: the top of the root); `--deep` adds each level below; `--all` arranges each level of the program. It prints how many parts moved. | `State/main.json` |
+| `flint ite pointers <program> [--targets]` | The pointer cards of the main map (a card that opens a view or a process; not a part): the words, the reference, `ok` or `missing`, the level, and the place. `--targets` lists each view and process with its reference. | Nothing |
+| `flint ite pointer add <program> <reference> [--in <part>] [--title <words>] [--id <id>] [--at <x>,<y>]` / `pointer remove <program> <id>` | Add or remove one pointer card (`view:<id>` or `process:<id>`). The default level holds each part that the target names. It applies at once: a pointer is not meaning. See Pointer Cards in [[knw-ite-programs]]. | `State/main.json` |
 | `flint ite link <program> <from> <to> --relation <key> [--document <doc>] [--remove]` | Adds or removes a link of a connection | One note or the view |
 | `flint ite view <view>` | One view, joined | Nothing |
 | `flint ite view history <view>` | The saved forms of one view, the newest first | Nothing |

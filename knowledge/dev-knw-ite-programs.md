@@ -332,6 +332,24 @@ The main map is manual: each card stays where a person or an agent puts it.
 
 A part reference is an id, a note name, or a title. Example: `flint ite place "Club Launch" "Venue booked" --near "Launch budget" --side below`. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
+### Pointer Cards
+
+A **pointer card** is a card of the main map that opens a view or a process of the program. The card of a process shows its form and its last run, and it can start a run. Use a pointer card to put the views and the processes of a program where a person reads the main map: a process near the parts that it acts on, a view near the parts that it shows.
+
+- **It is not a part.** It holds only a reference: `view:<view id>` or `process:<process id>`. The main map says what the system is, and a process says how it moves, so no rule of the tree counts a pointer card: the 100% rule, the coverage, `max-children`, the one-child finding, the roll-up of relations, and the map changes see only parts. A pointer card never makes a part a group or a layer.
+- **It is in `State/main.json`.** The list is `pointers: [{ id, to, title? }]`, and its place is `positions[<pointer id>] = { x, y, parent }`, as the place of a part. The id is `pointer-<word>`. A pointer is not meaning, so a person and an agent add, move, and remove one at once. It is not a proposal.
+- **It is a card of its level.** It stands at the top of the root, in a group, or at the top of a layer, never inside a card with no parts. It gets the place of a new card, `flint ite place` and `flint ite arrange` move it, and a group box grows around it. If its level goes away, it stands at the nearest level above.
+- **A run from the card uses the gate of the process.** The card gives no authority: who may run it (`authority.run`), the approval, `irreversible`, and the inputs stay the same. A process that needs an approval or an input opens its run form first.
+- **A target that is gone** leaves the card with the state `missing`. Remove the card, or add a pointer to another target.
+
+| Command | Result | Writes |
+|---|---|---|
+| `flint ite pointers <program> [--targets]` | Each pointer card: its words, its reference, `ok` or `missing`, its level, and its place. `--targets` also lists each view and each process of the program with its reference. | Nothing |
+| `flint ite pointer add <program> <reference> [--in <part>] [--title <words>] [--id <id>] [--at <x>,<y>]` | Adds one pointer card. The default level is the part that holds each part that the target names (the `about` of a process; the part nodes and the slice of a view). The default words are the title of the target. | `State/main.json` |
+| `flint ite pointer remove <program> <id>` | Removes one pointer card and its place. The view or the process does not change. | `State/main.json` |
+
+Example: `flint ite pointer add "NUU Steel" process:smoke-check-steel`.
+
 ### The Commands of the Main Map
 
 | Command | Result | Writes |
