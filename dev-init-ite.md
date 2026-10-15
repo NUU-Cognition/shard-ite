@@ -197,7 +197,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Report a value or rows of data (an agent or a person maker) | `flint ite data report "<program>" <id> --value <json>`, or `--rows <file> --how replace\|append` |
 | Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --task "<text>" [--reads] [--every\|--cron\|--on <kind> [--on-about <ref>] [--scope any]] [--irreversible]`, or `--starter <name>` (`flint ite process starters`), or `--recipe <id>` (a shared process of `Steel/Recipes/`) |
 | Read a process in words before you change or run it | `flint ite process explain "<program>" <id>` |
-| Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing; the trigger flags replace the whole trigger, so give each trigger again) |
+| Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing; the trigger flags replace each trigger: `--add-trigger` adds one and keeps the others, and `--remove-trigger <id>` removes one) |
 | Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
 | Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |

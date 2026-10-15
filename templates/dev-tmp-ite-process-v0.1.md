@@ -124,7 +124,9 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   - A trigger runs only on a machine where a person enabled the process: flint ite enable "<program>" <process id>. The
     enable of a process enables each trigger of the process. An agent never enables.
   - The CLI writes a trigger with --every <d>, --cron "<expr>", --on <kind> (repeat it), --on-about <ref> (repeat it),
-    --scope any, or --manual (on process new and process set). The CLI is the truth: check the flags with `--help`.
+    --scope any, or --manual (on process new and process set). On process set, these flags replace each trigger:
+    --add-trigger adds one trigger and keeps the others, and --remove-trigger <process id>#<index> removes one. The
+    CLI is the truth: check the flags with `--help`.
 
   RULES
   - Test each code process before you keep it: `flint ite process test "<program>" <id> [--input k=v]` runs the code
