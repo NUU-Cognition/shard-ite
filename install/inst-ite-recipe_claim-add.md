@@ -10,4 +10,4 @@ task: |
 
 # Add a claim
 
-The agent writes one claim about the nodes and its check, tests the check, and runs it one time.
+The agent writes one claim about the nodes and its check. A new claim starts with a draft check: the agent tests the check and proposes its promote, and the claim counts only after a person promotes it.

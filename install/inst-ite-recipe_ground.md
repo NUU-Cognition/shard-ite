@@ -10,4 +10,4 @@ task: |
 
 # Write the claims of these parts
 
-The agent finds what must be true about each part, writes a claim with its check (code, an agent, or a person), and runs the check one time.
+The agent finds what must be true now about each part, and writes a claim with its check (code, an agent, or a person). A new claim starts with a draft check: the agent tests the check and proposes its promote, and the claim counts only after a person promotes it.
