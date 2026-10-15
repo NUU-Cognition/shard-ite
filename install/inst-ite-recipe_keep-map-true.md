@@ -8,7 +8,7 @@ task: |
 
   1. Find the event.
      - The section "The event" of this job gives the event (`STEEL_EVENT`): its `id`, `kind`, `summary`, `about.paths`, `about.refs`, `about.tasks`, and `payload`.
-     - A job with no event (Run now): read the map (`flint ite map "{{program}}"`). When the map has no parts, draft the first level of the map from the purpose of the program and from the notes that it names, as one map change. Go to step 3.
+     - A job with no event (Run now): read the map (`flint ite map "{{program}}"`). When the map has no parts, draft the first level of the map from the purpose of the program and from the notes that it names, as one map change. Go to step 3, and in step 6 use `add` for each part.
      - A job with no event and a map with parts: find an event that needs work. Run `flint ite event list "{{program}}" --limit 20 --json` and `flint ite agent queue "{{program}}" --json`. An event needs work when one of its routes has the target `process:keep-map-true`, and no job of the queue has its event id with the state `queued`, `given`, or `done`. Take the oldest event that needs work. When no event needs work, propose nothing. Say so in the result, and stop.
   2. Find the parts and the views of {{program}} that the event touches.
      - Paths: run `flint ite check "{{program}}" --paths <each path of the event> --json`. It gives the parts and the views that name the files, with their findings.
