@@ -19,7 +19,7 @@ plural: People
 description: "A person who takes part: a guest, a speaker, a helper, or a partner."
 fields: {}
 capabilities: [owner]
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reports-to: []}
 look: { hue: rose, icon: user-round, layer: structure }
 ```
 

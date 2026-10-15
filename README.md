@@ -1,6 +1,6 @@
 # ITE
 
-The shard of the Integrated Thinking Environment (ITE). It lets an agent model a system of any kind as a **program**: typed parts in the Mesh, views and maps in `Steel/`, processes that check each claim against reality, and instruction maps that a person or an agent runs. The Workbench of Steel (the page `/ite`) is the surface for the person. The command `flint ite` of the Flint CLI reads and writes the files.
+The shard of the Integrated Thinking Environment (ITE). It lets an agent model a system of any kind as a **program**: typed parts in the Mesh, views and maps in `Steel/`, claims that test reality with their check processes, data with their makers, recipes (shared processes), and instruction maps that a person or an agent runs. The Workbench of Steel (the page `/ite`) is the surface for the person. The command `flint ite` of the Flint CLI reads and writes the files.
 
 Load it with `flint shard start ite` (headless: `flint shard hstart ite`).
 
@@ -14,9 +14,9 @@ Shards/(Source Remote) ITE/
 ├── knowledge/
 │   ├── dev-knw-ite-reference.md     # each term, the planes, meaning versus facts, the folders, every command
 │   ├── dev-knw-ite-programs.md      # the root note, parts, types and templates, views, maps, references, proposals, the main map, the quality rules
-│   ├── dev-knw-ite-state.md         # data, data maps, claims and their checks, the one door of the results
-│   ├── dev-knw-ite-processes.md     # processes, triggers and enables, instruction maps, runs
-│   ├── dev-knw-ite-loop.md          # events, the agent of a program, the plan, dev versions, the pulse, living systems, agent sessions and jobs
+│   ├── dev-knw-ite-state.md         # data and their makers, data maps, claims and their checks, which side changes when a claim fails, the one door of the results
+│   ├── dev-knw-ite-processes.md     # processes and their jobs, keepers, recipes and starters, triggers and events, instruction maps, runs
+│   ├── dev-knw-ite-loop.md          # events, the agent of a program, the plan and the realize, draft versions, the pulse, living systems, agent sessions and jobs
 │   └── dev-knw-ite-software.md      # software programs: code-refs, stories, the proof, the review, the check after a task
 ├── skills/
 │   ├── dev-sk-ite-focus.md          # show the person which nodes an agent works on
@@ -31,17 +31,18 @@ Shards/(Source Remote) ITE/
 │   ├── dev-tmp-ite-map-v0.1.md              # a map of Steel/Maps
 │   ├── dev-tmp-ite-process-v0.1.md          # a process (steel-process/1)
 │   ├── dev-tmp-ite-instruction_map-v0.1.md  # an instruction map
-│   ├── dev-tmp-ite-claim-v0.1.md            # a claim and its check (steel-claim/1)
-│   ├── dev-tmp-ite-data-v0.1.md             # a piece of data (steel-data/1)
+│   ├── dev-tmp-ite-claim-v0.1.md            # a claim (steel-claim/2) and its check process
+│   ├── dev-tmp-ite-data-v0.1.md             # a data note (steel-data/2) and its maker process
 │   └── dev-tmp-ite-template-v0.1.md         # a template of a Flint
 └── install/
     ├── type-ite-<type>.md                   # the type notes (steel-type/1)
     ├── inst-ite-connection_<id>.md          # the connection notes (steel-connection/1)
-    └── inst-ite-template_<id>.md            # the six templates of a new program (Mesh/Metadata/Templates)
+    ├── inst-ite-template_<id>.md            # the six templates of a new program (Mesh/Metadata/Templates)
+    └── inst-ite-recipe_<id>.md              # the recipes: the shared processes of Steel/Recipes/<id>/process.md (the 20 agent actions and keep-map-true)
 ```
 
 Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts the workflow of its action by name (the code of flint names each file), so keep the names.
 
 ## Origin
 
-Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task. Task 1260 (2026-10-12) made the init short: the depth moved into six knowledge files by topic, and the shard got the workflow `program_create` and the skills `process_new` and `workflow_new`.
+Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task. Task 1260 (2026-10-12) made the init short: the depth moved into six knowledge files by topic, and the shard got the workflow `program_create` and the skills `process_new` and `workflow_new`. Task 1271 (2026-10-15) gave it the Steel model V2: four kernel words (model, process, data, event), claims as tests with check processes, makers as processes, keepers (`kept-by`), pointer parts, recipes, three trigger kinds, and plans with no states.

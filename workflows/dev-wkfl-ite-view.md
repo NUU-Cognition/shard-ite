@@ -46,7 +46,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Make the candidate id: `<view-slug>-<UTC yyyymmdd-hhmmss>` (`date -u +%Y%m%d-%H%M%S`).
 2. Make two new UUIDs (`uuidgen | tr A-Z a-z`): one for `view_id`, one for `id`.
-3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `curation: "proposed"`, `derived-from: ""`.
+3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `derived-from: ""`. A view has no key `curation`.
 4. Check the candidate against each quality rule of [[knw-ite-programs]]:
    - [ ] The answer after the H1 answers the question.
    - [ ] Each node has one idea, a short title, and prose before its block.
@@ -66,7 +66,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Show the person: the path of the candidate, the name, the map, the answer, the outline, and each gap.
 2. Ask the person: apply, change, or discard.
-   - **Apply**: `flint ite apply --candidate <candidate-id>`. Then run `flint ite view <view_id>` and show the grounding of each node. Tell the person that the view is a `draft` and `proposed`.
+   - **Apply**: `flint ite apply --candidate <candidate-id>`. Then run `flint ite view <view_id>` and show the grounding of each node. Tell the person that the view is a `draft` until the person accepts it: the button Accept, or `flint ite view set "<view>" --lifetime accepted`. Do not accept the view for the person.
    - **Change**: write a new candidate with the same `view_id` and a new `id` that makes the change, verify it (Stage 5), and discard the old one with `flint ite discard --candidate <old-id>`. Then ask again.
    - **Discard**: `flint ite discard --candidate <candidate-id>`.
 3. Once the person selected apply or discard, the workflow is done.

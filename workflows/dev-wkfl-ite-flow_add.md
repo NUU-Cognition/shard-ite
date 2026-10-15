@@ -30,7 +30,7 @@ Add one instruction map to a program: the nodes of a large process in order (ste
 ## Stage 2: Plan the Nodes
 
 1. Write the nodes in order, each with a slug id and a title: `step` (a process of the program, or an inline instruction for a person or an agent), `decision` (a question with its outcomes), `wait`, `parallel` and `join`, and `sub-map`.
-2. Give a step `precondition` and `effect` only with claims that exist, and `about` with the refs that it works on: a part id, `process:<id>`, `process:<id>#<node>`, or `data:<id>`.
+2. Give a step `precondition` and `effect` only with claims that exist, and `about` with the refs that it works on: a part id, `process:<id>`, `process:<id>#<node>`, or `data:<id>`. A step has no `writes`: a step writes a data item only when the data item names its process in `kept-by` (`kept-by: "process:<id>"`).
 3. **The rules of a map.** Loops go only out of a decision. Each node has a way to an exit. A `join` has a `parallel` before it. A step that changes the world outside this machine does a process with `irreversible: true`.
 4. Select `entry`, `exits`, and the `inputs` of the run.
 5. Show the person the plan: the nodes in order, who acts in each, and the decisions. Ask: write it, or change it.
@@ -44,11 +44,11 @@ Add one instruction map to a program: the nodes of a large process in order (ste
    flint ite flow new "<program>" <process id> --steps "<step>; <step>; ..." [--title "<title>"] [--about <ref>...] --dry-run
    ```
 
-   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`.
+   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`. When a starter fits (`flint ite flow starters`), use `--starter <name> [--with k=v]...` in place of `--steps`: a starter writes a whole map one time. Check the flags with `flint ite flow new --help`.
 
    It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with the nodes of the steps, and writes `process.md` when the process has none. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
 2. Complete the nodes in `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the `inputs` of the frontmatter, the prose for a person under the H1, and under each H2 the instruction, the `inputs` and `outputs`, and `precondition` and `effect`.
-3. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
+3. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]]. The process has no `writes` and no `kept-by`. Its trigger stays `manual`, except when the map repairs a failed claim: then give the process an event trigger with `flint ite process set "<program>" <process id> --on claim.failed --on-about claim:<claim id>` (`trigger: { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }`). Only a person enables a process.
 4. Once the map is written, progress to the next stage.
 
 ## Stage 4: Check the Map

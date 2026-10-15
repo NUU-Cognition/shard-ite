@@ -46,8 +46,8 @@ Write one new candidate view that answers one question of a person, with no pers
 
 1. Run `flint orbh session set phase writing`. Set the focus on the parts that the view names.
 2. Make the candidate id (`<view-slug>-<UTC yyyymmdd-hhmmss>`, with `date -u +%Y%m%d-%H%M%S`) and two new UUIDs (`uuidgen | tr A-Z a-z`) for `view_id` and `id`.
-3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `curation: "proposed"`, `derived-from: ""`.
-4. For a claim that no part holds, say the gap in the prose. A process of a part checks the part; a view node holds no check.
+3. Write `Steel/Programs/<Program>/Proposals/<candidate-id>.md` with [[tmp-ite-view-v0.1]] (format `steel-view/1`): `state: proposed`, `base_hash: null`, `lifetime: "draft"`, `derived-from: ""`. A view has no key `curation`. A view is `draft` until a person accepts it.
+4. For a claim that no part holds, say the gap in the prose. A claim about a part checks the part through its check process (`Processes/check-<claim id>/`); a view node holds no check.
 5. Check the candidate against the quality rules of [[knw-ite-programs]] (the list of Stage 4 of [[wkfl-ite-view]]).
 6. Once the candidate passes each rule, progress to the next stage.
 

@@ -17,10 +17,18 @@ description: "The root note of an ITE program (format steel-program/1): the fron
     Steel/Programs/<Name>/
       program.md                                 id = the id of the root note
       Views/(View) <Title>.md                    one file for each view (tmp-ite-view-v0.1)
-      Reality/<id>/claim.md                      one folder for each claim, with its check (tmp-ite-claim-v0.1)
-      Processes/<id>/process.md (+ map.md)       one folder for each process (tmp-ite-process-v0.1), with its map (tmp-ite-instruction_map-v0.1)
+      Reality/<id>/claim.md                      one folder for each claim: only claim.md (tmp-ite-claim-v0.1)
+      Data/<id>/data.md                          one folder for each piece of data, and its native store (tmp-ite-data-v0.1)
+      Processes/<id>/process.md (+ map.md)       one folder for each process: each check (check-<claim id>), each maker (make-<data id>), each keeper, and each worker (tmp-ite-process-v0.1), with its map (tmp-ite-instruction_map-v0.1) and its draft (dev/)
       Proposals/<id>.md                          map changes, view candidates, revisions (only the engines write here)
       Runs/, History/, State/                    run records, replaced forms of views, the saved places of the main map (only the engines, the canvas, and flint ite place and arrange write here)
+    Steel/Recipes/<id>/process.md                the shared processes of the ITE shard (the shard writes them; never edit them)
+
+  THE PROCESS keep-map-true
+  - `flint ite create` gives each new program the process Processes/keep-map-true/process.md with recipe: keep-map-true
+    (the agent of the program keeps the map true after each event), its own about (the root note), trigger,
+    authority, and concurrency. It is not enabled: a person enables it (flint ite enable "<Name>" keep-map-true).
+  - An old program gets it with `flint ite process new "<Name>" keep-map-true --recipe keep-map-true`.
 
   FRONTMATTER CONTRACT (format steel-program/1). Replace the VALUES, keep the shapes. No comment in the frontmatter.
   - format: always "steel-program/1".
@@ -33,6 +41,10 @@ description: "The root note of an ITE program (format steel-program/1): the fron
     `flint ite types` lists the types of this Flint. Each part has one of these types.
   - from-template: the id of the template that made the program. History only: nothing decides with it.
   - main-map (optional): max-children and coverage-ignore (see The Main Map of knw-ite-programs).
+  - kept-by (optional): "process:<id>", the keeper of the root note. With no kept-by, the root uses
+    process:keep-map-true when the program has that process; else the program has no keeper (the finding no-keeper).
+    Each part with no kept-by uses the keeper of its parent, up to the root, and each view with no kept-by uses the
+    keeper of the root. A keeper writes only proposals for the notes that it keeps.
   - codebase, product-root (software only): the codebase and the folder of the product.
   - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
   - The root note holds no grounding, no result, no finding, no position, and no agent.
@@ -50,22 +62,23 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   - The keys are kebab-case:
     format: always steel-system/1.
     owners: the wikilinks of the persons who own the system. They are the default approvers and owners.
-    timezone: the IANA timezone of the system. A `resolves` date of a will claim ends in this timezone. Default UTC.
+    timezone: the IANA timezone of the system: the days and the weeks of the brief and of the code are in it. Default UTC.
     boundary: inside (a list of { name, parts }: the words of the person and the wikilinks of the parts of the map
       that cover it), outside (a list of words), unknown (a list of words), decided-by (a wikilink), decided-at
       (a quoted date), reason (one sentence). The boundary is a decision of a person: never invent it.
     connections: a list of { to, imports, exports, via }: what crosses the boundary, and what carries it.
     maps: a list of { path, owner, standpoint, scope, detail }. path is "Map/" for the map of this program.
       standpoint is native (the actors act through this map), operator, or observer (the default).
-    goals: the ids of the ought claims that are the goals. Each must exist.
     attention: { escalate-after, brief-since }. Default 24h for each.
     authority: { run, execute, approve, irreversible, approvers }. An actor is person:<Name>, agent:*, or
       agent:<runtime/profile>. Omit it: the owners run each instruction.
     governor: { max-runs-per-day, max-attempts-per-step, max-agent-attempts-per-day, irreversible-needs-approval }.
   - Quote each date, so that YAML keeps it as text.
-  - A prose edit keeps the block. A change of goals, authority, or governor is a protected change: it goes only
-    through a revision that a person applies (flint ite revision propose).
-  - The block holds meaning only: no state of a goal, no value, and no vital sign.
+  - The block has no goals: a block with goals has a format finding. A claim says what must be true now; a goal or a
+    plan is prose of a part (the type goal is plain text) or a future note.
+  - A prose edit keeps the block. A change of authority or governor is a protected change: it goes only through a
+    revision that a person applies (flint ite revision propose --kind system).
+  - The block holds meaning only: no state, no value, and no vital sign.
 */
 
 ````markdown
@@ -142,7 +155,6 @@ connections:
   - { to: "npm registry", imports: [], exports: ["the package @nuucognition/flint-cli"], via: "scripts/publish.sh" }
 maps:
   - { path: "Map/", owner: "[[@Nathan]]", standpoint: native, scope: "the release of the Flint CLI", detail: "one part for each actor, system, step, gate, and rule" }
-goals: [no-pull-debt, monthly-release]
 attention: { escalate-after: 24h, brief-since: 24h }
 authority:
   run: ["person:Nathan"]

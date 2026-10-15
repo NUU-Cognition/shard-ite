@@ -30,12 +30,13 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
     an inline step), precondition (claim ids), effect (claim ids), retry ({ max, wait }), on-fail (a node id),
     timeout, session (an agent step: the id of an earlier agent step whose session it continues, with its context),
     source (a mirrored step: { ref | path | command, hash?, redraw? }), about (references), reads (the
-    data that the step reads), writes (the native data that the step may write). A node id runs is not allowed:
-    process:<id>#runs is the data of the runs.
+    data that the step reads). A step has no writes: a step writes a data item only when the data item names the
+    process of the step in kept-by (the process of does, or the process of this map for an inline step). A node id
+    runs is not allowed: process:<id>#runs is the data of the runs.
   - decision: question, by (person | agent; default person), outcomes ({ "<outcome>": <node id> }).
-  - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, event: <hook id>, or event: <event kind>
-          (a kind has a dot, for example commit.landed: the next event of that kind that routes to the program; the
-          node gets the output event); timeout; next.
+  - wait: one of claim: <id> (until it holds), until: "<ISO time>", for: 10m, or event: <event kind> (for example
+          commit.landed or claim.holds: the next event of that kind that routes to the program; the node gets the
+          output event); timeout; next.
   - parallel: next: [<id>, <id>, ...] (two or more).
   - join: wait: all | any; next.
   - sub-map: process: <id> (a process with a map.md), inputs, next. The child run names its parent run and node.

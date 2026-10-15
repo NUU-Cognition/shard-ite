@@ -36,10 +36,10 @@ The focus of this job: the selected parts.
 2. Write the nodes in order, each with a slug id and a title for a person:
    - `step`: one piece of work. It does a process of the program (`does: { process: <id> }`), or an inline instruction (`does: { by: person | agent, instruction: "<text>" }`).
    - `decision`: a question with its outcomes, each to a node id. `by: person` for a decision of a person.
-   - `wait`: until a claim holds, until a time, for a time, or for a hook.
+   - `wait`: until a claim holds, until a time, for a time, or for an event (an event kind, for example `webhook`: the HTTP hook of a process emits it).
    - `parallel` and `join`: branches that run at the same time.
    - `sub-map`: a process that has its own map.
-3. Give a step `precondition` (the claims that must hold before it) and `effect` (the claims that show that it worked) only with claims that exist. Give a step `about`: the refs that it works on. `about` names what the step works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`).
+3. Give a step `precondition` (the claims that must hold before it) and `effect` (the claims that show that it worked) only with claims that exist. Give a step `about`: the refs that it works on. `about` names what the step works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`). A step has no `writes`: a step writes a data item only when the data item names its process in `kept-by` (`kept-by: "process:<id>"`).
 4. **The rules of a map.** Loops go only out of a decision. Each node has a way to an exit. A `join` has a `parallel` before it. A `sub-map` names a process with a map. A step that changes the world outside this machine does a process with `irreversible: true`, so a person approves it.
 5. Select `entry` (the first node), `exits` (the nodes where a run ends), and the `inputs` of the run.
 6. Once the plan puts the work in order, progress to the next stage.
@@ -53,11 +53,11 @@ The focus of this job: the selected parts.
    flint ite flow new "<program>" <process id> --steps "<step>; <step>; ..." [--title "<title>"] [--about <ref>...] --dry-run
    ```
 
-   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`.
+   Write the nodes of your plan as a list of steps ([[sk-ite-workflow_new]]: `Person:`, `Agent:`, `Process: <id>`, `<question>? -> A | B`, `Wait:`, `Map: <id>`, `A & B`). Read how the command reads each step, change the words until each step is right, then run it again with no `--dry-run`. When a starter fits (`flint ite flow starters`), use `--starter <name> [--with k=v]...` in place of `--steps`: a starter writes a whole map one time. Check the flags with `flint ite flow new --help`.
 
    It writes `Steel/Programs/<program>/Processes/<process id>/map.md` with the nodes of the steps, writes `process.md` when the process has none, and records you in the activity. Give `--about` the selected parts, and each other process (`process:<id>`) or data (`data:<id>`) that the process works on: a new `process.md` gets them as its `about`.
 3. Complete the nodes in `map.md` with the form of [[tmp-ite-instruction_map-v0.1]]: the frontmatter (`format: steel-flow/1`, `entry`, `exits`, `inputs`), one H1 with one to three sentences for a person, and one H2 for each node (`## Title {#id}`) with the instruction for a person and one fenced block whose info word is the kind of the node. Complete what the step list cannot say: the instruction under each heading, the `inputs` and `outputs`, `precondition` and `effect`.
-4. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]].
+4. When `flow new` wrote `process.md`, complete its prose with the form of [[tmp-ite-process-v0.1]]. The process has no `writes` and no `kept-by`. Its trigger stays `manual`, except when the map repairs a failed claim: then give the process an event trigger with `flint ite process set "<program>" <process id> --on claim.failed --on-about claim:<claim id>` (`trigger: { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }`). Never enable the process: only a person enables a process.
 5. Once the map is written, progress to the next stage.
 
 ## Stage 4: Check the Map

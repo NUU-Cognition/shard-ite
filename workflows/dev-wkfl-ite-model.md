@@ -40,8 +40,9 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 3. Select, do not dump: keep 12 to 40 parts for a new map. Merge parts that say one idea. Remove parts that do not help a person see the system.
 4. Select the parents: the containers of the map, of a type with the capability `container` (a system holds steps, a milestone holds deliverables). A top part has the root note as its parent. A top level of 3 to 9 parts reads well.
 5. Select the links: `next` for the order of a process, `depends-on` and `uses` for a dependency, `owner` for who answers for a part, `informs` for information that goes from one part to another. Name a link only when it is true.
-6. Show the person the outline: the template or the types, the top parts, the parts inside each, the links, the notes of the Mesh that join the program, and the gaps. Ask: write it, change it, or stop.
-7. Once the person agrees, progress to the next stage.
+6. A process, a data item, or a view that the person must see on the map is a pointer part: a part with `points-to` (`process:<id>`, `data:<id>`, or `view:<id>`), added as each part (`"fields":{"points-to":"process:<id>"}`). Write no `status` on a new part: the engine reads no status of a part (a Task keeps its own status). The keeper of a new part is the keeper of its parent: write `kept-by` only when the part needs another keeper.
+7. Show the person the outline: the template or the types, the top parts, the parts inside each, the links, the pointer parts, the notes of the Mesh that join the program, and the gaps. Ask: write it, change it, or stop.
+8. Once the person agrees, progress to the next stage.
 
 ## Stage 4: Write the Parts
 

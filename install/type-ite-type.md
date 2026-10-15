@@ -19,7 +19,7 @@ plural: Types
 description: "A Mesh type that the shard installs."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: earth, icon: shapes, layer: form }
 ```
 

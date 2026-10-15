@@ -19,7 +19,7 @@ plural: Skills
 description: "An atomic task with no human checkpoint."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: air, icon: zap, layer: procedure }
 ```
 

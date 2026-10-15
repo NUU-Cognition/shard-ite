@@ -19,7 +19,7 @@ plural: Knowledge
 description: "A knowledge file: deep reference that an agent reads on demand."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: sun, icon: library, layer: context }
 ```
 

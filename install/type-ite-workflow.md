@@ -19,7 +19,7 @@ plural: Workflows
 description: "A workflow with stages, interactive or headless."
 fields: {}
 capabilities: [container]
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: water, icon: workflow, layer: procedure }
 ```
 

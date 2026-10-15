@@ -19,7 +19,7 @@ plural: Agents
 description: "An agent session that runs the shard, interactive or headless."
 fields: {}
 capabilities: [owner]
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: rose, icon: bot, layer: runtime }
 ```
 

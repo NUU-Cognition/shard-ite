@@ -38,11 +38,14 @@ The focus of this job: the selected parts.
    - `agent` when the work needs reading and judgement.
    - `person` when a person must act: a call, a signature, a decision.
 3. When the work needs steps and decisions in order, or more than one actor, the process needs an instruction map. Add the process now, and propose the action `flow-add` in the `summary`.
-4. Select the `id`: a short, readable slug (`send-reminders`). Check that it is free: `flint ite process show "<program>" <id>` must refuse with `not-found`.
-5. Select `about`: the selected parts, and each other ref that the process works on. `about` names what the process works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`). Name only refs that exist.
-6. Select the `inputs` and the `outputs` (each a name and a kind), and the `effect`: the ids of the claims that show that the work worked. Name only claims that exist. When no claim shows the work, propose the action `claim-add` in the `summary`.
-7. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run. The trigger stays `manual`: only a person enables a trigger.
-8. Once the form is selected, progress to the next stage.
+4. Find the job of the process. The job comes from the links: a `check` keeps a claim, a `maker` keeps a data item, a `keeper` keeps a model note, and a `worker` keeps nothing. When the work checks a claim, add no process: return `No change:`, and propose the action `claim-add` in the `summary` (`flint ite claim new` writes the claim and its check process).
+5. Select the `id`: a short, readable slug (`send-reminders`). Check that it is free: `flint ite process show "<program>" <id>` must refuse with `not-found`.
+6. Select `about`: the selected parts, and each other ref that the process works on. `about` names what the process works on: a part id, another process (`process:<id>`), a node of a map (`process:<id>#<node>`), or data (`data:<id>`). Name only refs that exist.
+7. Select the `inputs` and the `outputs` (each a name and a kind), and the `effect`: the ids of the claims that show that the work worked. Name only claims that exist. When no claim shows the work, propose the action `claim-add` in the `summary`.
+8. Select the data that the process keeps. A process has no `writes`. When the process must write the values of a data item, the data item names the process as its keeper: `kept-by: "process:<id>"` in its `data.md`. Only the keeper writes the values of a data item. A data item has one keeper: when it has a keeper already, do not change it, and name it in the `summary`.
+9. Select the authority. A process that changes the world outside this machine (a push, a send, a publish, a payment) gets `irreversible: true`, so a person approves each run.
+10. Select the trigger. A trigger has one of three kinds: `manual`, `schedule` (`{ every: 30m }` or `{ cron: "0 9 * * *" }`), and `event` (`{ on: event, kinds: [<kind>...], about: [<ref>...] }`). The event kinds are `task.finished`, `commit.landed`, `note.added`, `webhook`, `manual`, `file.changed`, `claim.failed`, `claim.holds`, `data.changed`, `run.finished`, and `proposal.applied`. A process that repairs a failed claim gets `trigger: { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }`: when the claim fails, the brief says "repair by <process id>". Else the trigger stays `manual`. Only a person enables a process (`flint ite enable "<program>" <id>`), and that enables each trigger of the process.
+11. Once the form is selected, progress to the next stage.
 
 ## Stage 3: Write the Process
 
@@ -51,19 +54,20 @@ The focus of this job: the selected parts.
 
    ```bash
    flint ite process new "<program>" <id> --by code|agent|person --task "<the work in words>" [--about <ref>...] \
-     [--reads <ref>...] [--writes data:<id>...] [--inputs <name[:kind][!]>...] [--outputs <name[:kind][!]>...] [--irreversible] [--dry-run]
+     [--reads <ref>...] [--inputs <name[:kind][!]>...] [--outputs <name[:kind][!]>...] [--irreversible] [--dry-run]
    ```
 
-   One command writes the work and the fields ([[sk-ite-process_new]]). When a recipe fits (`flint ite process recipes`), use `--recipe <name> [--with k=v]...`. A code process gets a stub `index.js` that runs at once. Give no trigger flag: the trigger stays `manual`, and only a person enables a trigger.
+   One command writes the work and the fields ([[sk-ite-process_new]]). Check the flags with `flint ite process new --help`. When a starter fits (`flint ite process starters`), use `--starter <name> [--with k=v]...`: a starter writes the files one time. A recipe is a shared process of `Steel/Recipes/` (an agent action, or `keep-map-true`): `--recipe <id>` writes a process with `recipe: <id>`, and the process gets each field of the recipe that it does not write. A code process gets a stub `index.js` that runs at once. Give no trigger flag, except for a process that repairs a failed claim: `--on claim.failed --on-about claim:<claim id>`. Only a person enables a process.
 
-   It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, and records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again.
-3. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose (what the process does, why, and what it changes), `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`. Keep `format`, `id`, `by`, and `trigger`.
-4. Write the work:
-   - `code`: the entry `index.js` in the process folder (`runtime: node`), or another entry with its `runtime`. It prints one JSON line for each record: `{ "output": { "<name>": <value> } }`, `{ "state": { ... } }`, or `{ "log": "<text>" }`. Exit 0 is `done`. A file that it writes on this machine goes into `.flint/steel/state/<program id>/`.
+   It writes `Steel/Programs/<program>/Processes/<id>/process.md` from the form, and records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again. A process has no `kept-by` and no `writes`.
+3. When the process keeps a new data item, make the data item: `flint ite data new "<program>" <data id> --kept-by process:<id>`.
+4. Complete `process.md` with the form of [[tmp-ite-process-v0.1]]: the prose (what the process does, why, and what it changes), `about`, `inputs`, `outputs`, `effect`, `authority`, and `timeout`. Keep `format`, `id`, `by`, and `trigger`.
+5. Write the work:
+   - `code`: the entry `index.js` in the process folder (`runtime: node`), or another entry with its `runtime`. It prints one JSON line for each record: `{ "output": { "<name>": <value> } }`, `{ "state": { ... } }`, or `{ "log": "<text>" }`. A maker also prints `{ "row": {...} }`, with `"data": "<data id>"` when it keeps more than one data item. Exit 0 is `done`. A file that it writes on this machine goes into `.flint/steel/state/<program id>/`.
    - `agent`: the `prompt`, with `${inputs.<name>}` for each input.
    - `person`: the `task`: what the person does, and the outputs that the person gives with Done.
-5. Run `flint ite process check "<program>" <id>`. Repair each problem of the process (it gives the file, the line, the cause, and the fix): it does not run until its file is correct.
-6. Once the process is written, progress to the next stage.
+6. Run `flint ite process check "<program>" <id>`. Repair each problem of the process (it gives the file, the line, the cause, and the fix): it does not run until its file is correct.
+7. Once the process is written, progress to the next stage.
 
 ## Stage 4: Test the Process
 
@@ -71,9 +75,10 @@ The focus of this job: the selected parts.
 2. A code process: test it with `flint ite process test "<program>" <id> [--input <name>=<value>]...`. It runs the code one time, writes nothing to the log, and changes no state. Each record must pass, and the outputs must be the `outputs` of the file. Repair the code and test again. Never keep a process that you did not test.
 3. A process with `irreversible: true` or a `source`, and an agent process: test it with `--dry`. It prints what it would run, and runs nothing.
 4. A person process: `flint ite process test "<program>" <id>` runs nothing. Check that it shows the task.
-5. Never run the process (`flint ite process run`): a process can change the world. Never enable a trigger.
-6. Run `flint ite check "<program>"`. Repair each error finding of the process, and each `claim-fixed-by` finding that names it.
-7. Once the test passes, progress to the next stage.
+5. Never run the process (`flint ite process run`): a process can change the world. Never enable the process.
+6. Run `flint ite process show "<program>" <id> --json`. It gives the computed `keeps` (the notes that name the process in `kept-by`) and `jobs` (`check`, `maker`, `keeper`, or `worker`). They must be the data and the job of your plan.
+7. Run `flint ite check "<program>"`. Repair each error finding of the process.
+8. Once the test passes, progress to the next stage.
 
 ## Stage 5: Return the Result
 

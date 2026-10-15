@@ -19,7 +19,7 @@ plural: Templates
 description: "The form of one artifact that the shard writes."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: earth, icon: file-text, layer: form }
 ```
 

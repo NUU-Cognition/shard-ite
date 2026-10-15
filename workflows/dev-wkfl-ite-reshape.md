@@ -31,7 +31,7 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
 
 1. Write a node map: for each node of the view, `keep`, `change` (title, prose, kind, links), `move` (a new parent or place), or `remove`. For each new node: an id (the part id of its part, from `flint ite map "<program>" --json`, never invented; a slug for a node with no part), a title, a kind, and its links.
 2. A node keeps its id when it moves and when its title changes. The heading id of a node of a part is the part id: to give a node with a slug its part, change its heading id to the part id and change each link to it. Never give the id of a removed node to a node with another claim.
-3. Keep `lifetime` as it is. Set `curation: "proposed"`.
+3. Keep `lifetime` as it is (`draft` or `accepted`): only a person accepts a view. Write no key `curation`: a view has no `curation`. Keep `kept-by` as it is when the view has it.
 4. Show the node map to the person when the change removes nodes or changes the shape. Ask: write it, or change the plan.
 5. Once the plan makes the change, progress to the next stage.
 

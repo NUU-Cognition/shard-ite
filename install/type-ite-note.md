@@ -19,7 +19,7 @@ plural: Notes
 description: "A note that explains a part of the system. It makes no claim, so it has no grounding."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], supports: [], refutes: [], reports-to: [], reads: [], writes: [], part-of: [], option-of: [], answers: [], opposes: [], picked: [], acts-on: [], threatens: [], protects: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], supports: [], refutes: [], reports-to: [], part-of: [], option-of: [], answers: [], opposes: [], picked: [], acts-on: [], threatens: [], protects: []}
 look: { hue: stone, icon: sticky-note, layer: notes }
 ```
 

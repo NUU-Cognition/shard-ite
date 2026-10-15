@@ -40,7 +40,8 @@ Make the map of a system, or add parts to a map that exists, with no person in t
 3. Select, do not dump: 12 to 40 parts for a new map; for an extension, only the parts that the instructions ask for. Merge parts that say one idea.
 4. Select the parents. The map opens on its top level, so the top level has 3 to 9 parts: containers (parts of a type with the capability `container`, for example a `system`, a `goal`, a `milestone`, a `method`, or a `team`, as the types of the program have them) and the few parts that stand alone. A top part has the root note as its parent. Each other part gets a parent part. A map of 19 top parts is 19 cards in a grid: it is not a map.
 5. Select the links (`next`, `depends-on`, `uses`, `owner`, `informs`). Name a link only when it is true.
-6. Once the outline is complete, progress to the next stage.
+6. A process, a data item, or a view that the person must see on the map is a pointer part: a part with `points-to` (`process:<id>`, `data:<id>`, or `view:<id>`), added as each part (`"fields":{"points-to":"process:<id>"}`). Write no `status` on a new part: the engine reads no status of a part (a Task keeps its own status). The keeper of a new part is the keeper of its parent: write `kept-by` only when the part needs another keeper.
+7. Once the outline is complete, progress to the next stage.
 
 ## Stage 4: Write the Parts
 

@@ -43,9 +43,11 @@ The focus of this workflow: the selected part.
 2. When the sources moved, `edit` the sources (the whole new list). Repair each `code-ref-missing` of the part and its children.
 3. When a child is gone from the sources, `remove` it. When the sources hold a new thing that has no part, `add` a child of a type of the program.
 4. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
-5. Change only the part and its subtree.
-6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
-7. Once the plan does the task, progress to the next stage.
+5. Read the plan of the part: `flint ite plan show "<program>" <part id> --json`. When the sources now make a future note of the part (or of a child) true, propose its realize in place of an `edit`: `flint ite plan realize "<program>" <future id>` (in full), or `--part -` with `{ "now", "rest" }` on stdin (in part). A realize is a map change that a person applies. Never set a state of a future note.
+6. A pointer part (`points-to`): when its target is gone or has a new id, `edit` its `fields` (`"fields":{"points-to":"<the new target>"}`), or `remove` it.
+7. Change only the part and its subtree.
+8. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
+9. Once the plan does the task, progress to the next stage.
 
 ## Stage 4: Propose the Change and Review It With the Person
 

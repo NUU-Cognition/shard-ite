@@ -1,5 +1,5 @@
 ---
-description: "Programs and their things: the root note, the part file, types, connections, and templates, the view file, maps, references, proposals (the candidate and the apply), the main map, its saved places, and the map change, and the quality rules of a program"
+description: "Programs and their model: the root note, the part file and its keeper, pointer parts, types, connections, and templates, the view file and its lifetime, maps, references, proposals (the candidate and the apply), the main map, its saved places, and the map change, and the quality rules of a program"
 ---
 
 # Knowledge: Programs, Parts, the Main Map, and Views
@@ -8,7 +8,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 
 ## The Root Note
 
-`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true`, not enabled, and a starter kit of its template: one piece of state, one code process, and one code claim); the form is [[tmp-ite-program-v0.1]].
+`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true` with `recipe: keep-map-true`, not enabled, and a starter kit of its template: one piece of data, one code process, and one claim with its code check); the form is [[tmp-ite-program-v0.1]].
 
 | Field | Value |
 |---|---|
@@ -21,6 +21,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
 | `main-map` | Optional: `max-children` and `coverage-ignore` (see The Main Map) |
 | `codebase`, `product-root` | Software only: the codebase and the folder of the product that holds `orbtest/` (see Software Programs in [[knw-ite-software]]) |
+| `kept-by` | Optional: `"process:<id>"`, the keeper of the root note. With no `kept-by`, the root uses `process:keep-map-true` when the program has it; else the program has no keeper (the finding `no-keeper`). Each part and each view with no `kept-by` uses the keeper of the root. |
 | `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
 | `template`, `authors`, `orbh-sessions` | The Flint conventions |
 
@@ -59,7 +60,7 @@ tags: ["#ite/part"]
 parent: "[[(Program) Club Launch Night . (Goal) A full hall and 30 new members]]"
 depends-on: ["[[(Program) Club Launch Night . (Budget) Venue hire]]"]
 owner: "[[(Program) Club Launch Night . (Person) Priya Nair]]"
-status: done
+date: "2026-09-24"
 template: "[[tmp-ite-part-v0.1]]"
 authors: ["[[@Nathan]]"]
 ---
@@ -78,6 +79,9 @@ The rules of the read:
 5. **No claims in a part.** A part has no field `claims`. A claim is a folder of `Reality/`, and it names its parts with `about` (see Claims and Checks in [[knw-ite-state]]).
 6. **The text.** The body below the H1, up to the first heading `## For a developer`. The H1 is for a person; no code reads it.
 7. **The title.** The file name after the `(<Type>)` word, with no number at its start: a number there reads as the number of an artifact, as in `(Task) 1099 ...`. Start a title with a word: "A full hall and 30 new members", not "80 guests".
+8. **No status of the ITE.** The engine reads no `status` of a part. Do not write `status: active` or `status: untested`. A note of a type with a status of its own (a Task, a Milestone with the field `status`) keeps its status. "Untested" is computed: no claim covers the part.
+9. **The keeper.** `kept-by: "process:<id>"` names the process that keeps the part true. A part with no `kept-by` uses the keeper of its parent, up to the root note. Write `kept-by` only when the part needs another keeper than its parent. A keeper writes only proposals for the part, never the note itself. The inspector of a part shows its keeper, with "from <parent>" when it inherits it.
+10. **A pointer part.** `points-to` makes the part a pointer to one target of the same program (see Pointer Parts).
 
 **One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`.
 
@@ -163,8 +167,8 @@ A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/V
 | `question` | The question of the person, as one sentence |
 | `map` | The map that draws the view: a builtin shape (`flow`, `streams`, `layers`, `tree`, `table`, `free`, `timeline`, `board`), which Steel draws natively, or the id of a map of `Steel/Maps/`, which Steel runs in a sandbox |
 | `slice` | Optional: `{ below: <part id>, types: [<type id>...] }`. Each part of the slice is a node of the view, also with no heading. |
-| `lifetime` | `draft` or `kept`. Only a person writes `kept`. |
-| `curation` | `proposed` or `accepted`. An agent always writes `proposed`. |
+| `lifetime` | `draft` or `accepted`. Only a person accepts a view. |
+| `kept-by` | Optional: `"process:<id>"`, the keeper of the view. With no `kept-by`, the view uses the keeper of the root. A keeper changes the view only through a candidate. |
 | `derived-from` | `""`, or the wikilink of the view that this view came from |
 | `view_id`, `base_hash`, `state` | A candidate only (see The Candidate and the Apply) |
 
@@ -180,15 +184,14 @@ The body:
 
 The nodes of a view are its headings, and each part of its `slice` that has no heading (with the title and the prose of the part). A node of a part shows the type, the note, the fields, and the grounding of the part: the grounding comes from the claims about the part. The prose of the view stays under the part id, so it survives each refactor of the main map.
 
-### Lifetime and Curation
+### Lifetime
 
 | Field | Values | Rule |
 |---|---|---|
-| `lifetime` | `draft`, `kept` | A new view is `draft`. A reshape keeps the value of the view. `kept` means that the person wants to keep the view true: the check gives `never-reviewed` for each node of a kept view that has code or stories and no review. |
-| `curation` | `proposed`, `accepted` | An agent always writes `proposed`. `accepted` means that the person read the view and agrees with it. The acceptance blocks nothing. An apply keeps the curation of the view. |
+| `lifetime` | `draft`, `accepted` | A new view is `draft`. A reshape keeps the value of the view. `accepted` means that the person read the view, agrees with it, and wants it kept true: the check gives `never-reviewed` for each node of an accepted view that has code or stories and no review. |
 
-- **Only a person decides `kept` and `accepted`**: `flint ite view set "<view>" --lifetime kept --curation accepted`, or Keep and Accept in the Workbench. Only these two keys of the file change. An agent runs `flint ite view set` only when the person asks for it in the session.
-- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses a `kept` view with `refused-state` (exit 2): "Set the view to draft first." An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
+- **`lifetime` is the one decision of a person about a view.** A view is `draft` until a person accepts it: `flint ite view set "<view>" --lifetime accepted`, or Accept in the Workbench. Only this key of the file changes. An agent never writes `accepted`, and it runs `flint ite view set` only when the person asks for it in the session. A view has no key `curation`.
+- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses an accepted view with `refused-state` (exit 2): "Set the view to draft first." An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
 - `History/` keeps the newest 5 replaced forms of each view. An apply, a restore, and a remove write one. A direct edit of a person (with Undo) writes none.
 
 ## Maps
@@ -229,14 +232,14 @@ Each link of the model names one **element** with one form, the **reference**. S
 | A view | `view:<id>` |
 | A node of a view | `view:<view id>#<node id>` |
 
-1. **The fields that take references:** `about` (claims, processes, steps, data), `reads` (claims, processes, steps), `writes` (processes and steps; data only), and `from` (data; data only). `fixed-by` names processes (`send-reminders` or `process:send-reminders`). `effect` and `precondition` name claim ids.
+1. **The fields that take references:** `about` (claims, processes, steps, data, and the `about` of an event trigger), `reads` (processes and steps: a check, a maker, a worker), `kept-by` (claims, data notes, parts, the root note, and views; always `process:<id>`), and `points-to` (a pointer part: `process:<id>`, `data:<id>`, or `view:<id>`). `effect` and `precondition` name claim ids. A process has no `writes`, and a data note has no `from`.
 2. **Quote a reference in YAML** when it has a `:` or a `#`: `reads: ["data:rsvps#count", "data:rsvp-target"]`.
 3. **A node id `runs` is not allowed**: `process:<id>#runs` is the data of the runs.
-4. **The findings** of `flint ite check`: `unknown-reference` (error: a reference names no element of the program), `data-cycle` (error: the `from` of data make a cycle), `writes-external` (error: a process or a step writes external data).
+4. **The findings** of `flint ite check`: `unknown-reference` (error: a reference names no element of the program), `data-cycle` (error: the `reads` of the makers make a cycle), `pointer-target-missing` (error: the `points-to` of a pointer part names nothing), and `no-keeper` (note: the root note has no `kept-by`, and the program has no process `keep-map-true`).
 
 ## Proposals: The Candidate and the Apply
 
-Each change that waits for a person is a file of `Steel/Programs/<P>/Proposals/`: a map change (`mc-*`, see The Main Map), a view candidate, or a revision of a living system. Each engine keeps its own file form. A proposal outside the Mesh is safe from a rename of the Mesh, so its bytes stay exact for a revert.
+Each change that waits for a person is a file of `Steel/Programs/<P>/Proposals/`: a map change (`mc-*`, see The Main Map; a realize of a future note is a map change too), a view candidate, or a revision (a promote of a draft is a revision too). Each engine keeps its own file form. A proposal outside the Mesh is safe from a rename of the Mesh, so its bytes stay exact for a revert.
 
 A person changes a view directly (the Workbench, or by hand). **An agent changes a view only through a candidate**: a complete view file `Proposals/<candidate-id>.md` in the format `steel-view/1`, with `view_id`, `base_hash`, and `state: proposed`.
 
@@ -299,7 +302,7 @@ The operations are one JSON array. They apply in order. A part is named by its i
 
 | Operation | The JSON | What it does |
 |---|---|---|
-| `add` | `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","prose":"<optional>","sources":["..."]}` | A new part. An optional `id` (a UUID v4) lets a later operation name it. |
+| `add` | `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","prose":"<optional>","sources":["..."],"fields":{"points-to":"<optional>","kept-by":"<optional>"}}` | A new part. An optional `id` (a UUID v4) lets a later operation name it. `fields` sets other frontmatter keys, for example `points-to` of a pointer part. |
 | `move` | `{"op":"move","part":"<part>","parent":"<part or null>"}` | A new parent. The new parent is not in the subtree of the part. |
 | `split` | `{"op":"split","parent":"<part or null>","subsystem":{"title":"<t>","kind":"<type id>","sentence":"<s>"},"children":["<part>","..."]}` | Groups children of `parent` into a new subsystem under `parent`. |
 | `merge` | `{"op":"merge","from":"<part>","into":"<part>"}` | The children and the sources of `from` go to `into`; each wikilink to `from` becomes a link to `into`; the file of `from` is removed. |
@@ -335,23 +338,17 @@ The main map is manual: each card stays where a person or an agent puts it.
 
 A part reference is an id, a note name, or a title. Example: `flint ite place "Club Launch" "Venue booked" --near "Launch budget" --side below`. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
-### Pointer Cards
+### Pointer Parts
 
-A **pointer card** is a card of the main map that opens a view or a process of the program. The card of a process shows its form and its last run, and it can start a run. Use a pointer card to put the views and the processes of a program where a person reads the main map: a process near the parts that it acts on, a view near the parts that it shows.
+A **pointer part** is a part with `points-to`: one target of the same program, `"process:<id>"`, `"data:<id>"`, or `"view:<id>"`. Use a pointer part to put the processes, the data, and the views of a program where a person reads the main map: a process near the parts that it acts on, a view near the parts that it shows.
 
-- **It is not a part.** It holds only a reference: `view:<view id>` or `process:<process id>`. The main map says what the system is, and a process says how it moves, so no rule of the tree counts a pointer card: the 100% rule, the coverage, `max-children`, the one-child finding, the roll-up of relations, and the map changes see only parts. A pointer card never makes a part a group or a layer.
-- **It is in `State/main.json`.** The list is `pointers: [{ id, to, title? }]`, and its place is `positions[<pointer id>] = { x, y, parent }`, as the place of a part. The id is `pointer-<word>`. A pointer is not meaning, so a person and an agent add, move, and remove one at once. It is not a proposal.
-- **It is a card of its level.** It stands at the top of the root, in a group, or at the top of a layer, never inside a card with no parts. It gets the place of a new card, `flint ite place` and `flint ite arrange` move it, and a group box grows around it. If its level goes away, it stands at the nearest level above.
+- **It is a normal part.** It is a Mesh note with a type, a `parent`, and prose. The rules of the tree count it: the 100% rule, the level, the one-child finding, and the map changes. It has a keeper, and it can have a future note.
+- **Add it with a map change**, as each part: `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","fields":{"points-to":"process:<id>"}}`. Change the target with `edit` and `fields`.
+- **Its card shows the face of its target.** A process: its jobs, its last run, and the button Run (when the person may run it). A data item: its value or its count, and its state. A view: its shape and the button Open.
 - **A run from the card uses the gate of the process.** The card gives no authority: who may run it (`authority.run`), the approval, `irreversible`, and the inputs stay the same. A process that needs an approval or an input opens its run form first.
-- **A target that is gone** leaves the card with the state `missing`. Remove the card, or add a pointer to another target.
+- **A target that does not exist** is the finding `pointer-target-missing` (error). Change `points-to`, or remove the part with a map change.
 
-| Command | Result | Writes |
-|---|---|---|
-| `flint ite pointers <program> [--targets]` | Each pointer card: its words, its reference, `ok` or `missing`, its level, and its place. `--targets` also lists each view and each process of the program with its reference. | Nothing |
-| `flint ite pointer add <program> <reference> [--in <part>] [--title <words>] [--id <id>] [--at <x>,<y>]` | Adds one pointer card. The default level is the part that holds each part that the target names (the `about` of a process; the part nodes and the slice of a view). The default words are the title of the target. | `State/main.json` |
-| `flint ite pointer remove <program> <id>` | Removes one pointer card and its place. The view or the process does not change. | `State/main.json` |
-
-Example: `flint ite pointer add "NUU Steel" process:smoke-check-steel`.
+Example: `echo '[{"op":"add","title":"Smoke check","kind":"process","parent":null,"sentence":"The smoke check of the Workbench.","fields":{"points-to":"process:smoke-check-steel"}}]' | flint ite map change propose "NUU Steel" --ops - --reason "Show the smoke check on the main map"`.
 
 ### Two Kinds of Links
 
@@ -413,9 +410,9 @@ A program is for a person. A model that breaks these rules does not help that pe
 4. **The types of the program.** Give each part a type of the `types` of the root note. When no type fits, use `note` and tell the person. Never invent a type: a new type is a type note that a person agrees to.
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
 6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds 3 to 9 parts (`max-children`); a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
-7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When a claim has no check yet, give it `by: none`. A model with an honest gap is better than a model with an invented fact.
-8. **Give each claim a check when you can.** A claim about reality has a check: its own code that reads data, a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value. When two claims read one source, make the source one piece of data, and let both claims read it.
-9. **Never keep a check, a process, or a reader that you did not test.** Before you keep a code check, test it with `flint ite claim test "<program>" <claim>`; before you keep a code process, test it with `flint ite process test "<program>" <process>`; before you keep a reader or a maker of data, test it with `flint ite data test "<program>" <id>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
+7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When only a person can check a claim, give it a person check ("Is this true now: <the claim>?"). A model with an honest gap is better than a model with an invented fact.
+8. **Give each claim a check.** A claim is a test of reality: it says what must be true now, never a goal, a target with a date, or a prediction. Its check is a process: its own code that reads data, a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value. When two claims read one source, make the source one piece of data, and let both claims read it.
+9. **Never leave a check, a process, or a maker that you did not test.** Before you hand over a code check, test it with `flint ite claim test "<program>" <claim>`; before you hand over a code process, test it with `flint ite process test "<program>" <process>`; before you hand over a maker of data, test it with `flint ite data test "<program>" <id>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
 10. **End each view with what it leaves out.** The last section of a view is one node of the type `note` that names what the view does not show, and why.
 11. **Meaning only.** No grounding, no result, no state of a claim, no finding, no position, and no presence in a file.
 12. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.

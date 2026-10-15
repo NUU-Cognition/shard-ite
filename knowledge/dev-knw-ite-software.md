@@ -36,7 +36,7 @@ A part has `code-refs` in its frontmatter. A view node with a slug id has `code-
 - A path with no `@` is relative to the codebase of the program. Each path must exist: else the finding `code-ref-missing`.
 - `@<Codebase name>/<path>` names a path in another codebase of the Flint. The name after `@` is the `name` of its codebase marker (`flint reference list` shows the names), for example `@Steel/`. Use it when one part of the answer is in another repository.
 - A path that leaves the codebase (`../plates/...`, or an absolute path) gives `code-ref-missing`. Use `@<Codebase name>/<path>` in its place.
-- A symbol (`#Name`) is a name that the file declares: a function, a class, a type, or a constant. The check only looks for the name as a whole word in the file, so a symbol is a weak anchor. Prefer the file when the whole file holds the claim. Do not use a line range in a kept view.
+- A symbol (`#Name`) is a name that the file declares: a function, a class, a type, or a constant. The check only looks for the name as a whole word in the file, so a symbol is a weak anchor. Prefer the file when the whole file holds the claim. Do not use a line range in an accepted view.
 - **Name files, not large folders.** A code-ref matches each spec of Orbtest whose `components` path is equal to it, inside it, or a parent of it. A broad code-ref (a large folder such as `packages/flint/src/`) gives the person hundreds of related cases that tell nothing. After a review, each change of a file in that folder also gives `review-due`. Name the one file or the small folder that holds the claim of the node.
 - The coverage of the main map reads the `code-refs` of each part of a type with `covers-files` (see The Main Map in [[knw-ite-programs]]).
 
@@ -135,11 +135,11 @@ The state of a review is computed at each read, never written:
 | `reviewed` | Nothing changed after the anchor | `holds` |
 | `review-due` | The text of the node changed after the review ("The text changed after the review."); its references changed ("The references changed after the review."); a file under a code-ref changed after `commit` (committed, staged, unstaged, or a new file); a referenced story changed after `commit`; or, for another codebase, its commit is missing from `commits` or its files changed. Each reason is listed, with at most 20 changed files. | `fails` |
 | `anchor-unknown` | The codebase does not resolve, it is not a Git repository, or Git does not have the commit (for example after a rewrite of the history) | `error` |
-| `never-reviewed` | A view node with a slug id in a `kept` view, with `code-refs` or `stories`, and no anchor. A finding only: no claim. | — |
+| `never-reviewed` | A view node with a slug id in an `accepted` view, with `code-refs` or `stories`, and no anchor. A finding only: no claim. | — |
 
 A part with no anchor has no review state and no finding.
 
-**The review is a mirror claim.** Each node with an anchor is the claim `claim:mirror:<reference>`: `claim:mirror:<part id>` for a part, or `claim:mirror:view:<view id>#<node id>` for a view node. Its mode is `is`, it is `by: core`, and it has no file and no log. A review that fails gives the finding `review-due` (a warning), not `claim-fails`: a review is necessary, but the text is not shown false. It makes the grounding of its part `old`, not `failing`. The brief of a living system lists it in `drift`.
+**The review is a mirror claim.** Each node with an anchor is the claim `claim:mirror:<reference>`: `claim:mirror:<part id>` for a part, or `claim:mirror:view:<view id>#<node id>` for a view node. Its keeper shows as `core:review` (the core computes it), and it has no file and no log. A review that fails gives the finding `review-due` (a warning), not `claim-fails`: a review is necessary, but the text is not shown false. It makes the grounding of its part `old`, not `failing`. The brief of a living system lists it in `fails`, with the change of the model as its repair.
 
 **`review-due` does not mean that the node is false.** Compare the text of the node with the diff of its code after the anchor: `git -C "<codebase path>" diff <reviewed.commit> -- <code-ref path>` (for a code-ref of another codebase, use that codebase and its commit in `commits`), and read each changed story with `flint orbtest story show <id> --root <product root>`. The claim is the text, not the names in the code: a new name of a function or a change of its inner logic often keeps the text true. `flint ite review "<program>" <ref>... --show` gives the state, the anchor, the reasons, and the changed files of each node. When the text is still true, review the node: `flint ite review "<program>" <ref>...`. When it is not true, change the node: a candidate for a view node, or a map change (`edit`) for a part. The action `review` does this work ([[hwkfl-ite-review]] / [[wkfl-ite-review]]). Review only a node that you compared with its code.
 
@@ -168,7 +168,7 @@ The text output gives, for each program, each selected part and view with `✓ n
 | `proof-unavailable` | warning | The program has `product-root`, but the product root is outside the codebase, or its Orbtest definitions do not load |
 | `review-due` | warning | The text, the references, the referenced code, or the referenced stories of a node changed after its review |
 | `anchor-unknown` | warning | The codebase of a review does not resolve, or Git does not have its commit |
-| `never-reviewed` | warning | A node of a kept view has code or stories, and no review |
+| `never-reviewed` | warning | A node of an accepted view has code or stories, and no review |
 | `anchor-missing` | warning | A view node names no part of the main map, or a `part` names no part of the program |
 | `anchor-none` | note | A view node has no part (a slug heading id) |
 

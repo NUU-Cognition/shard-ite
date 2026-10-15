@@ -30,8 +30,13 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   - slice: optional. { below: <part id>, types: [<type id>...] }: the parts below one part, of some types. Each part
     of the slice is a node of the view, also when the view has no heading for it. With no slice, the nodes are the
     headings only.
-  - lifetime: draft for a new view. A reshape keeps the value of the view. Only a person writes kept.
-  - curation: an agent always writes proposed. Only a person writes accepted.
+  - lifetime: draft | accepted. draft for a new view. A reshape keeps the value of the view. Only a person accepts a
+    view (Accept in the Workbench, or flint ite view set "<view>" --lifetime accepted): an agent never writes accepted.
+    An accepted view is a view that the person wants to keep true.
+  - kept-by: optional, "process:<id>": the keeper of the view, a process of the same program. A view with no kept-by
+    uses the keeper of the root note (often process:keep-map-true). A keeper changes the view only through a
+    candidate.
+  - No curation: the key is gone. lifetime is the one decision of a person about a view.
   - derived-from: "" or the wikilink of the view that this view came from.
   - base_hash: null for a new view. For a reshape, the SHA-256 hex of the bytes of the view file,
     computed before you read it: shasum -a 256 "<view file>". A file in Views/ has no base_hash.
@@ -107,7 +112,6 @@ tags:
 question: "THE QUESTION OF THE PERSON?"
 map: flow
 lifetime: "draft"
-curation: "proposed"
 derived-from: ""
 base_hash: null
 template: "[[tmp-ite-view-v0.1]]"
@@ -155,7 +159,6 @@ tags:
 question: "How does the harvest of one week get from the beds to each house?"
 map: flow
 lifetime: "draft"
-curation: "proposed"
 derived-from: ""
 template: "[[tmp-ite-view-v0.1]]"
 authors:
@@ -178,7 +181,7 @@ next: [7a9e0c31-52bd-4f6a-8c17-3e4d5f6a7b81]
 
 ## Weigh and record {#7a9e0c31-52bd-4f6a-8c17-3e4d5f6a7b81}
 
-The member weighs the harvest of each bed and writes the weights in the harvest log. The process "Harvest log" checks each week that the log exists.
+The member weighs the harvest of each bed and writes the weights in the harvest log. The check of the claim "The harvest log of this week exists" reads it each week.
 
 ```node
 kind: "step"
@@ -208,7 +211,7 @@ next: [b2d4f6a8-0c1e-4a3b-9d5f-7e8a9b0c1d22, food-bank]
 
 ## Each house has its box {#b2d4f6a8-0c1e-4a3b-9d5f-7e8a9b0c1d22}
 
-Each house has its share. The week of the harvest ends. A person's check ("No box stayed in the shed") is the process of this part.
+Each house has its share. The week of the harvest ends. The claim "No box stayed in the shed" is about this part, and its check is a person check.
 
 ```node
 kind: "output"
@@ -235,7 +238,7 @@ kind: "note"
 What the example does:
 
 - The answer after the H1 answers the question in three sentences, in the words of the members.
-- Each step that a part holds has the part id as its heading id. Its grounding comes from the processes of the part. The node block names who acts with `actor`. One name for one actor.
+- Each step that a part holds has the part id as its heading id. Its grounding comes from the claims about the part. The node block names who acts with `actor`. One name for one actor.
 - The decision has two `next`, and each `next` names a heading id: a part id or a slug.
 - The steps "Share into twelve boxes" and "Give the rest to the food bank" have slug ids: no part holds them, and their prose says the gap.
 - The last node is a note that says what the view leaves out.

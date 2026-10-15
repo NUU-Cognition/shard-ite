@@ -40,7 +40,7 @@ types:
   - Budget
   - Question
   - Hypothesis
-  - Claim
+  - Thesis
   - Source
   - Dataset
   - Method
@@ -122,12 +122,6 @@ install:
   - source: inst-ite-connection_reports_to.md
     dest: "Mesh/Metadata/Types/(Connection) Reports To (ITE Shard).md"
     mode: force
-  - source: inst-ite-connection_reads.md
-    dest: "Mesh/Metadata/Types/(Connection) Reads (ITE Shard).md"
-    mode: force
-  - source: inst-ite-connection_writes.md
-    dest: "Mesh/Metadata/Types/(Connection) Writes (ITE Shard).md"
-    mode: force
   - source: inst-ite-connection_part_of.md
     dest: "Mesh/Metadata/Types/(Connection) Part Of (ITE Shard).md"
     mode: force
@@ -154,4 +148,67 @@ install:
     mode: force
   - source: inst-ite-connection_refers_to.md
     dest: "Mesh/Metadata/Types/(Connection) Refers To (ITE Shard).md"
+    mode: force
+  - source: inst-ite-recipe_model.md
+    dest: "Steel/Recipes/model/process.md"
+    mode: force
+  - source: inst-ite-recipe_update.md
+    dest: "Steel/Recipes/update/process.md"
+    mode: force
+  - source: inst-ite-recipe_explain.md
+    dest: "Steel/Recipes/explain/process.md"
+    mode: force
+  - source: inst-ite-recipe_review.md
+    dest: "Steel/Recipes/review/process.md"
+    mode: force
+  - source: inst-ite-recipe_do.md
+    dest: "Steel/Recipes/do/process.md"
+    mode: force
+  - source: inst-ite-recipe_parts-add.md
+    dest: "Steel/Recipes/parts-add/process.md"
+    mode: force
+  - source: inst-ite-recipe_map-create.md
+    dest: "Steel/Recipes/map-create/process.md"
+    mode: force
+  - source: inst-ite-recipe_map-expand.md
+    dest: "Steel/Recipes/map-expand/process.md"
+    mode: force
+  - source: inst-ite-recipe_map-refactor.md
+    dest: "Steel/Recipes/map-refactor/process.md"
+    mode: force
+  - source: inst-ite-recipe_map-cover.md
+    dest: "Steel/Recipes/map-cover/process.md"
+    mode: force
+  - source: inst-ite-recipe_map-update.md
+    dest: "Steel/Recipes/map-update/process.md"
+    mode: force
+  - source: inst-ite-recipe_view.md
+    dest: "Steel/Recipes/view/process.md"
+    mode: force
+  - source: inst-ite-recipe_reshape.md
+    dest: "Steel/Recipes/reshape/process.md"
+    mode: force
+  - source: inst-ite-recipe_claim-add.md
+    dest: "Steel/Recipes/claim-add/process.md"
+    mode: force
+  - source: inst-ite-recipe_ground.md
+    dest: "Steel/Recipes/ground/process.md"
+    mode: force
+  - source: inst-ite-recipe_observe.md
+    dest: "Steel/Recipes/observe/process.md"
+    mode: force
+  - source: inst-ite-recipe_repair.md
+    dest: "Steel/Recipes/repair/process.md"
+    mode: force
+  - source: inst-ite-recipe_process-add.md
+    dest: "Steel/Recipes/process-add/process.md"
+    mode: force
+  - source: inst-ite-recipe_flow-add.md
+    dest: "Steel/Recipes/flow-add/process.md"
+    mode: force
+  - source: inst-ite-recipe_revise.md
+    dest: "Steel/Recipes/revise/process.md"
+    mode: force
+  - source: inst-ite-recipe_keep-map-true.md
+    dest: "Steel/Recipes/keep-map-true/process.md"
     mode: force

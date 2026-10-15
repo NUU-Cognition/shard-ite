@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Observe (Headless)
 
-Check the claims of a program against reality now, with no person in the session. Each result goes through the one door (`flint ite claim report`, or `flint ite claim check`) into the log of this machine: you never write one into a file. The claims and the grounding are in Claims and Checks of [[knw-ite-state]]. The rules of a headless session are in [[hinit-ite]].
+Check the claims of a program against reality now, with no person in the session. The check of each claim is a process (`kept-by` of the claim). Each result goes through the one door (`flint ite claim report`, or `flint ite claim check`) into the log of this machine: you never write one into a file. The claims and the grounding are in Claims and Checks of [[knw-ite-state]]. The rules of a headless session are in [[hinit-ite]].
 
 # Input
 
@@ -22,16 +22,16 @@ Check the claims of a program against reality now, with no person in the session
 
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
-3. Read the claims: `flint ite claim list "<program>" --json` (with `--part <id>` for one part). For each claim, note its mode, its form, its parts, and its state.
-4. Sort the claims: the code checks, the agent checks, and the person checks. Keep each claim with `by: none` for the `summary`. A mirror claim (`mirror:<reference>`) has no check to run: the core computes it.
-5. Read the data that the claims read: `flint ite data list "<program>" --json`. Note each piece of data that is old, has an error, or waits for a person.
+3. Read the claims: `flint ite claim list "<program>" --json` (with `--part <id>` for one part). For each claim, note its check process, the form of the check, its parts, and its state.
+4. Sort the claims: the code checks, the agent checks, and the person checks. Keep each claim whose check is a draft only for the `summary`: it takes no result until a person applies its promote. A mirror claim (`mirror:<reference>`) has no check to run: the core computes it (its keeper is `core:review` or `core:proof`).
+5. Read the data that the checks read: `flint ite data list "<program>" --json`. Note each piece of data that is old, has an error, or waits for a person.
 6. Once the lists are complete, progress to the next stage.
 
 ## Stage 2: Run the Code Checks
 
 1. Run `flint orbh session set phase running`.
-2. Pull each external data that a claim reads and that is old: `flint ite data pull "<program>" <id> --json`. A pull only reads the source. Keep each pull that failed for the `summary`.
-3. Run each check: `flint ite claim check "<program>" <id> --json`.
+2. Pull each external data that a check reads and that is old: `flint ite data pull "<program>" <id> --json` (one run of its maker). A pull only reads the source. Keep each pull that failed for the `summary`.
+3. Run each code check: `flint ite claim check "<program>" <id> --json` (one run of the check process).
 4. Keep the counts: holds, fails, error, and the checks that could not run (with the message).
 5. Once each check is done, progress to the next stage.
 
@@ -40,7 +40,7 @@ Check the claims of a program against reality now, with no person in the session
 For each agent check:
 
 1. Set the focus on its parts.
-2. Do what its `prompt` asks, by reading only, with the values of its `reads` (`flint ite data show "<program>" <id> --json`). Do not change the world to make a claim true.
+2. Do what the `prompt` of its check process asks (`flint ite process show "<program>" check-<claim id>`), by reading only, with the values of its `reads` (`flint ite data show "<program>" <id> --json`). Do not change the world to make a claim true.
 3. Report it through the door: `flint ite claim report "<program>" <claim id> --state holds|fails|error --summary "<what you saw>" [--part <part id>] [--value <name>=<value>]... [--evidence kind=value]`. In an Orbh session, the door records you as `agent:<session id>`.
 4. Once each agent check has its result, progress to the next stage.
 
@@ -48,7 +48,7 @@ For each agent check:
 
 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[hinit-ite]]. When an item fails, go back to its stage: do not return with an item open.
 2. Read the claims again (`flint ite claim list "<program>" --json`).
-3. Write the `summary`: the counts ("9 claims hold, 2 fail, 1 error, 3 wait for a person."), then the claim that fails and matters most, with its meaning (drift for `is`, at risk for `ought` with its `fixed-by`) and what the check saw, the old data, and the pulls that failed. Do not answer a person check, and do not write a value that waits for a person: the person answers in Steel. Do not run a process. Use no `'` character.
+3. Write the `summary`: the counts ("9 claims hold, 2 fail, 1 error, 3 wait for a person."), then the claim that fails and matters most, with what the check saw and its `on_fail` (`flint ite claim show "<program>" <id> --json`: "repair by <process>" or "change the model: <keeper>"), the old data, and the pulls that failed. Do not answer a person check, and do not write a value that waits for a person: the person answers in Steel. Do not run a process. Use no `'` character.
 4. End the job with the result, and nothing else:
 
    ```bash

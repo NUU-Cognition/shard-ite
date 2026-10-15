@@ -31,7 +31,7 @@ Change one view as a person asks, with no person in the session. The person revi
 
 1. Run `flint orbh session set phase shaping`.
 2. Write a node map: `keep`, `change`, `move`, or `remove` for each node, and each new node with an id (the part id of its part, from `flint ite map "<program>" --json`, never invented; a slug for a node with no part), a kind, and links. A node keeps its id when it moves and when its title changes. To give a node with a slug its part, change its heading id to the part id and change each link to it.
-3. Keep `lifetime` as it is. Set `curation: "proposed"`.
+3. Keep `lifetime` as it is (`draft` or `accepted`): only a person accepts a view. Write no key `curation`: a view has no `curation`. Keep `kept-by` as it is when the view has it.
 4. Once the plan makes the change, progress to the next stage.
 
 ## Stage 3: Write the Candidate

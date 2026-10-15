@@ -20,7 +20,7 @@ description: "A group of steps of the process that go together, such as the revi
 fields:
   status: { type: text }
 capabilities: [has-status, container]
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], blocks: []}
 look: { hue: air, icon: layers, layer: process }
 ```
 

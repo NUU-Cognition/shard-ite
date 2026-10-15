@@ -19,7 +19,7 @@ plural: Inits
 description: "The init file or the headless init: the first file that an agent reads."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: sun, icon: book-open, layer: context }
 ```
 

@@ -19,7 +19,7 @@ plural: Rules
 description: "One rule that each workflow of the shard follows."
 fields: {}
 capabilities: []
-connections: {next: [], uses: [], depends-on: [], owner: [], informs: [], reads: [], writes: []}
+connections: {next: [], uses: [], depends-on: [], owner: [], informs: []}
 look: { hue: fire, icon: shield, layer: context }
 ```
 

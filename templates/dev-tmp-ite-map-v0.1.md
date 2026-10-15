@@ -34,7 +34,7 @@ description: "A map of Steel/Maps (format steel-map/1): the manifest map.md, the
   - api.model: the read model (SteelReadModel of flint-contracts steel-maps.ts):
       program { id, name, purpose }
       types [{ id, name, capabilities, fields, look }]   connections [{ key, title, capabilities }]
-      parts [{ id, type, title, prose, parent, fields, claims [{ id, mode, about, state, value }], grounding, note }]
+      parts [{ id, type, title, prose, parent, fields, claims [{ id, about, state, value }], grounding, note }]
       links [{ from, to, key }]
       view { id, title, question, map, slice, text, parts [<part id>...], own [{ id, title, parent }],
              titles { <node id>: <words of the heading> }, prose { <node id>: <text> },
@@ -187,7 +187,7 @@ A data map is the custom code of a large piece of data: a graph, a document, a s
   - merge:   stdin { store, snapshot, data, inputs } -> { "rows": [...] } (a blended data: join the pulled rows of
              the snapshot with the native rows of the store)
   store is the path of the store; snapshot is the newest snapshot (or null); data is the frontmatter of data.md;
-  inputs is the STEEL_DATA object of the `from` of the data. "native": true says that the store holds native
+  inputs is the STEEL_DATA object of the `reads` of the maker of the data (the process of its kept-by), or {}. "native": true says that the store holds native
   values (a data with a source is then blended).
 
   THE RULES
@@ -199,7 +199,7 @@ A data map is the custom code of a large piece of data: a graph, a document, a s
   - Test the store code with a JSON file on stdin: node data.js outputs < input.json
 */
 
-The complete example of this Flint is the data map Seating: `Steel/Maps/Seating/map.md`, `index.js`, and `data.js`. The data `seating` of Club Launch Night uses it: the names come from the sign-ups (`from`), and the table of each guest is native (`seating.json` in the store).
+The complete example of this Flint is the data map Seating: `Steel/Maps/Seating/map.md`, `index.js`, and `data.js`. The data `seating` of Club Launch Night uses it: the names come from the sign-ups (the `reads` of its maker), and the table of each guest is native (`seating.json` in the store).
 
 File: `Steel/Maps/Seating/map.md`
 
@@ -214,7 +214,7 @@ store: data.js
 ---
 # Seating
 
-This data map is a seating plan: the guests of an event at their tables. The names come from other data (the inputs of `from`). The table of each guest is native: a person decides it here.
+This data map is a seating plan: the guests of an event at their tables. The names come from other data (the `reads` of the maker of the data). The table of each guest is native: a person decides it here.
 ````
 
 The skeleton of `data.js`:

@@ -1,5 +1,5 @@
 ---
-description: "A part of an ITE program: one Mesh note of a type, with its parent, its links, its optional claims, and prose for a person, with complete examples"
+description: "A part of an ITE program: one Mesh note of a type, with its parent, its links, its keeper (kept-by), its optional pointer (points-to), and prose for a person, with complete examples of a part and of a pointer part"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/Map/(Program) [Name] . ([Type]) [Title].md
@@ -35,7 +35,17 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     blocks. Each wikilink gives one link, with the key as the connection. Use the connections of the types of the
     program (`flint ite types`). Name a link only when it is true.
   - owner: the person or the role that answers for the part, as a wikilink. Omit it when nobody owns the part.
-  - status: a short word as the person uses it: active, todo, in-progress, done, open, closed.
+  - No status: the engine reads no status of a part. Do not write status: active or status: untested. A note of a
+    type with a status of its own (a Task) keeps its status. "Untested" is computed: no claim covers the part.
+  - kept-by: optional, "process:<id>": the keeper of the part, a process of the same program that keeps the note true.
+    A part with no kept-by uses the keeper of its parent, up to the root note; the root with no kept-by uses
+    process:keep-map-true when the program has it. Write kept-by only when this part needs another keeper than its
+    parent. A keeper writes only proposals for the part (a map change, a revision, a candidate), never the note itself.
+  - points-to: optional, ONE target of the same program: "process:<id>", "data:<id>", or "view:<id>". It makes the part
+    a POINTER PART: its card on the main map shows the face of its target (a process: its jobs, its last run, and the
+    button Run; a data item: its value or its count and its state; a view: its shape and the button Open). A pointer
+    part is a normal part: the rules of the tree count it, it has a keeper, and it can have a future note. Add it with a
+    map change, as each part. A target that does not exist is the finding pointer-target-missing (error).
   - SOFTWARE ONLY (a program with codebase, see Software Programs of knw-ite-software):
     code-refs: the paths of the code of the part, relative to the codebase: a file, a small folder (ends with /),
     a symbol (path#Name), or a path of another codebase (@<Codebase name>/<path>). Name files, not large folders.
@@ -65,7 +75,6 @@ parent: "[[(Program) NAME . (TYPE) TITLE OF THE PARENT]]"
 next:
   - "[[(Program) NAME . (TYPE) TITLE OF THE NEXT PART]]"
 owner: "[[(Program) NAME . (Person) NAME OF THE OWNER]]"
-status: "active"
 template: "[[tmp-ite-part-v0.1]]"
 authors:
   - "[[@author]]"
@@ -91,7 +100,6 @@ parent: "[[(Program) Garden Share . (System) The garden]]"
 uses:
   - "[[(Program) Garden Share . (System) Tool shed]]"
 owner: "[[(Program) Garden Share . (Actor) Member on duty]]"
-status: "active"
 template: "[[tmp-ite-part-v0.1]]"
 authors:
   - "[[@Nathan]]"
@@ -101,7 +109,7 @@ authors:
 
 The garden has four raised beds behind the hall. The member on duty waters them on Tuesday and on Saturday, with the hose of the tool shed.
 
-Two claims are about this part: `beds-watered` (a person check: the member on duty answers each week) and `rain-week` (its own code reads the forecast).
+Two claims are about this part: `beds-watered` (its check is a person check: the member on duty answers each week) and `rain-week` (its check is code that reads the forecast).
 ````
 
 What the example does:
@@ -109,4 +117,29 @@ What the example does:
 - The file name gives the program, the type `Resource`, and the title. The H1 repeats the type and the title.
 - `parent` puts the beds inside the system "The garden". `uses` is a connection: each wikilink is one link.
 - `owner` names a part of the same program (an actor), so the link has a target.
-- Two claims in `Steel/Programs/Garden Share/Reality/` are about the part: `beds-watered` and `rain-week`. Each names the part by its id in `about`. The part file holds no claim and no state.
+- Two claims in `Steel/Programs/Garden Share/Reality/` are about the part: `beds-watered` and `rain-week`. Each names the part by its id in `about`, and its check process with `kept-by`. The part file holds no claim and no state.
+- The part has no `status` and no `kept-by`: its keeper is the keeper of its parent, and in the end the process `keep-map-true` of the program.
+
+## A complete example of a pointer part
+
+File: `Mesh/Programs/(Program) Garden Share/Map/(Program) Garden Share . (Process) Water the beds.md`. The card stands near the beds on the main map, and it shows the process `water-beds`: its jobs, its last run, and the button Run.
+
+````markdown
+---
+id: 9c27e1d4-5b83-4f0a-a6d2-3e81f4c07b59
+tags:
+  - "#ite/part"
+parent: "[[(Program) Garden Share . (System) The garden]]"
+points-to: "process:water-beds"
+template: "[[tmp-ite-part-v0.1]]"
+authors:
+  - "[[@Nathan]]"
+---
+
+# (Process) Water the beds
+
+The member on duty waters the four beds on Tuesday and on Saturday. The process `water-beds` sends the reminder to the member on duty the evening before.
+````
+
+- `points-to` names one target of the same program. A run from the card uses the gate of the process: the card gives no authority.
+- The pointer part is a part of the tree: it counts for the level, it can have children, and it can have a future note.

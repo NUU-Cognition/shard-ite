@@ -22,8 +22,8 @@ description: "A template of this Flint (steel-template/1): the start of a new pr
   THE BODY
   - One H1: the title of the template. One paragraph for a person: the kind of system, and when to use it.
   - "## How to model a system of this kind": the steps of the agent (create the program, propose the first level
-    of the main map as one map change, join the parts with the connections, write the claims and their processes,
-    answer the questions with views).
+    of the main map as one map change, join the parts with the connections, write the claims with their check
+    processes, the data with their makers, and the processes, answer the questions with views).
   - "## The types": one row for each type: the name, the id, and when to use it.
   - "## The connections" (optional) and "## The questions".
   - One fenced block with the info string `template`, at the end.
@@ -34,6 +34,8 @@ description: "A template of this Flint (steel-template/1): the start of a new pr
   - title, description: for a person.
   - types: the type ids of a new program, in order. Each is a type of `flint ite types`; end with note.
   - connections: the connection ids that the parts use (`flint ite types` lists them). parent is not a connection.
+    kept-by and points-to are not connections: they are fields of each part. The connections reads and writes are
+    gone: a check and a maker name their data in reads of the process, and a data note names its keeper in kept-by.
   - views: the first views of a new program: a list of { map, question }. map is a builtin shape (flow, streams,
     layers, tree, table, free, timeline, board) or the id of a map of Steel/Maps/.
   - questions: example questions that a view of this kind of system answers.
@@ -61,7 +63,7 @@ orbh-sessions:
 1. Write the root note with `flint ite create "<Name>" --template TEMPLATE-ID --purpose "<one sentence>"`.
 2. Find the first level of the main map: at most 9 parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below.
-4. Write each claim that a person can check as a claim of a part, and give it a process.
+4. Write each claim that must be true now as a claim about a part, with its check process (code, an agent, or a person).
 5. Answer the questions below with views.
 
 ## The types
