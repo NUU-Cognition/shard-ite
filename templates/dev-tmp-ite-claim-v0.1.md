@@ -110,7 +110,8 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
   - Each claim has a file and a check process. A source with a hash, the review of the nodes, and the proof of
     Orbtest are normal claims with a check of a recipe: source-unchanged (about: one reference process:<id> or
     process:<id>#<node>), review-current (reads: ["data:reviews"]), and orbtest-proof (reads:
-    ["data:orbtest-results"]). Such a check has recipe: <id> and no code of its own (knw-ite-software).
+    ["data:orbtest-results"]). Such a check has recipe: <id> and no code of its own: write both with
+    `flint ite claim new ... --recipe <id>` (knw-ite-software).
   - A check touches reality outside the model. Code that only finds a part of this program proves only that the
     model has the part: do not write it.
 
@@ -120,6 +121,10 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
     [--fresh-for <d>]` writes Reality/<id>/claim.md and the check process as a DRAFT:
     Processes/check-<id>/dev/process.md (and a stub check.js for code). The CLI is the truth: check the flags with
     `--help`.
+  - A check of a recipe: `flint ite claim new "<program>" <id> --about <ref>... --title "<the H1>" --recipe <recipe id>
+    [--every|--cron|--on <kind>] [--folder <path>]`. The draft check gets recipe: <id> and no stub code. The recipe
+    must be a check recipe (by: code or agent, no action block). --by, --runtime, --reads, --prompt, --task, and
+    --who are refused with --recipe.
   - Write the code of the check, then test it: `flint ite claim test "<program>" <id>` runs the check once, prints each
     line and its problems, and writes nothing. Then run `flint ite process check "<program>" check-<id>` and
     `flint ite claim list "<program>"`: a claim with a problem shows it.

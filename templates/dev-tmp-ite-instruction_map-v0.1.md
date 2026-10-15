@@ -57,7 +57,7 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   or missing). Write one normal claim for each mirror: Reality/<claim id>/claim.md with about:
   ["process:<id>"] for the source of the map or of its process, or ["process:<id>#<node>"] for a step whose
   own block has the source, and a check process check-<claim id> with recipe: source-unchanged and no trigger
-  (tmp-ite-claim-v0.1). The claim fails when the source changes. A process that draws the map again (an agent
+  (`flint ite claim new ... --recipe source-unchanged` writes both; tmp-ite-claim-v0.1). The claim fails when the source changes. A process that draws the map again (an agent
   that proposes the new map.md as a revision of Steel/) gets the trigger
   { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }. The key redraw is gone: a source with it
   has a problem.

@@ -93,7 +93,8 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   - source: optional. The process runs an instruction outside as one unit, so it is external: { command: "<a command
     line, with ${inputs.<name>}>" }, { path: "@<Codebase>/<path>", hash: "<sha256>" }, or { ref: "[[<a skill, a
     workflow, or a note>]]", hash: "<sha256>" } (an agent follows it). A source with a hash is a mirror. Give it one normal
-    claim with about: ["process:<id>"] and a check with recipe: source-unchanged (tmp-ite-claim-v0.1): the claim
+    claim with about: ["process:<id>"] and a check with recipe: source-unchanged (`flint ite claim new ... --recipe
+    source-unchanged`, tmp-ite-claim-v0.1): the claim
     fails when the source changes. The process that draws the mirror again (an agent that proposes the new file as a
     revision) gets the trigger { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }. The key redraw is
     gone: a source with it has a problem.
