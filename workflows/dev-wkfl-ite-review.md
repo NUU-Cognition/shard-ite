@@ -50,7 +50,7 @@ The focus of this workflow: the nodes of the job.
 
 1. Set the focus on the nodes that are not true.
 2. A view node: follow the stages of [[wkfl-ite-reshape]] for its view, with the change "Make the nodes <ids> true to the code". In the candidate, keep the `reviewed` mapping of each node that does not change, and remove it from each node that changes.
-3. A part: write one map change with the operation `edit` (a new sentence, new prose, or new `sources`: the `code-refs` of a software part), and propose it with `flint ite map change propose "<program>" --ops <file> --reason "<one sentence>"`. Change the `stories` or the `criteria` of a part with `flint ite part set "<program>" <part id> --field 'stories=["<story id>"]'`.
+3. A part: write one map change with the operation `edit` (a new sentence, new prose, or new `sources`: the `code-refs` of a software part), and propose it with `flint ite map change propose "<program>" --ops <file> --reason "<one sentence>"`. Put a change of the `stories` or the `criteria` of a part in the `fields` of the same `edit` (`"fields":{"stories":["<story id>"]}`). An agent's `flint ite part set "<program>" <part id> --field 'stories=["<story id>"]'` proposes one more map change: a person applies it.
 4. **Stage gate.** Show the person the diff of the candidate (`flint ite diff --candidate <id>`) or the preview of the map change (`flint ite map change show "<program>" <change id>`). The person applies it in the Workbench or in their own terminal. You cannot apply it.
 5. After the person applies it, the changed nodes have no review: tell the person to review them (Mark as reviewed in the Workbench, or this workflow again).
 6. Once each node is reviewed, changed, or named as not decided, the workflow is done.

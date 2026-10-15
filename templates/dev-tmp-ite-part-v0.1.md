@@ -10,7 +10,8 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
   a person's change applies at once, an agent's change is a proposal that a person applies.
   Each change of the structure (the title, the type, the parent) is a map change. Never write a new part file,
   a `parent`, or a `(Type)` word with your own tools. `flint ite part set` changes the prose and the
-  fields that are not structure.
+  fields that are not structure: a person's change writes at once, and an agent's change is a proposal (one map
+  change, `edit`) that a person applies. `flint ite link` is the same for a link.
   A note of another type (a Task, a Person) is a part when its `parent` names a part of the program: give it its
   parent with a map change (op move).
 

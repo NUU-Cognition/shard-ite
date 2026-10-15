@@ -185,8 +185,8 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Make a program | `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
 | Add one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"]` |
 | Change many parts at once | `flint ite map change propose "<program>" --ops - --reason "<text>"` |
-| Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` |
-| Link two parts | `flint ite link "<program>" <from> <to> --relation <key>` |
+| Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` (a person: it writes at once; an agent: it proposes one map change that a person applies) |
+| Link two parts | `flint ite link "<program>" <from> <to> --relation <key>` (a person: it writes at once; an agent: it proposes one map change that a person applies) |
 | See what waits for a person | `flint ite waiting` (all programs: runs, checks, values, claims that fail, and proposals, the most urgent first); `flint ite proposals ["<program>"]` (the map changes, the revisions, and the view candidates, the oldest first) |
 | Add a claim and its check | `flint ite claim new "<program>" <id> --about <ref>... --title "<title>" --by code\|agent\|person [--runtime] [--reads <ref>...] [--prompt] [--task] [--who] [--every\|--cron\|--on <kind> [--on-about <ref>]] [--fresh-for]` (the check starts as a draft; `process promote "<program>" check-<id>` proposes it for a person) |
 | Give an old program the standing process | `flint ite process new "<program>" keep-map-true --recipe keep-map-true --on task.finished --on commit.landed` |

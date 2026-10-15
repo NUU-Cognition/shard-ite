@@ -83,7 +83,7 @@ The rules of the read:
 9. **The keeper.** `kept-by: "process:<id>"` names the process that keeps the part true. A part with no `kept-by` uses the keeper of its parent, up to the root note. Write `kept-by` only when the part needs another keeper than its parent. A keeper writes only proposals for the part, never the note itself. The inspector of a part shows its keeper, with "from <parent>" when it inherits it.
 10. **A pointer part.** `points-to` makes the part a pointer to one target of the same program (see Pointer Parts).
 
-**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`.
+**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`. A person's `part set` and `flint ite link` write at once; an agent's `flint ite part set` and `flint ite link` each propose one map change (`edit`), and a person applies it.
 
 ## Types, Connections, and Templates
 
@@ -357,7 +357,7 @@ The main map has two kinds of links. The field `shown` of the connection gives t
 - **A link that shows on a click** (`shown: selected`, the default): `uses`, `depends-on`, and each other connection. The canvas shows it for the selected card and for the card below the pointer. The switch Links shows each one.
 - **A link that always shows** (`shown: always`): the builtin `refers-to`. The canvas shows it at each time, as a quiet line with a small arrow head, and as a strong line when a card at one end is selected.
 - **A person draws a `refers-to` link.** Select one card: four small dots show, one at the middle of each side. Drag from a dot to another card. The line shows at once, and Cmd+Z removes it. The inspector of the part lists the link and can remove it.
-- **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person and an agent write it at once with `flint ite link`; it is not a proposal.
+- **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person writes it at once with `flint ite link` (or a drag on the canvas). An agent's `flint ite link` proposes one map change that a person applies.
 
 Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers-to`. Add `--remove` to remove the link. A part is an id or a note name.
 

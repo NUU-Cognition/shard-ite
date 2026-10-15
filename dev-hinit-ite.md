@@ -24,7 +24,7 @@ Read your first prompt, and find your row. Each row has its own result.
 2. **Show progress.** In an Orbh session, set the phase at the start of each stage: `flint orbh session set phase <phase>`. Each workflow names its phases. With no Orbh session (no `ORBH_SESSION_ID`), skip the phase and the focus commands.
 3. **Ask no question.** When the instructions are not clear, select the reading that best helps the person, and write that reading in your result (the `summary` of a job).
 4. **A view changes only through a candidate.** Never write a file in `Views/` or in `History/` of `Steel/Programs/<P>/`. Never apply a candidate, and never discard the candidate that you return. The person reviews it in the Workbench.
-5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. `flint ite part set` changes the prose and the fields that are not structure. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return. A place of a card is not structure: `flint ite place` and `flint ite arrange` apply at once, with no proposal; never write `State/main.json` with your own tools.
+5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. An agent's `flint ite part set` (the prose and the fields that are not structure) and `flint ite link` (a link) are proposals too: each proposes one map change (`edit`) that a person applies. A person's `part set` and `link` write at once. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return. A place of a card is not structure: `flint ite place` and `flint ite arrange` apply at once, with no proposal; never write `State/main.json` with your own tools.
 6. **Review only what you compared.** `flint ite review` writes the anchor `reviewed` of a node. Run it only for a node whose text you compared with the diff of its code and of its stories after the anchor, and found true ([[hwkfl-ite-review]], [[sk-ite-check_after_task]]). When you cannot decide, do not review the node: name it in the `summary` as "review-due, not decided". Never write or edit a `reviewed` mapping with your own tools. In a candidate, copy the mapping of a node unchanged when its text and its references do not change, and remove it when they change.
 7. **Claims, data, and processes are files. Results go through the door.**
    - Start each new file with its command. The command writes the files from their forms, and it records you in the activity.
@@ -96,7 +96,7 @@ The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`
 
 | Action | Workflow | Writes |
 |---|---|---|
-| `model` | [[hwkfl-ite-model]] | One map change with the new parts (`flint ite map change propose`), and links with `flint ite link` |
+| `model` | [[hwkfl-ite-model]] | One map change with the new parts and their links (`flint ite map change propose`) |
 | `parts-add` | [[hwkfl-ite-parts_add]] | One map change with the new parts below one part |
 | `view` | [[hwkfl-ite-view]] | One candidate in `Proposals/` |
 | `reshape` | [[hwkfl-ite-reshape]] | One candidate in `Proposals/` |
