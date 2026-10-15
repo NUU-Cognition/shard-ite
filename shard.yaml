@@ -224,3 +224,15 @@ install:
   - source: inst-ite-recipe_orbtest-proof_check.js
     dest: "Steel/Recipes/orbtest-proof/check.js"
     mode: force
+  - source: inst-ite-recipe_review-current.md
+    dest: "Steel/Recipes/review-current/process.md"
+    mode: force
+  - source: inst-ite-recipe_review-current_check.js
+    dest: "Steel/Recipes/review-current/check.js"
+    mode: force
+  - source: inst-ite-recipe_source-unchanged.md
+    dest: "Steel/Recipes/source-unchanged/process.md"
+    mode: force
+  - source: inst-ite-recipe_source-unchanged_check.js
+    dest: "Steel/Recipes/source-unchanged/check.js"
+    mode: force

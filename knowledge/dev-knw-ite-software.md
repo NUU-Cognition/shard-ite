@@ -169,13 +169,13 @@ A process, its instruction map (`map.md`), or a step can be drawn from a source:
 A normal claim tells the person when a source changed. For each source with a hash:
 
 ```yaml
-# Reality/ship-mirrors-runbook/claim.md
+# Reality/ship-flint-source/claim.md (Flint Release)
 format: steel-claim/2
-id: ship-mirrors-runbook
+id: ship-flint-source                        # by custom: <process id>-source
 about: ["process:ship-flint#ship"]          # one reference: process:<id> or process:<id>#<node>
-kept-by: "process:check-ship-mirrors-runbook"
+kept-by: "process:check-ship-flint-source"
 ---
-# The step Ship mirrors the release runbook
+# The step Ship to canon mirrors @NUU Dev/src/repo/verbs.ts
 ```
 
 The check `Processes/check-<claim id>/process.md` has `recipe: source-unchanged` and no trigger. It gives one verdict: `holds` when the state is `same`; `fails` when it is `changed` (the evidence: the path or the ref, and both hashes); `error` when it is `missing`, or when the reference has no source with a hash.
