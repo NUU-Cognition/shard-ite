@@ -212,3 +212,15 @@ install:
   - source: inst-ite-recipe_keep-map-true.md
     dest: "Steel/Recipes/keep-map-true/process.md"
     mode: force
+  - source: inst-ite-recipe_orbtest-results.md
+    dest: "Steel/Recipes/orbtest-results/process.md"
+    mode: force
+  - source: inst-ite-recipe_orbtest-results_make.js
+    dest: "Steel/Recipes/orbtest-results/make.js"
+    mode: force
+  - source: inst-ite-recipe_orbtest-proof.md
+    dest: "Steel/Recipes/orbtest-proof/process.md"
+    mode: force
+  - source: inst-ite-recipe_orbtest-proof_check.js
+    dest: "Steel/Recipes/orbtest-proof/check.js"
+    mode: force
