@@ -197,7 +197,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Report a value or rows of data (an agent or a person maker) | `flint ite data report "<program>" <id> --value <json>`, or `--rows <file> --how replace\|append` |
 | Add a process | `flint ite process new "<program>" <id> --by code\|agent\|person --task "<text>" [--reads] [--every\|--cron\|--on <kind> [--on-about <ref>] [--scope any]] [--irreversible]`, or `--starter <name>` (`flint ite process starters`), or `--recipe <id>` (a shared process of `Steel/Recipes/`) |
 | Read a process in words before you change or run it | `flint ite process explain "<program>" <id>` |
-| Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing) |
+| Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing; the trigger flags replace the whole trigger, so give each trigger again) |
 | Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
 | Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
@@ -216,7 +216,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | The check after a product task | [[sk-ite-check_after_task]] |
 | Show where you work | `flint ite focus <node id>...` ([[sk-ite-focus]]) |
 
-A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `--run-by` (on `process new`, `process set`, `flow new`), `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view set`, `view remove`, `rename`, `archive`, `agent dock`.
+A person only (an agent never runs these): `map change apply|revert`, `apply --candidate`, `enable` (also `--all`), `disable`, `--run-by` (on `process new`, `process set`, `flow new`), `flow approve|refuse`, `process approve|refuse`, `revision apply|revert`, `view accept`, `view draft`, `view remove`, `rename`, `archive`, `agent dock`.
 
 The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run that failed or did not start (also a refusal of `process run`); 2 a refusal of the input, and nothing was written. The help of each verb names its exit codes.
 

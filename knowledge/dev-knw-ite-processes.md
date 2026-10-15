@@ -105,7 +105,7 @@ Only a process has a trigger: a check runs by the trigger of its check process, 
 7. **The core runs a process only by its trigger, by Run now (Check now, Pull now), or by a run.** `flint sync` does nothing for them.
 8. A trigger of a process with a map starts a run.
 9. A service on the internet cannot reach `127.0.0.1`. For now, such a source is polled.
-10. **The CLI flags of a trigger** (on `process new`, `process set`, `claim new`, and `data new`): `--every <duration>`, `--cron "<expr>"`, `--on <kind>` (repeat it for more kinds), `--on-about <ref>` (repeat it), `--scope any`, and `--manual`.
+10. **The CLI flags of a trigger** (on `process new`, `process set`, `claim new`, and `data new`): `--every <duration>`, `--cron "<expr>"`, `--on <kind>` (repeat it for more kinds), `--on-about <ref>` (repeat it), `--scope any`, and `--manual`. The flags write the schedules and at most one event trigger (its kinds share the `--on-about` refs). On `process set`, the trigger flags replace the whole trigger: read the trigger first (`flint ite process show "<program>" <id>`, the line `Triggers`), and give each old trigger again with the new one, for example `flint ite process set "Flint Release" fetch-flint --every 1h --on claim.failed --on-about claim:remote-fresh`. For two event triggers, write the list in `trigger` of a draft (`flint ite process dev`), check it with `flint ite process test "<program>" <id> --dev --dry`, and propose the promote.
 
 | Command | Result | Writes |
 |---|---|---|
@@ -179,7 +179,7 @@ effect: [canon-shipped]
 1. A step is **mirrored** when its block has `source`, or when its `does` names a process with `source`. Else it is **native**.
 2. A map with `source` in its frontmatter is **external**: each node is mirrored, the map is read-only and only for view, and a run of the process runs the source as one unit.
 3. A map is **native** when each step is native, **external** when each is mirrored, else **blended**. The mode is counted, never written. Steel shows it as a mark: "Blended: 1 of 2 steps mirrors `ndv repo ship flint ...`".
-4. **The drift of a mirror.** Each `source` with a `hash` is a mirror claim (`claim:mirror:process:<id>`, or `claim:mirror:process:<id>#<node>` for a step whose own block has the source). On each read, the core compares `hash` with the source now. A difference fails the mirror claim, and the brief lists it in `drift` with its fix: the process of `redraw` ("Run redraw-mirror?"), else the action `map-update`. The fix proposes the new drawing as a revision, and a person applies it.
+4. **The drift of a mirror.** Each `source` with a `hash` is a mirror claim (`claim:mirror:process:<id>`, or `claim:mirror:process:<id>#<node>` for a step whose own block has the source). On each read, the core compares `hash` with the source now. A difference fails the mirror claim, and the brief lists it in `fails` with its repair: the process of `redraw` ("Run redraw-mirror?"), else the action `map-update`. The fix proposes the new drawing as a revision, and a person applies it.
 
 | | Native | Blended | External |
 |---|---|---|---|

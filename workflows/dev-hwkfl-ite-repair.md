@@ -37,7 +37,7 @@ Make the model true again, with no person in the session. For each claim that fa
 ## Stage 3: Change the Model or the Check
 
 1. Run `flint orbh session set phase writing`.
-2. A wrong check: the check is a process. Make its draft (`flint ite process dev "<program>" check-<id>`), edit the draft with the form of [[tmp-ite-claim-v0.1]], test it (`flint ite claim test "<program>" <id>`), run `flint ite process check "<program>" check-<id>`, and propose its promote (`flint ite process promote "<program>" check-<id>`). Never apply the promote.
+2. A wrong check: the check is a process. Make its draft (`flint ite process dev "<program>" check-<id>`), edit the draft with the form of [[tmp-ite-claim-v0.1]], test the draft (`flint ite process test "<program>" check-<id> --dev`: the claim test tests the production check when it exists), run `flint ite process check "<program>" check-<id>`, and propose its promote (`flint ite process promote "<program>" check-<id>`). Never apply the promote.
 3. A wrong part: propose the change with one map change (`edit` for the text and the fields; `move`, `rename`, `merge` for the tree) with `flint ite map change propose`. Keep its id.
 4. A wrong claim (the system changed what must be true now): propose a revision of its `claim.md` with `flint ite revision propose "<program>" --kind steel --target "<the claim file>" --content-file <file> --reason "<why>" --trigger failed`.
 5. A wrong view node: write one candidate for the view (Stage 3 of [[hwkfl-ite-reshape]]). Write at most one candidate in this job, and return it.

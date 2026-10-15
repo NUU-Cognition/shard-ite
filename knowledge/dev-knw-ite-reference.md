@@ -204,7 +204,7 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite view history <view>` | The saved forms of one view, the newest first | Nothing |
 | `flint ite view restore <view> --from <history id> [--base-hash <hash>]` | Restores a saved form; the current form goes to the history | The view, one history file |
 | `flint ite view remove <view> [--base-hash <hash>]` | Writes the view to the history, then removes it and its candidates. It refuses an accepted view (exit 2). A decision of a person. | One history file; it removes the view |
-| `flint ite view set <view> [--lifetime draft\|accepted]` | Accepts a view, or sets it back to draft. A decision of a person. | The key `lifetime` of the view |
+| `flint ite view accept <view>`, `flint ite view draft <view>` | Accepts a view (`lifetime: accepted`), or sets it back to draft. A decision of a person. | The key `lifetime` of the view |
 | `flint ite view --candidate <id>` | The document of a candidate as the view will show it, with the proof of each node | Nothing |
 | `flint ite waiting` | All that waits for a person in all programs (runs, checks, values, claims that fail, and proposals), each with its program, its age, and its action, the most urgent first | Nothing |
 | `flint ite proposals [<program>]` | Each change that waits for a person (with no program: in each program): the map changes, the revisions, and the view candidates, the oldest first, each with its show command | Nothing |

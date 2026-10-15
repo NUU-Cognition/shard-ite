@@ -83,7 +83,7 @@ A headless product task follows the same actions, with these differences:
 
 - Ask no question. When you cannot decide if a claim is still true, do not review the node. Name it in the result as `review-due, not decided`.
 - For a view that is not true, write the candidate with Stages 1 to 4 of [[hwkfl-ite-reshape]]. Skip its last stage: do not return a `steel-result/1` value. The result of the turn is the result of the product task. Put the event id, the candidate id, the map change id, and the view in it.
-- Never apply, revert, or discard a candidate or a map change. Never enable a process. Never set a state of a future note: name the future notes that the work made true in the result (the keeper proposes their realize). Never run `flint ite view set` or `flint ite view remove`. `flint ite review` is allowed for a node of a fallback program that you compared and found true.
+- Never apply, revert, or discard a candidate or a map change. Never enable a process. Never set a state of a future note: name the future notes that the work made true in the result (the keeper proposes their realize). Never run `flint ite view accept`, `view draft`, or `view remove`. `flint ite review` is allowed for a node of a fallback program that you compared and found true.
 - Set the phase `ite-check` while the skill runs: `flint orbh session set phase ite-check`.
 
 # Output

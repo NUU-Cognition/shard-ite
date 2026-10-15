@@ -31,7 +31,7 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
     of the slice is a node of the view, also when the view has no heading for it. With no slice, the nodes are the
     headings only.
   - lifetime: draft | accepted. draft for a new view. A reshape keeps the value of the view. Only a person accepts a
-    view (Accept in the Workbench, or flint ite view set "<view>" --lifetime accepted): an agent never writes accepted.
+    view (Accept in the Workbench, or flint ite view accept "<view>"): an agent never writes accepted.
     An accepted view is a view that the person wants to keep true.
   - kept-by: optional, "process:<id>": the keeper of the view, a process of the same program. A view with no kept-by
     uses the keeper of the root note (often process:keep-map-true). A keeper changes the view only through a

@@ -190,8 +190,8 @@ The nodes of a view are its headings, and each part of its `slice` that has no h
 |---|---|---|
 | `lifetime` | `draft`, `accepted` | A new view is `draft`. A reshape keeps the value of the view. `accepted` means that the person read the view, agrees with it, and wants it kept true: the check gives `never-reviewed` for each node of an accepted view that has code or stories and no review. |
 
-- **`lifetime` is the one decision of a person about a view.** A view is `draft` until a person accepts it: `flint ite view set "<view>" --lifetime accepted`, or Accept in the Workbench. Only this key of the file changes. An agent never writes `accepted`, and it runs `flint ite view set` only when the person asks for it in the session. A view has no key `curation`.
-- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses an accepted view with `refused-state` (exit 2): "Set the view to draft first." An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
+- **`lifetime` is the one decision of a person about a view.** A view is `draft` until a person accepts it: `flint ite view accept "<view>"`, or Accept in the Workbench (`flint ite view draft "<view>"` sets it back to draft). Only this key of the file changes. An agent never writes `accepted`, and it runs `flint ite view accept` or `view draft` only when the person asks for it in the session. A view has no key `curation`.
+- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses an accepted view with `refused-state` (exit 2): "Set the view to draft first" (`flint ite view draft`). An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
 - `History/` keeps the newest 5 replaced forms of each view. An apply, a restore, and a remove write one. A direct edit of a person (with Undo) writes none.
 
 ## Maps

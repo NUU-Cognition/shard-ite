@@ -66,7 +66,7 @@ Answer one question of a person with one new view of a program. The result is a 
 
 1. Show the person: the path of the candidate, the name, the map, the answer, the outline, and each gap.
 2. Ask the person: apply, change, or discard.
-   - **Apply**: `flint ite apply --candidate <candidate-id>`. Then run `flint ite view <view_id>` and show the grounding of each node. Tell the person that the view is a `draft` until the person accepts it: the button Accept, or `flint ite view set "<view>" --lifetime accepted`. Do not accept the view for the person.
+   - **Apply**: `flint ite apply --candidate <candidate-id>`. Then run `flint ite view <view_id>` and show the grounding of each node. Tell the person that the view is a `draft` until the person accepts it: the button Accept, or `flint ite view accept "<view>"`. Do not accept the view for the person.
    - **Change**: write a new candidate with the same `view_id` and a new `id` that makes the change, verify it (Stage 5), and discard the old one with `flint ite discard --candidate <old-id>`. Then ask again.
    - **Discard**: `flint ite discard --candidate <candidate-id>`.
 3. Once the person selected apply or discard, the workflow is done.
