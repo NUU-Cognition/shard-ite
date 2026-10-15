@@ -47,15 +47,16 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     button Run; a data item: its value or its count and its state; a view: its shape and the button Open). A pointer
     part is a normal part: the rules of the tree count it, it has a keeper, and it can have a future note. Add it with a
     map change, as each part. A target that does not exist is the finding pointer-target-missing (error).
-  - SOFTWARE ONLY (a program with codebase, see Software Programs of knw-ite-software):
+  - ONLY IN A PROGRAM WITH codebase ON ITS ROOT NOTE (see Programs with a Codebase of knw-ite-software):
     code-refs: the paths of the code of the part, relative to the codebase: a file, a small folder (ends with /),
     a symbol (path#Name), or a path of another codebase (@<Codebase name>/<path>). Name files, not large folders.
     Each path must exist. The coverage reads them for a type with covers-files.
     stories: Orbtest story ids. criteria: criterion addresses <story-id>#<index> (only some criteria of a story).
-    Take them from `flint orbtest story list --root <product root>`. Never invent them.
-    reviewed: the review anchor. Only `flint ite review` writes it. Never write or edit it.
+    Take them from `flint orbtest story list --root <product root>`. Never invent them. They are plain fields: the
+    check of the claim orbtest-proof reads them.
+    No key reviewed: a review is a row of the data item reviews, and `flint ite review` writes it.
   - template, authors, orbh-sessions: the Flint conventions.
-  - The part holds no grounding, no proof, no result, no finding, and no position. A command computes these facts.
+  - The part holds no grounding, no proof state, no review, no result, no finding, and no position. A command computes these facts.
   - The part has no field claims. A claim is a folder of Steel/Programs/<Name>/Reality/ that names the part in
     its `about` ([[tmp-ite-claim-v0.1]]). One claim can be about many parts, and one part can have many claims.
   - A part says what the system is. A step of an instruction map is not a part: it is a node of the map.md of a

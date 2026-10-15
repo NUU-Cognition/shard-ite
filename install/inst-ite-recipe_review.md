@@ -10,4 +10,4 @@ task: |
 
 # Review these nodes against their code
 
-The agent compares each node with the changes of its code and its stories after its review anchor. It reviews each node that is true, and proposes a candidate (a view node) or a map change (a part) for each node that is not true.
+The agent compares each node with the changes of its code and its stories after its last review (its row in the data item `reviews`). It reviews each node that is true (`flint ite review` writes its row), and proposes a candidate (a view node) or a map change (a part) for each node that is not true.

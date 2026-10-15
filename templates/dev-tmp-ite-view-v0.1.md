@@ -60,18 +60,18 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   THE NODE BLOCK (each field is optional)
   - kind: the type id of the node (`flint ite types`). A node of a part takes the type of the part when it has no kind.
   - The heading id names the part, so the block of a node of a part names no part and holds no code.
-  - A claim of Steel/Programs/<Name>/Reality/ is about a part. The node shows the grounding and the proof of its part.
+  - A claim of Steel/Programs/<Name>/Reality/ is about a part. The node shows the grounding of its part.
   - layer: the layer of the node, when it is not the layer of its type.
   - A key whose value is a list of node ids of this view is a relation: next, uses, blocks, informs, depends-on.
     A node id is a heading id: a part id or a slug.
   - inside (the id of the parent heading), actor (who acts, one name for one actor), action, result.
   - date (map timeline, ISO date), status (map board: the column).
-  - ONLY ON A NODE WITH A SLUG ID (a software program, see Software Programs of knw-ite-software):
+  - ONLY ON A NODE WITH A SLUG ID (a program with codebase, see Programs with a Codebase of knw-ite-software):
     part: the id of the part where a step runs (from `flint ite map <program> --json`; never invented).
     code-refs: the paths of the code that the node is about (a file, a small folder, a symbol; @<Codebase>/<path>).
     stories: Orbtest story ids. criteria: criterion addresses <story-id>#<index> (only some criteria of a story).
-    reviewed: the review anchor. Only `flint ite review` writes it. In a reshape, copy it unchanged when the text
-    and the references of the node do not change; remove it when they change (part and actor count too).
+    No key reviewed: a review is a row of the data item reviews. A change of the text or of the references of the
+    node (part and actor count too) makes its review due.
     On a node of a part these fields are the error format: the part holds its code and its stories.
 
   THE EIGHT BUILTIN SHAPES
@@ -94,9 +94,9 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   - One idea for each node. A short title: two to six words.
   - The words of the person. Explain each word of the system at its first use.
   - Select, do not dump: five to fifteen nodes. Propose a split above 25. A slice selects too: keep it small.
-  - Anchor each claim: a node of a part, or (software) a node with code-refs or stories. Never invent a part id,
+  - Anchor each claim: a node of a part, or (a program with codebase) a node with code-refs or stories. Never invent a part id,
     a path, or a story id.
-  - Anchor each step of a process of a software program: part and actor (see The Anchor of a Step of knw-ite-software).
+  - Anchor each step of a process of a program with codebase: part and actor (see The Anchor of a Step of knw-ite-software).
   - Tell the truth about gaps: say in the prose when a node has no part, or its part has no process yet.
   - End with one node of kind note: what the view leaves out, and why.
 */

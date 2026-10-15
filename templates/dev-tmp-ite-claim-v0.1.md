@@ -21,7 +21,7 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
 
   THE FOLDERS
   - Steel/Programs/<Program>/Reality/<id>/claim.md — the folder name is the id of the claim. The claim folder holds
-    only claim.md. The folder of the program is the folder whose program.md has the id of the root note.
+    only claim.md. A person can put it in a folder of the sidebar (Reality/<folder>/<id>/); the id stays the same. The folder of the program is the folder whose program.md has the id of the root note.
   - Steel/Programs/<Program>/Processes/check-<id>/process.md — the check, with its code (check.js, check.py).
   - The values that the check reads are data of the program (Steel/Programs/<Program>/Data/), named in reads of the
     check process: not files in the claim folder.
@@ -107,9 +107,10 @@ description: "A claim of a program: Steel/Programs/<Program>/Reality/<id>/claim.
     old). In a run (a precondition, an effect, a wait for a claim), the engine turns holds into error when a value that
     the check reads is old, not there, or waits for a person: an old value never confirms a step or an effect.
   - A check that cannot read its source prints one error line, never an old value.
-  - Do not write a claim for a mirror. Each source with a hash and each review of a node is a mirror claim
-    (claim:mirror:<reference>) that the core computes: it has no file, and its keeper is a keeper of the core
-    (core:review or core:proof).
+  - Each claim has a file and a check process. A source with a hash, the review of the nodes, and the proof of
+    Orbtest are normal claims with a check of a recipe: source-unchanged (about: one reference process:<id> or
+    process:<id>#<node>), review-current (reads: ["data:reviews"]), and orbtest-proof (reads:
+    ["data:orbtest-results"]). Such a check has recipe: <id> and no code of its own (knw-ite-software).
   - A check touches reality outside the model. Code that only finds a part of this program proves only that the
     model has the part: do not write it.
 

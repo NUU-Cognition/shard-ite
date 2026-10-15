@@ -6,17 +6,17 @@ tags:
 
 # Software
 
-A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. The parts and the views name the code and the stories of Orbtest, so the Workbench shows the proof and the review of each node. See Software Programs of [[init-ite]].
+A software product: its systems, modules, features, and data, the people and programs that use it, and the processes that run through it. The root note names the codebase, and the parts and the views name the code and the stories of Orbtest. Normal claims test each node: `orbtest-proof` (the proof of Orbtest) and `reviews-current` (the review). See Programs with a Codebase of [[knw-ite-software]].
 
 ## How to model a system of this kind
 
 You are an agent that models one system of the kind "Software" as a program of Steel. Follow these steps:
 
-1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`. Give it `codebase` (a wikilink to the codebase marker `"[[rf-cb-<slug>]]"`) and `product-root` (the folder that holds `orbtest/`, relative to the codebase) when `orbtest/` is not at the codebase root. With no `product-root`, the program takes the Orbtest definitions of the codebase root, or has no proof when that root has none.
-2. Find the first level of the main map: at most 9 parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Give each part the `code-refs` of its code (name files, not large folders) and the `stories` of Orbtest that prove it. Propose them as one map change with `flint ite map change propose`. A person applies it.
+1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`. Give it `codebase` (a wikilink to the codebase marker `"[[rf-cb-<slug>]]"`) and `product-root` (the folder that holds `orbtest/`, relative to the codebase) when `orbtest/` is not at the codebase root. With no `product-root`, the product root is the codebase root. The field `codebase` gives the program its file coverage and its code checks.
+2. Find the first level of the main map: at most 9 parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Give each part the `code-refs` of its code (name files, not large folders) and the `stories` of Orbtest that test it. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below. A connection is a frontmatter key of a part, with a wikilink to the other part.
 4. Write each statement that must be true now as a claim about its parts (`Steel/Programs/<Name>/Reality/<id>/claim.md`, [[tmp-ite-claim-v0.1]]), with its check process (`Processes/check-<id>/`) that reads reality. A claim never states a goal, a target with a date, or a prediction. When the work of the system runs in an order that a person or an agent follows, write it as the instruction map of a process ([[tmp-ite-instruction_map-v0.1]]): steps of a run are nodes of a map, not parts.
-5. Answer the questions below with views. Each view is one map for one question. A process of the product is a view of the map `flow` or `streams`: each step names the part where it runs with `part` and who acts with `actor` (see The Anchor of a Step of [[init-ite]]).
+5. Answer the questions below with views. Each view is one map for one question. A process of the product is a view of the map `flow` or `streams`: each step names the part where it runs with `part` and who acts with `actor` (see The Anchor of a Step of [[knw-ite-software]]).
 
 Use only the types of this template. When a part fits no type, use the type `note` and tell the person.
 

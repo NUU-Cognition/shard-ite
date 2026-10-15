@@ -23,7 +23,7 @@ Write one new candidate view that answers one question of a person, with no pers
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Say the question again in one sentence. When it can have two meanings, select the meaning that best helps the person, and keep it for the `summary`. With selected nodes and no question, the question is "How do these parts work together?".
-4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a software program (template `software`), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[knw-ite-software]]), and give each node with a slug id its `code-refs` and `stories`.
+4. Read the program: `flint ite map "<program>" --json`. Keep the parts with their ids, names, types, parents, and links. For a program with a codebase (`codebase` on the root note), a process is a view of the map `flow` or `streams`: give each step its `part` and its `actor` (see The Anchor of a Step of [[knw-ite-software]]), and give each node with a slug id its `code-refs` and `stories`.
 5. Read the views that exist (`flint ite list --json`). When a view already answers the question, still write the new candidate, and name that view in the `summary`.
 6. Once you know the question and the parts that can answer it, progress to the next stage.
 

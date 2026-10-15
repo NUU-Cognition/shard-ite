@@ -23,7 +23,7 @@ Check the claims of a program against reality now, with no person in the session
 1. Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]).
 2. Run `flint orbh session set phase reading`.
 3. Read the claims: `flint ite claim list "<program>" --json` (with `--part <id>` for one part). For each claim, note its check process, the form of the check, its parts, and its state.
-4. Sort the claims: the code checks, the agent checks, and the person checks. Keep each claim whose check is a draft only for the `summary`: it takes no result until a person applies its promote. A mirror claim (`mirror:<reference>`) has no check to run: the core computes it (its keeper is `core:review` or `core:proof`).
+4. Sort the claims: the code checks, the agent checks, and the person checks. Keep each claim whose check is a draft only for the `summary`: it takes no result until a person applies its promote. A claim of a source, the claim `reviews-current`, and the claim `orbtest-proof` are normal claims with a check of a recipe: check them as each code check.
 5. Read the data that the checks read: `flint ite data list "<program>" --json`. Note each piece of data that is old, has an error, or waits for a person.
 6. Once the lists are complete, progress to the next stage.
 

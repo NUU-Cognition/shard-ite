@@ -24,7 +24,7 @@ The focus of this workflow: the root (no node).
 1. Set the focus: `flint ite focus <the part id>` ([[sk-ite-focus]]); at the root, set it when you start to work on a part.
 2. Read the level: `flint ite map show "<program>" [--focus <part>]` (the cards, the relations, the findings), `flint ite map coverage "<program>"`, and `flint ite map check "<program>"`.
 3. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id>` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does the task already, show it to the person, and ask: review it, or make a new one. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. Note `max-children` (default 9) and the product root of a software program. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+4. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
 5. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -37,7 +37,7 @@ The focus of this workflow: the root (no node).
 
 ## Stage 3: Plan the Operations
 
-1. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a type of the `types` of the root note (software: `system` for a large part), one sentence that says what the part is, and its sources (software: the folders of the part, each ending with `/`).
+1. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a type of the `types` of the root note (a program with a codebase: `system` for a large part), one sentence that says what the part is, and its sources (a program with a codebase: the folders of the part, each ending with `/`).
 2. **The 100% rule.** Together the parts cover the whole system: each top folder (or source) goes to one part. A folder that no person needs to see (a generated folder, a lock file) is not a part: name it in the result, so that the person can add it to `coverage-ignore`.
 3. **Keep the parts that exist.** When the main map has parts already, do not add a second part for one thing. Put the existing children of the root under the new parts: one `split` for each new part that groups existing parts (`parent: null`, the children are the existing parts), or `add` with an `id` and then `move`.
 4. Give an `add` an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) when a later operation of the same change names the new part.

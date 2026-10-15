@@ -25,7 +25,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 1. Set the focus: `flint ite focus <the part id>` ([[sk-ite-focus]]); at the root, set it when you start to work on a part.
 2. Read the level: `flint ite map show "<program>" [--focus <part>]` (the cards, the relations, the findings), `flint ite map coverage "<program>"`, and `flint ite map check "<program>"`.
 3. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id>` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does the task already, show it to the person, and ask: review it, or make a new one. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. Note `max-children` (default 9) and the product root of a software program. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+4. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
 5. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -40,7 +40,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 ## Stage 3: Plan the Operations
 
 1. Use only `split`, `merge`, `move`, and `rename`. Do not change sources, and do not remove parts in this job.
-2. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a type of the program (software: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
+2. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a type of the program (a program with a codebase: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
 3. **One child** (`map-single-child`): `merge` the child into its parent, or `move` siblings to it.
 4. **A marker** (`parent-missing`, `parent-outside`, `cycle`): `move` the part to its correct parent.
 5. **A part at the wrong level**: `move` it. **A title that does not say what the part is**: `rename` it. **A type that does not fit the part**: `rename` it with `kind`, the new type id (`{"op":"rename","part":"<id>","title":"<the title>","kind":"<type id>"}`). The title can stay.

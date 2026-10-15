@@ -15,9 +15,9 @@ Shards/(Source Remote) ITE/
 │   ├── dev-knw-ite-reference.md     # each term, the planes, meaning versus facts, the folders, every command
 │   ├── dev-knw-ite-programs.md      # the root note, parts, types and templates, views, maps, references, proposals, the main map, the quality rules
 │   ├── dev-knw-ite-state.md         # data and their makers, data maps, claims and their checks, which side changes when a claim fails, the one door of the results
-│   ├── dev-knw-ite-processes.md     # processes and their jobs, keepers, recipes and starters, triggers and events, instruction maps, runs
-│   ├── dev-knw-ite-loop.md          # events, the agent of a program, the plan and the realize, draft versions, the pulse, living systems, agent sessions and jobs
-│   └── dev-knw-ite-software.md      # software programs: code-refs, stories, the proof, the review, the check after a task
+│   ├── dev-knw-ite-processes.md     # processes and their jobs, keepers, the folders of the sidebar, recipes (also with code) and starters, triggers and events, instruction maps, runs
+│   ├── dev-knw-ite-loop.md          # events, the agent of a program, the plan and the realize, draft versions, the pulse, the system of each program, agent sessions and jobs
+│   └── dev-knw-ite-software.md      # programs with a codebase: code-refs, stories, the Orbtest proof, the review, the claim of a source, the check after a task
 ├── skills/
 │   ├── dev-sk-ite-focus.md          # show the person which nodes an agent works on
 │   ├── dev-sk-ite-check_after_task.md   # the end of a product task: emit task.finished, then check the parts and views that name the changed files
@@ -38,11 +38,12 @@ Shards/(Source Remote) ITE/
     ├── type-ite-<type>.md                   # the type notes (steel-type/1)
     ├── inst-ite-connection_<id>.md          # the connection notes (steel-connection/1)
     ├── inst-ite-template_<id>.md            # the six templates of a new program (Mesh/Metadata/Templates)
-    └── inst-ite-recipe_<id>.md              # the recipes: the shared processes of Steel/Recipes/<id>/process.md (the 20 agent actions and keep-map-true)
+    ├── inst-ite-recipe_<id>.md              # the recipes: the shared processes of Steel/Recipes/<id>/process.md (the 20 agent actions, keep-map-true, and the four recipes with code)
+    └── inst-ite-recipe_<id>_<file>          # the code files of a recipe with code (Steel/Recipes/<id>/<file>): orbtest-results, orbtest-proof, review-current, source-unchanged
 ```
 
 Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts the workflow of its action by name (the code of flint names each file), so keep the names.
 
 ## Origin
 
-Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task. Task 1260 (2026-10-12) made the init short: the depth moved into six knowledge files by topic, and the shard got the workflow `program_create` and the skills `process_new` and `workflow_new`. Task 1271 (2026-10-15) gave it the Steel model V2: four kernel words (model, process, data, event), claims as tests with check processes, makers as processes, keepers (`kept-by`), pointer parts, recipes, three trigger kinds, and plans with no states.
+Task 1099 of the Flint NUU Flint (2026-10-01) made the shard. Tasks 1235 and 1237 (2026-10-07 and 2026-10-08) gave it the first version of the model of Steel: one type system with the Mesh, the folder `Steel/`, processes, maps, and instruction maps, with the forms `steel-*/1`. Task 1241 (2026-10-08, version 0.4.0) folded the OrbCode shard into it: a software product is a program of the template `software`, with the proof of each node from Orbtest, the review of a node against its code, and the check after a product task. Task 1260 (2026-10-12) made the init short: the depth moved into six knowledge files by topic, and the shard got the workflow `program_create` and the skills `process_new` and `workflow_new`. Task 1271 (2026-10-15) gave it the Steel model V2: four kernel words (model, process, data, event), claims as tests with check processes, makers as processes, keepers (`kept-by`), pointer parts, recipes, three trigger kinds, and plans with no states. Task 1273 (2026-10-15) gave it nested folders for the processes, the data, and the claims, made the Orbtest proof, the review, and the claims of a source normal data, claims, and recipes with code, made `codebase` (not the template name) decide the file coverage, and made each program a living system.

@@ -1,5 +1,5 @@
 ---
-description: "The root note of an ITE program (format steel-program/1): the frontmatter, the text for a person, the optional system block of a living system (steel-system/1), and complete examples"
+description: "The root note of an ITE program (format steel-program/1): the frontmatter, the text for a person, the optional system block (steel-system/1: each program is a living system), and complete examples"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/(Program) [Name].md
@@ -18,6 +18,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
       program.md                                 id = the id of the root note
       Views/(View) <Title>.md                    one file for each view (tmp-ite-view-v0.1)
       Reality/<id>/claim.md                      one folder for each claim: only claim.md (tmp-ite-claim-v0.1)
+      Processes|Data|Reality/<folder>/<id>/      the same items in nested folders of the sidebar (a person makes them)
       Data/<id>/data.md                          one folder for each piece of data, and its native store (tmp-ite-data-v0.1)
       Processes/<id>/process.md (+ map.md)       one folder for each process: each check (check-<claim id>), each maker (make-<data id>), each keeper, and each worker (tmp-ite-process-v0.1), with its map (tmp-ite-instruction_map-v0.1) and its draft (dev/)
       Proposals/<id>.md                          map changes, view candidates, revisions (only the engines write here)
@@ -45,7 +46,8 @@ description: "The root note of an ITE program (format steel-program/1): the fron
     process:keep-map-true when the program has that process; else the program has no keeper (the finding no-keeper).
     Each part with no kept-by uses the keeper of its parent, up to the root, and each view with no kept-by uses the
     keeper of the root. A keeper writes only proposals for the notes that it keeps.
-  - codebase, product-root (software only): the codebase and the folder of the product.
+  - codebase, product-root (optional, for each template): the codebase and the folder of the product that holds
+    orbtest/. codebase decides the file coverage, the code-refs, and the code checks, not the template name.
   - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
   - The root note holds no grounding, no result, no finding, no position, and no agent.
     A command computes these facts.
@@ -55,24 +57,28 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   - One to three short paragraphs for a person: what the system is, what the map shows, and how to read it.
     Name the views that a person reads first. Say what the program leaves out.
 
-  THE SYSTEM BLOCK (optional: a living system only, format steel-system/1)
-  - A program becomes a living system with one fenced block with the info string `system`, under the H1 and the
-    first paragraph. The root note keeps `format: steel-program/1`. A program with no block is not living.
-  - Add the block only when the person wants the system watched: claims, processes that feed them, and the brief.
-  - The keys are kebab-case:
-    format: always steel-system/1.
-    owners: the wikilinks of the persons who own the system. They are the default approvers and owners.
+  THE SYSTEM BLOCK (optional, format steel-system/1)
+  - Each program is a living system: it has the brief, the vital signs, the revisions, and the governor, also with
+    no block. A program with no block has the default block.
+  - One fenced block with the info string `system`, under the H1 and the first paragraph, changes the defaults. The
+    root note keeps `format: steel-program/1`. Add the block only when a default does not fit.
+  - Each key is optional. The keys are kebab-case:
+    format: steel-system/1 (the default). Another value is an error.
+    owners: the wikilinks of the persons who own the system. They are the default approvers and owners. Default:
+      the authors of the root note.
     timezone: the IANA timezone of the system: the days and the weeks of the brief and of the code are in it. Default UTC.
     boundary: inside (a list of { name, parts }: the words of the person and the wikilinks of the parts of the map
       that cover it), outside (a list of words), unknown (a list of words), decided-by (a wikilink), decided-at
       (a quoted date), reason (one sentence). The boundary is a decision of a person: never invent it.
-    connections: a list of { to, imports, exports, via }: what crosses the boundary, and what carries it.
+    connections: a list of { to, imports, exports, via }: what crosses the boundary, and what carries it. Default
+      empty (also boundary and maps).
     maps: a list of { path, owner, standpoint, scope, detail }. path is "Map/" for the map of this program.
       standpoint is native (the actors act through this map), operator, or observer (the default).
     attention: { escalate-after, brief-since }. Default 24h for each.
     authority: { run, execute, approve, irreversible, approvers }. An actor is person:<Name>, agent:*, or
       agent:<runtime/profile>. Omit it: the owners run each instruction.
     governor: { max-runs-per-day, max-attempts-per-step, max-agent-attempts-per-day, irreversible-needs-approval }.
+      Default none.
   - Quote each date, so that YAML keeps it as text.
   - The block has no goals: a block with goals has a format finding. A claim says what must be true now; a goal or a
     plan is prose of a part (the type goal is plain text) or a future note.
@@ -129,7 +135,7 @@ The street garden has twelve members, one tool shed, and four beds. This program
 Read the view "One week in the garden" first. The program leaves out the money of the garden: the treasurer keeps it in another sheet.
 ````
 
-## A complete example of a living system
+## A complete example of a system block
 
 The root note of Flint Release in this Flint (`Mesh/Programs/(Program) Flint Release/(Program) Flint Release.md`) is the reference form. Its root, cut short:
 

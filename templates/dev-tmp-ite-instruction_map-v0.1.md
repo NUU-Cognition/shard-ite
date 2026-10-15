@@ -18,8 +18,8 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   THE GRAMMAR (the grammar of a view file)
   - The frontmatter: format "steel-flow/1"; entry (the id of the first node); exits (the ids of the nodes where a
     run ends); inputs (a list of { name, kind, required?, prompt? }; kind: text | number | boolean | choice |
-    json | date | money); source (only for an external map: { ref: "[[<note>]]", hash, redraw? } or
-    { path: "@<Codebase>/<path>", hash, redraw? } or { command: "<line>" }).
+    json | date | money); source (only for an external map: { ref: "[[<note>]]", hash } or
+    { path: "@<Codebase>/<path>", hash } or { command: "<line>" }).
   - One H1: the title. The prose after it says what the map does, in one to three sentences.
   - One H2 for each node: "## Title {#id}" (the id is a lower-case slug), the instruction for a person under it,
     and one fenced block whose info word is the kind of the node.
@@ -29,7 +29,7 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
     id; none for an exit), run (auto | manual), inputs ({ <name>: "<value>" }), outputs (a list of fields, for
     an inline step), precondition (claim ids), effect (claim ids), retry ({ max, wait }), on-fail (a node id),
     timeout, session (an agent step: the id of an earlier agent step whose session it continues, with its context),
-    source (a mirrored step: { ref | path | command, hash?, redraw? }), about (references), reads (the
+    source (a mirrored step: { ref | path | command, hash? }), about (references), reads (the
     data that the step reads). A step has no writes: a step writes a data item only when the data item names the
     process of the step in kept-by (the process of does, or the process of this map for an inline step). A node id
     runs is not allowed: process:<id>#runs is the data of the runs.
@@ -53,10 +53,14 @@ description: "An instruction map: Steel/Programs/<Program>/Processes/<id>/map.md
   All native: native. Both: blended.
 
   MIRRORS: a source with a hash (sha256 of the source text when you drew it: shasum -a 256 <file>) is a mirror.
-  The core gives it a mirror claim: claim:mirror:process:<id> for the source of the map or of its process, and
-  claim:mirror:process:<id>#<node> for a step whose own block has the source. The mirror claim fails when the
-  source changes. Its fix is the process of redraw (for example redraw-mirror: an agent that proposes the new
-  map.md as a revision of Steel/), else the action map-update. Do not write a claim for a mirror.
+  `flint ite process show "<program>" <id> --json` gives the state of each hash now (sources: same, changed,
+  or missing). Write one normal claim for each mirror: Reality/<claim id>/claim.md with about:
+  ["process:<id>"] for the source of the map or of its process, or ["process:<id>#<node>"] for a step whose
+  own block has the source, and a check process check-<claim id> with recipe: source-unchanged and no trigger
+  (tmp-ite-claim-v0.1). The claim fails when the source changes. A process that draws the map again (an agent
+  that proposes the new map.md as a revision of Steel/) gets the trigger
+  { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }. The key redraw is gone: a source with it
+  has a problem.
 
   THE HASH: the sha256 of the bytes of the source file. The file of a ref "[[<name>]]" is the Mesh note with that
   name, else the shard file with that name (for example Shards/<Shard>/workflows/<name>.md). The file of a path
@@ -115,8 +119,8 @@ does: { process: ship-to-canon }
 inputs: { head: "${inputs.head}", summary: "${write-summary.summary}" }
 precondition: [no-pull-debt, checks-on-head]
 effect: [canon-shipped]
-source: { path: "@NUU Dev/src/repo/verbs.ts", hash: "<sha256 of the file when you drew the step>", redraw: redraw-mirror }
+source: { path: "@NUU Dev/src/repo/verbs.ts", hash: "<sha256 of the file when you drew the step>" }
 ```
 ````
 
-This map is blended: the summary and the decision are native, and the step "Ship to canon" mirrors the command `ndv repo ship` (its source is the file of the command). The step has the mirror claim `claim:mirror:process:ship-flint#ship`, and its fix is the process `redraw-mirror`. The program Workflow Lab of this Flint has one map with each kind of node (`lab-flow`) and one external map (`notepad-start`).
+This map is blended: the summary and the decision are native, and the step "Ship to canon" mirrors the command `ndv repo ship` (its source is the file of the command). The claim of the mirror has `about: ["process:ship-flint#ship"]`, and its check has `recipe: source-unchanged`. The process that draws the map again has a trigger on `claim.failed` of that claim. The program Workflow Lab of this Flint has one map with each kind of node (`lab-flow`) and one external map (`notepad-start`).

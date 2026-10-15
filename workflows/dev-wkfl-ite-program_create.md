@@ -99,7 +99,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
    flint ite enable "<program>" <process id>              # or one process (a check, a maker, or a worker), with each of its triggers
    ```
 
-   When the person wants a brief, make the program living: write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; [[tmp-ite-program-v0.1]]), propose it with `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"`, and the person applies it with `flint ite revision apply "<program>" <id> --protected`.
+   Each program is a living system: the brief works at once, with the defaults. When a default does not fit (the owners, the boundary, the authority, or the governor), write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; [[tmp-ite-program-v0.1]]), propose it with `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"`, and the person applies it with `flint ite revision apply "<program>" <id> --protected`.
 
 4. Propose the next step: Run now of one process (`flint ite process run "<program>" <id>`), a view for a question, or more parts.
 5. The workflow is done.

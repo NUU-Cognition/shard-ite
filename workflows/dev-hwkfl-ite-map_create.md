@@ -20,7 +20,7 @@ The focus of this job: the root (no node).
 
 # The Operations
 
-The prompt of the job gives only the data: the level and the gaps. The form of each operation is here. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards of the prompt of the job) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a software program (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
+The prompt of the job gives only the data: the level and the gaps. The form of each operation is here. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards of the prompt of the job) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
 
 ```text
 {"op":"add","title":"<title>","kind":"<type id>","parent":"<part, or null>","sentence":"<one sentence>","prose":"<optional>","sources":["<source>"]}
@@ -47,7 +47,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 2. Run `flint orbh session set phase reading`.
 3. Read the level of the focus: the section The main map of the prompt of the job. When the prompt says that the ITE could not load the main map, run `flint ite map show "<program>" [--focus <part>] --json` and `flint ite map coverage "<program>" --json`.
 4. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id> --json` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does your task already, propose nothing: return its id with a summary that says so. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-5. Note `max-children` (default 9) and the product root of a software program. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+5. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
 6. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -61,7 +61,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 ## Stage 3: Plan the Operations
 
 1. Run `flint orbh session set phase planning`.
-2. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a type of the `types` of the root note (software: `system` for a large part), one sentence that says what the part is, and its sources (software: the folders of the part, each ending with `/`).
+2. Write 3 to `max-children` parts under the root (`parent: null`). For each: a title of two to six words in the words of the person, a type of the `types` of the root note (a program with a codebase: `system` for a large part), one sentence that says what the part is, and its sources (a program with a codebase: the folders of the part, each ending with `/`).
 3. **The 100% rule.** Together the parts cover the whole system: each top folder (or source) goes to one part. A folder that no person needs to see (a generated folder, a lock file) is not a part: name it in the result, so that the person can add it to `coverage-ignore`.
 4. **Keep the parts that exist.** When the main map has parts already, do not add a second part for one thing. Put the existing children of the root under the new parts: one `split` for each new part that groups existing parts (`parent: null`, the children are the existing parts), or `add` with an `id` and then `move`.
 5. Give an `add` an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) when a later operation of the same change names the new part.

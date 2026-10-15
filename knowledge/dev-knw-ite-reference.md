@@ -41,11 +41,11 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Main map | The tree of the parts by `parent`: what the system is. Each program has one main map. Steps of an instruction map are not parts. See The Main Map in [[knw-ite-programs]]. |
 | Level | The children of one part (or of the root) on the main map. A level holds at most `max-children` parts. |
 | Subsystem | A part of the main map with children. A person opens it by zoom. It is not a separate program. |
-| Coverage | How much of the system the parts cover: the files of the product for software, the items of the boundary for a living system. |
+| Coverage | How much of the system the parts cover: the files of the codebase for a program with `codebase` on its root note, and the items of the boundary for each program. |
 | View | One map for one question of one program: a file of `Steel/Programs/<P>/Views/`. It names its map and its slice. |
 | Map | A renderer of `Steel/Maps/`. A builtin shape (`flow`, `streams`, `layers`, `tree`, `table`, `free`, `timeline`, `board`) is a map that Steel draws natively. |
 | Node | One card on a canvas: a part, a section of a view, or a node of an instruction map. |
-| Claim | A test of reality: a statement of what must be true now. Never a goal, a target with a date, or a prediction. A folder of `Steel/Programs/<P>/Reality/` with only `claim.md` (`steel-claim/2`). It names its subjects with `about` (references), and its check with `kept-by`. |
+| Claim | A test of reality: a statement of what must be true now. Never a goal, a target with a date, or a prediction. A folder of `Steel/Programs/<P>/Reality/` (or of a folder of the sidebar in it) with only `claim.md` (`steel-claim/2`). Each claim has a file and a check process. It names its subjects with `about` (references), and its check with `kept-by`. |
 | Check | The process that keeps a claim (`Processes/check-<claim id>/`): code, an agent, or a person that reads reality for the claim. It never changes anything. |
 | Keeper | The process that keeps a note true, named in `kept-by` of the note. A part with no `kept-by` uses the keeper of its parent, up to the root; the root uses `keep-map-true`. A claim and a data item never inherit a keeper. |
 | Job | What a process does, computed from the notes that name it in `kept-by`: `check` (a claim), `maker` (a data item), `keeper` (a model note), or `worker` (nothing). |
@@ -54,17 +54,17 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Mode | Of an instruction and of data: `native` (the truth is here), `external` (the truth is outside), or `blended` (both). A claim has no mode. |
 | Grounding | The state of a part from the claims about it: `holds`, `failing`, `old`, `partial`, `unchecked`, `no-claim`. |
 | Instruction | Know-how: how to do a piece of work. Inside the model (a native step, a process) or outside (a skill, a workflow, a script of a repository, a person). |
-| Process | Everything that executes: one description, and code, an agent, or a person. It can change the world, so it needs authority. A folder of `Steel/Programs/<P>/Processes/`. It has no `kept-by` and no `writes`. |
+| Folder | A folder of the sidebar: a folder under `Processes/`, `Data/`, or `Reality/` that is not an item. Only for organization: the id and each reference of an item stay the same. See Folders in [[knw-ite-processes]]. |
+| Process | Everything that executes: one description, and code, an agent, or a person. It can change the world, so it needs authority. A folder of `Steel/Programs/<P>/Processes/` (or of a folder of the sidebar in it). It has no `kept-by` and no `writes`. |
 | Recipe | A shared process of the ITE shard: `Steel/Recipes/<id>/process.md`. A process uses it with `recipe: <id>`. The recipes are the agent actions and `keep-map-true`. |
 | Starter | A ready form that `--starter <name>` writes one time into a new process or instruction map (`flint ite process starters`, `flint ite flow starters`). |
 | Instruction map | A large instruction: the nodes of a process (steps, decisions, waits, branches, sub-maps) in order, with claims before and after each step. The file `map.md` in the folder of the process. |
 | Step | One node of an instruction map that does work: a process of the program, or an inline instruction for a person or an agent. |
-| Mirror | A thing of the model that describes a truth outside: a mirrored step, an external map, a process with a `source`, the parts of a software program. |
-| Mirror claim | The claim `claim:mirror:<reference>` that the core gives each `source` with a `hash`, and each review of a node. It holds when the source now has that hash, or when the code of the node did not change after the review. It has no file. Its keeper shows as `core:review` or `core:proof`. |
-| Software program | A program of the template `software`: the model of a software product. Its root note names its codebase, and its parts and view nodes name the code (`code-refs`) and the stories of Orbtest (`stories`, `criteria`). See Software Programs in [[knw-ite-software]]. |
+| Mirror | A thing of the model that describes a truth outside: a mirrored step, an external map, a process with a `source`, the parts of a program with a codebase. A source with a `hash` gets a normal claim with the recipe `source-unchanged` (see The Claim of a Source in [[knw-ite-software]]). |
+| Codebase | The field `codebase` of the root note: the code of the program. It decides the file coverage, the `code-refs`, and the code checks, for each template. Its parts and view nodes name the code (`code-refs`) and the stories of Orbtest (`stories`, `criteria`). See Programs with a Codebase in [[knw-ite-software]]. |
 | Code-ref | One entry of `code-refs`: a folder, a file, a symbol, a line range, or a path of another codebase |
-| Proof | The state of a node from the coverage of Orbtest: `proven`, `partial`, `unproven`, `failing`, `stale`, or `no-contract`. The core computes it at each read. It is not a claim. |
-| Review | The anchor `reviewed` of a node: a person or an agent compared the node with its code at one commit. The review is a mirror claim: it fails with `review-due` when the code, the stories, or the text of the node changed after it. |
+| Proof | The normal claim `orbtest-proof`: its check (the recipe `orbtest-proof`) reads the data `orbtest-results` (the recipe `orbtest-results`) and gives one verdict for each part. |
+| Review | A row of the data item `reviews`: a person or an agent compared the node with its code at one commit. `flint ite review` writes it. The normal claim `reviews-current` (the recipe `review-current`) fails when the code, the stories, or the text of the node changed after it. |
 | Element | Each thing of the model that a link can name: a part, a claim, a process, a node of an instruction map, the runs of a process, a piece of data, an output of data, a view |
 | Reference | The one form of a link to an element, for example `claim:rsvps-30`, `process:ship-flint#ship`, or `data:rsvps#count`. A part is its id. See References in [[knw-ite-programs]]. |
 | Data | What the system holds and measures: one value, a table, a series, or any shape. A folder of `Steel/Programs/<P>/Data/` with the data note `data.md` (`steel-data/2`). Its mode is counted from its `source`. Its keeper (`kept-by`) is its maker. |
@@ -126,11 +126,11 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 A program holds **meaning**: the root note, the parts, their prose, their types, their links, the views, the claims, the processes, and the instruction maps. A program never holds a **fact** that a command computes:
 
 - No result of a check, no state of a claim, no grounding state, no count of checks, and no time of a check.
-- No proof of a node and no state of a review. Only the review (`flint ite review`) writes the anchor `reviewed`.
+- No proof of a node and no state of a review in a note. A review is a row of the data item `reviews`, and only `flint ite review` (or a person in Steel) writes it.
 - No finding.
 - No place of a card in a note. The saved places of the main map are in `State/main.json` (see The Places of the Main Map in [[knw-ite-programs]]). A person (the canvas) or an agent writes a place with `flint ite place` and `flint ite arrange`; the engine writes the place of each new part. A place is not meaning, so a move applies at once, also for an agent. A pointer part is meaning: it is a part in the Mesh, with `points-to`.
 - No presence of an agent, and no job, dock record, or activity of an agent session.
-- No item of the brief, and no vital sign of a living system.
+- No item of the brief, and no vital sign of the system.
 - No snapshot of a pull and no calculated value: the core keeps them on this machine (`.flint/steel/data/`).
 
 **Only a command writes a result.** A check, a person, and an agent each send a result through the one door: `flint ite claim report` (or the route). Never write a result into a file of the Mesh or of `Steel/`. Never edit or remove a line of the log (`.flint/steel/logs/<program id>.jsonl`): it is a record of this machine, as the runs of Orbtest are. Never write a file of `Runs/`: only the run engine writes there. Never write the agent log (`.flint/steel/agents.jsonl`): the `flint ite` commands and the agent routes write it.
@@ -158,12 +158,13 @@ Steel/Programs/<Name>/
 ├── Processes/<process>/map.md                       # the instruction map of a large process (steel-flow/1)
 ├── Processes/<process>/dev/                         # the draft version of a process (its plan)
 ├── Data/<id>/data.md                                # one folder for each piece of data (steel-data/2), with its native store
+├── Processes|Data|Reality/<folder>/.../<id>/       # the same items in nested folders of the sidebar (a person makes them; .keep holds an empty folder)
 ├── Runs/<run id>/run.md + events.jsonl              # one folder for each run (only the run engine writes here)
 ├── Proposals/<id>.md                                # map changes (mc-*) and revisions (only the engines write them), view candidates (an agent writes them)
 ├── History/<view-slug>-<stamp>.md                   # a replaced form of a view (the newest 5 stay)
 └── State/main.json, <view id>.json                  # main.json: the saved place { x, y, parent } of each part of the main map, the viewport, and the pins; <view id>.json: the positions of a view. Only the canvas and the flint ite commands write here.
 
-Steel/Recipes/<id>/process.md                        # a recipe: a shared process of the ITE shard (the shard writes it)
+Steel/Recipes/<id>/process.md                        # a recipe: a shared process of the ITE shard (the shard writes it), with its code files (check.js, make.js) when it has code
 Steel/Maps/<Map Name>/map.md + index.js              # a map (a renderer)
 Steel/Maps/<Map Name>/map.md + index.js + data.js    # a data map (kind: data): its drawing and the code of its store
 
@@ -205,21 +206,20 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite view restore <view> --from <history id> [--base-hash <hash>]` | Restores a saved form; the current form goes to the history | The view, one history file |
 | `flint ite view remove <view> [--base-hash <hash>]` | Writes the view to the history, then removes it and its candidates. It refuses an accepted view (exit 2). A decision of a person. | One history file; it removes the view |
 | `flint ite view accept <view>`, `flint ite view draft <view>` | Accepts a view (`lifetime: accepted`), or sets it back to draft. A decision of a person. | The key `lifetime` of the view |
-| `flint ite view --candidate <id>` | The document of a candidate as the view will show it, with the proof of each node | Nothing |
+| `flint ite view --candidate <id>` | The document of a candidate as the view will show it | Nothing |
 | `flint ite waiting` | All that waits for a person in all programs (runs, checks, values, claims that fail, and proposals), each with its program, its age, and its action, the most urgent first | Nothing |
 | `flint ite proposals [<program>]` | Each change that waits for a person (with no program: in each program): the map changes, the revisions, and the view candidates, the oldest first, each with its show command | Nothing |
 | `flint ite check [<program>]` | The findings of the main map, the views, the claims, the processes, the instruction maps, the data, and the references. Exit 1 for an error finding. It runs no check and no process. | Nothing |
 | `flint ite check --candidate <id>` | The findings of one candidate only. Exit 1 for an error finding. | Nothing |
 | `flint ite check [<program>] --paths <path...> [--checkout <dir>]` | The check after a task: the findings of each part and each view that names one of the paths (see The Check After a Task in [[knw-ite-software]]) | Nothing |
-| `flint ite proof <program> [<ref>]` | The proof of each part and each view node, or of one node (see The Proof of a Node in [[knw-ite-software]]) | Nothing |
-| `flint ite review <program> <ref>... [--commit <sha>] [--show]` | Reviews nodes against their code; `--show` only reads the review of each part or view node that a reference names, not of a whole view (see The Review in [[knw-ite-software]]) | The anchor `reviewed` of each node, or nothing |
+| `flint ite review <program> <ref>... [--commit <sha>] [--show]` | Reviews nodes against their code; `--show` only reads the review of each part or view node that a reference names, not of a whole view (see The Review in [[knw-ite-software]]). It refuses a program with no data item `reviews`. | The row of each node in `reviews`, or nothing |
 | `flint ite diff [<view>] --candidate <id>` | The difference of a candidate and its view | Nothing |
 | `flint ite diff --candidate <id> --against-candidate <id>` | The difference of two candidates of one view | Nothing |
 | `flint ite apply [<view>] --candidate <id>` | Applies a candidate. A conflict writes nothing and exits 1. | The view, one history file, the candidate (`state: applied`) |
 | `flint ite discard --candidate <id>` | Discards a candidate; the view stays | The candidate (`state: discarded`) |
-| `flint ite claim list\|show\|new\|set\|check\|test\|report ...` | The claims of a program, a new claim and its draft check, a change of the claim note, Check now, the test of a check, and the one door of the results (see Claims and Checks in [[knw-ite-state]]) | The log, the claim and its check, or nothing |
-| `flint ite data list\|show\|new\|pull\|test\|set\|edit\|report\|history ...` | The data of a program and its maker, Pull now, the test of a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data in [[knw-ite-state]]) | A snapshot, a value, a store, or nothing |
-| `flint ite process list\|show\|new\|set\|run\|test\|dev\|promote\|runs\|starters ...` | The processes of a program with their jobs, a new process (`--recipe`, `--starter`), a change, Run now (`--dev`: a dev run), the test, the draft version, the promotion, and the process runs (see Processes in [[knw-ite-processes]]) | The log, a process file, a draft, a revision, or nothing |
+| `flint ite claim list\|show\|new\|set\|check\|test\|report ...` | The claims of a program with their folder paths, a new claim and its draft check (`--folder`: the claim and its check go to that folder), a change of the claim note, Check now, the test of a check, and the one door of the results (see Claims and Checks in [[knw-ite-state]]) | The log, the claim and its check, or nothing |
+| `flint ite data list\|show\|new\|pull\|test\|set\|edit\|report\|history ...` | The data of a program with their folder paths, a new data item and its maker (`--folder`), Pull now, the test of a maker, a value of a person, an edit of a store, the door, and the history of a metric (see Data in [[knw-ite-state]]) | A snapshot, a value, a store, or nothing |
+| `flint ite process list\|show\|new\|set\|run\|test\|dev\|promote\|runs\|starters ...` | The processes of a program with their jobs and their folder paths (`--folder <path>`: the processes in that folder and below), a new process (`--recipe`, `--starter`, `--folder`), a change, Run now (`--dev`: a dev run), the test, the draft version, the promotion, and the process runs (see Processes in [[knw-ite-processes]]) | The log, a process file, a draft, a revision, or nothing |
 | `flint ite process done\|fail\|approve\|refuse\|cancel <program> <run> ...` | A person ends a waiting task, approves or refuses a run, or cancels it | The log |
 | `flint ite event emit\|list\|show ...`, `event hook install\|status\|uninstall\|show` | The one door of the events, and the events with their routes (see [[knw-ite-loop]]) | The event log and the routes, or nothing |
 | `flint ite plan [show\|add\|realize] <program> ...` | The plan of a program: its future notes and its drafts. `realize` proposes one map change (full), or a partial realize with `--part -` (see [[knw-ite-loop]]) | A future note, one proposal, or nothing |
@@ -227,7 +227,9 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite triggers\|enable\|disable ...` | The triggers and the enables of the processes on this machine (see Triggers and Events in [[knw-ite-processes]]) | `.flint/steel/enabled.json`, or nothing |
 | `flint ite trigger fire <program> <trigger id> [--event <file\|->]` | Fires one trigger of an enabled process now on this machine | The log, a run |
 | `flint ite flow ...` | The instruction maps and their runs (see Instruction Maps and Runs in [[knw-ite-processes]]) | A run, or nothing |
-| `flint ite system\|log\|brief\|vitals\|prompt\|revision ...` | A living system (see Living Systems in [[knw-ite-loop]]) | The log, a revision, or nothing |
+| `flint ite move <program> <ref> --to "<path>"` | Moves one item (`process:<id>`, `data:<id>`, or `claim:<id>`) with all its files to a folder of the sidebar (`--to ""` is the top). No proposal: a person moves items, and an agent only when a person asks for it. It refuses while a run of the process (or of the keeper of the data item or the claim) is active. | The folders of `Steel/Programs/<P>/` |
+| `flint ite folder list\|new\|rename\|move\|remove <program> ...` | The folders of the sidebar: `list [--kind processes\|data\|claims]`, `new <kind> "<path>"`, `rename <kind> "<path>" "<new name>"`, `move <kind> "<path>" --to "<path>"`, `remove <kind> "<path>"` (only an empty folder). An agent changes a folder only when a person asks for it. | The folders, or nothing |
+| `flint ite system\|log\|brief\|vitals\|prompt\|revision ...` | The system of each program (see Living Systems in [[knw-ite-loop]]) | The log, a revision, or nothing |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A decision of a person. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A decision of a person. | The program folder |
 | `flint ite focus <node id>... [--program <name>]`, `flint ite focus --clear` | Sets the interface key `ite-focus` of this Orbh session; `--clear` writes an empty focus | The session interface |

@@ -42,6 +42,7 @@ event in → route by "about" → a trigger of a process (code, an agent, or a p
 8. **Never invent.** No invented id, path, URL, story id, part, or type. Say a gap in the prose: "Nobody knows this yet."
 9. **The words of the person.** Prose first: one to three short paragraphs for each part. A title of two to six words. A level of the main map holds 3 to 9 parts. The full quality rules are in [[knw-ite-programs]].
 10. **Simplified Technical English.** Short sentences, active voice, one term for one thing.
+11. **Folders are for a person.** An agent moves an item or a folder only when a person asks for it (`flint ite move`, `flint ite folder`). A folder has no meaning: no rule, count, trigger, or reference uses it.
 
 ## Where Things Live
 
@@ -53,13 +54,16 @@ Steel/Programs/<Name>/Reality/<id>/claim.md              a claim (steel-claim/2)
 Steel/Programs/<Name>/Processes/<id>/process.md          a process (steel-process/1) and its code: each check (check-<claim id>), each maker (make-<data id>), each keeper, and each worker
 Steel/Programs/<Name>/Processes/<id>/map.md              its instruction map (steel-flow/1)
 Steel/Programs/<Name>/Processes/<id>/dev/                its draft version (only a person runs it and promotes it)
+Steel/Programs/<Name>/Processes/<folder>/<id>/          the same item in a folder of the sidebar (also Data/<folder>/ and Reality/<folder>/)
 Steel/Programs/<Name>/Views/(View) <Title>.md            a view (steel-view/1)
 Steel/Programs/<Name>/Proposals/  Runs/  History/  State/   only the engines write here (an agent writes a view candidate)
-Steel/Recipes/<id>/process.md                            a recipe: a shared process of this shard (the shard writes it; never edit it)
+Steel/Recipes/<id>/process.md                            a recipe: a shared process of this shard, with its code files when it has code (the shard writes it; never edit it)
 .flint/steel/                                            the facts of this machine: logs, snapshots, events, enables, runs
 ```
 
 A part is a part when its `parent` chain reaches the root note. Its identity is its frontmatter `id`, not its folder. A reference names one element: a part is its id; the others are `claim:<id>`, `process:<id>`, `process:<id>#<node>`, `data:<id>`, `data:<id>#<output>`, and `view:<id>`. A keeper is `process:<id>` in `kept-by`; a part with no `kept-by` uses the keeper of its parent, up to the root note, and the root uses `process:keep-map-true`.
+
+A person groups the processes, the data, and the claims into nested **folders** under `Processes/`, `Data/`, and `Reality/`. A folder that holds `process.md` (or `dev/process.md`), `data.md`, or `claim.md` is an item; each other folder there is a folder of the sidebar. The id of an item is the name of its folder, and it is unique for each kind across all folders. A reference never holds a folder, and a move changes no reference. The details are in "Folders" in [[knw-ite-processes]].
 
 ## Build a Program End to End
 
@@ -80,8 +84,8 @@ Example: "Make a program for my weekly team meeting, with a process that sends t
    `--about` takes a part (its id or its title), `root`, `data:<id>`, `process:<id>`, or `view:<id>`. The command writes `Reality/agenda-exists/claim.md` and the check process `check-agenda-exists` as a draft (`Processes/check-agenda-exists/dev/`), with a stub `check.js` that gives `error` until you write the test. Write it, then `flint ite claim test "<program>" agenda-exists`. Propose the promote: `flint ite process promote "<program>" check-agenda-exists`. The claim counts only after a person applies the promote. A claim names no fix: when the world must change after a failure, give the process that repairs it the trigger `--on claim.failed --on-about claim:agenda-exists`; with no such process, the keeper of the part proposes a change of the model.
 6. **The plan.** A person decides the plan. Write a future note only in a session that a person drives, or when the prompt of a builder asks for it: `flint ite plan add "<program>" --of <part> --change change --append "<the change in one sentence>"` (the future starts as the true note). A future note has no state. It needs a part that exists, so write it after the first apply. A job agent and an engine agent write no future note: they name it in the result. The keeper reports progress with a realize proposal (`flint ite plan realize`, full or partial); a person applies it.
 7. **Check.** `flint ite check "<program>"` (no new error finding) and `flint ite pulse "<program>"`.
-8. **Living (when the person wants a brief).** Write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; the form is in [[tmp-ite-program-v0.1]]), and propose it: `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"`. A person applies it with `flint ite revision apply "<program>" <id> --protected`. Then `flint ite brief "<program>"` works.
-9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id>` (the promote of each check), `flint ite revision apply "<program>" <id> --protected` (step 8), `flint ite process set "<program>" <id> --run-by agent` (only for a process that an agent must start), and `flint ite enable "<program>" --all` (each process that is off and has no problem; or `flint ite enable "<program>" <process id>`, which enables each trigger of that process).
+8. **The system (only when the defaults do not fit).** Each program is a living system: `flint ite brief "<program>"` works at once. The `system` block of the root note is optional, and each key has a default (the owners are the `authors` of the root note, the timezone is UTC). To change a key, write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; the form is in [[tmp-ite-program-v0.1]]), and propose it: `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"`. A person applies it with `flint ite revision apply "<program>" <id> --protected`.
+9. **Hand over.** End with the list of what only the person does, each as one command: `flint ite map change apply "<program>" <change id>`, `flint ite revision apply "<program>" <id>` (the promote of each check), `flint ite revision apply "<program>" <id> --protected` (step 8, when you wrote it), `flint ite process set "<program>" <id> --run-by agent` (only for a process that an agent must start), and `flint ite enable "<program>" --all` (each process that is off and has no problem; or `flint ite enable "<program>" <process id>`, which enables each trigger of that process).
 
 ## The Forms on One Screen
 
@@ -199,7 +203,8 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Read a process in words before you change or run it | `flint ite process explain "<program>" <id>` |
 | Change a process or a map | `flint ite process set "<program>" <id> [--task] [--reads] [--cron] ...`, `flint ite flow set "<program>" <id> --steps "<list>"` (only the keys that you give; a change with a problem writes nothing; the trigger flags replace each trigger: `--add-trigger` adds one and keeps the others, and `--remove-trigger <id>` removes one) |
 | Check a process or a map (it runs nothing) | `flint ite process check "<program>" [<id>]`, `flint ite flow check "<program>" [<id>]` |
-| Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>]` |
+| Find processes | `flint ite process list "<program>" [--failing] [--waiting] [--enabled] [--never-ran] [--problems] [--by <form>] [--folder <path>]` |
+| Put an item in a folder (only when a person asks) | `flint ite move "<program>" <process:id \| data:id \| claim:id> --to "<path>"` (`--to ""` is the top); `flint ite folder list\|new\|rename\|move\|remove "<program>" ...`; `--folder <path>` on `process new`, `data new`, `claim new`, and `flow new` |
 | Test a process | `flint ite process test "<program>" <id> [--input k=v]... [--data data:<id>=<json>]... [--dry]` |
 | Add an instruction map | `flint ite flow new "<program>" <process id> --steps "<step>; <step>"` (or `--from <file>`, or a ready map: `--starter <name>` from `flint ite flow starters`), then `flint ite flow check` |
 | Start a run and follow it (a person asked) | `flint ite flow start "<program>" <process> --follow` (exit 0 done, 1 failed, 3 waits for a person), or `--to-end` (to the end, also through the waits of a person: exit 0 or 1) |
@@ -209,7 +214,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Send an event | `flint ite event emit --kind <kind> [--path <file>]... [--ref <ref>]... --summary "<text>"` |
 | Read and write the plan | `flint ite plan "<program>"`, `plan show`, `plan add`; `plan realize "<program>" <future id>` proposes one map change (full), and `--part -` proposes a partial realize (`{ "now", "rest" }` on stdin) |
 | Make a draft version of a process | `flint ite process dev "<program>" <id>`; `process promote` proposes it |
-| Make a program living | `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"` |
+| Change the system block of a program | `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"` |
 | Give a job to an agent of a program and wait for it | `flint ite job "<program>" --action <id> [--node <id>...] [--text "<text>"] --wait [minutes]` (exit 0 done, 1 failed, 2 still works, 3 waits for a person; `flint ite actions` lists the actions) |
 | Answer a question with a view | `flint ite job "<program>" --action view --text "<question>" --wait`, or [[wkfl-ite-view]] |
 | Find all problems | `flint ite check ["<program>"]` (it runs nothing) |
@@ -228,8 +233,8 @@ The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run tha
 | Write a root note, a part, a map change, a view, a candidate, a map, or a type | [[knw-ite-programs]]: parts, types, the main map and the map change, views, maps, references, proposals, the quality rules |
 | Write data, a maker, a claim, or a check | [[knw-ite-state]]: data and its modes, makers, data maps, claims, checks, which side changes when a claim fails, the one door, the grounding |
 | Write a process, a trigger, or an instruction map, or act on a run | [[knw-ite-processes]]: the jobs, the keepers, recipes and starters, the three forms, the effect, the authority, the three trigger kinds and the events, the nodes, runs |
-| Emit an event, write the plan, make a draft version, read a pulse, work in a living system, or do a job of the Workbench | [[knw-ite-loop]]: events, the agent of a program, the plan and the realize, draft versions, the pulse, living systems, agent sessions and jobs |
-| Work on a program of the template `software` | [[knw-ite-software]]: code-refs, stories, the proof, the review, the check after a task |
+| Emit an event, write the plan, make a draft version, read a pulse, work with the system of a program, or do a job of the Workbench | [[knw-ite-loop]]: events, the agent of a program, the plan and the realize, draft versions, the pulse, the system of a program, agent sessions and jobs |
+| Work on a program with a `codebase` on its root note | [[knw-ite-software]]: code-refs, stories, the Orbtest proof as a claim, the review as data and a claim, the claims of a source, the check after a task |
 | Run headless | [[hinit-ite]]: which kind of headless agent you are, and its rules and its result |
 
 ## Skills and Workflows
@@ -244,7 +249,7 @@ The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run tha
 | [[wkfl-ite-view]], [[wkfl-ite-reshape]] | A question with no view; a change of a view in words |
 | [[wkfl-ite-claim_add]], [[wkfl-ite-ground]], [[wkfl-ite-observe]], [[wkfl-ite-repair]] | One claim with its tested check; the claims of parts; check the claims now; repair what fails or is old (the world or the model) |
 | [[wkfl-ite-process_add]], [[wkfl-ite-flow_add]] | One process, or one instruction map, with the person at each stage |
-| [[wkfl-ite-review]] | Nodes of a software program have `review-due` |
+| [[wkfl-ite-review]] | Nodes of a program with a codebase have `review-due` |
 | [[sk-ite-check_after_task]] | A product task ends |
 | [[sk-ite-focus]] | Each workflow: show the person which nodes you work on |
 

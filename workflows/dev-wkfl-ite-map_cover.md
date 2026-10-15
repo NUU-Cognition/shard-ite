@@ -25,7 +25,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 1. Set the focus: `flint ite focus <the part id>` ([[sk-ite-focus]]); at the root, set it when you start to work on a part.
 2. Read the level: `flint ite map show "<program>" [--focus <part>]` (the cards, the relations, the findings), `flint ite map coverage "<program>"`, and `flint ite map check "<program>"`.
 3. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id>` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does the task already, show it to the person, and ask: review it, or make a new one. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. Note `max-children` (default 9) and the product root of a software program. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+4. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
 5. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources

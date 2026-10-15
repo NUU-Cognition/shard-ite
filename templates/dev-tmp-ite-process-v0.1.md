@@ -23,7 +23,9 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
   (tmp-ite-instruction_map-v0.1). One thing at two sizes.
 
   THE FOLDER
-  - Steel/Programs/<Program>/Processes/<id>/ — the folder name is the id of the process.
+  - Steel/Programs/<Program>/Processes/<id>/ — the folder name is the id of the process. A person can put it in a
+    folder of the sidebar (Processes/<folder>/<id>/, `flint ite move`); the id and each reference stay the same.
+    An agent moves a process only when a person asks for it. The id is unique across all folders.
   - process.md holds the description. A code process keeps its code in the same folder.
   - dev/ holds the draft version (the same files). Only a person runs it, and a person promotes it through a revision.
 
@@ -34,7 +36,11 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
     process gets each field of the recipe that it does not write. The text of a recipe can hold {{program}} (the name
     of the program), {{root-note}} (the path of the root note), and {{flint}} (the name of the Flint): the engine fills
     them. Never edit a file of Steel/Recipes/: the shard writes it again at each update. Write your own fields in the
-    process of the program. The recipes: the 20 agent actions of the Workbench (`flint ite actions`) and keep-map-true.
+    process of the program. The recipes: the 20 agent actions of the Workbench (`flint ite actions`), keep-map-true,
+    and four recipes with code: orbtest-results (a maker), orbtest-proof, review-current, and source-unchanged (checks).
+    A recipe folder can hold code files beside process.md. A process with recipe: <id> and by: code runs its entry
+    from its own folder when the file is there, else from the recipe folder (the working folder is the folder of the
+    process). Such a process needs no code of its own.
   - by: code | agent | person.
   - about: optional, the references of the elements that the process acts on: a part id (a UUID), process:<id>,
     process:<id>#<node> (a node of an instruction map), data:<id>, claim:<id>. Never a title. Quote a reference with a
@@ -86,10 +92,11 @@ description: "A process of a program: Steel/Programs/<Program>/Processes/<id>/pr
       who: optional, "person:<Name>".
   - source: optional. The process runs an instruction outside as one unit, so it is external: { command: "<a command
     line, with ${inputs.<name>}>" }, { path: "@<Codebase>/<path>", hash: "<sha256>" }, or { ref: "[[<a skill, a
-    workflow, or a note>]]", hash: "<sha256>" } (an agent follows it). A source with a hash is a mirror: the core gives
-    the process the mirror claim claim:mirror:process:<id>, which fails when the source changes. Add redraw: <process
-    id> to name the process that draws the mirror again (for example redraw-mirror: an agent that proposes the new file
-    as a revision); with no redraw, the fix is the action map-update.
+    workflow, or a note>]]", hash: "<sha256>" } (an agent follows it). A source with a hash is a mirror. Give it one normal
+    claim with about: ["process:<id>"] and a check with recipe: source-unchanged (tmp-ite-claim-v0.1): the claim
+    fails when the source changes. The process that draws the mirror again (an agent that proposes the new file as a
+    revision) gets the trigger { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }. The key redraw is
+    gone: a source with it has a problem.
     THE HASH: the sha256 of the bytes of the source file. The file of a ref "[[<name>]]" is the Mesh note with that
     name, else the shard file with that name (for example Shards/<Shard>/workflows/<name>.md). The file of a path
     "@<Codebase>/<path>" is <path> in the folder that flint resolve codebase "<Codebase>" prints. Get the hash with:

@@ -78,11 +78,11 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 5. Name each claim in the `effect` of the process that makes it true: `flint ite process set "<program>" <process id> --effect <claim id>...`. When a process repairs the world after a failure of the claim, give it the trigger on `claim.failed` of the claim (`--on claim.failed --on-about claim:<id>`). Use `--add-trigger` so that the process keeps its other triggers: `flint ite process set "<program>" <process> --add-trigger --on claim.failed --on-about claim:<claim id>`. Without `--add-trigger`, the trigger flags replace each trigger. With no such process, the keeper of the part proposes a change of the model when the claim fails.
 6. Progress to the next stage.
 
-## Stage 6: The Plan and the Living System
+## Stage 6: The Plan and the System
 
 1. Run `flint orbh session set phase plan`.
 2. Write a future note only when your prompt asks for it: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"`. A future note has no state. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. So before the person applies the first map change, put each item in the line GAPS of your result.
-3. When your prompt asks for a living system (a brief for the person), write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; the form is in [[tmp-ite-program-v0.1]]) into a file, and propose it:
+3. Each program is a living system: `flint ite brief "<program>"` works with no `system` block, with the defaults. Only when your prompt asks for other owners, a boundary, an authority, or a governor, write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; the form is in [[tmp-ite-program-v0.1]]) into a file, and propose it:
 
    ```bash
    flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"
@@ -105,7 +105,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
    WAITS FOR YOU:
    - flint ite map change apply "<program>" <change id>
    - flint ite revision apply "<program>" <revision id>   (the promote of each check: then its claim counts)
-   - flint ite revision apply "<program>" <revision id> --protected   (a living system)
+   - flint ite revision apply "<program>" <revision id> --protected   (only when you proposed a system block)
    - flint ite process set "<program>" <id> --run-by agent   (only for a process that an agent must start)
    - flint ite enable "<program>" --all   (each process and its triggers, also keep-map-true; or one process id each)
    GAPS: <what you did not know, the items for the plan, and the question for the person>
@@ -114,6 +114,6 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 # Output
 
 - One program, or one extended program
-- One map change that waits for the person, and one revision for a living system when the prompt asks for it
+- One map change that waits for the person, and one revision of the system block when the prompt asks for it
 - The data and their makers, the processes, and the claims with their checks, each tested, and one promote revision for each check
 - A result that lists each apply and each enable for the person

@@ -21,7 +21,7 @@ The focus of this job: the selected part, or the root when no node is selected.
 
 # The Operations
 
-The prompt of the job gives only the data: the level and the gaps. The form of each operation is here. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards of the prompt of the job) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a software program (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
+The prompt of the job gives only the data: the level and the gaps. The form of each operation is here. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards of the prompt of the job) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
 
 ```text
 {"op":"add","title":"<title>","kind":"<type id>","parent":"<part, or null>","sentence":"<one sentence>","prose":"<optional>","sources":["<source>"]}
@@ -48,7 +48,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 2. Run `flint orbh session set phase reading`.
 3. Read the level of the focus: the section The main map of the prompt of the job. When the prompt says that the ITE could not load the main map, run `flint ite map show "<program>" [--focus <part>] --json` and `flint ite map coverage "<program>" --json`.
 4. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id> --json` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does your task already, propose nothing: return its id with a summary that says so. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-5. Note `max-children` (default 9) and the product root of a software program. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+5. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
 6. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -64,7 +64,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 
 1. Run `flint orbh session set phase planning`.
 2. Use only `split`, `merge`, `move`, and `rename`. Do not change sources, and do not remove parts in this job.
-3. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a type of the program (software: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
+3. **Too many children** (`map-too-many-children`): group related cards into 2 to `max-children` subsystems with `split`. Each subsystem gets a title, a type of the program (a program with a codebase: `system` or `module`), and one sentence that says what it holds. Group by meaning and by the relations of the level, not by the first letter.
 4. **One child** (`map-single-child`): `merge` the child into its parent, or `move` siblings to it.
 5. **A marker** (`parent-missing`, `parent-outside`, `cycle`): `move` the part to its correct parent.
 6. **A part at the wrong level**: `move` it. **A title that does not say what the part is**: `rename` it. **A type that does not fit the part**: `rename` it with `kind`, the new type id (`{"op":"rename","part":"<id>","title":"<the title>","kind":"<type id>"}`). The title can stay.

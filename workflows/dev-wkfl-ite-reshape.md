@@ -21,7 +21,7 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
 ## Stage 1: Read the View
 
 1. Set the focus: `flint ite focus <node ids of the scope, or of the top nodes of the view>` ([[sk-ite-focus]]).
-2. Find the view file: `flint ite view <view> --json` gives `file`, `file_hash`, `program`, and each node. For a view of a software program, follow The Anchor of a Step of [[knw-ite-software]]: give each step its `part` and its `actor`, and keep the `reviewed` mapping of each node whose text and references do not change.
+2. Find the view file: `flint ite view <view> --json` gives `file`, `file_hash`, `program`, and each node. For a view of a program with a codebase, follow The Anchor of a Step of [[knw-ite-software]]: give each step its `part` and its `actor`. A node block has no `reviewed` key: a review is a row of the data item `reviews`, and a change of the text or of the references of a node makes its review due.
 3. Compute the `base_hash` before you read the file: `shasum -a 256 "<view file>"` (the first word). It must be equal to `file_hash`.
 4. Read the view file in full. Keep each heading id: a node that stays keeps its id.
 5. Say the change again in one sentence. When it can have two meanings, ask the person one question. Ask no other question in this stage.

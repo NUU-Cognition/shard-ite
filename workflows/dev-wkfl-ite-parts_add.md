@@ -20,7 +20,7 @@ The focus of this workflow: the parent part, or the root when no node is selecte
 
 # The Operations
 
-This workflow uses `add`, and `split` when the level gets too many parts. A map change is one JSON array of operations. They apply in order. Name a part by its id or by its note name. `parent: null` is the root note. `kind` is a type id of the program. `sources` are the `code-refs` of a software program, else wikilinks or URLs.
+This workflow uses `add`, and `split` when the level gets too many parts. A map change is one JSON array of operations. They apply in order. Name a part by its id or by its note name. `parent: null` is the root note. `kind` is a type id of the program. `sources` are the `code-refs` of a program with a codebase, else wikilinks or URLs.
 
 ```text
 {"op":"add","title":"<title>","kind":"<type id>","parent":"<part, or null>","sentence":"<one sentence>","prose":"<optional>","sources":["<source>"]}

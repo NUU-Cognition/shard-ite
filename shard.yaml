@@ -6,7 +6,7 @@ source:
 version: "0.4.1"
 name: ITE
 shorthand: ite
-description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, claims with checks that read reality, processes and instruction maps that run, and for software the proof and the review of each node"
+description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, claims with checks that read reality, processes and instruction maps that run, nested folders of processes, data, and claims, and recipes with code for the Orbtest proof, the review, and the claim of a source"
 dependencies:
   "@nuucognition/flint": "^0.4"
 

@@ -20,12 +20,12 @@ Read this file before you write a root note, a part, a map change, a view, a can
 | `types` | The type names that the program uses, for example `[Goal, Milestone, Risk]` |
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
 | `main-map` | Optional: `max-children` and `coverage-ignore` (see The Main Map) |
-| `codebase`, `product-root` | Software only: the codebase and the folder of the product that holds `orbtest/` (see Software Programs in [[knw-ite-software]]) |
+| `codebase`, `product-root` | Optional, for each template: the codebase and the folder of the product that holds `orbtest/`. `codebase` decides the file coverage, the `code-refs`, and the code checks (see Programs with a Codebase in [[knw-ite-software]]) |
 | `kept-by` | Optional: `"process:<id>"`, the keeper of the root note. With no `kept-by`, the root uses `process:keep-map-true` when the program has it; else the program has no keeper (the finding `no-keeper`). Each part and each view with no `kept-by` uses the keeper of the root. |
 | `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
 | `template`, `authors`, `orbh-sessions` | The Flint conventions |
 
-A living system adds one fenced `system` block to the body (see Living Systems in [[knw-ite-loop]]).
+Each program is a living system. An optional fenced `system` block in the body changes the defaults of the system (see Living Systems in [[knw-ite-loop]]).
 
 Example (the program Club Launch Night of this Flint):
 
@@ -179,7 +179,7 @@ The body:
 1. One H1: the name of the view. The prose after it answers the question in one to three sentences.
 2. Each H2 to H6 heading ends with a stable id. A node that stands for a part has the part id as its heading id: `## Doors open {#66d9ddb1-384a-46d7-ae27-1d4061868b88}`. A node with no part has a slug id: `## Set up the hall {#set-up}`, and the check says so (`anchor-missing`).
 3. Depth is containment. A section with one fenced block `node` is a node. A section with no block is a group, or the node of its part.
-4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). A node with a slug id can also have `part` (the id of the part where a step runs: see The Anchor of a Step in [[knw-ite-software]]), `code-refs`, `stories`, and `criteria` (see Software Programs in [[knw-ite-software]]), and `reviewed` (only the review writes it: see The Review in [[knw-ite-software]]).
+4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). A node with a slug id can also have `part` (the id of the part where a step runs: see The Anchor of a Step in [[knw-ite-software]]), `code-refs`, `stories`, and `criteria` (see Programs with a Codebase in [[knw-ite-software]]). A node block has no `reviewed`: a review is a row of the data item `reviews` (see The Review in [[knw-ite-software]]).
 5. A node of a part names no part and holds no code: its heading id names the part, and the part holds its code and its stories. `part`, `code-refs`, `stories`, or `criteria` in the block of a node of a part is the error `format`: "The part holds its code and its stories."
 
 The nodes of a view are its headings, and each part of its `slice` that has no heading (with the title and the prose of the part). A node of a part shows the type, the note, the fields, and the grounding of the part: the grounding comes from the claims about the part. The prose of the view stays under the part id, so it survives each refactor of the main map.
@@ -188,7 +188,7 @@ The nodes of a view are its headings, and each part of its `slice` that has no h
 
 | Field | Values | Rule |
 |---|---|---|
-| `lifetime` | `draft`, `accepted` | A new view is `draft`. A reshape keeps the value of the view. `accepted` means that the person read the view, agrees with it, and wants it kept true: the check gives `never-reviewed` for each node of an accepted view that has code or stories and no review. |
+| `lifetime` | `draft`, `accepted` | A new view is `draft`. A reshape keeps the value of the view. `accepted` means that the person read the view, agrees with it, and wants it kept true: the check gives `never-reviewed` for each node of an accepted view that has code or stories and no row in the data item `reviews`. |
 
 - **`lifetime` is the one decision of a person about a view.** A view is `draft` until a person accepts it: `flint ite view accept "<view>"`, or Accept in the Workbench (`flint ite view draft "<view>"` sets it back to draft). Only this key of the file changes. An agent never writes `accepted`, and it runs `flint ite view accept` or `view draft` only when the person asks for it in the session. A view has no key `curation`.
 - **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses an accepted view with `refused-state` (exit 2): "Set the view to draft first" (`flint ite view draft`). An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
@@ -223,7 +223,6 @@ Each link of the model names one **element** with one form, the **reference**. S
 |---|---|
 | A part | `<part id>` (no prefix) |
 | A claim | `claim:<id>` |
-| A mirror claim | `claim:mirror:<reference of the mirrored process or node>`, for example `claim:mirror:process:ship-flint#ship`. The review of a node: `claim:mirror:<part id>` or `claim:mirror:view:<view id>#<node id>` |
 | A process | `process:<id>` |
 | A node of an instruction map | `process:<id>#<node>` |
 | The runs of a process (data that the core makes) | `process:<id>#runs` |
@@ -246,13 +245,13 @@ A person changes a view directly (the Workbench, or by hand). **An agent changes
 1. The candidate id is `<view-slug>-<UTC yyyymmdd-hhmmss>`. The view slug is the H1 in lower case, with each run of other characters than `a-z` and `0-9` replaced by one `-`.
 2. A new view: `view_id` is a new UUID, `id` is a second new UUID, `base_hash: null`.
 3. A reshape: `view_id` is the `id` of the view, `id` is a new UUID, and `base_hash` is the SHA-256 hex of the bytes of the view file (`shasum -a 256 "<view file>"`), computed before you read the view.
-4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate. `flint ite diff` names each changed node with the kinds of its change: `title`, `claim` (the text, or a field that is not a reference, for example `actor`), `contract` (`part`, `code-refs`, `stories`, or `criteria`), `links`, and `level`. `flint ite view --candidate <id>` shows the candidate as the view will show it, with the proof of each node, and `flint ite diff --candidate <id> --against-candidate <id>` compares two candidates of one view.
+4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate. `flint ite diff` names each changed node with the kinds of its change: `title`, `claim` (the text, or a field that is not a reference, for example `actor`), `contract` (`part`, `code-refs`, `stories`, or `criteria`), `links`, and `level`. `flint ite view --candidate <id>` shows the candidate as the view will show it, and `flint ite diff --candidate <id> --against-candidate <id>` compares two candidates of one view.
 5. The apply (`flint ite apply --candidate <id>`, or the Workbench) replaces the view only when the hash of the view file is `base_hash`, and writes the replaced form to `History/`. A conflict writes nothing. The apply and the discard keep the candidate file: they set `state: applied` or `state: discarded`.
 6. In an interactive session, apply only when the person agrees. In a headless session, never apply and never discard the candidate that you return.
 
 ## The Main Map
 
-The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it by zoom in the Workbench. The views of the program name the parts of the main map by their ids. For a software program, the code is the sources of the parts (`code-refs`).
+The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it by zoom in the Workbench. The views of the program name the parts of the main map by their ids. For a program with a codebase, the code is the sources of the parts (`code-refs`).
 
 ### The Tree
 
@@ -260,7 +259,7 @@ The **main map** of a program is the tree of its parts by `parent`. Each program
 - **The 100% rule.** The children of a part together are the whole part: each source of the part belongs to one child. Nothing of the system is outside the tree, and nothing is in it two times.
 - **The size limit.** A level holds at most `max-children` parts (default 9). A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
 - **Relations are free, and they roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
-- **Coverage.** Software (a part of a type with `covers-files`, in a program with `codebase`): each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. A living system: each item of `boundary.inside` is covered when one of its `parts` names a part. Another program: the coverage is not computed.
+- **Coverage.** A program with `codebase` on its root note (a part of a type with `covers-files`), for each template: each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. Each program: each item of `boundary.inside` is covered when one of its `parts` names a part.
 - **Views name parts by id.** A view node that stands for a part has the part id as its heading id. Each part lists the view nodes that look at it.
 
 The configuration is in the frontmatter of the root note. Each key is optional:
@@ -298,7 +297,7 @@ In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and
 
 Each change of the tree is a **map change** (`steel-map-change/1`): one file `Steel/Programs/<P>/Proposals/mc-<yyyymmdd-hhmmss>-<slug of the reason>.md`, with the list of operations, the hash of each file at the propose, and a preview of the tree before and after. Only the change engine writes a map change.
 
-The operations are one JSON array. They apply in order. A part is named by its id, its note name, or a unique title. `parent: null` is the root. `kind` is a type id. `sources` are the `code-refs` of a software program, else the `sources` of the part (wikilinks or URLs).
+The operations are one JSON array. They apply in order. A part is named by its id, its note name, or a unique title. `parent: null` is the root. `kind` is a type id. `sources` are the `code-refs` of a program with a codebase, else the `sources` of the part (wikilinks or URLs).
 
 | Operation | The JSON | What it does |
 |---|---|---|

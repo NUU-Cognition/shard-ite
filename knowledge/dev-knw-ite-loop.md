@@ -1,5 +1,5 @@
 ---
-description: "The loop of a program: the four kernel words, events and their routes, the event triggers, the standing process keep-map-true and the agent of the program, the plan of future notes with no state and the realize, draft versions, the pulse, living systems (the brief, the vital signs, revisions, authority), and agent sessions with their jobs (each action is a recipe) and focus"
+description: "The loop of a program: the four kernel words, events and their routes, the event triggers, the standing process keep-map-true and the agent of the program, the plan of future notes with no state and the realize, draft versions, the pulse, living systems (each program is one: the brief, the vital signs, revisions, authority), and agent sessions with their jobs (each action is a recipe) and focus"
 ---
 
 # Knowledge: The Loop of a Program
@@ -95,7 +95,7 @@ When a Flint server runs, the CLI sends the event to it. With no server, the CLI
 The ITE routes an event by what it is about, not by a URL. An event goes to each program that it is about:
 
 1. A reference names a part or an element of the program.
-2. A path is covered by the `code-refs` of a part of a software program. The router uses the matcher of `flint ite check --paths`.
+2. A path is covered by the `code-refs` of a part of a program with a codebase. The router uses the matcher of `flint ite check --paths`.
 3. A task title names a part of the program (a task can be a part).
 
 In each program that matches, the event starts each process whose event trigger matches it (see The Event Trigger). A process with `scope: any` gets each event of its kind, also with no match. One event can go to many programs: a changed file can touch Flint, CLI Core, and Plate SDK. The agent of each program proposes its own change.
@@ -233,7 +233,7 @@ An agent can write the files of a draft version. It never starts a dev run by a 
 
 ## The Pulse
 
-The pulse is what a person reads first about a program, also when the program is not a living system.
+The pulse is what a person reads first about a program.
 
 ```ts
 type SteelPulse = {
@@ -252,12 +252,12 @@ type SteelPulse = {
 ```
 
 1. `flint ite pulse "<program>" [--json]` and `GET /api/steel/programs/:id/pulse` give the pulse. Both write nothing.
-2. The brief of a living system gets two more sections from the same read: **the plan** and **the machinery**.
+2. The brief of a program gets two more sections from the same read: **the plan** and **the machinery**.
 3. The pulse monitors the machinery of the loop. It gives the age of the map, the runs of the standing process, the share of proposals that a person applied, and the age of the oldest future note. Read it before you start the work of a program.
 
 ## Living Systems
 
-A **living system** is a system whose actors act through its own model: each claim shows its check process and the age of its newest result, each process shows its runs, and a step with an effect stays pending until a check confirms the effect. A program becomes a living system when its root note has one `system` block. A program with no block has no brief and no vital signs.
+A **living system** is a system whose actors act through its own model: each claim shows its check process and the age of its newest result, each process shows its runs, and a step with an effect stays pending until a check confirms the effect. Each program is a living system. The `system` block of the root note is optional: a program with no block has the default block, and each program has a brief and vital signs.
 
 Steel is the tool through which a person constructs a living system, reads it, runs it, and develops it. The code keeps the name `ite` (`flint ite`, the page `/ite`). In this Flint, the program Flint Release is the first living system: read its root note, its claims in `Steel/Programs/Flint Release/Reality/`, and its processes (the checks, the makers, the workers) and instruction maps in `Steel/Programs/Flint Release/Processes/` as the reference forms.
 
@@ -309,7 +309,7 @@ No file holds a result, a state of a claim, an item of the brief, or a vital sig
 
 ### The System Block (`steel-system/1`)
 
-One fenced ` ```system ` YAML block in the root note, under the H1 and the first paragraph. The keys are kebab-case.
+One fenced ` ```system ` YAML block in the root note, under the H1 and the first paragraph. The block is optional, and each key is optional. Write the block only when a default does not fit. The keys are kebab-case.
 
 ````markdown
 ```system
@@ -332,19 +332,19 @@ governor: { max-runs-per-day: 3, max-attempts-per-step: 3, max-agent-attempts-pe
 ```
 ````
 
-1. `format` is required. Another value gives the finding `system-invalid`, and the program is not living.
+1. `format` is `steel-system/1` (the default). Another value gives the finding `system-invalid`.
 2. The block has no `goals`: a block with `goals` has the finding `system-invalid`. A claim says what must be true now; a goal is the prose of a part (the type `goal` is plain text), and a plan is a future note.
 3. Each wikilink in `boundary.inside[].parts` is a part of the program. A boundary item with no part shows as unwatched.
-4. The defaults: `timezone` `UTC`, `escalate-after` and `brief-since` `24h`, `authority` null (the owners run each process), `governor` null.
+4. The defaults: `owners` the `authors` of the root note, `timezone` `UTC`, `escalate-after` and `brief-since` `24h`, `boundary`, `connections`, and `maps` empty, `authority` null (the owners run each process), `governor` null.
 5. A prose edit of the root note keeps the block. Only a revision changes the block.
 
 ### The Brief and the Vital Signs
 
-The brief is the centre of a living system in Steel. It has five sections, in this order:
+The brief is the centre of a program in Steel. It has five sections, in this order:
 
 | Section | Items |
 |---|---|
-| `fails` | A claim that fails, with its `on_fail`: "repair by <process>" (a process with an event trigger on its `claim.failed`) or "change the model: <keeper>"; a mirror claim that fails (with its redraw); and external data whose last pull gave "The source changed its shape" |
+| `fails` | A claim that fails, with its `on_fail`: "repair by <process>" (a process with an event trigger on its `claim.failed`) or "change the model: <keeper>" (the claim of a source and the claim `reviews-current` are normal claims too); and external data whose last pull gave "The source changed its shape" |
 | `old` | A claim whose newest result is older than its `fresh-for`, a claim that is old because a value that its check reads is old, and data whose value is old or whose last pull failed (with Pull now) |
 | `unwatched` | A part that no claim is about, a claim whose check is a draft only, a boundary item with no part, and external data that nothing reads (no `reads` of a process) |
 | `pending` | A person check, an approval, an effect that waits for its check, a task of a person, a revision that waits (also a promote), and data that waits for a person maker ("Write the value") |
@@ -364,7 +364,7 @@ The vital signs come from the results and the runs, each on its own. There is no
 
 ### Revisions
 
-A revision is a candidate change of one file of the system: a file in `Steel/Programs/<P>/Proposals/` (`steel-revision/1`). `flint ite revision propose` writes it, with the kind `part`, `system`, or `steel`, and the trigger `person` or `failed`. The promote of a draft (`flint ite process promote`) is a revision of the kind `steel` too. The kind `steel` targets a model file of the program in `Steel/Programs/<P>/`: `Processes/<id>/map.md`, `Processes/<id>/process.md`, `Reality/<id>/claim.md`, or `Data/<id>/data.md`. A process that keeps an instruction up to date (for example `redraw-mirror`) proposes its new file this way; only a person applies it.
+A revision is a candidate change of one file of the system: a file in `Steel/Programs/<P>/Proposals/` (`steel-revision/1`). `flint ite revision propose` writes it, with the kind `part`, `system`, or `steel`, and the trigger `person` or `failed`. The promote of a draft (`flint ite process promote`) is a revision of the kind `steel` too. The kind `steel` targets a model file of the program in `Steel/Programs/<P>/`: `Processes/<id>/map.md`, `Processes/<id>/process.md`, `Reality/<id>/claim.md`, or `Data/<id>/data.md`. A process that keeps an instruction up to date (it draws the map again when the claim of its source fails) proposes its new file this way; only a person applies it.
 
 1. **The targets:** the root note, a part file, a new part file, and (kind `steel`) a model file of the program in `Steel/`.
 2. **The check** reads the whole system with the new bytes in place. A finding of the level error stops the apply.
@@ -385,11 +385,11 @@ The refusals: `not-allowed` (the actor is not in `run`), `needs-approval`, `gove
 4. **Only commands write facts.** Never write the log or a run by hand. Report a result with `flint ite claim report`.
 5. **The core runs a check or a process only by its trigger, by Check now or Run now, or by a run.** A trigger runs only on a machine where a person enabled it.
 6. **An agent never decides for a person.** It never approves, refuses, waives, enables, or answers a decision of a person, and it never acts on the world unless the step that it does says so.
-7. **The links decide the direction.** When a claim fails, a process with an event trigger on its `claim.failed` repairs the world; else the keeper of its subject proposes a change of the model. A mirror follows the world. A native map directs it.
+7. **The links decide the direction.** When a claim fails, a process with an event trigger on its `claim.failed` repairs the world; else the keeper of its subject proposes a change of the model. A map drawn from a source follows the world. A native map directs it.
 
-### The Commands of a Living System
+### The Commands of the System
 
-Each command takes `--json`. `<program>` is the name or the id of a program with a system block. A program with no block refuses each command but `flint ite system` with `not-living`.
+Each command takes `--json`. `<program>` is the name or the id of a program. Each command works for each program, also for a program with no system block.
 
 | Command | Result | Writes |
 |---|---|---|
@@ -404,7 +404,7 @@ Each command takes `--json`. `<program>` is the name or the id of a program with
 | `flint ite revision propose "<program>" --kind part\|system\|steel --target <file> --content-file <path> --reason "<text>" [--trigger person\|failed] [--base-hash <h>]` | Proposes a revision | `Proposals/` |
 | `flint ite revision apply\|revert "<program>" <id> [--protected]`, `discard "<program>" <id>` | Applies, reverts, or discards a revision | The target, `Proposals/` |
 
-The claims, the data, the processes, the triggers, and the runs of a living system use the commands of Claims and Checks and of Data ([[knw-ite-state]]), and of Processes, Triggers and Enables, and Instruction Maps and Runs ([[knw-ite-processes]]).
+The claims, the data, the processes, the triggers, and the runs of a program use the commands of Claims and Checks and of Data ([[knw-ite-state]]), and of Processes, Triggers and Enables, and Instruction Maps and Runs ([[knw-ite-processes]]).
 
 ## Agent Sessions and Jobs
 
