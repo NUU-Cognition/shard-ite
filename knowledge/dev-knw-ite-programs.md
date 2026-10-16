@@ -19,7 +19,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 | `status` | `active` or `archived` |
 | `types` | The type names that the program uses, for example `[Goal, Milestone, Risk]` |
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
-| `main-map` | Optional: `max-children` and `coverage-ignore` (see The Main Map) |
+| `main-map` | Optional: `max-children`, `coverage-ignore`, and `card-face` (see The Main Map) |
 | `codebase`, `product-root` | Optional, for each template: the codebase and the folder of the product that holds `orbtest/`. `codebase` decides the file coverage, the `code-refs`, and the code checks (see Programs with a Codebase in [[knw-ite-software]]) |
 | `kept-by` | Optional: `"process:<id>"`, the keeper of the root note. With no `kept-by`, the root uses `process:keep-map-true` when the program has it; else the program has no keeper (the finding `no-keeper`). Each part and each view with no `kept-by` uses the keeper of the root. |
 | `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
@@ -271,7 +271,10 @@ main-map:
     - orbtest/
     - "**/test/"           # a folder of that name at any depth
     - "**/package.json"    # a file name at any depth
+  card-face: sentence      # optional (Task 1275): what each card shows under its title: title (the default), sentence, or field:<key>
 ```
+
+A `card-face` that is not a face is a `format` finding (warning), and each card shows the face `title`. A card can name its own face (see The Places of the Main Map).
 
 In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and `{a,b}` is one of the words.
 
@@ -323,6 +326,9 @@ The main map is manual: each card stays where a person or an agent puts it.
 
 - **A saved place.** Each part has one place in `Steel/Programs/<P>/State/main.json`: `positions[<part id>] = { x, y, parent }`. The place is the top left corner of the box of the part, relative to the **room** of its parent: in a group, the room inside the group box (below its title row); at the top of the root or of a layer, the canvas of that level. `parent` is the parent that the place is for (null: the top of the root). A place for another parent than the parent of the part now is old: the part shows at the place of a new card.
 - **A group or a layer.** A part with children is a group (a box on the level of its parent, with its parts inside) or a layer (one card that a person enters). The field `map-mode` of the note (`group` or `layer`) gives the mode; with no field, a part with at most 9 parts and 2 levels below it is a group, and a larger part is a layer. The size of a group follows its parts.
+- **A saved size (Task 1275).** A person resizes a box on the canvas: the handles at the right side, the bottom, and the corner of the one selected box. The size is in the same position: `positions[<part id>] = { x, y, parent, w, h }`. It snaps to the grid of 8, and it is at least 128 × 40. A card and the card of a layer have their saved size. For a group, the saved size is the smallest size: the box is the larger of the saved size and the size of its parts, so a part never falls out of its box. "Reset the size" in the menu of a card removes it.
+- **The face of a card (Task 1275).** What a card shows under its title: `title` (the title and the type only; at a large zoom, one line of its text), `sentence` (the first line of the text of the part), or `field:<key>` (one field of the note, as `<key>: <value>`). A card has the face of its position (`face`), else `card-face` of the `main-map` block of the root note, else `title`. A group shows its face in its title row. One line fits in a card of the default size; a taller card shows more lines. "What the card shows…" in the menu of a card sets the face of the selected cards. The switch "Card text" of the menu Show hides the faces for this person only (the browser keeps it).
+- **The size and the face belong to the part.** A move keeps them, also to another parent. A layout write keeps `w`, `h`, and `face` when it does not name them, and `null` removes one.
 - **Only a person or an agent moves a card.** Nothing pushes a card, and two cards can overlap. The canvas of the Workbench and `flint ite place` write one place. A place is not meaning: it is in `State/`, not in the Mesh, so a move applies at once, also for an agent. It is not a proposal.
 - **The place of a new card.** The engine calculates only the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts (an add, a move, a split, a merge, a removal), and when a revision of a part file applies or reverts, each part with no saved place for its parent now gets that place in the same lock. A new part that the canvas adds at a position keeps that position. Each other place stays.
 - **Arrange runs only when a person or an agent asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself.
@@ -332,6 +338,7 @@ The main map is manual: each card stays where a person or an agent puts it.
 | `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` (no saved place for its parent now). `--deep` adds each level below, indented. | Nothing |
 | `flint ite place <program> <part> --at <x>,<y>` | Sets the place of one part, relative to the room of its parent. The place snaps to the grid of 8. In a group, a negative value is 0. | `State/main.json` |
 | `flint ite place <program> <part> --near <part> [--side right\|below]` | Puts one part beside a part with the same parent (default: to its right). A part of another parent is refused. | `State/main.json` |
+| `flint ite place <program> <part> --size <w>,<h>\|auto [--face <face>\|default]` | Task 1275. Sets the size of the box of one part (a group: its smallest size), or `auto` removes the saved size; `--face` sets the face of its card (`title`, `sentence`, `field:<key>`), or `default` gives it the face of the program. The part keeps its place. `places` shows each size and face. | `State/main.json` |
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep]` | One Arrange of the parts of `--in` (default: the top of the root). `--only` moves only the named parts and keeps the top left corner of their boxes. `--deep` arranges each group and layer below too. It prints how many parts moved. | `State/main.json` |
 | `flint ite arrange <program> --all` | One Arrange of each level of the program | `State/main.json` |
 
