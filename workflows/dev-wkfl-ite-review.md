@@ -84,7 +84,7 @@ The focus of this workflow: the nodes of the job.
 > [!headless]
 > A headless session proposes the change, and does not do the stage gate (steps 4 and 5).
 > - Run `flint orbh session set phase writing`. When each node is true or not decided, skip this stage.
-> - A view node: write one candidate for the view with Stages 1 to 4 of [[wkfl-ite-reshape]], with the change "Make the nodes <ids> true to the code".
+> - A view node: write one candidate for the view with Stages 1 to 4 of [[wkfl-ite-reshape]], with the change "Make the nodes <ids> true to the code". After its Stage 4, come back to this callout: do not do The End of a Job of the reshape workflow, and do not return its result. This job returns once, as the callout of The End of a Job of this workflow says.
 > - A part: write one map change with the operation `edit` for each part that is not true, and propose it: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`. Read the preview: `flint ite map change show "<program>" <change id> --json`. Do not put a change of the `stories` or the `criteria` in the change: name it in the `summary`, and the person makes it.
 > - Write at most one proposal: one candidate for the view of the job, or one map change for the parts. Never apply, revert, or discard it.
 > - Once the proposal passes its checks (Before You Return of [[init-ite#Headless]]), end the job as the callout of The End of a Job says.

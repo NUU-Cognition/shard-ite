@@ -14,6 +14,7 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
 > A headless agent session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
 > - The person reviews the candidate in the Workbench and applies it.
 > - The job ends with one `steel-result/1` JSON value, as the callout of The End of a Job says.
+> - Another workflow, skill, or recipe can run only Stages 1 to 4 to write a candidate. Then its own steps continue after Stage 4, and it returns its own result (see the callout of Stage 4).
 
 # Input
 
@@ -82,8 +83,10 @@ Change one view as a person asks: a new map, a new slice, a split, a merge, new 
 > - Repair each finding of the level `error` or `warning` in the candidate file (`format`, `link-missing`, `ref-missing`: a heading id that names no part), and run the diff again.
 > - For a conflict, read the view again and write a new candidate from the current view.
 > - Do not return before steps 1 and 2 pass. Say in the `summary` that the diff passed.
-> - When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of a Job of [[init-ite#Headless]]).
-> - Once the diff has no conflict and the candidate has no finding of the level error or warning, end the job as the callout of The End of a Job says.
+> - When an error stays and you cannot repair it, discard your candidate. In a reshape job, return a failure (see The Result of a Job of [[init-ite#Headless]]). A caller of Stages 1 to 4 does not return here: it names the failure in its own result, and goes on with its own next step.
+> - Once the diff has no conflict and the candidate has no finding of the level error or warning, the candidate is verified. Then:
+>   - In a reshape job (a job of the action `reshape`, which runs this whole workflow), end the job as the callout of The End of a Job says.
+>   - When another workflow, skill, or recipe runs only Stages 1 to 4 to write a candidate, the reshape ends here. Do not go to The End of a Job, and do not return: go back to the next step of the caller, and put the candidate id in the result of the caller.
 
 # The End of a Job
 
