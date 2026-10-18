@@ -1,5 +1,5 @@
 ---
-description: "Headless: take one part of the main map one level deeper: 3 to 9 children that cover its sources, as one map change that a person applies"
+description: "Headless: take one part of the main map one level deeper: the children that cover its sources, as one map change that a person applies"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -8,7 +8,7 @@ Run `flint shard hstart ite` if you haven't already.
 
 # Workflow: Map Expand (Headless)
 
-Take one part of the main map one level deeper: 3 to 9 children that together cover the sources of the part. A headless agent session follows this workflow for a job of the action `map-expand`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
+Take one part of the main map one level deeper: the children that together cover the sources of the part. A headless agent session follows this workflow for a job of the action `map-expand`, with no person in the session. The result is one map change that the person reviews and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]]. The rules of a headless session are in [[hinit-ite]].
 
 The focus of this job: the selected part.
 
@@ -48,7 +48,7 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 2. Run `flint orbh session set phase reading`.
 3. Read the level of the focus: the section The main map of the prompt of the job. When the prompt says that the ITE could not load the main map, run `flint ite map show "<program>" [--focus <part>] --json` and `flint ite map coverage "<program>" --json`.
 4. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id> --json` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does your task already, propose nothing: return its id with a summary that says so. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-5. Note `max-children` (default 9) and the product root of a program with a codebase. When `max-children` is less than 3, read "3 to `max-children`" below as exactly `max-children`.
+5. Note the product root of a program with a codebase. A level of the main map has no size limit. When the program sets `max-children` (the `main-map` block of the program file), note it: a level of that program holds at most `max-children` parts.
 6. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Sources
@@ -56,14 +56,14 @@ The prompt of the job gives only the data: the level and the gaps. The form of e
 1. Run `flint orbh session set phase reading-sources`.
 2. Read the part note: its sentence, its prose, and its sources.
 3. Software: read the files below each code ref of the part (`git -C <product root> ls-files <ref>`). Other programs: read each source of the part (the wikilinks and the URLs of its `sources`).
-4. Find the 3 to `max-children` things inside the part.
+4. Find the things inside the part.
 5. Never invent a path, a URL, or a note name. Each source that you write exists now.
 6. Once you know what the sources hold, progress to the next stage.
 
 ## Stage 3: Plan the Operations
 
 1. Run `flint orbh session set phase planning`.
-2. Write 3 to `max-children` children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a type of the program, one sentence, and its sources.
+2. Write the children under the part (`add` with `parent`: the id of the part). For each: a title of two to six words, a type of the program, one sentence, and its sources.
 3. **The 100% rule.** Together the children cover all the sources of the part: each source of the part goes to one child, as the same path or as more precise paths. No two children share a file.
 4. **Keep the children that exist.** When the part has children already, keep them and add only what is missing. Group existing children with `split` when that makes the level clearer.
 5. When the part holds fewer than 3 things, propose no change: a part with one child is a finding. Say so in the result.

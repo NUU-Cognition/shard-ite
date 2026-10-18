@@ -61,7 +61,7 @@ orbh-sessions:
 ## How to model a system of this kind
 
 1. Write the root note with `flint ite create "<Name>" --template TEMPLATE-ID --purpose "<one sentence>"`.
-2. Find the first level of the main map: at most 9 parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`. A person applies it.
+2. Find the first level of the main map: the parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below.
 4. Write each claim that must be true now as a claim about a part, with its check process (code, an agent, or a person).
 5. Answer the questions below with views.

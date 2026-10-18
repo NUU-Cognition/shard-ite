@@ -39,7 +39,7 @@ One term has one meaning. Use these terms in each file, each view, and each resu
 | Connection | A typed link between two parts: a frontmatter key, defined by a connection note. `parent` is not a connection: it is the containment. |
 | Template | The start of a new program: its types, connections, views, and questions, and the instruction for the agent. |
 | Main map | The tree of the parts by `parent`: what the system is. Each program has one main map. Steps of an instruction map are not parts. See The Main Map in [[knw-ite-programs]]. |
-| Level | The children of one part (or of the root) on the main map. A level holds at most `max-children` parts. |
+| Level | The children of one part (or of the root) on the main map. A level has no size limit, unless the program sets `max-children`. |
 | Subsystem | A part of the main map with children. A person opens it by zoom. It is not a separate program. |
 | Coverage | How much of the system the parts cover: the files of the codebase for a program with `codebase` on its root note, and the items of the boundary for each program. |
 | View | One map for one question of one program: a file of `Steel/Programs/<P>/Views/`. It names its map and its slice. |

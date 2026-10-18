@@ -20,7 +20,7 @@ The focus of this job: the parent part, or the root when no node is selected.
 
 # The Operations
 
-This workflow uses `add`, and `split` when the level gets too many parts. A map change is one JSON array of operations. They apply in order. Name a part by its id or by its note name. `parent: null` is the root note. `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
+This workflow uses `add`, and `split` when related parts belong in one container. A map change is one JSON array of operations. They apply in order. Name a part by its id or by its note name. `parent: null` is the root note. `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
 
 ```text
 {"op":"add","title":"<title>","kind":"<type id>","parent":"<part, or null>","sentence":"<one sentence>","prose":"<optional>","sources":["<source>"]}
@@ -39,7 +39,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 2. Run `flint orbh session set phase reading`.
 3. Read the level of the parent: `flint ite map show "<program>" [--focus <part>] --json` (the cards, the relations, the findings), and the root note (its `types`).
 4. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id> --json` for each one, and read its operations. When a waiting change adds the same parts already, propose nothing: return its id with a summary that says so.
-5. Note `max-children` (default 9).
+5. Note `max-children` when the program sets it (the `main-map` block of the program file). When the program does not set it, a level has no size limit.
 6. Once you know the level, progress to the next stage.
 
 ## Stage 2: Read the Words of the Person
@@ -55,7 +55,7 @@ This workflow uses `add`, and `split` when the level gets too many parts. A map 
 
 1. Run `flint orbh session set phase planning`.
 2. Write one `add` for each new part, under the parent (`parent`: the id of the parent, or `null` for the root). For each: a title of two to six words in the words of the person, a type of the program, one sentence that says what the part is, the prose that the text gives, and its sources.
-3. **The size limit.** The level after the change holds at most `max-children` parts. When it holds more, group related parts with one `split`, or add a container part with an `id` and put the new parts under it. When a group is not clear, add the parts and name the finding `map-too-many-children` in the `summary`, with the action `map-refactor` as the next step.
+3. **Groups.** A level has no size limit. When the new parts belong together, group them with one `split`, or add a container part with an `id` and put the new parts under it. When the program sets `max-children`, the level after the change holds at most `max-children` parts. When the program sets it and a group is not clear, add the parts and name the finding `map-too-many-children` in the `summary`, with the action `map-refactor` as the next step.
 4. Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and name the part in the `summary`.
 5. Once the plan holds each part of the list, progress to the next stage.
 

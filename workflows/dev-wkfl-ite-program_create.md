@@ -38,7 +38,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 ## Stage 2: The First Map
 
 1. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type.
-2. Select 3 to 9 parts for level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or roles, the decisions. Each part has a title of two to six words, a type of the program, and one sentence.
+2. Select the parts for level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or roles, the decisions. Each part has a title of two to six words, a type of the program, and one sentence.
 3. Write the operations into one JSON array (the table "The Operations of a Map Change" of [[init-ite]]). For a deeper part, give its parent an `id` (a UUID v4) in the same change.
 4. Propose it, and read the preview:
 

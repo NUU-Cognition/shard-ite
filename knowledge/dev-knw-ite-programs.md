@@ -257,7 +257,7 @@ The **main map** of a program is the tree of its parts by `parent`. Each program
 
 - **The root is the root note.** Each part has one `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note.
 - **The 100% rule.** The children of a part together are the whole part: each source of the part belongs to one child. Nothing of the system is outside the tree, and nothing is in it two times.
-- **The size limit.** A level holds at most `max-children` parts (default 9). A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
+- **No size limit.** A level has no size limit by default. A program can set one with `max-children` (see the configuration below). A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
 - **Relations are free, and they roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
 - **Coverage.** A program with `codebase` on its root note (a part of a type with `covers-files`), for each template: each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. Each program: each item of `boundary.inside` is covered when one of its `parts` names a part.
 - **Views name parts by id.** A view node that stands for a part has the part id as its heading id. Each part lists the view nodes that look at it.
@@ -266,7 +266,7 @@ The configuration is in the frontmatter of the root note. Each key is optional:
 
 ```yaml
 main-map:
-  max-children: 9          # an integer of 2 or more; default 9
+  max-children: 12         # optional: an integer of 2 or more; with no value, a level has no size limit
   coverage-ignore:         # paths relative to the product root (a folder ends with /), or globs
     - orbtest/
     - "**/test/"           # a folder of that name at any depth
@@ -287,7 +287,7 @@ In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and
 | `map-parent-missing` | error | The `parent` of a part names no note. The part shows under the root with a marker. | `move` to the correct parent |
 | `map-parent-outside` | error | The `parent` names a note that is not a part of the program. | `move` |
 | `map-cycle` | error | The parents of a part make a cycle. | `move` |
-| `map-too-many-children` | warning | A level has more than `max-children` parts. | `split`, `merge`, `move` (the action `map-refactor`) |
+| `map-too-many-children` | warning | A level has more than `max-children` parts. Only a program that sets `max-children` gets it. | `split`, `merge`, `move` (the action `map-refactor`) |
 | `map-single-child` | note | A part has exactly one child. | `merge`, or `add` the siblings |
 | `anchor-missing` | warning | A view node names no part of the main map. | Reshape the view, or `add` the part |
 | `anchor-none` | note | A view node has no part (a slug heading id). | Give it its part, or keep it as a concept of the view only |
@@ -390,16 +390,16 @@ Each verb takes `--json`. `flint ite map <program>` with no verb gives the tree 
 1. **A job of a map action changes the main map only through a map change.** It never writes a part file with its own tools.
 2. **Never apply a map change, and never revert one.** Only a person does. A headless session never discards the change that it returns.
 3. **One change for one job, and read the waiting changes first.** Run `flint ite map change list <program> --state proposed`, then `flint ite map change show <program> <change id>` for each one. Do not propose what a waiting change does already. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. **Read the preview before you return.** The tree after must have no new finding of the level error, and no new `map-too-many-children` that the job could avoid.
+4. **Read the preview before you return.** The tree after must have no new finding of the level error, and, when the program sets `max-children`, no new `map-too-many-children` that the job could avoid.
 5. **The quality rules apply to each new part**: the words of the person, a type of the program, a title of two to six words, one sentence that says what the part is, and sources that you read (never invented paths).
 
 ### The Actions of the Main Map
 
 | Action | Nodes | Workflow (headless / interactive) | The agent does |
 |---|---|---|---|
-| `map-create` | None | [[hwkfl-ite-map_create]] / [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: 3 to 9 parts, each with one sentence and its sources |
-| `map-expand` | 1 part | [[hwkfl-ite-map_expand]] / [[wkfl-ite-map_expand]] | Takes one part one level deeper: 3 to 9 children that cover the sources of the part |
-| `map-refactor` | 0 or 1 (the focus) | [[hwkfl-ite-map_refactor]] / [[wkfl-ite-map_refactor]] | Brings one level to the size limit: split, merge, move, rename |
+| `map-create` | None | [[hwkfl-ite-map_create]] / [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: the parts, each with one sentence and its sources |
+| `map-expand` | 1 part | [[hwkfl-ite-map_expand]] / [[wkfl-ite-map_expand]] | Takes one part one level deeper: the children that cover the sources of the part |
+| `map-refactor` | 0 or 1 (the focus) | [[hwkfl-ite-map_refactor]] / [[wkfl-ite-map_refactor]] | Gives one level a clearer shape: split, merge, move, rename |
 | `map-cover` | 0 or 1 | [[hwkfl-ite-map_cover]] / [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
 | `map-update` | 1 part | [[hwkfl-ite-map_update]] / [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
 | `parts-add` | 0 or 1 (the parent) | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
@@ -415,7 +415,7 @@ A program is for a person. A model that breaks these rules does not help that pe
 3. **One idea for each part.** When the prose of a part needs two claims, make two parts. A short title: two to six words.
 4. **The types of the program.** Give each part a type of the `types` of the root note. When no type fits, use `note` and tell the person. Never invent a type: a new type is a type note that a person agrees to.
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
-6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds 3 to 9 parts (`max-children`); a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
+6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds the parts of one idea; a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
 7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When only a person can check a claim, give it a person check ("Is this true now: <the claim>?"). A model with an honest gap is better than a model with an invented fact.
 8. **Give each claim a check.** A claim is a test of reality: it says what must be true now, never a goal, a target with a date, or a prediction. Its check is a process: its own code that reads data, a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value. When two claims read one source, make the source one piece of data, and let both claims read it.
 9. **Never leave a check, a process, or a maker that you did not test.** Before you hand over a code check, test it with `flint ite claim test "<program>" <claim>`; before you hand over a code process, test it with `flint ite process test "<program>" <process>`; before you hand over a maker of data, test it with `flint ite data test "<program>" <id>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.

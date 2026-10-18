@@ -109,7 +109,7 @@ The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`
 | `flow-add` | [[hwkfl-ite-flow_add]] | One instruction map `map.md` (`flint ite flow new`) and its nodes |
 | `map-create` | [[hwkfl-ite-map_create]] | One map change (the root and level 1), with `flint ite map change propose` |
 | `map-expand` | [[hwkfl-ite-map_expand]] | One map change (the children of one part) |
-| `map-refactor` | [[hwkfl-ite-map_refactor]] | One map change (one level to the size limit) |
+| `map-refactor` | [[hwkfl-ite-map_refactor]] | One map change (a clearer shape of one level: split, merge, move, rename) |
 | `map-cover` | [[hwkfl-ite-map_cover]] | One map change (the sources of the gap files) |
 | `map-update` | [[hwkfl-ite-map_update]] | One map change (one part from its sources now) |
 | `review` | [[hwkfl-ite-review]] | The row in `reviews` of each node that is still true (`flint ite review`), and at most one candidate or one map change for the nodes that are not true |

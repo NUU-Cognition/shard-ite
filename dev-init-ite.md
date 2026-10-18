@@ -40,7 +40,7 @@ event in → route by "about" → a trigger of a process (code, an agent, or a p
 6. **Test before you hand over.** `flint ite claim test`, `process test`, and `data test` run the code one time and write nothing. Never leave a check, a process, or a maker that you did not test.
 7. **Read before you run.** Never run code that you did not read. Never run a process (`process run`, `flow start`) unless the person asks for exactly that: a process can change the world.
 8. **Never invent.** No invented id, path, URL, story id, part, or type. Say a gap in the prose: "Nobody knows this yet."
-9. **The words of the person.** Prose first: one to three short paragraphs for each part. A title of two to six words. A level of the main map holds 3 to 9 parts. The full quality rules are in [[knw-ite-programs]].
+9. **The words of the person.** Prose first: one to three short paragraphs for each part. A title of two to six words. A level of the main map has no size limit. The full quality rules are in [[knw-ite-programs]].
 10. **Simplified Technical English.** Short sentences, active voice, one term for one thing.
 11. **Folders are for a person.** An agent moves an item or a folder only when a person asks for it (`flint ite move`, `flint ite folder`). A folder has no meaning: no rule, count, trigger, or reference uses it.
 
@@ -70,7 +70,7 @@ A person groups the processes, the data, and the claims into nested **folders** 
 Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (headless: [[hwkfl-ite-program_create]]).
 
 1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists the templates of this Flint, with the six that the shard installs: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true` (`recipe: keep-map-true`: the agent of the program keeps the map true after each event, and it is the keeper of the root note; it is not enabled) and a starter kit of its template: one piece of data, one code process that runs at once, and one claim with its code check that reads the data (for an organisation: the data `next-meeting`, the process `days-until-meeting`, and the claim `next-meeting-ahead`; a process template gets the runs of `keep-map-true`; a software template gets the newest commit). Read the kit with `flint ite process list`, `flint ite data list`, and `flint ite claim list` before you add your own: use it where it fits, and change it with `process set`.
-2. **The first map, as a proposal.** Propose 3 to 9 parts in one map change:
+2. **The first map, as a proposal.** Propose the parts of level 1 in one map change:
    `echo '[{"op":"add","title":"Monday agenda","kind":"ritual","parent":null,"sentence":"<one sentence>"}, ...]' | flint ite map change propose "Weekly Team Meeting" --ops - --reason "<one sentence>"`
    Read the preview with `flint ite map change show "<program>" <change id>`. A person applies it. The operations are in the table "The Operations of a Map Change" below.
 3. **Data.** One command writes each piece of data that the system holds or measures, and its maker:
@@ -245,7 +245,7 @@ The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run tha
 | [[sk-ite-process_new]] | A person says one process in one sentence |
 | [[sk-ite-workflow_new]] | A person gives the steps of a piece of work in order: one instruction map |
 | [[wkfl-ite-model]] | A person wants the map of a system, or more parts on a map |
-| [[wkfl-ite-map_create]], [[wkfl-ite-map_expand]], [[wkfl-ite-map_refactor]], [[wkfl-ite-map_cover]], [[wkfl-ite-map_update]], [[wkfl-ite-parts_add]] | One change of the main map: the first level, one part deeper, one level to the size limit, the gap files, one part from its sources, the parts that a person names |
+| [[wkfl-ite-map_create]], [[wkfl-ite-map_expand]], [[wkfl-ite-map_refactor]], [[wkfl-ite-map_cover]], [[wkfl-ite-map_update]], [[wkfl-ite-parts_add]] | One change of the main map: the first level, one part deeper, a clearer shape of one level, the gap files, one part from its sources, the parts that a person names |
 | [[wkfl-ite-view]], [[wkfl-ite-reshape]] | A question with no view; a change of a view in words |
 | [[wkfl-ite-claim_add]], [[wkfl-ite-ground]], [[wkfl-ite-observe]], [[wkfl-ite-repair]] | One claim with its tested check; the claims of parts; check the claims now; repair what fails or is old (the world or the model) |
 | [[wkfl-ite-process_add]], [[wkfl-ite-flow_add]] | One process, or one instruction map, with the person at each stage |

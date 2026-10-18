@@ -40,7 +40,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 
 1. Run `flint orbh session set phase first-map`.
 2. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type.
-3. Select 3 to 9 parts for level 1, in the words of the person: a title of two to six words, a type of the program, and one sentence each. Do not invent a fact: say a gap in the sentence.
+3. Select the parts for level 1, in the words of the person: a title of two to six words, a type of the program, and one sentence each. Do not invent a fact: say a gap in the sentence.
 4. Write the operations into one JSON array (the table "The Operations of a Map Change" of [[init-ite]]). Put a deeper level in the same change, and give its parent an `id` (a UUID v4): a map change cannot name a part of another waiting change. Until the person applies the change, the program has no part: the processes and the claims of this workflow name their data (`data:<id>`).
 5. Propose it, and read the preview:
 

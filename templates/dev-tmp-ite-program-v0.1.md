@@ -41,8 +41,9 @@ description: "The root note of an ITE program (format steel-program/1): the fron
   - types: the names of the types that the program uses, from its template: [Goal, Milestone, Step, Note].
     `flint ite types` lists the types of this Flint. Each part has one of these types.
   - from-template: the id of the template that made the program. History only: nothing decides with it.
-  - main-map (optional): max-children, coverage-ignore, and card-face (title, sentence, or field:<key>: what each card
-    shows under its title) only when the person asks for one (see The Main Map of knw-ite-programs).
+  - main-map (optional): coverage-ignore, max-children only when the person asks for a size limit, and card-face
+    (title, sentence, or field:<key>: what each card shows under its title) only when the person asks for one
+    (see The Main Map of knw-ite-programs).
   - kept-by (optional): "process:<id>", the keeper of the root note. With no kept-by, the root uses
     process:keep-map-true when the program has that process; else the program has no keeper (the finding no-keeper).
     Each part with no kept-by uses the keeper of its parent, up to the root, and each view with no kept-by uses the
