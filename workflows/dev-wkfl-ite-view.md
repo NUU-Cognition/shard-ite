@@ -1,5 +1,5 @@
 ---
-description: "Answer one question of a person about a program with a new view: read the map, select a shape, write a candidate, verify it, and apply it when the person agrees"
+description: "Answer one question of a person about a program with a new view: read the map, select a shape, write a candidate, verify it, and apply it when the person agrees; in a headless session, return the verified candidate in one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -10,12 +10,22 @@ Run `flint shard start ite` if you haven't already.
 
 Answer one question of a person with one new view of a program. The result is a candidate that the person reads, and a view when the person agrees. The rules of the view file and the quality rules are in [[knw-ite-programs]]. The form is [[tmp-ite-view-v0.1]].
 
+> [!headless]
+> A headless agent session follows this workflow with no person in the session: it writes one new candidate view that answers one question of a person. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
+> - The person reviews the candidate in the Workbench and applies it.
+> - The job ends with one `steel-result/1` JSON value, as the callout of The End of a Job says.
+
 # Input
 
 - The program: its name or its id
 - The question of the person (for example "What must be true one week before the night?")
 - (Optional) A map (a builtin shape or a map of `Steel/Maps/`) or a name that the person asks for
 - (Optional) The nodes of a focus: the ids of the parts that the view is about
+
+> [!headless]
+> - The program (its name and its id) and the document (`map`, or a view that the question starts from)
+> - The instructions of the person: the question, and optionally a map (a builtin shape or a map of `Steel/Maps/`) or a name
+> - (Optional) The selected nodes: the parts that the view is about ("Make a view of this")
 
 # Actions
 
@@ -27,12 +37,20 @@ Answer one question of a person with one new view of a program. The result is a 
 4. Read the views that exist: `flint ite list` and `flint ite view <id>` for each view whose question is near. When a view already answers the question, show it to the person and propose [[wkfl-ite-reshape]] in place of a new view.
 5. Once you know the question and the parts that can answer it, progress to the next stage.
 
+> [!headless]
+> - Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]). Then run `flint orbh session set phase reading`.
+> - Ask no question. When the question can have two meanings, select the meaning that best helps the person, and keep it for the `summary`. With selected nodes and no question, the question is "How do these parts work together?".
+> - Read the views that exist with `flint ite list --json`. When a view already answers the question, still write the new candidate, and name that view in the `summary`.
+
 ## Stage 2: Read the Parts
 
 1. Read the note of each part that can be a part of the answer. The note owns the description; the view says only what answers the question.
 2. Note the claims about each part (`flint ite claim list "<program>" --json`): a node of a part shows the grounding of its part. Note each statement of the answer that no part holds: its prose says the gap.
 3. Note the words of the system that the answer needs, and one short explanation of each.
 4. Once you can answer the question in one to three sentences, progress to the next stage.
+
+> [!headless]
+> - With selected nodes, stay inside these parts and their direct neighbours; name each part outside them in the note of what the view leaves out.
 
 ## Stage 3: Select the Map and the Nodes
 
@@ -41,6 +59,10 @@ Answer one question of a person with one new view of a program. The result is a 
 3. Select, do not dump: five to fifteen nodes. When the answer needs more than 25 nodes, propose two views to the person.
 4. Select the name. Search the views: `find Steel/Programs -iname "(View) <Name>.md"`. When the name exists, add ` of <Program>`.
 5. Once the outline answers the question, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase shaping`.
+> - When the answer needs more than 25 nodes, write the first view only, and propose the second view in the `summary`.
 
 ## Stage 4: Write the Candidate
 
@@ -56,11 +78,24 @@ Answer one question of a person with one new view of a program. The result is a 
    - [ ] The view holds no grounding, no result, no finding, and no position.
 5. Once the candidate passes each rule, progress to the next stage.
 
+> [!headless]
+> - Run `flint orbh session set phase writing`. Set the focus on the parts that the view names.
+> - A view is `draft` until a person accepts it.
+> - For a claim that no part holds, say the gap in the prose. A claim about a part checks the part through its check process (`Processes/check-<claim id>/`); a view node holds no check.
+
 ## Stage 5: Verify the Candidate
 
 1. Run `flint ite diff --candidate <candidate-id> --json`. It reads the candidate as the view will be after the apply. Then run `flint ite check --candidate <candidate-id>`: it shows only the findings of the candidate and exits 1 for an error finding. `conflict` must be `false` and `new_view` must be `true`: the text form says "new view. The candidate can be applied." A conflict for a new view means that the name is taken: change the H1 and the candidate id.
 2. Read `candidate.findings` of the same JSON. Repair each finding of the level `error` or `warning` (`format`, `link-missing`, `ref-missing`: a heading id that names no part), and run the diff again.
 3. Once the diff has no conflict and the candidate has no finding of the level error or warning, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase checking`.
+> - Repair each finding in the candidate file.
+> - For a conflict (the name is taken), write the candidate again with another H1 and a new candidate id, discard the first candidate, and verify again.
+> - Do not return before steps 1 and 2 pass. Say in the `summary` that the diff passed.
+> - When an error stays and you cannot repair it, discard your candidate and return a failure (see The Result of a Job of [[init-ite#Headless]]).
+> - Once the diff has no conflict and the candidate has no finding of the level error or warning, do not do Stage 6: end the job as the callout of The End of a Job says.
 
 ## Stage 6: Show the Candidate and Apply It
 
@@ -71,6 +106,9 @@ Answer one question of a person with one new view of a program. The result is a 
    - **Discard**: `flint ite discard --candidate <candidate-id>`.
 3. Once the person selected apply or discard, the workflow is done.
 
+> [!headless]
+> A headless session does not do this stage: it shows nothing to a person, and it does not apply, change, or discard the candidate. In place of this stage, it returns the candidate, as the callout of The End of a Job says.
+
 # The End of a Job
 
 When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
@@ -78,7 +116,22 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 1. Write the result in the chat: the candidate id and the view id, whether the person applied it, the map, and the count of the nodes. Use short sentences.
 2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
 
+> [!headless]
+> A headless session does not end the job in the chat, and does not wait for the person. It returns the result:
+> 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[init-ite#Headless]]. When an item fails, go back to its stage: do not return with an item open.
+> 2. Write the `summary`: the map, the number of nodes, the reading that you selected, and the most important gap. Use no `'` character.
+> 3. Do not apply and do not discard the candidate.
+> 4. End the job with the result, and nothing else. `view_id` is the `view_id` of the candidate:
+>
+>    ```bash
+>    flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":"<view_id>","candidate_id":"<candidate-id>","base_hash":null,"summary":"<summary>"}'
+>    ```
+
 # Output
 
 - One view in `Steel/Programs/<Program>/Views/` (after the apply), or one candidate in `Proposals/` with `state: proposed` that waits for the person
 - Each gap named to the person
+
+> [!headless]
+> - One candidate in `Steel/Programs/<Program>/Proposals/`, with a new `view_id`, its own `id`, `state: proposed`, and `base_hash: null`
+> - One `steel-result/1` JSON value as the result of the job

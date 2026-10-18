@@ -4,7 +4,7 @@ description: "Show the person which nodes of a program you work on now: set the 
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
 
-Run `flint shard start ite` (or `hstart` in a headless session) if you haven't already.
+Run `flint shard start ite` if you haven't already.
 
 # Skill: Focus
 

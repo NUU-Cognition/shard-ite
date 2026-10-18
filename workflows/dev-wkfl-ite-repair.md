@@ -1,5 +1,5 @@
 ---
-description: "Make the model or the world true again: for each claim that fails or is old, read which side the links say must change (a repair process for the world, or the keeper for the model), confirm it with evidence, then propose the change of the model or of the check, or name the repair of the world"
+description: "Make the model or the world true again: for each claim that fails or is old, read which side the links say must change (a repair process for the world, or the keeper for the model), confirm it with evidence, then propose the change of the model or of the check, or name the repair of the world; in a headless session, return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -10,10 +10,19 @@ Run `flint shard start ite` if you haven't already.
 
 A claim that fails says: the model and reality disagree. The links say which side must change (D10 of Task 1271). When a process of the program has the trigger `{ on: event, kinds: [claim.failed], about: ["claim:<id>"] }`, that process repairs the **world**: `on_fail.repair` names it, and the brief says "repair by <process>". Else the claim says what the system is, and the system is now different: the keeper of the first part of `about` proposes a change of the **model**, and the brief says "change the model: <keeper>". A check can also be wrong (it reads an old place). This workflow confirms the side for each claim with evidence. It proposes the change of the model or of the check. It names the repair when reality is wrong: it never changes the world to make a claim true.
 
+> [!headless]
+> A headless agent session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
+> - Never change the world to make a claim true.
+> - The job ends with one `steel-result/1` JSON value, as the callout of The End of a Job says.
+
 # Input
 
 - The program
 - (Optional) The part ids. With no part: each claim that fails, has an error, or is old.
+
+> [!headless]
+> - The parts are the selected parts. With no part: each claim that fails, has an error, or is old.
+> - (Optional) The instructions of the person
 
 # Actions
 
@@ -24,6 +33,11 @@ A claim that fails says: the model and reality disagree. The links say which sid
 3. For each claim, read its newest results and its `on_fail`: `flint ite claim show "<program>" <claim>`. Keep what the check saw, when, and the side that the links name.
 4. For an old claim, run its check again first (`flint ite claim check "<program>" <claim>`, or [[wkfl-ite-observe]] for an agent check or a person check). A claim that holds again needs no repair.
 5. Once each claim has what its check saw, progress to the next stage.
+
+> [!headless]
+> - Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]). Then run `flint orbh session set phase reading`.
+> - Read the claims with `flint ite claim list "<program>" --json`, and each claim that fails, has an error, or is old with `flint ite claim show "<program>" <claim> --json`.
+> - Run again only each old code check: `flint ite claim check "<program>" <claim>`. A claim that holds again needs no repair.
 
 ## Stage 2: Find What Is Wrong
 
@@ -40,6 +54,12 @@ For each claim that fails or has an error, decide one cause, with evidence. Star
 2. Show the person each claim with its cause and its evidence. When the evidence goes against `on_fail` (for example, reality is wrong, but no process repairs it), say so: a process can get the trigger on `claim.failed` of the claim. When the person agrees, change the process. Add the trigger, and keep the other triggers of the process: `flint ite process set "<program>" <process> --add-trigger --on claim.failed --on-about claim:<claim id>` (add `--dry-run` first: it prints the new `process.md`). Without `--add-trigger`, the trigger flags replace each trigger of the process. Ask the person to confirm each cause that is not certain.
 3. Once each claim has a cause, progress to the next stage.
 
+> [!headless]
+> - Run `flint orbh session set phase diagnosing`.
+> - For each claim, set the focus on its parts, read the notes, their sources, and the place that the check reads, and decide one cause with the table of this stage: the check is wrong, the model is wrong (`on_fail.keeper`), reality is wrong (`on_fail.repair`), or not known.
+> - Decide a cause only with evidence. When the evidence does not decide, the cause is "not known": change nothing for that part. Do not ask the person.
+> - Do not show the causes to a person, do not ask the person to confirm a cause, and do not change a process (step 2).
+
 ## Stage 3: Change the Model or the Check
 
 Write each change as a proposal: the keeper of a note writes only proposals for it.
@@ -51,6 +71,15 @@ Write each change as a proposal: the keeper of a note writes only proposals for 
 5. Never remove a claim only because it fails. Propose its removal only when it is no longer true of the system that it must hold, and say so to the person.
 6. Once each wrong model and each wrong check has its proposal, progress to the next stage.
 
+> [!headless]
+> - Run `flint orbh session set phase writing`.
+> - A wrong check: never apply the promote. Do not wait for the apply, and do not run the check after it (step 1).
+> - A wrong part: propose the change with one map change (`edit` for the text and the fields; `move`, `rename`, `merge` for the tree) with `flint ite map change propose`. Keep its id.
+> - A wrong claim: the `--target` of the revision is the claim file. Do not wait for a person.
+> - A wrong view node: write one candidate for the view (Stage 3 of [[wkfl-ite-reshape]]). Write at most one candidate in this job, and return it. Do not apply it.
+> - Never remove a claim only because it fails, and never run a repair process: a process of `on_fail.repair` runs by its trigger when a person enabled it.
+> - Run `flint ite check "<program>"` and repair each error that your changes made.
+
 ## Stage 4: Name the Repair of the World
 
 1. For each claim where reality is wrong, write one sentence: what must happen in reality so that the claim holds, and who can do it (the `owner` of the claim). Name each process of `on_fail.repair`: it runs by its event trigger when a person enabled it, or the person runs it.
@@ -59,6 +88,11 @@ Write each change as a proposal: the keeper of a note writes only proposals for 
 4. Run `flint ite claim list "<program>"` and show the states after the repair.
 5. Once the person has the list, the workflow is done.
 
+> [!headless]
+> - Do not show the list of the work or the states to a person, and do not propose a task (steps 3 and 4). The repairs that reality needs go into the `summary`: the most important item first, with its owner and its repair process, or "no process repairs it".
+> - Do not change the world to make a claim true, and never run a repair process.
+> - Then end the job as the callout of The End of a Job says.
+
 # The End of a Job
 
 When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
@@ -66,7 +100,21 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 1. Write the result in the chat: the claims that hold again, the proposals for the model and for the checks (with the id of each map change, revision, promote, or candidate), and the repair that reality needs. Use short sentences.
 2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
 
+> [!headless]
+> A headless session does not end the job in the chat, and does not wait for the person. It returns the result:
+> 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[init-ite#Headless]]. When an item fails, go back to its stage: do not return with an item open.
+> 2. Write the `summary`: the count of the claims that hold again, the proposals (the map change, the revisions, the promotes, the candidate), and the repairs that reality needs (the most important item first, with its owner and its repair process, or "no process repairs it"). Name each claim whose cause is not known. Use no `'` character.
+> 3. End the job with the result, and nothing else (`candidate_id` and `base_hash` of the candidate when you wrote one, else null):
+>
+>    ```bash
+>    flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+>    ```
+
 # Output
 
 - A proposal for each claim where the model or the check was wrong: a map change, a revision, a promote of a draft check, or a candidate
 - A list of the repairs that reality needs, with the repair process or the owner of each item
+
+> [!headless]
+> - Proposals for the model and for the checks: at most one map change, revisions, promotes of draft checks, and at most one candidate
+> - One `steel-result/1` JSON value as the result of the job

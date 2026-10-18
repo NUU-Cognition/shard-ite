@@ -2,15 +2,14 @@
 
 The shard of the Integrated Thinking Environment (ITE). It lets an agent model a system of any kind as a **program**: typed parts in the Mesh, views and maps in `Steel/`, claims that test reality with their check processes, data with their makers, recipes (shared processes), and instruction maps that a person or an agent runs. The Workbench of Steel (the page `/ite`) is the surface for the person. The command `flint ite` of the Flint CLI reads and writes the files.
 
-Load it with `flint shard start ite` (headless: `flint shard hstart ite`).
+Load it with `flint shard start ite`, also in a headless session.
 
 ## Structure
 
 ```
 Shards/(Source Remote) ITE/
 ├── shard.yaml                       # types Program, Run, System, Module, Feature, Data, and the types of the templates; folders Mesh/Programs and Mesh/Metadata/Templates
-├── dev-init-ite.md                  # short (about 200 lines): the kernel, the rules, a program end to end, the forms on one screen, jobs to commands, which knowledge file to read
-├── dev-hinit-ite.md                 # the three kinds of headless agent (a job agent, an engine agent, a builder), their rules, and the result shape steel-result/1
+├── dev-init-ite.md                  # the kernel, the rules, a program end to end, the forms on one screen, jobs to commands, which knowledge file to read; the section Headless: the three kinds of headless agent (a job agent, an engine agent, a builder), their rules, and the result shape steel-result/1
 ├── knowledge/
 │   ├── dev-knw-ite-reference.md     # each term, the planes, meaning versus facts, the folders, every command
 │   ├── dev-knw-ite-programs.md      # the root note, parts, types and templates, views, maps, references, proposals, the main map, the quality rules
@@ -42,7 +41,7 @@ Shards/(Source Remote) ITE/
     └── inst-ite-recipe_<id>_<file>          # the code files of a recipe with code (Steel/Recipes/<id>/<file>): orbtest-results, orbtest-proof, review-current, source-unchanged
 ```
 
-Each workflow has a headless form (`dev-hwkfl-ite-<name>.md`). A job of the Workbench starts the workflow of its action by name (the code of flint names each file), so keep the names.
+Each workflow serves both modes: a headless session follows its `> [!headless]` callouts. A job of the Workbench starts the workflow of its action by name (the code of flint names each file), so keep the names.
 
 ## Origin
 

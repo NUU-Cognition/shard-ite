@@ -397,12 +397,12 @@ Each verb takes `--json`. `flint ite map <program>` with no verb gives the tree 
 
 | Action | Nodes | Workflow (headless / interactive) | The agent does |
 |---|---|---|---|
-| `map-create` | None | [[hwkfl-ite-map_create]] / [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: the parts, each with one sentence and its sources |
-| `map-expand` | 1 part | [[hwkfl-ite-map_expand]] / [[wkfl-ite-map_expand]] | Takes one part one level deeper: the children that cover the sources of the part |
-| `map-refactor` | 0 or 1 (the focus) | [[hwkfl-ite-map_refactor]] / [[wkfl-ite-map_refactor]] | Gives one level a clearer shape: split, merge, move, rename |
-| `map-cover` | 0 or 1 | [[hwkfl-ite-map_cover]] / [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
-| `map-update` | 1 part | [[hwkfl-ite-map_update]] / [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
-| `parts-add` | 0 or 1 (the parent) | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
+| `map-create` | None | [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: the parts, each with one sentence and its sources |
+| `map-expand` | 1 part | [[wkfl-ite-map_expand]] | Takes one part one level deeper: the children that cover the sources of the part |
+| `map-refactor` | 0 or 1 (the focus) | [[wkfl-ite-map_refactor]] | Gives one level a clearer shape: split, merge, move, rename |
+| `map-cover` | 0 or 1 | [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
+| `map-update` | 1 part | [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
+| `parts-add` | 0 or 1 (the parent) | [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
 
 The prompt of a job of a map action holds only the data: the level of the focus (the cards, the relations, the findings) and the coverage gaps (at most 200 paths). The workflow of the action holds the steps, the form of each operation, and the last step: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`.
 

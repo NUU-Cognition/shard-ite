@@ -5,7 +5,7 @@ by: agent
 agent: program
 action: { object: claim, needs-nodes: true, needs-text: false, writes-proposal: false, ask: null, workflow: ite-ground }
 task: |
-  Follow the workflow `hwkfl-ite-ground` of the ITE shard (`Shards/ITE/workflows/hwkfl-ite-ground.md`) in a headless session, or `wkfl-ite-ground` (`Shards/ITE/workflows/wkfl-ite-ground.md`) in an interactive session. Do each step of it, in order.
+  Follow the workflow `wkfl-ite-ground` of the ITE shard (`Shards/ITE/workflows/wkfl-ite-ground.md`). In a headless session, follow its `> [!headless]` callouts. Do each step of it, in order.
 ---
 
 # Write the claims of these parts

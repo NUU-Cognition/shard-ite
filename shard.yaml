@@ -3,7 +3,7 @@ shard: "@nuucognition/ite"
 id: 963b5c54-ddcf-4a74-b776-059c06432948
 source:
   id: 31bb4bb5-cebf-4cc2-9a7e-0caeee6a96fb
-version: "0.4.1"
+version: "0.4.2"
 name: ITE
 shorthand: ite
 description: "Model any system as a program: typed parts in the Mesh, views and maps in Steel, claims with checks that read reality, processes and instruction maps that run, nested folders of processes, data, and claims, and recipes with code for the Orbtest proof, the review, and the claim of a source"

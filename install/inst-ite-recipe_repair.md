@@ -5,7 +5,7 @@ by: agent
 agent: program
 action: { object: claim, needs-nodes: false, needs-text: false, writes-proposal: true, ask: null, workflow: ite-repair }
 task: |
-  Follow the workflow `hwkfl-ite-repair` of the ITE shard (`Shards/ITE/workflows/hwkfl-ite-repair.md`) in a headless session, or `wkfl-ite-repair` (`Shards/ITE/workflows/wkfl-ite-repair.md`) in an interactive session. Do each step of it, in order.
+  Follow the workflow `wkfl-ite-repair` of the ITE shard (`Shards/ITE/workflows/wkfl-ite-repair.md`). In a headless session, follow its `> [!headless]` callouts. Do each step of it, in order.
 ---
 
 # Repair what fails

@@ -1,5 +1,5 @@
 ---
-description: "Add one process to a program from the words of a person: select its form with the person, make it with flint ite process new, write its code, prompt, or task, and test it"
+description: "Add one process to a program from the words of a person: select its form with the person, make it with flint ite process new, write its code, prompt, or task, and test it; in a headless session, return one steel-result/1 JSON value"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -10,11 +10,19 @@ Run `flint shard start ite` if you haven't already.
 
 Add one process to a program: a small instruction that the program owns and can run, by code, an agent, or a person. The person says the work, and you write the process and test it. The form is in Processes of [[knw-ite-processes]] and in [[tmp-ite-process-v0.1]].
 
+> [!headless]
+> A headless agent session follows this workflow for a job of the action `process-add` ("+ Add a process" in the Workbench), with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
+> - The focus of this job: the selected parts.
+> - The job ends with one `steel-result/1` JSON value, as the callout of The End of a Job says.
+
 # Input
 
 - The program
 - (Optional) The selected parts: the parts that the process works on. They go into `about`.
 - The words of the person: the work that the process must do
+
+> [!headless]
+> - The words of the person are the text of the person in the job: the work that the process must do.
 
 # Actions
 
@@ -26,6 +34,12 @@ Add one process to a program: a small instruction that the program owns and can 
 4. Say the work again in one sentence: what the process does, what goes in, and what comes out. When it can have two meanings, ask the person one question.
 5. When a process of the program already does the work, show it to the person, and ask: keep it, or add a new process.
 6. Once you know the work, progress to the next stage.
+
+> [!headless]
+> - Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]). Then run `flint orbh session set phase reading`.
+> - Read the processes and the claims with `--json`: `flint ite process list "<program>" --json` and `flint ite claim list "<program>" --json`.
+> - Ask no question. When the text can have two meanings, select the reading that best helps the person, and keep it for the `summary`.
+> - When a process of the program already does the work, do not ask the person, and add no process: end the job as the callout of The End of a Job says, with a `summary` that starts with `No change:` and gives the id of that process.
 
 ## Stage 2: Select the Form
 
@@ -40,6 +54,17 @@ Add one process to a program: a small instruction that the program owns and can 
 9. Select the trigger. A trigger has one of three kinds: `manual`, `schedule` (`{ every: 30m }` or `{ cron: "0 9 * * *" }`), and `event` (`{ on: event, kinds: [<kind>...], about: [<ref>...] }`). The event kinds are `task.finished`, `commit.landed`, `note.added`, `webhook`, `manual`, `file.changed`, `claim.failed`, `claim.holds`, `data.changed`, `run.finished`, and `proposal.applied`. A process that repairs a failed claim gets `trigger: { on: event, kinds: [claim.failed], about: ["claim:<claim id>"] }`: when the claim fails, the brief says "repair by <process id>". Else select the trigger that the request needs: a schedule for work at fixed times, an event for work after a fact, both, or `manual` for work that only a person starts. Only a person enables a process (`flint ite enable "<program>" <id>`), and that enables each trigger of the process.
 10. Show the person the plan: the id, the form, `about`, the inputs and the outputs, the effect, the data that it keeps, the trigger, and the authority. Ask: write it, or change it.
 11. Once the person agrees, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase planning`.
+> - The forms in more detail: `code` when code can do the work on this machine: a script that reads and writes files, calls a command, or calls an API. `person` when a person must act: a call, a signature, a decision.
+> - When the work needs an instruction map, add the process now, and propose the action `flow-add` in the `summary`.
+> - When the work checks a claim, add no process: end the job as the callout of The End of a Job says, with a `summary` that starts with `No change:` and proposes the action `claim-add` (`flint ite claim new` writes the claim and its check process).
+> - The `id` is a short, readable slug. `flint ite process show "<program>" <id>` must refuse with `not-found`.
+> - In `about`, name only refs that exist.
+> - Each input and each output has a name and a kind. The `effect` is the ids of the claims that show that the work worked. Name only claims that exist. When no claim shows the work, propose the action `claim-add` in the `summary`.
+> - A data item that has a keeper already: do not change it, and name it in the `summary` (in place of "tell the person").
+> - Do not show the plan to a person, and do not wait for a person. Once the form is selected, progress to the next stage.
 
 ## Stage 3: Write the Process
 
@@ -59,6 +84,16 @@ Add one process to a program: a small instruction that the program owns and can 
 5. Run `flint ite process check "<program>" <id>`. Repair each problem of the process (it gives the file, the line, the cause, and the fix).
 6. Once the process is written, progress to the next stage.
 
+> [!headless]
+> - Run `flint orbh session set phase writing`.
+> - `flint ite process new` also records you in the activity. It refuses an id that is not a slug and an id that exists: repair the input and run it again.
+> - The prose of `process.md`: what the process does, why, and what it changes. Keep `format`, `id`, `by`, and `trigger`.
+> - The work:
+>   - `code`: the entry `index.js` in the process folder (`runtime: node`), or another entry with its `runtime`. It prints one JSON line for each record: `{ "output": { "<name>": <value> } }`, `{ "state": { ... } }`, or `{ "log": "<text>" }`. A maker also prints `{ "row": {...} }`, with `"data": "<data id>"` when it keeps more than one data item. Exit 0 is `done`. A file that it writes on this machine goes into `.flint/steel/state/<program id>/`.
+>   - `agent`: the `prompt`, with `${inputs.<name>}` for each input.
+>   - `person`: the `task`: what the person does, and the outputs that the person gives with Done.
+> - Repair each problem that `flint ite process check` gives: the process does not run until its file is correct.
+
 ## Stage 4: Test the Process
 
 1. A code process: show the person the code. Test it with `flint ite process test "<program>" <id> [--input <name>=<value>]...`: it runs the code one time, writes nothing to the log, and changes no state. Repair and test again.
@@ -69,6 +104,14 @@ Add one process to a program: a small instruction that the program owns and can 
 6. Show the person the result of the test, and propose the next step: Run now, [[wkfl-ite-flow_add]], or [[wkfl-ite-claim_add]] for an effect claim.
 7. Once the test passes, the workflow is done.
 
+> [!headless]
+> - Run `flint orbh session set phase checking`.
+> - A code process: do not show the code to a person. Each record of the test must pass, and the outputs must be the `outputs` of the file. Repair the code and test again. Never keep a process that you did not test.
+> - A person process: `flint ite process test "<program>" <id>` runs nothing. Check that it shows the task.
+> - Never run the process (`flint ite process run`): a process can change the world. Never enable the process.
+> - Read the process with `flint ite process show "<program>" <id> --json`.
+> - Do not show the result of the test to a person (step 6): the next step goes into the `summary`. Once the test passes, end the job as the callout of The End of a Job says.
+
 # The End of a Job
 
 When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
@@ -76,6 +119,22 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 1. Write the result in the chat: the process id, its form, its inputs and outputs, its effect claims, and what the test showed. Use short sentences.
 2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
 
+> [!headless]
+> A headless session does not end the job in the chat, and does not wait for the person. It returns the result:
+> 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[init-ite#Headless]]. When an item fails, go back to its stage: do not return with an item open.
+> 2. Write the `summary`: the process id, its form, its inputs and outputs, its effect claims, what the test showed, and the next action for the person (`flow-add`, `claim-add`, or Run now). Use no `'` character.
+> 3. End the job with the result, and nothing else:
+>
+>    ```bash
+>    flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":null,"base_hash":null,"summary":"<summary>"}'
+>    ```
+>
+>    When you added no process, the `summary` starts with `No change:` and gives the reason.
+
 # Output
 
 - One process in `Steel/Programs/<program>/Processes/<id>/`, with its code, prompt, or task, tested
+
+> [!headless]
+> - One activity record of `flint ite process new`
+> - One `steel-result/1` JSON value as the result of the job

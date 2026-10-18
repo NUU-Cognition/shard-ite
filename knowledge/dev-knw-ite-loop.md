@@ -412,7 +412,7 @@ An **agent session** is one Orbh session that Steel starts for one program. A pe
 
 1. **The orientation.** The first prompt of each agent session gives the program (its name, its id, its types, its folders, and its counts) and tells the agent to load this shard, then each shard of the field `shards` of the root note. It holds no job. With no job, the agent reads the program, then ends with one to three sentences: what the program is, and what needs work.
 2. **A job.** Each job comes as a new prompt: the action and its workflow, the document, the nodes, the text of the person, the first `flint ite focus` command, and the form of the result. The prompt of a job never repeats the orientation. Read each prompt of a job fully: a new job can name another action, other nodes, or another document. Do not carry the focus or the instructions of an older job into a new job.
-3. **The end of a job.** A headless agent session ends each job with `flint orbh session return --await "<result>"`. Never use `--finish`: a finished agent session takes no new job. The person ends the agent session with End in the Workbench: End finishes it and undocks it. An ended agent session (finished or abandoned) takes no job and no message from the Workbench (`agent-ended`): the person starts a new agent. An interactive agent session writes the result in the chat, then waits for the person. The result form is in [[hinit-ite]].
+3. **The end of a job.** A headless agent session ends each job with `flint orbh session return --await "<result>"`. Never use `--finish`: a finished agent session takes no new job. The person ends the agent session with End in the Workbench: End finishes it and undocks it. An ended agent session (finished or abandoned) takes no job and no message from the Workbench (`agent-ended`): the person starts a new agent. An interactive agent session writes the result in the chat, then waits for the person. The result form is in [[init-ite#Headless]].
 4. **One job at a time.** A job for an agent session that works now is refused with `agent-busy`. A message of the person can still reach the session in its queue during a job. Answer it in the result of the current job, or of the next job. Never answer it with `flint orbh message send`: a message from the Workbench has no session as its sender.
 5. **Dock.** A person docks an agent session to keep it at the top of the agent panel, and gives it the next job from its jobs, from its activity, or from a node. End undocks it. An agent never docks or undocks.
 6. **Activity.** Each write of an agent session through `flint ite` adds one activity record to the agent log: `part set` and `link` (each one a proposal of a map change), a map change (`propose`, `discard`, `part add`, `part remove`), a view candidate, a revision, `claim report`, and `claim new`, `process new`, and `flow new`. The person clicks a record to open its object. Write through `flint ite` each time a command exists, so that the person sees what you changed.
@@ -424,24 +424,24 @@ Each action except `free` is a recipe: a shared process `Steel/Recipes/<id>/proc
 | Action | Title | Needs | Workflow (headless / interactive) | Ends with a proposal |
 |---|---|---|---|---|
 | `free` | Free text | Text | None: the prompt of the job gives the steps | No |
-| `model` | Model this system | — | [[hwkfl-ite-model]] / [[wkfl-ite-model]] | Yes: a map change |
+| `model` | Model this system | — | [[wkfl-ite-model]] | Yes: a map change |
 | `update` | Bring this program up to date | — | None: the prompt of the job gives the steps | No |
 | `explain` | Explain these nodes | Nodes | None: the prompt of the job gives the steps. It changes no file. | No |
 | `do` | Do the work of these nodes | Nodes | None: the prompt of the job gives the steps | Yes: a map change for each change of a part |
-| `parts-add` | Add parts | — | [[hwkfl-ite-parts_add]] / [[wkfl-ite-parts_add]] | Yes: a map change |
-| `map-create`, `map-expand`, `map-refactor`, `map-cover`, `map-update` | See The Actions of the Main Map in [[knw-ite-programs]] | One part for `map-expand` and `map-update` | `hwkfl-ite-map_*` / `wkfl-ite-map_*` | Yes: a map change |
-| `view` | Answer a question with a view | Text | [[hwkfl-ite-view]] / [[wkfl-ite-view]] | Yes: a candidate |
-| `reshape` | Change this view | Text | [[hwkfl-ite-reshape]] / [[wkfl-ite-reshape]] | Yes: a candidate |
-| `claim-add` | Add a claim | — | [[hwkfl-ite-claim_add]] / [[wkfl-ite-claim_add]] | No (the promote of its check is a revision for the person) |
-| `ground` | Write the claims of these parts | Nodes | [[hwkfl-ite-ground]] / [[wkfl-ite-ground]] | No (the promote of each check is a revision for the person) |
-| `observe` | Check the claims | — | [[hwkfl-ite-observe]] / [[wkfl-ite-observe]] | No |
-| `repair` | Repair what fails | — | [[hwkfl-ite-repair]] / [[wkfl-ite-repair]] | Yes, when the model must change: a map change, a revision, or a candidate |
-| `process-add` | Add a process | — | [[hwkfl-ite-process_add]] / [[wkfl-ite-process_add]] | No |
-| `flow-add` | Add an instruction map | — | [[hwkfl-ite-flow_add]] / [[wkfl-ite-flow_add]] | No |
+| `parts-add` | Add parts | — | [[wkfl-ite-parts_add]] | Yes: a map change |
+| `map-create`, `map-expand`, `map-refactor`, `map-cover`, `map-update` | See The Actions of the Main Map in [[knw-ite-programs]] | One part for `map-expand` and `map-update` | `wkfl-ite-map_*` | Yes: a map change |
+| `view` | Answer a question with a view | Text | [[wkfl-ite-view]] | Yes: a candidate |
+| `reshape` | Change this view | Text | [[wkfl-ite-reshape]] | Yes: a candidate |
+| `claim-add` | Add a claim | — | [[wkfl-ite-claim_add]] | No (the promote of its check is a revision for the person) |
+| `ground` | Write the claims of these parts | Nodes | [[wkfl-ite-ground]] | No (the promote of each check is a revision for the person) |
+| `observe` | Check the claims | — | [[wkfl-ite-observe]] | No |
+| `repair` | Repair what fails | — | [[wkfl-ite-repair]] | Yes, when the model must change: a map change, a revision, or a candidate |
+| `process-add` | Add a process | — | [[wkfl-ite-process_add]] | No |
+| `flow-add` | Add an instruction map | — | [[wkfl-ite-flow_add]] | No |
 | `revise` | Write a revision | Text | None: the prompt of the job gives the steps | Yes: a revision |
-| `review` | Review these nodes against their code | Nodes | [[hwkfl-ite-review]] / [[wkfl-ite-review]] | Only for a node that is not true: a candidate or a map change |
+| `review` | Review these nodes against their code | Nodes | [[wkfl-ite-review]] | Only for a node that is not true: a candidate or a map change |
 
-`flint ite actions` gives the list of this machine. A headless agent session follows the headless workflow (`hwkfl-ite-<name>`). An interactive agent session follows the interactive workflow (`wkfl-ite-<name>`), and it can ask the person.
+`flint ite actions` gives the list of this machine. Each action has one workflow (`wkfl-ite-<name>`). A headless agent session follows it with its `> [!headless]` callouts. An interactive agent session follows it with no callout, and it can ask the person.
 
 ## The Focus of an Agent
 

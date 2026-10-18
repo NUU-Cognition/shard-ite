@@ -4,7 +4,7 @@ description: "At the end of a product task: emit the event task.finished with th
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
 
-Run `flint shard start ite` (headless: `flint shard hstart ite`) if you haven't already.
+Run `flint shard start ite` if you haven't already.
 
 # Skill: Check After Task
 
@@ -71,7 +71,7 @@ A product task changes code. A part or a view node that names that code can then
 6. **Compare the node with the code.** Read the text and the fields of the node: the part note, or the node in the view file. `flint ite review "<program>" <ref>... --show --json` gives the review row, the reasons, and the changed files of each node, and writes nothing. Read the diff of the code under its code-refs after the review: `git -C "<codebase path>" diff <commit of the row> -- <code-ref path>`. For a code-ref of another codebase (`@<Codebase name>/<path>`), use that codebase and its commit in `commits` of the row. Read each changed story with `flint orbtest story show <id> --root <product root>`. Answer one question: does the text of the node still say what the code and the stories do? The claim is the text, not the names in the code. A new name of a function or a change of its inner logic often keeps the claim true.
 7. **The claim is still true: name the node for the review.** Do not run `flint ite review` without `--show`: it refuses an agent outside a run of the process `review` ("Run the process review of the program, or ask a person."). Name each node that you compared and found true in the result, with the next step `Run the process review` of its program: the part id, or `view:<view id>#<node id>`. A review is at a commit: the process `review` runs after the WIP commits of the task. A file with changes that are not committed stays `review-due` after a review.
 8. **The claim is not true: change the node.**
-   - A view node: follow the workflow reshape for the accepted view, with the request "Make the nodes <ids> true to the code after <task>". In an interactive session, use [[wkfl-ite-reshape]]. In a headless session, use Stages 1 to 4 of [[hwkfl-ite-reshape]] (see Headless Use).
+   - A view node: follow the workflow reshape for the accepted view, with the request "Make the nodes <ids> true to the code after <task>". In an interactive session, use [[wkfl-ite-reshape]]. In a headless session, use Stages 1 to 4 of [[wkfl-ite-reshape]] and their `> [!headless]` callouts (see Headless Use).
    - A part: propose one map change with the operation `edit` (a new sentence, new prose, or new `sources`: the `code-refs` of a part of a program with a codebase) with `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`. Put a change of the `stories` or the `criteria` of a part in the `fields` of the same `edit` (`"fields":{"stories":["<story id>"]}`). An agent's `flint ite part set "<program>" <part id> --field 'stories=["<story id>"]'` proposes one more map change: a person applies it.
    - The person applies the candidate or the map change. Then the review of the node is due: name it with `Run the process review`.
 9. **Record the result.** Add one line to the Task Log of the task. Name the event id, and each taken program with its process and its job. For the fallback programs, name the parts and the views that the check selected, the nodes that wait for the process `review`, the candidates and the map changes that you wrote, and each finding that stays. Example: `ITE: event 3f2a… task.finished; Flint took it (keep-map-true, job qj-9c1d…); CLI Core: 1 part and 2 views checked; Run the process review for view:4c1e…#select-the-agent; candidate onboarding-20261002-101500 for Onboarding#check-the-tools.`
@@ -81,7 +81,7 @@ A product task changes code. A part or a view node that names that code can then
 A headless product task follows the same actions, with these differences:
 
 - Ask no question. When you cannot decide if a claim is still true, name the node in the result as `review-due, not decided`.
-- For a view that is not true, write the candidate with Stages 1 to 4 of [[hwkfl-ite-reshape]]. Skip its last stage: do not return a `steel-result/1` value. The result of the turn is the result of the product task. Put the event id, the candidate id, the map change id, and the view in it.
+- For a view that is not true, write the candidate with Stages 1 to 4 of [[wkfl-ite-reshape]] and their `> [!headless]` callouts. Skip the return of the workflow: do not return a `steel-result/1` value. The result of the turn is the result of the product task. Put the event id, the candidate id, the map change id, and the view in it.
 - Never apply, revert, or discard a candidate or a map change. Never enable a process. Never set a state of a future note: name the future notes that the work made true in the result (the keeper proposes their realize). Never run `flint ite view accept`, `view draft`, or `view remove`. Run `flint ite review` only with `--show`.
 - Set the phase `ite-check` while the skill runs: `flint orbh session set phase ite-check`.
 

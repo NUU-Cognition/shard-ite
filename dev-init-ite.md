@@ -1,5 +1,5 @@
 ---
-description: "The Integrated Thinking Environment, short: the four kernel words, the rules that an agent follows, how to build a program end to end, the forms on one screen, the map from each job to its command, and which knowledge file to read for which job"
+description: "The Integrated Thinking Environment, short: the four kernel words, the rules that an agent follows, how to build a program end to end, the forms on one screen, the map from each job to its command, which knowledge file to read for which job, and the section Headless: which kind of headless agent you are, its rules, and its result"
 ---
 
 # ITE
@@ -8,7 +8,10 @@ The ITE (Integrated Thinking Environment) lets a person model a **system** of an
 
 The surface for a person is the **Workbench** of Steel (the page `/ite`). This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and what waits for a person. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. `flint ite --help` groups the verbs by job. The meaning is in the Mesh, the machinery is in `Steel/`, and the facts of this machine are in `.flint/steel/`.
 
-Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when a step needs more than this file, the workflow, and the template give. When `flint shard hstart ite` says that the build is stale, go on with the build: the source changed after it, and a person builds it again. The CLI is the truth: check a form with `--help`.
+> [!headless]
+> A headless or subagent Orbh session: read the section `# Headless` at the end of this file too. It says which kind of headless agent you are, and your rules and your result.
+
+Read this file first. It is enough to start. For a job with a workflow, read that workflow and the template of each file that you write. Read a knowledge file only when a step needs more than this file, the workflow, and the template give. When `flint shard start ite` says that the build is stale, go on with the build: the source changed after it, and a person builds it again. The CLI is the truth: check a form with `--help`.
 
 ## The Kernel
 
@@ -67,7 +70,7 @@ A person groups the processes, the data, and the claims into nested **folders** 
 
 ## Build a Program End to End
 
-Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (headless: [[hwkfl-ite-program_create]]).
+Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." The full workflow is [[wkfl-ite-program_create]] (in a headless session, with its `> [!headless]` callouts).
 
 1. **Purpose and template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. With no `--template`, the template is a guess from the purpose (`flint ite templates` lists the templates of this Flint, with the six that the shard installs: `organisation` for a team and its meetings, `process` for repeated work of a business, `event`, `research`, `software`, `general`). Each new program gets the process `keep-map-true` (`recipe: keep-map-true`: the agent of the program keeps the map true after each event, and it is the keeper of the root note; it is not enabled) and a starter kit of its template: one piece of data, one code process that runs at once, and one claim with its code check that reads the data (for an organisation: the data `next-meeting`, the process `days-until-meeting`, and the claim `next-meeting-ahead`; a process template gets the runs of `keep-map-true`; a software template gets the newest commit). Read the kit with `flint ite process list`, `flint ite data list`, and `flint ite claim list` before you add your own: use it where it fits, and change it with `process set`.
 2. **The first map, as a proposal.** Propose the parts of level 1 in one map change:
@@ -235,7 +238,7 @@ The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run tha
 | Write a process, a trigger, or an instruction map, or act on a run | [[knw-ite-processes]]: the jobs, the keepers, recipes and starters, the three forms, the effect, the authority, the three trigger kinds and the events, the nodes, runs |
 | Emit an event, write the plan, make a draft version, read a pulse, work with the system of a program, or do a job of the Workbench | [[knw-ite-loop]]: events, the agent of a program, the plan and the realize, draft versions, the pulse, the system of a program, agent sessions and jobs |
 | Work on a program with a `codebase` on its root note | [[knw-ite-software]]: code-refs, stories, the Orbtest proof as a claim, the review as data and a claim, the claims of a source, the check after a task |
-| Run headless | [[hinit-ite]]: which kind of headless agent you are, and its rules and its result |
+| Run headless | [[init-ite#Headless]]: which kind of headless agent you are, and its rules and its result |
 
 ## Skills and Workflows
 
@@ -253,4 +256,163 @@ The exit codes: 0 done; 1 a finding of the level error, a conflict, or a run tha
 | [[sk-ite-check_after_task]] | A product task ends |
 | [[sk-ite-focus]] | Each workflow: show the person which nodes you work on |
 
-Each workflow has a headless form (`hwkfl-ite-<name>`). A job of the Workbench names its action, and each action is a recipe of `Steel/Recipes/` that names its workflow or gives its steps (`flint ite actions`). The templates of the files are `tmp-ite-<form>-v0.1`: program, part, view, map, claim, data, process, instruction_map, and template.
+Each workflow serves both modes: a headless session follows its `> [!headless]` callouts. A job of the Workbench names its action, and each action is a recipe of `Steel/Recipes/` that names its workflow or gives its steps (`flint ite actions`). The templates of the files are `tmp-ite-<form>-v0.1`: program, part, view, map, claim, data, process, instruction_map, and template.
+
+# Headless
+
+A headless or subagent Orbh session has no person at the terminal. It loads this init with `flint shard start ite`, as an interactive session does. Follow the `> [!headless]` callouts of the workflows.
+
+The kernel, the rules, and the commands above apply with no change. This section gives only what is different when no person is in the session.
+
+## Which Headless Agent Are You?
+
+Read your first prompt, and find your row. Each row has its own result.
+
+| Your first prompt | You are | Read | Your result |
+|---|---|---|---|
+| The orientation of a program, or a job with an action (the session metadata has `ite-kind: job`) | A **job agent** of the Workbench | The Rules of Each Headless Agent, then Jobs of the Workbench | One line of `steel-result/1`, with `flint orbh session return --await` |
+| A process started you: a check of a claim, a maker of data, a worker, or a step of a run (the prompt names the process, the run and the node, the claim, or the data) | An **engine agent** | The Rules of Each Headless Agent, then Agents That the Engine Starts | The outputs, or a report through the door, with `flint orbh session return --finish` |
+| A person or a manager sent you a task (for example "build the program X" or "add a process") | A **builder** | The Rules of Each Headless Agent, then Builders | The return shape of your prompt. `steel-result/1` and `--await` of a job do not apply. |
+
+## The Rules of Each Headless Agent
+
+1. **Show the person where you work.** When your prompt gives a `flint ite focus` command, run it first. Run `flint ite focus <node ids>` again each time your work moves to other nodes. Follow [[sk-ite-focus]].
+2. **Show progress.** In an Orbh session, set the phase at the start of each stage: `flint orbh session set phase <phase>`. Each workflow names its phases. With no Orbh session (no `ORBH_SESSION_ID`), skip the phase and the focus commands.
+3. **Ask no question.** When the instructions are not clear, select the reading that best helps the person, and write that reading in your result (the `summary` of a job).
+4. **A view changes only through a candidate.** Never write a file in `Views/` or in `History/` of `Steel/Programs/<P>/`. Never apply a candidate, and never discard the candidate that you return. The person reviews it in the Workbench.
+5. **The structure changes only through a map change.** An agent's `flint ite part add` and `part remove` are proposals; `flint ite map change propose` is one proposal for many operations. An agent's `flint ite part set` (the prose and the fields that are not structure) and `flint ite link` (a link) are proposals too: each proposes one map change (`edit`) that a person applies. A person's `part set` and `link` write at once. Never write the `parent`, the title, or the `(Type)` word of a part with your own tools. Never apply, revert, or discard the map change that you return. A place of a card is not structure: `flint ite place` and `flint ite arrange` apply at once, with no proposal; never write `State/main.json` with your own tools.
+6. **Review only what you compared.** `flint ite review` writes the row of a node in the data item `reviews` of the program. An agent writes rows only inside a run of the keeper of `reviews`: a job of the action `review` is such a run when that keeper has `recipe: review`. Else the command refuses an agent ("Run the process review of the program, or ask a person."): use only `--show`, and name each due node in your result with "Run the process review". Run it only for a node whose text you compared with the diff of its code and of its stories after the last review, and found true ([[wkfl-ite-review]], [[sk-ite-check_after_task]]). When you cannot decide, do not review the node: name it in the `summary` as "review-due, not decided". Never write a row of `reviews` with your own tools, and never write a key `reviewed` in a note or in a node block: it is gone.
+7. **Claims, data, and processes are files. Results go through the door.**
+   - Start each new file with its command. The command writes the files from their forms, and it records you in the activity.
+   - A new claim and its check: `flint ite claim new`. The check starts as a draft.
+   - A new piece of data and its maker: `flint ite data new`. When a process of the program writes the value or the table, give `--kept-by process:<id>`.
+   - A new process: `flint ite process new`. A new instruction map: `flint ite flow new`.
+   - Then write the rest of each file and its code. Use the template of each form: a claim and its check with [[tmp-ite-claim-v0.1]], a process with [[tmp-ite-process-v0.1]], a map with [[tmp-ite-instruction_map-v0.1]], and a data note and its maker with [[tmp-ite-data-v0.1]].
+   - Send each result with `flint ite claim check` or `flint ite claim report`. Never write the log by hand.
+   - Never write a value of data that a person decides (`value`, the rows of a native store) with your own tools. Give such data a person maker (`--by person --task "<the question>"`). The person writes the value in Steel.
+8. **Never run code that you did not read.** A code check and a code process run their own code on this machine: read the entry first. Never run a process (`flint ite process run`) unless the prompt of the person asks for exactly that: a process can change the world. Never enable a process or its trigger: only a person does. Never rename, archive, or remove a program or a view (`flint ite rename`, `archive`, `view remove`), unless the prompt of the person asks for exactly that.
+9. **Never leave a check, a process, or a maker that you did not test.** Test each code check that you write with `flint ite claim test "<program>" <claim>`. A new check is a draft: propose its promote with `flint ite process promote "<program>" check-<claim id>`, and name the revision in your result; the claim counts only after a person applies it. Run a check one time (`flint ite claim check`) only when it is a production version. Test each code process that you write with `flint ite process test "<program>" <process>`. Test each maker of data that you write with `flint ite data test "<program>" <id>`, and pull it one time (`flint ite data pull`).
+10. **Stay inside your work.** A job agent and an engine agent change only the parts of the program, the files of its folder in `Steel/`, and the log through `flint ite`, and do not commit: the person commits. A builder changes what its prompt names, and commits only when its prompt says so, with only its own paths. Never write the agent log.
+11. **Move an item only when a person asks.** Never move a process, a data item, a claim, or a folder of the sidebar (`flint ite move`, `flint ite folder`) unless the prompt of the person asks for exactly that. A new item goes to the top, or to the folder that the prompt names (`--folder <path>`).
+
+### Instruction Maps and Runs
+
+The section Instruction Maps and Runs of [[knw-ite-processes]] applies. In a headless session, these rules are added:
+
+1. **The engine is the only writer of a run.** Never create, edit, or delete a file in `Steel/Programs/<P>/Runs/`.
+2. **An instruction map is a file.** A change of a node is an edit of `Processes/<id>/map.md` ([[tmp-ite-instruction_map-v0.1]]); check it with `flint ite flow check`, and read it with `flint ite flow show`. An external map is read-only: a change goes to its source. An edit never changes an active run: the run keeps its snapshot.
+3. **Run an instruction map only when the prompt asks for exactly that.** `flint ite flow start`, `begin`, `done`, `answer`, `skip`, `retry`, `pause`, `resume`, and `cancel` act for the person. Never run `approve` or `refuse`. Read the runs with `flint ite flow list`, `show`, `runs`, `status`, and `events`.
+
+## Builders
+
+A builder makes or changes a program for a person or a manager, with no job of the Workbench. The person reads your work later, so each change must wait for the person in one place.
+
+1. **Follow the workflow that your prompt names.** For a new program, follow [[wkfl-ite-program_create]]. For one process, follow [[sk-ite-process_new]]. For steps in order, follow [[sk-ite-workflow_new]].
+2. **Propose; do not decide.** Each change of the main map is a map change that waits for the person. Never apply it. Never enable a process, approve a run, or apply the promote of a draft.
+3. **Test each check, process, and maker** that you write, as rule 9 says. Run `flint ite process check` and `flint ite flow check` for each process and map that you write.
+4. **The plan.** Write a future note (`flint ite plan add`) only when your prompt asks for it, and list each one for the person. A future note has no state. Else name what must be next in your result.
+5. **End with the list for the person.** Your result names each proposal that waits (the map change ids, the realize ids, and the revision ids, also the promote of each new check), and each command that only a person runs (`flint ite map change apply`, `flint ite revision apply` for a promote, `flint ite revision apply --protected`, `flint ite process set "<program>" <id> --run-by agent` for a process that an agent must start, `flint ite enable "<program>" --all`), one line each.
+6. **Return as your prompt says.** Use the return shape and the commit rules of your prompt. The result rules of a job below do not apply to you.
+
+## Agents That the Engine Starts
+
+An agent check, an agent maker, an agent worker, and an agent step of a run keep one Orbh session for one dispatch: each is a process. They take no job, and the run takes the result of the session only. Each agent step returns with `--finish`. A later step of the map with `session: <your step>` continues your finished session as a new turn: then read its prompt as the next step of the same work.
+
+### Living Systems
+
+Each program is a living system. The section Living Systems of [[knw-ite-loop]] applies. In a headless session, these rules are added:
+
+1. **Take the instruction from the system.** When your prompt names a living system with no other work, run `flint ite prompt "<program>" --json` and follow the text in its field `prompt`. Do not follow a copy of the instruction in another text: a copy can be old. The command records that an agent took a prompt (the vital sign "use").
+2. **An agent process or an agent step returns only its outputs.** When a process or a step of a run started you, your result gives its outputs: one JSON line `{ "output": { "<name>": <value> } }`, or, for one `text` output, only that text. Return it with `flint orbh session return --finish "<result>"`: this result rule replaces the shape `steel-result/1` and the `--await` of a job. An agent check, an agent process, and an agent step keep one session for one dispatch: they take no job. The run takes the result of your session only.
+3. **An agent maker reports through the door.** When the maker of a data item started you, read its source as its `prompt` says, and report the value with `flint ite data report "<program>" <id> --value <json>` (or `--output <name>=<value>`, or `--rows <file>`). Change nothing in the source.
+4. **An agent check reports through the door.** When the check of a claim started you, read what its prompt names, and report the result with `flint ite claim report "<program>" <claim> --state holds|fails|error --summary "<text>" [--part <id>] [--value <name>=<value>]...`. When the engine started you for a node of a run, your prompt names `--run <run id> --node <node id>`: give both, or the result does not count for that node. Never report what you did not see. A report never confirms the effect of a process: only a check after the work does.
+5. **Read; do not decide for a person.** You can run `flint ite claim list`, `claim show`, `claim check` (a check only reads), `flint ite brief`, `flint ite vitals`, and `flint ite system`. Never run `flint ite flow approve` or `refuse`, never answer a decision of a person, never enable a process, never acknowledge an item of the brief, and never run `flint ite revision apply`, `revert`, or `discard`, unless the prompt of the person asks for exactly that. The authority layer refuses an agent for an approval and an enable.
+6. **A protected change goes through a revision.** To change `authority` or `governor` of the system block, write the full new root note and run `flint ite revision propose`. Never apply it. A direct edit of these keys shows as the finding `protected-change`.
+7. **Never act on the world** (a ship, a push, a publish, a release) in a living system unless the process or the step that started you says so, and the run has its approval.
+8. **Never write the log, a run, a map change, or a revision by hand.** A view candidate is the one proposal that an agent writes as a file (rule 4).
+
+The reconciliation of a living system (a cron with no instruction map, for example the morning cron of Flint Release) follows the reconciliation prompt of `flint ite prompt "<program>" --json`: it runs the checks of the old claims with `flint ite claim check`, and returns the brief as Markdown (`flint ite brief "<program>" --markdown`) as its result. It acts on nothing.
+
+## Jobs of the Workbench
+
+A person starts a headless **agent session** in the agent panel of the Workbench (`POST /api/ite/agents`), or with `flint ite agent start` or `flint ite job`. See Agent Sessions and Jobs of [[knw-ite-loop]].
+
+The first prompt is the **orientation**: the program and this shard, with no job. When it has no job, read the program (`flint ite map tree`, `flint ite claim list`, and `flint ite check`), then end with `flint orbh session return --await "<one to three sentences: what the program is, and what needs work>"`.
+
+Each **job** then comes to you as a new prompt. The prompt of a job names:
+
+- the action, its title, and the workflow to follow (or its steps, for an action with no workflow);
+- the document: `map`, or a view with its id, its file, its question, its map, and its `base_hash` now;
+- the nodes: the id, the title, the type, and the note of each selected node;
+- the data of a map action: the level of the focus and the coverage gaps;
+- the text of the person;
+- the first `flint ite focus` command;
+- the form of the result.
+
+The session metadata has the keys `ite-program`, `ite-program-id`, `ite-kind` (`job`), `ite-document`, `ite-focus` (the nodes of the current job), `ite-job` (the action of the current job), `ite-job-number`, and `ite-target`. Steel writes them at each new job. A person or another agent can start the same workflows with `flint orbh request`, with the same inputs in the prompt.
+
+| Action | Workflow | Writes |
+|---|---|---|
+| `model` | [[wkfl-ite-model]] | One map change with the new parts and their links (`flint ite map change propose`) |
+| `parts-add` | [[wkfl-ite-parts_add]] | One map change with the new parts below one part |
+| `view` | [[wkfl-ite-view]] | One candidate in `Proposals/` |
+| `reshape` | [[wkfl-ite-reshape]] | One candidate in `Proposals/` |
+| `claim-add` | [[wkfl-ite-claim_add]] | One claim in `Reality/` and its draft check in `Processes/check-<id>/` (`flint ite claim new`), tested, and the promote of the check |
+| `ground` | [[wkfl-ite-ground]] | Claims in `Reality/` with their draft checks, tested, and the promote of each check |
+| `observe` | [[wkfl-ite-observe]] | Results, with `flint ite claim check` and `flint ite claim report` |
+| `repair` | [[wkfl-ite-repair]] | For each claim that fails, the side that must change: the world (the name of its repair process for the person) or the model (a map change, a revision, or a candidate) |
+| `process-add` | [[wkfl-ite-process_add]] | One process in `Processes/` (`flint ite process new`) and its code, prompt, or task |
+| `flow-add` | [[wkfl-ite-flow_add]] | One instruction map `map.md` (`flint ite flow new`) and its nodes |
+| `map-create` | [[wkfl-ite-map_create]] | One map change (the root and level 1), with `flint ite map change propose` |
+| `map-expand` | [[wkfl-ite-map_expand]] | One map change (the children of one part) |
+| `map-refactor` | [[wkfl-ite-map_refactor]] | One map change (a clearer shape of one level: split, merge, move, rename) |
+| `map-cover` | [[wkfl-ite-map_cover]] | One map change (the sources of the gap files) |
+| `map-update` | [[wkfl-ite-map_update]] | One map change (one part from its sources now) |
+| `review` | [[wkfl-ite-review]] | The row in `reviews` of each node that is still true (`flint ite review`), and at most one candidate or one map change for the nodes that are not true |
+| `free`, `update`, `explain`, `do`, `revise` | None: the prompt of the job gives the steps (from the recipe of the action; `free` is built in) | What the prompt of the job asks for. `explain` changes no file. |
+
+**The job of an event.** A process with `agent: program` (for example the standing process `keep-map-true`) gives you a job of the action `update`. Its prompt holds the `task` of the process and the event (`STEEL_EVENT`). Follow the `task`. Make one proposal for each event, with all the parts that the event touches. When the work made a future note true, in full or in part, propose its realize (`flint ite plan realize "<program>" <future id>`, or `--part -` with `{ "now", "rest" }` on stdin): a person applies it. Never set a state of a future note. When more jobs wait in your queue, the next job comes after you return. See [[knw-ite-loop]].
+
+**One session, many jobs.** Keep what you learned about the program for the next job, but read the program again where a job changes it. Do each job alone: do not continue an older job in a new one, unless the text of the person asks for that.
+
+### Before You Return
+
+Check each item. A job that skips an item gives the person a result that the Workbench cannot show or that is not true.
+
+- [ ] You ran `flint shard start ite` once in this session, and the `flint ite focus` command of the prompt of this job, and you changed the focus when the work moved.
+- [ ] You did each stage of the workflow, in order, and set its phase.
+- [ ] A candidate: `flint ite check --candidate <candidate-id>` exits 0 (no error finding), and `flint ite diff --candidate <candidate-id>` says that it can be applied (no conflict).
+- [ ] A map change: `flint ite map change show "<program>" <change id> --json` shows `change.state` = `proposed`, an empty `preview.conflicts`, and no new finding of the level error in the tree after.
+- [ ] Parts, claims, data, and maps: `flint ite check "<program>"` gives no new finding of the code `format`, `link-missing`, `ref-missing`, `claim-invalid`, `unknown-reference`, `data-cycle`, or `pointer-target-missing` for a part, a claim, a piece of data, or a map that you changed, and `flint ite process check` and `flint ite flow check` give no error for a process or a map that you changed. `claim-fails` is not in this list: it is a true answer about the world (`flint ite check` exits 1 for it), so report it.
+- [ ] Each code check that you wrote passed `flint ite claim test`, and you proposed its promote. A production check ran one time, and its claim holds, or its prose says why it fails.
+- [ ] A review: you compared each node that you reviewed with the diff of its code after its last review, and `flint ite review` wrote its row in `reviews`. You reviewed no node that your candidate or your map change changes.
+- [ ] Each maker of data that you wrote passed `flint ite data test` and was pulled one time, and `flint ite data list "<program>"` shows no problem for it.
+- [ ] A living system: you took the instruction from `flint ite prompt`, and you approved, refused, enabled, and applied nothing that the prompt of the person did not ask for.
+- [ ] The result is one line of JSON of the schema `steel-result/1`, and nothing else.
+- [ ] You end the job with `flint orbh session return --await`, not `--finish`.
+
+### The Result of a Job
+
+The last action of each job is:
+
+```bash
+flint orbh session return --await '<json>'
+```
+
+Use `--await`, never `--finish`: the agent session stays ready for the next job. A finished agent session takes no new job, so the person must start a new agent. The person ends the agent session with End in the Workbench. The next job comes to you as a new prompt. A message of the person during a job: answer it in the result of the job, never with `flint orbh message send`.
+
+The payload is one line of JSON of the schema `steel-result/1`, with no other text:
+
+```json
+{"schema":"steel-result/1","program":"<program name>","view_id":"<uuid or null>","candidate_id":"<candidate id or null>","base_hash":"<sha256 hex or null>","summary":"<one to three short sentences for the person>"}
+```
+
+- `program` is the name of the program.
+- `view_id` is the `view_id` of the candidate (the UUID of the view, not the `id` of the candidate file), or the id of the view that the job worked on, or `null` for the map.
+- `candidate_id` is the file stem of the candidate, or `null` when the workflow wrote no candidate (`ground`, `observe`, and a `repair` that wrote no proposal). For a `model` or `map-*` workflow, it is the map change id (`mc-...`), and `view_id` and `base_hash` are `null`.
+- `base_hash` is the `base_hash` of the candidate: the SHA-256 hex for a reshape, `null` for a new view or for no candidate.
+- `summary` tells the person what changed and what is true now, in one to three short sentences of Simplified Technical English. Name the counts (for example "Added 14 parts and 19 links." or "6 parts hold, 2 fail, 3 wait for a person."), then the most important gap. Write it with no `'` character and no line break, so that the shell quote stays correct.
+
+**A failure has the same schema.** When you cannot do the work (the program does not exist, the view does not exist, or an error of the check stays), return `candidate_id: null` and a `summary` that starts with `No change:` and gives the reason and the one thing that the person can do. When this session wrote a candidate that has an error, remove it first with `flint ite discard --candidate <candidate-id>`: this is the one discard that a headless session does.
+
+When the prompt of the job gives another result shape, use the shape of the prompt.

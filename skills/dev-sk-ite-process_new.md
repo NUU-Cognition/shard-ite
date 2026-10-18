@@ -4,7 +4,7 @@ description: "Make one process from one sentence with one command: select a star
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
 
-Run `flint shard start ite` (or `hstart` in a headless session) if you haven't already.
+Run `flint shard start ite` if you haven't already.
 
 # Skill: Process New
 

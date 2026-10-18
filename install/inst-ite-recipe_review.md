@@ -5,7 +5,7 @@ by: agent
 agent: program
 action: { object: part, needs-nodes: true, needs-text: false, writes-proposal: false, ask: null, workflow: ite-review }
 task: |
-  Follow the workflow `hwkfl-ite-review` of the ITE shard (`Shards/ITE/workflows/hwkfl-ite-review.md`) in a headless session, or `wkfl-ite-review` (`Shards/ITE/workflows/wkfl-ite-review.md`) in an interactive session. Do each step of it, in order.
+  Follow the workflow `wkfl-ite-review` of the ITE shard (`Shards/ITE/workflows/wkfl-ite-review.md`). In a headless session, follow its `> [!headless]` callouts. Do each step of it, in order.
 ---
 
 # Review these nodes against their code
