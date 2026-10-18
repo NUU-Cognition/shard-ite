@@ -105,7 +105,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 > - Do not show the preview to a person, and do not ask for the apply (step 5). Read the preview (`flint ite map change show "<program>" <change id> --json`): the tree after must hold your plan, with no new finding of the level error. When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times. Never apply the change.
 > - The links are in the map change: in `fields` of each `add`, and in an `edit` with `fields` (the whole new list of the key) for a link that starts at a part that exists. An agent's `flint ite link` and `flint ite part set` each propose one more map change that a person applies: do not use them for the links of this job (step 6). When you find a link only after the propose, discard the change, add the link, and propose again (the limit of two times holds). Keep the count of the links for the `summary`.
 > - Write the text of the root note only when the root note has no text for a person. Change no other line of the root note, and keep a `system` block when it has one.
-> - Do not wait for the apply. Once the change is proposed and each link of the parts that exist is written, progress to the next stage.
+> - Do not wait for the apply. Once the change is proposed with each link in it, also each link that starts at a part that exists, progress to the next stage.
 
 ## Stage 5: Check and Show
 
@@ -148,5 +148,5 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 - A list of what the map leaves out, and each gap, shown to the person
 
 > [!headless]
-> - One map change with the new parts in `Steel/Programs/<program>/Proposals/`, with the state `proposed`, and the links of the parts that exist, written with `flint ite`
+> - One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`. It holds the new parts, the moves of the notes that join the program, and all the links: also each link that starts at a part that exists (an `edit` with `fields`). No separate `flint ite link` or `flint ite part set` proposal
 > - One `steel-result/1` JSON value as the result of the job, with the change id as `candidate_id`
