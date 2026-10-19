@@ -1,5 +1,7 @@
 ---
 description: "Make or extend the map of a system from the words of a person and from sources: read, select the template and the types, propose the parts as one map change that the person applies, link them, and name what you left out; in a headless session, return one steel-result/1 JSON value"
+orb:
+  - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -70,7 +72,7 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 ## Stage 4: Write the Parts
 
 1. For a new program, run `flint ite create "<Name>" --template <id> --purpose "<one sentence>"`. The root note gets the `types` of the template, in the form of [[tmp-ite-program-v0.1]]. Then set the focus with `flint ite focus` and the ids of the parents of the new parts: the selected nodes, or the ids that you give to the new top parts in step 2.
-2. Write the parts as one JSON array of operations to a file (`/tmp/ite-model-<program slug>.json`), the parents first. Each new part is one `add`:
+2. Write the parts as one JSON array of operations to a file in the scratch folder of your session (`"$ORBH_SCRATCH_DIR/ite-model-<program slug>.json"`), the parents first. Each new part is one `add`:
 
    ```json
    {"op":"add","id":"<new UUID>","title":"<title>","kind":"<type id>","parent":"<parent id, or null for the root note>","sentence":"<one sentence: what the part is>","prose":"<one or two short paragraphs more>"}
@@ -92,13 +94,13 @@ Make the map of a system, or add parts to a map that exists. The result is a pro
 
 > [!headless]
 > - Run `flint orbh session set phase writing`.
-> - Write the operations to the file `/tmp/ite-model-$ORBH_SESSION_ID.json`, the parents first. Give each parent an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`), so that its children name it as `parent`. This workflow uses only `add` and `move` (and `edit` with `fields` for a link from a part that exists); the other operations are in The Map Change of [[knw-ite-programs]]. Check that the file parses: `python3 -m json.tool < /tmp/ite-model-$ORBH_SESSION_ID.json`.
+> - Write the operations to the file `"$ORBH_SCRATCH_DIR/ite-model-<program slug>.json"` (the scratch folder of your session), the parents first. Give each parent an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`), so that its children name it as `parent`. This workflow uses only `add` and `move` (and `edit` with `fields` for a link from a part that exists); the other operations are in The Map Change of [[knw-ite-programs]]. Check that the file parses: `python3 -m json.tool < "$ORBH_SCRATCH_DIR/ite-model-<program slug>.json"`.
 > - Set the focus on the parents of the new parts, so that the person sees where you work: `flint ite focus <id> <id> ...` with the ids of the selected nodes, or the ids that you gave to the new top parts ([[sk-ite-focus]]).
 > - Add each `move` of a note of the Mesh to the array.
 > - Propose all the parts as one map change:
 >
 >   ```bash
->   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change adds>" --json < /tmp/ite-model-$ORBH_SESSION_ID.json
+>   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change adds>" --json < "$ORBH_SCRATCH_DIR/ite-model-<program slug>.json"
 >   ```
 >
 >   An operation that does not apply refuses with `invalid-input` and its index ("Operation 3 (add): ..."). Repair that operation and propose again. Nothing was written.

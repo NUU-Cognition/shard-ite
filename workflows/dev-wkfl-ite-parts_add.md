@@ -1,5 +1,7 @@
 ---
 description: "Add the parts that a person names below one part of the main map (or the root), as one map change of add operations that a person applies, with one stage gate: the person reads the preview; in a headless session, return one steel-result/1 JSON value"
+orb:
+  - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -81,7 +83,7 @@ This workflow uses `add`, and `split` when related parts belong in one container
 
 ## Stage 3: Propose the Change and Review It With the Person
 
-1. Write the operations as one JSON array to a file: `/tmp/ite-map-<program slug>.json`. Check that it parses: `python3 -m json.tool < <file>`.
+1. Write the operations as one JSON array to a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`.
 2. Propose the change:
 
    ```bash
@@ -100,11 +102,11 @@ This workflow uses `add`, and `split` when related parts belong in one container
 > [!headless]
 > A headless session does not do the review with the person (steps 3 to 6): it reads the preview itself, and never applies the change.
 > - Run `flint orbh session set phase proposing`.
-> - Write the operations as one JSON array to the file `/tmp/ite-map-$ORBH_SESSION_ID.json`. Check that it parses: `python3 -m json.tool < /tmp/ite-map-$ORBH_SESSION_ID.json`.
+> - Write the operations as one JSON array to the file `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"` (the scratch folder of your session). Check that it parses: `python3 -m json.tool < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`.
 > - Propose the change:
 >
 >   ```bash
->   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change adds>" --json < /tmp/ite-map-$ORBH_SESSION_ID.json
+>   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change adds>" --json < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"
 >   ```
 >
 >   An operation that does not apply refuses with `invalid-input` and its index ("Operation 3 (add): ..."). Repair that operation and propose again. Nothing was written.
