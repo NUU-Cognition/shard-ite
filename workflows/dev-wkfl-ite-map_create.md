@@ -1,5 +1,7 @@
 ---
 description: "Draft the root and level 1 of the main map of a program from its sources, as one map change that a person applies, with one stage gate: the person reads the preview"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -86,7 +88,7 @@ The focus of this workflow: the root (no node).
 
 ## Stage 4: Propose the Change and Review It With the Person
 
-1. Write the operations as one JSON array to a file: `/tmp/ite-map-<program slug>.json`. Check that it parses: `python3 -m json.tool < <file>`.
+1. Write the operations as one JSON array to a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`.
 2. Propose the change:
 
    ```bash
@@ -105,11 +107,11 @@ The focus of this workflow: the root (no node).
 > [!headless]
 > A headless session does not do the review with the person (steps 3 to 6): it reads the preview itself, and never applies the change.
 > - Run `flint orbh session set phase proposing`.
-> - Write the operations in the form of the callout of Stage 3, as one JSON array to the file `/tmp/ite-map-$ORBH_SESSION_ID.json`. Check that it parses: `python3 -m json.tool < /tmp/ite-map-$ORBH_SESSION_ID.json`.
+> - Write the operations in the form of the callout of Stage 3, as one JSON array to the file `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"` (the scratch folder of your session). Check that it parses: `python3 -m json.tool < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`.
 > - Propose the change:
 >
 >   ```bash
->   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change does>" --json < /tmp/ite-map-$ORBH_SESSION_ID.json
+>   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change does>" --json < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"
 >   ```
 >
 >   An operation that does not apply refuses with `invalid-input` and its index ("Operation 3 (move): ..."). Repair that operation and propose again. Nothing was written.

@@ -1,5 +1,7 @@
 ---
 description: "A view of a program (format steel-view/1): the frontmatter with the map and the slice, the headings with ids (the part id for a node that stands for a part), the node blocks, the eight builtin shapes and the maps of Steel/Maps, and one complete example of a view that is not about software"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 # Filename: Steel/Programs/[Name]/Proposals/[candidate-id].md
@@ -40,7 +42,7 @@ description: "A view of a program (format steel-view/1): the frontmatter with th
   - derived-from: "" or the wikilink of the view that this view came from.
   - base_hash: null for a new view. For a reshape, the SHA-256 hex of the bytes of the view file,
     computed before you read it: shasum -a 256 "<view file>". A file in Views/ has no base_hash.
-  - template, authors, orbh-sessions: the Flint conventions.
+  - template, authors, orb: the Flint conventions. orb holds the by address of `flint address me` (quoted).
   - No program field: the folder gives the program.
   - The view holds no grounding, no result, no finding, no position, and no agent.
   - The H1 has none of the characters \ / : * ? " < > | # ^ [ ].
@@ -117,8 +119,8 @@ base_hash: null
 template: "[[tmp-ite-view-v0.1]]"
 authors:
   - "[[@author]]"
-orbh-sessions:
-  - "[[AGENT-SESSION-UUID]]"
+orb:
+  - "[the output of flint address me]"
 ---
 
 # [Name of the view: two to five words in the words of the person]

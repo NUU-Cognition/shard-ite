@@ -1,5 +1,7 @@
 ---
 description: "Programs and their model: the root note, the part file and its keeper, pointer parts, types, connections, and templates, the view file and its lifetime, maps, references, proposals (the candidate and the apply), the main map, its saved places, and the map change, and the quality rules of a program"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 # Knowledge: Programs, Parts, the Main Map, and Views
@@ -23,7 +25,7 @@ Read this file before you write a root note, a part, a map change, a view, a can
 | `codebase`, `product-root` | Optional, for each template: the codebase and the folder of the product that holds `orbtest/`. `codebase` decides the file coverage, the `code-refs`, and the code checks (see Programs with a Codebase in [[knw-ite-software]]) |
 | `kept-by` | Optional: `"process:<id>"`, the keeper of the root note. With no `kept-by`, the root uses `process:keep-map-true` when the program has it; else the program has no keeper (the finding `no-keeper`). Each part and each view with no `kept-by` uses the keeper of the root. |
 | `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
-| `template`, `authors`, `orbh-sessions` | The Flint conventions |
+| `template`, `authors`, `orb` | The Flint conventions. `orb` holds the `by` address of `flint address me`. An old note keeps `orbh-sessions`: never remove it, and add no new item to it. |
 
 Each program is a living system. An optional fenced `system` block in the body changes the defaults of the system (see Living Systems in [[knw-ite-loop]]).
 
@@ -75,7 +77,7 @@ The rules of the read:
 1. **The type.** The last `(Type)` word of the file name. A note with no `(Type)` word has the type `note`. A change of type is a rename (a map change `rename` with `kind`), and each wikilink changes with it. The part has no field `kind`.
 2. **The membership and the parent.** `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note. A part has no field `program`, `include`, or `place`.
 3. **The id.** The frontmatter `id` (a UUID) is the key everywhere: each view heading, claim, process, step, record, state, and proposal names the part by its id. Never change it.
-4. **The links.** Each frontmatter key whose value is one wikilink or a list of wikilinks gives one link for each wikilink, with the key as the connection (`next`, `uses`, `depends-on`, `informs`, `owner`). These keys give no link: `id`, `tags`, `parent`, `template`, `from-template`, `authors`, `orbh-sessions`, `artifacts-created`. A wikilink in the prose gives a link of the connection `mentions`.
+4. **The links.** Each frontmatter key whose value is one wikilink or a list of wikilinks gives one link for each wikilink, with the key as the connection (`next`, `uses`, `depends-on`, `informs`, `owner`). These keys give no link: `id`, `tags`, `parent`, `template`, `from-template`, `authors`, `orb`, `orbh-sessions`, `artifacts-created`. A wikilink in the prose gives a link of the connection `mentions`.
 5. **No claims in a part.** A part has no field `claims`. A claim is a folder of `Reality/`, and it names its parts with `about` (see Claims and Checks in [[knw-ite-state]]).
 6. **The text.** The body below the H1, up to the first heading `## For a developer`. The H1 is for a person; no code reads it.
 7. **The title.** The file name after the `(<Type>)` word, with no number at its start: a number there reads as the number of an artifact, as in `(Task) 1099 ...`. Start a title with a word: "A full hall and 30 new members", not "80 guests".

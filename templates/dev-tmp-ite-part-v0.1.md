@@ -1,5 +1,7 @@
 ---
 description: "A part of an ITE program: one Mesh note of a type, with its parent, its links, its keeper (kept-by), its optional pointer (points-to), and prose for a person, with complete examples of a part and of a pointer part"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/Map/(Program) [Name] . ([Type]) [Title].md
@@ -55,7 +57,7 @@ description: "A part of an ITE program: one Mesh note of a type, with its parent
     Take them from `flint orbtest story list --root <product root>`. Never invent them. They are plain fields: the
     check of the claim orbtest-proof reads them.
     No key reviewed: a review is a row of the data item reviews, and `flint ite review` writes it.
-  - template, authors, orbh-sessions: the Flint conventions.
+  - template, authors, orb: the Flint conventions. orb holds the by address of `flint address me` (quoted).
   - The part holds no grounding, no proof state, no review, no result, no finding, and no position. A command computes these facts.
   - The part has no field claims. A claim is a folder of Steel/Programs/<Name>/Reality/ that names the part in
     its `about` ([[tmp-ite-claim-v0.1]]). One claim can be about many parts, and one part can have many claims.
@@ -80,8 +82,8 @@ owner: "[[(Program) NAME . (Person) NAME OF THE OWNER]]"
 template: "[[tmp-ite-part-v0.1]]"
 authors:
   - "[[@author]]"
-orbh-sessions:
-  - "[[AGENT-SESSION-UUID]]"
+orb:
+  - "[the output of flint address me]"
 ---
 
 # (TYPE) [Title]

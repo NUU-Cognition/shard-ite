@@ -1,5 +1,7 @@
 ---
 description: "The root note of an ITE program (format steel-program/1): the frontmatter, the text for a person, the optional system block (steel-system/1: each program is a living system), and complete examples"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/(Program) [Name].md
@@ -50,7 +52,7 @@ description: "The root note of an ITE program (format steel-program/1): the fron
     keeper of the root. A keeper writes only proposals for the notes that it keeps.
   - codebase, product-root (optional, for each template): the codebase and the folder of the product that holds
     orbtest/. codebase decides the file coverage, the code-refs, and the code checks, not the template name.
-  - template, authors, orbh-sessions: the Flint conventions. authors is the person for whom you work.
+  - template, authors, orb: the Flint conventions. authors is the person for whom you work. orb holds the by address of `flint address me` (quoted).
   - The root note holds no grounding, no result, no finding, no position, and no agent.
     A command computes these facts.
 
@@ -102,8 +104,8 @@ from-template: "TEMPLATE-ID"
 template: "[[tmp-ite-program-v0.1]]"
 authors:
   - "[[@author]]"
-orbh-sessions:
-  - "[[AGENT-SESSION-UUID]]"
+orb:
+  - "[the output of flint address me]"
 ---
 
 # [Name of the program: two to five words in the words of the person]

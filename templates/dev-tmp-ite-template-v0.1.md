@@ -1,5 +1,7 @@
 ---
 description: "A template of this Flint (steel-template/1): the start of a new program, with its types, connections, views, and questions, and the instruction for the agent that models a system of that kind, with one complete example"
+orb:
+  - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
 ---
 
 # Filename: Mesh/Metadata/Templates/(Template) [Title].md
@@ -17,7 +19,7 @@ description: "A template of this Flint (steel-template/1): the start of a new pr
   FRONTMATTER CONTRACT
   - id: a new UUID v4. This is the id of the note, not the id of the template.
   - tags: always "#ite/template".
-  - authors, orbh-sessions: the Flint conventions.
+  - authors, orb: the Flint conventions. orb holds the by address of `flint address me` (quoted).
 
   THE BODY
   - One H1: the title of the template. One paragraph for a person: the kind of system, and when to use it.
@@ -50,8 +52,8 @@ tags:
   - "#ite/template"
 authors:
   - "[[@author]]"
-orbh-sessions:
-  - "[[AGENT-SESSION-UUID]]"
+orb:
+  - "[the output of flint address me]"
 ---
 
 # [Title of the template]
