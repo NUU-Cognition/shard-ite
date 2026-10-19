@@ -218,7 +218,7 @@ A map change cannot name a part that another waiting map change adds. So put a n
 | Read and write the plan | `flint ite plan "<program>"`, `plan show`, `plan add`; `plan realize "<program>" <future id>` proposes one map change (full), and `--part -` proposes a partial realize (`{ "now", "rest" }` on stdin) |
 | Make a draft version of a process | `flint ite process dev "<program>" <id>`; `process promote` proposes it |
 | Change the system block of a program | `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<text>"` |
-| Give a job to an agent of a program and wait for it | `flint ite job "<program>" --action <id> [--node <id>...] [--text "<text>"] --wait [minutes]` (exit 0 done, 1 failed, 2 still works, 3 waits for a person; `flint ite actions` lists the actions) |
+| Give a job to the agent of a program (its wisp keeps its memory) and wait for it | `flint ite job "<program>" --action <id> [--node <id>...] [--text "<text>"] --wait [minutes]` (`--new-agent` for a session of one time; `flint ite agent program "<program>"` shows the agent) (exit 0 done, 1 failed, 2 still works, 3 waits for a person; `flint ite actions` lists the actions) |
 | Answer a question with a view | `flint ite job "<program>" --action view --text "<question>" --wait`, or [[wkfl-ite-view]] |
 | Find all problems | `flint ite check ["<program>"]` (it runs nothing) |
 | The check after a product task | [[sk-ite-check_after_task]] |
