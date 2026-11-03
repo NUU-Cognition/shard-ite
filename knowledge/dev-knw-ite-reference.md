@@ -132,7 +132,6 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite check [<program>] --paths <path...> [--checkout <dir>] [--json]` | The check after a task: the parts whose sources name one of the paths. `--json`: `programs[]`, each with `program` and `parts[]` (`id`, `title`, `findings`). Exit 0 when no part names the paths. ([[sk-ite-check_after_task]]) | Nothing |
 | `flint ite modules [--json]` | Each module of the ITE, its title, and whether it is on in this Flint | Nothing |
 | `flint ite modules on\|off <id>` | Turns one module on or off. A person only: an agent gets the code `forbidden` (exit 1). | `flint.toml` |
-| `flint ite actions [--all]` | The actions of the modules that are on (`--all`: each action). An action of a module that is off is refused (exit 2), with `flint ite modules on <id>` for a person. | Nothing |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A person only. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A person only. | The program folder |
 

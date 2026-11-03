@@ -10,7 +10,7 @@ orb:
 /*
   The root note is the root of one program: the model of one system. A note of the Mesh is a part of the
   program when its `parent` chain reaches the root note.
-  `flint ite create "<Name>" --template <id> --purpose "<text>"` makes it, and the empty folder Steel/Programs/<Name>/.
+  `flint ite create "<Name>" --template <id> --purpose "<text>"` makes it, and Steel/Programs/<Name>/program.md.
   `flint ite templates` lists the templates. Write the root note with the command, not by hand.
 
   THE FOLDERS OF A PROGRAM

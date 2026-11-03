@@ -320,7 +320,7 @@ modules = ["main-map"]
 - `flint ite modules [--json]` shows each module, its title, and whether it is on. Each agent can read it.
 - `flint ite modules on <id>` and `flint ite modules off <id>` change the setting. A person only: the engine refuses an agent with the code `forbidden` (exit 1). Name the command for the person.
 - `flint ite --help` shows the verbs of the modules that are on, then the line `Off in this Flint: <ids>. Their commands still work.`
-- `flint ite check` shows only the findings of the modules that are on (see The Findings of the Main Map). `flint ite actions` lists only the actions of the modules that are on (`--all`: each action). An action of a module that is off is refused (exit 2), with the command `flint ite modules on <id>` for a person.
+- `flint ite check` shows only the findings of the modules that are on (see The Findings of the Main Map). The agents of the Workbench belong to the module `agents`. While it is off, `flint ite actions` lists no action and `flint ite job` refuses: change the main map with the commands of this file.
 
 ## Quality Rules of a Program
 

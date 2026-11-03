@@ -1,5 +1,5 @@
 ---
-description: "The ITE for the main map: what a program and its main map are, the rules, where the files live, how to make a program and change its map, the operations of a map change, each job with its command, the setting of the modules, which file to read, and the section Headless with its rules and the shape of the result"
+description: "The ITE for the main map: what a program and its main map are, the rules, where the files live, how to make a program and change its map, the operations of a map change, the command for each piece of work, the setting of the modules, which file to read, and the section Headless with its rules and the shape of the result"
 ---
 
 # ITE
@@ -62,7 +62,7 @@ A note is a part when its `parent` chain reaches the root note. Its identity is 
 
 A map change cannot name a part that another waiting map change adds. So put a new subtree in one map change: give each new part an `id` (a new UUID v4), and name it as the `parent` of its children.
 
-## Jobs to Commands
+## The Commands
 
 `<program>` is the name or the id of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
 

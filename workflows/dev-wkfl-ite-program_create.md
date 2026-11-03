@@ -40,7 +40,7 @@ A new program gets only its root note: no other file. Use the words of the perso
    flint ite create "<name>" --purpose "<purpose>" --template <id>
    ```
 
-   The command writes the root note (with the `types` of the template) and the empty folder of the program in `Steel/`.
+   The command writes the root note (with the `types` of the template) and `Steel/Programs/<name>/program.md`. Its output names the root note and the next commands.
 6. Once the program exists, progress to the next stage.
 
 > [!headless]
@@ -109,7 +109,7 @@ A new program gets only its root note: no other file. Use the words of the perso
 
 # Output
 
-- One program: the root note and its empty folder in `Steel/Programs/<name>/`
+- One program: the root note and `Steel/Programs/<name>/program.md`
 - One map change with the first level: applied by the person, or discarded
 - The list of the applies for the person
 

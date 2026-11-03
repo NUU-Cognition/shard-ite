@@ -11,7 +11,7 @@ Load it with `flint shard start ite`, also in a headless session.
 ```
 Shards/(Source Remote) ITE/
 ├── shard.yaml                       # the types of the templates (Program, System, Module, Feature, Data, and more); folders Mesh/Programs and Mesh/Metadata/Templates; the install files
-├── dev-init-ite.md                  # a program and its main map, the rules, where the files live, how to make a program and change its map, the operations of a map change, each job with its command, the setting of the modules, which file to read; the section Headless
+├── dev-init-ite.md                  # a program and its main map, the rules, where the files live, how to make a program and change its map, the operations of a map change, the command for each piece of work, the setting of the modules, which file to read; the section Headless
 ├── knowledge/
 │   ├── dev-knw-ite-programs.md      # the root note, parts, types, connections, and templates, the tree, coverage, the findings, the map change, places, sizes, faces, drawings, links, the setting, the quality rules
 │   └── dev-knw-ite-reference.md     # each term, who writes what, meaning versus facts, the folders, each command of the main map
