@@ -30,5 +30,5 @@ look: { hue: earth, icon: database, layer: structure }
 | Type id | `data` |
 | Naming | `<stem of the root note> . (Data) <Title>.md` |
 | Capabilities | `covers-files` |
-| Code | `code-refs`, `stories`, `criteria`, `reviewed` (see Software Programs of [[init-ite]]) |
+| Code | `code-refs` in a program with `codebase` on its root note (see The Part File of [[knw-ite-programs]]) |
 | Templates | `software` |

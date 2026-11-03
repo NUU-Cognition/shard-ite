@@ -30,5 +30,5 @@ look: { hue: water, icon: server, layer: structure }
 | Type id | `system` |
 | Naming | `<stem of the root note> . (System) <Title>.md` |
 | Capabilities | `covers-files`, `covers-boundary`, `container` |
-| Code | `code-refs`, `stories`, `criteria`, `reviewed` (see Software Programs of [[init-ite]]) |
+| Code | `code-refs` in a program with `codebase` on its root note (see The Part File of [[knw-ite-programs]]) |
 | Templates | `software` |

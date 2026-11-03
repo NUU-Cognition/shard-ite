@@ -7,7 +7,7 @@ tags:
 
 # Program
 
-A Program is the model of one system, so that a person can think about the system, see it, and check it against reality. The system can be software, an event of a club, a process of a business, a research pipeline, or a team. A Program is a root note of this type and the tree of parts below it: a note of the Mesh, of any type, is a part when its `parent` chain reaches the root note. The root note lists the `types` that the parts use, and `from-template` names the template that made it. The machinery of a Program is in `Steel/Programs/<Name>/`: its views, its claims (what must be true now), its data, its processes (each check, maker, keeper, and worker) and instruction maps (the work that it can run), its runs, its proposals, and the state of its views. A Program is not a Project of the Projects shard: a Project holds work that ends, and a Program holds the model of a system that stays. A Program is not a single note about a topic: each part of a Program is its own note, and a command computes the grounding of each part from the claims about it. A Program of the template `software` also names its codebase and its product root, and its parts and views name the code and the stories of Orbtest.
+A Program is the model of one system, so that a person can think about the system and see it. The system can be software, the launch night of a club, a process of a business, a research, or a team. A Program is a root note of this type and the tree of parts below it: a note of the Mesh, of any type, is a part when its `parent` chain reaches the root note. This tree is the main map of the Program. The root note lists the `types` that the parts use, and `from-template` names the template that made it. Each change of the tree is a map change: an agent proposes it, and a person applies it. A Program is not a Project of the Projects shard: a Project holds work that ends, and a Program holds the model of a system that stays. A Program of the template `software` also names its codebase, and its parts name their code in `code-refs`.
 
 ## Properties
 
@@ -18,13 +18,10 @@ A Program is the model of one system, so that a person can think about the syste
 | Naming | `(Program) <Name>.md` |
 | Location | `Mesh/Programs/(Program) <Name>/` |
 | Parts | Each note whose `parent` chain reaches the root note (tag `#ite/part`); a new part goes to `Map/(Program) <Name> . (<Type>) <Title>.md` |
-| Views | `Steel/Programs/<Name>/Views/(View) <Title>.md` (tag `#ite/view`, format `steel-view/1`) |
-| Claims | `Steel/Programs/<Name>/Reality/<id>/claim.md` (format `steel-claim/2`): a test of reality; its check is the process `Processes/check-<id>/` |
-| Data | `Steel/Programs/<Name>/Data/<id>/data.md` (format `steel-data/2`); its maker is the process that it names in `kept-by` (often `Processes/make-<id>/`) |
-| Processes | `Steel/Programs/<Name>/Processes/<id>/process.md` (format `steel-process/1`): each check, maker, keeper, and worker, and `map.md` (format `steel-flow/1`) for a large process |
-| Runs | `Steel/Programs/<Name>/Runs/<run id>/` (only the run engine writes them) |
-| Proposals | `Steel/Programs/<Name>/Proposals/`: map changes, view candidates, revisions (only the engines write them) |
-| Log | `.flint/steel/logs/<program id>.jsonl`: the results of the checks and the process runs; only the commands write it (the one door of the results is `flint ite claim report`) |
+| Map changes | `Steel/Programs/<Name>/Proposals/mc-<stamp>-<slug>.md` (only the change engine writes them; a person applies each one) |
+| State | `Steel/Programs/<Name>/State/main.json`: the places, the sizes, and the faces of the cards, and the drawings (only the canvas and `flint ite place`, `arrange`, and `drawing` write it) |
+
+The later modules of the ITE add more folders to `Steel/Programs/<Name>/`. They are off by default: `flint ite modules` shows them.
 
 ## Lifecycle
 
@@ -38,8 +35,3 @@ active → archived
 
 - [[tmp-ite-program-v0.1]] — Program
 - [[tmp-ite-part-v0.1]] — Part
-- [[tmp-ite-view-v0.1]] — View
-- [[tmp-ite-claim-v0.1]] — Claim and its check
-- [[tmp-ite-data-v0.1]] — Data and its maker
-- [[tmp-ite-process-v0.1]] — Process
-- [[tmp-ite-instruction_map-v0.1]] — Instruction map

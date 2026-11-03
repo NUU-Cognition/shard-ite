@@ -30,5 +30,5 @@ look: { hue: sun, icon: sparkles, layer: structure }
 | Type id | `feature` |
 | Naming | `<stem of the root note> . (Feature) <Title>.md` |
 | Capabilities | `covers-files` |
-| Code | `code-refs`, `stories`, `criteria`, `reviewed` (see Software Programs of [[init-ite]]) |
+| Code | `code-refs` in a program with `codebase` on its root note (see The Part File of [[knw-ite-programs]]) |
 | Templates | `software` |

@@ -30,5 +30,5 @@ look: { hue: teal, icon: boxes, layer: structure }
 | Type id | `module` |
 | Naming | `<stem of the root note> . (Module) <Title>.md` |
 | Capabilities | `covers-files`, `container` |
-| Code | `code-refs`, `stories`, `criteria`, `reviewed` (see Software Programs of [[init-ite]]) |
+| Code | `code-refs` in a program with `codebase` on its root note (see The Part File of [[knw-ite-programs]]) |
 | Templates | `software` |
