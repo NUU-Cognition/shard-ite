@@ -1,35 +1,34 @@
 ---
-description: "Programs and their model: the root note, the part file and its keeper, pointer parts, types, connections, and templates, the view file and its lifetime, maps, references, proposals (the candidate and the apply), the main map, its saved places, and the map change, and the quality rules of a program"
+description: "Programs and their main map: the root note, the part file, types, connections, and templates, the tree, coverage, the findings, the map change, the places, sizes, and faces of the cards, the drawings, the two kinds of links, the commands, the setting of the modules, and the quality rules of a program"
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
+  - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
 ---
 
-# Knowledge: Programs, Parts, the Main Map, and Views
+# Knowledge: Programs and the Main Map
 
-Read this file before you write a root note, a part, a map change, a view, a candidate, a map of `Steel/Maps/`, or a type. The rules of [[init-ite]] apply with no change. The terms and the folders are in [[knw-ite-reference]].
+Read this file before you write a root note, a part, a map change, a type, or a template, and before you change a place or a drawing. The rules of [[init-ite]] apply with no change. The terms and the folders are in [[knw-ite-reference]].
 
 ## The Root Note
 
-`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]` (with no `--template`, the template is a guess from the purpose; each new program also gets the process `keep-map-true` with `recipe: keep-map-true`, not enabled, and a starter kit of its template: one piece of data, one code process, and one claim with its code check); the form is [[tmp-ite-program-v0.1]].
+`Mesh/Programs/(Program) <Name>/(Program) <Name>.md`. Make it with `flint ite create "<Name>" --purpose "<text>" [--template <id>]`. With no `--template`, the template is a guess from the purpose. The form is [[tmp-ite-program-v0.1]].
 
 | Field | Value |
 |---|---|
 | `format` | `steel-program/1` |
-| `id` | A UUID v4. It never changes. It is the id of the program in `Steel/` and in the log. |
+| `id` | A UUID v4. It never changes. It is the id of the program in `Steel/`. |
 | `tags` | `"#ite/program"` |
 | `purpose` | One sentence: what the system is, and why a person models it |
 | `status` | `active` or `archived` |
 | `types` | The type names that the program uses, for example `[Goal, Milestone, Risk]` |
 | `from-template` | The id of the template that made the program. History only: nothing decides with it. |
 | `main-map` | Optional: `max-children`, `coverage-ignore`, and `card-face` (see The Main Map) |
-| `codebase`, `product-root` | Optional, for each template: the codebase and the folder of the product that holds `orbtest/`. `codebase` decides the file coverage, the `code-refs`, and the code checks (see Programs with a Codebase in [[knw-ite-software]]) |
-| `kept-by` | Optional: `"process:<id>"`, the keeper of the root note. With no `kept-by`, the root uses `process:keep-map-true` when the program has it; else the program has no keeper (the finding `no-keeper`). Each part and each view with no `kept-by` uses the keeper of the root. |
-| `shards` | Optional: the shards that each agent session of the program loads after this shard, by their shorthand, for example `[code, ab]`. A shard that the Flint does not have gives a warning, and the session loads the others. (Task 1265) |
+| `codebase`, `product-root` | Optional, for each template: the codebase of the program, and the folder of the product in it. `codebase` gives the program its file coverage and the `code-refs` of its parts. |
 | `template`, `authors`, `orb` | The Flint conventions. `orb` holds the `by` address of `flint address me`. An old note keeps `orbh-sessions`: never remove it, and add no new item to it. |
 
-Each program is a living system. An optional fenced `system` block in the body changes the defaults of the system (see Living Systems in [[knw-ite-loop]]).
+A root note can have more keys and a fenced block of a later module. Keep each key and each block that this file does not name: a later module reads them.
 
-Example (the program Club Launch Night of this Flint):
+Example (the program Club Launch Night of this Flint, cut short):
 
 ```yaml
 ---
@@ -46,7 +45,7 @@ authors: ["[[@Nathan]]"]
 
 # Club Launch Night
 
-The Inner West Makers Club starts with a launch night on Thursday 12 November 2026. The goal is that 80 people come and 30 of them join. Read the view "What Must Be True One Week Before" first.
+The Inner West Makers Club starts with a launch night on Thursday 12 November 2026. The goal is that 80 people come and 30 of them join. Start at the goal, then open the milestones.
 ```
 
 ## The Part File
@@ -76,16 +75,15 @@ The rules of the read:
 
 1. **The type.** The last `(Type)` word of the file name. A note with no `(Type)` word has the type `note`. A change of type is a rename (a map change `rename` with `kind`), and each wikilink changes with it. The part has no field `kind`.
 2. **The membership and the parent.** `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note. A part has no field `program`, `include`, or `place`.
-3. **The id.** The frontmatter `id` (a UUID) is the key everywhere: each view heading, claim, process, step, record, state, and proposal names the part by its id. Never change it.
-4. **The links.** Each frontmatter key whose value is one wikilink or a list of wikilinks gives one link for each wikilink, with the key as the connection (`next`, `uses`, `depends-on`, `informs`, `owner`). These keys give no link: `id`, `tags`, `parent`, `template`, `from-template`, `authors`, `orb`, `orbh-sessions`, `artifacts-created`. A wikilink in the prose gives a link of the connection `mentions`.
-5. **No claims in a part.** A part has no field `claims`. A claim is a folder of `Reality/`, and it names its parts with `about` (see Claims and Checks in [[knw-ite-state]]).
-6. **The text.** The body below the H1, up to the first heading `## For a developer`. The H1 is for a person; no code reads it.
-7. **The title.** The file name after the `(<Type>)` word, with no number at its start: a number there reads as the number of an artifact, as in `(Task) 1099 ...`. Start a title with a word: "A full hall and 30 new members", not "80 guests".
-8. **No status of the ITE.** The engine reads no `status` of a part. Do not write `status: active` or `status: untested`. A note of a type with a status of its own (a Task, a Milestone with the field `status`) keeps its status. "Untested" is computed: no claim covers the part.
-9. **The keeper.** `kept-by: "process:<id>"` names the process that keeps the part true. A part with no `kept-by` uses the keeper of its parent, up to the root note. Write `kept-by` only when the part needs another keeper than its parent. A keeper writes only proposals for the part, never the note itself. The inspector of a part shows its keeper, with "from <parent>" when it inherits it.
-10. **A pointer part.** `points-to` makes the part a pointer to one target of the same program (see Pointer Parts).
+3. **The id.** The frontmatter `id` (a UUID) is the key everywhere: each map change and each place names the part by its id. Never change it.
+4. **The links.** Each frontmatter key whose value is one wikilink or a list of wikilinks gives one link for each wikilink, with the key as the connection (`next`, `uses`, `depends-on`, `informs`, `owner`, `refers-to`). These keys give no link: `id`, `tags`, `parent`, `template`, `from-template`, `authors`, `orb`, `orbh-sessions`, `artifacts-created`. A wikilink in the prose gives a link of the connection `mentions`.
+5. **The text.** The body below the H1, up to the first heading `## For a developer`. The H1 is for a person; no code reads it.
+6. **The title.** The file name after the `(<Type>)` word, with no number at its start: a number there reads as the number of an artifact, as in `(Task) 1099 ...`. Start a title with a word: "A full hall and 30 new members", not "80 guests".
+7. **No status of the ITE.** The engine reads no `status` of a part. Do not write `status: active`. A note of a type with a status of its own (a Task, a Milestone with the field `status`) keeps its status.
+8. **The sources.** `sources` lists the notes and the pages that a part comes from (wikilinks or URLs). In a program with `codebase`, `code-refs` lists the code of the part: a file, a small folder (ends with `/`), a symbol (`path#Name`), or a path of another codebase (`@<Codebase name>/<path>`). Each path must exist.
+9. **Keys of a later module.** A part can have more keys of a later module. Keep each key that this file does not name. With the default setting, each part shows as a plain card of its type.
 
-**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`. A person's `part set` and `flint ite link` write at once; an agent's `flint ite part set` and `flint ite link` each propose one map change (`edit`), and a person applies it.
+**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`. A person's `part set` and `flint ite link` write at once; an agent's `part set` and `link` each propose one map change (`edit`), and a person applies it.
 
 ## Types, Connections, and Templates
 
@@ -111,18 +109,8 @@ look: { hue: fire, icon: flag, layer: plan }
 2. A type note with no `type` block is a type with no capability: a plain card. A `(Type)` word that no note defines is a plain type too. The type `note` always exists.
 3. When two shards define one type name, the note with a `type` block counts.
 4. `connections` names the connection keys that a part of the type uses, each with the type ids that it can point to (an empty list: any type).
-5. `look.layer` is the default layer of the canvas legend.
-
-The capabilities (fixed in the core):
-
-| Capability | What the core does with a part of the type |
-|---|---|
-| `covers-files` | Counts the coverage of the files from `code-refs` |
-| `covers-boundary` | Counts the items of the boundary that it names |
-| `dated` | A timeline can place it |
-| `has-status` | A board can place it |
-| `owner` | Other parts can name it as owner; the brief names it |
-| `container` | It can hold other parts on the canvas |
+5. `look` gives the colour (`hue`), the icon, and the default layer of the canvas legend.
+6. The capabilities of the main map: `covers-files` (the part counts for the coverage of the files from its `code-refs`) and `container` (the part can hold other parts on the canvas). The other capabilities (`covers-boundary`, `dated`, `has-status`, `owner`) serve the later modules: keep them in a type.
 
 **A connection** is a note `Mesh/Metadata/Types/(Connection) <Name> (<Shard> Shard).md` with one fenced `connection` block:
 
@@ -137,11 +125,9 @@ style: dependency
 ```
 ````
 
-The connection capability: `rolls-up` (the main map shows the link at each level as a relation with a count). `next` is a plain connection: an order of the parts that the shape `flow` draws. No run follows a connection: a run follows the `map.md` of a process. A connection with no capability is a plain reference. `mentions` (a prose link) is a builtin connection. `parent` is not a connection.
+The capability `rolls-up` makes the main map show the link at each level as a relation with a count. `next` is a plain connection: an order of the parts. A connection with no capability is a plain reference. `mentions` (a prose link) and `refers-to` are builtin connections. `parent` is not a connection. The field `shown` says when the canvas shows a link: `selected` (the default) or `always` (see Two Kinds of Links).
 
-The field `shown` of a `connection` block says when the canvas shows a link: `selected` (the default: when a person selects a card at one end, or points at it) or `always` (at each time). `refers-to` is a builtin connection with `shown: always`: the link that a person draws from a dot of a card on the main map (see Two Kinds of Links). Each program has it, as each program has `mentions`.
-
-**A template** is the start of a new program: one note `Mesh/Metadata/Templates/(Template) <Name>.md`. A shard gives its templates as install files into that folder: the ITE shard installs `(Template) <Title> (ITE Shard).md` with the mode `force`, so each new version of the shard writes them again. A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
+**A template** is the start of a new program: one note `Mesh/Metadata/Templates/(Template) <Name>.md`. The ITE shard installs six templates as `(Template) <Title> (ITE Shard).md`, with the mode `force`: each new version of the shard writes them again. A template is an instruction for the agent that models a system of that kind, with one fenced `template` block that Steel reads for the New program dialog. The form is [[tmp-ite-template-v0.1]].
 
 ````markdown
 ```template
@@ -150,153 +136,55 @@ id: event
 title: Event
 types: [goal, milestone, deliverable, person, role, venue, resource, task, risk, budget, note]
 connections: [next, uses, depends-on, owner, informs, mentions, blocks]
-views: [{ map: timeline, question: "What must be done before the doors open, and by when?" }]
 questions: ["Who does what on the night?"]
 ```
 ````
 
-`flint ite create` copies the types of the template into the root note (`types`) and writes `from-template`. After that, nothing reads the template. The ITE shard gives six templates: `software`, `process`, `event`, `research`, `organisation`, and `general` ([[(Template) Event (ITE Shard)]] and the others). To change one, write your own template in a new note with another id: an update of the shard writes its own six again. Follow the instruction of the template when you model a new program. Add a type, a connection, or a template only when none fits, and when the person agrees.
-
-## The View File
-
-A view is one Markdown file of Steel/, not of the Mesh: `Steel/Programs/<Name>/Views/(View) <Title>.md`, in the format `steel-view/1`. The form, the eight builtin shapes, and one complete example are in [[tmp-ite-view-v0.1]].
-
-| Field | Value |
-|---|---|
-| `format` | `steel-view/1` |
-| `id` | The UUID of the view. A candidate has its own new `id`, and `view_id` names its view. |
-| `tags` | `"#ite/view"` |
-| `question` | The question of the person, as one sentence |
-| `map` | The map that draws the view: a builtin shape (`flow`, `streams`, `layers`, `tree`, `table`, `free`, `timeline`, `board`), which Steel draws natively, or the id of a map of `Steel/Maps/`, which Steel runs in a sandbox |
-| `slice` | Optional: `{ below: <part id>, types: [<type id>...] }`. Each part of the slice is a node of the view, also with no heading. |
-| `lifetime` | `draft` or `accepted`. Only a person accepts a view. |
-| `kept-by` | Optional: `"process:<id>"`, the keeper of the view. With no `kept-by`, the view uses the keeper of the root. A keeper changes the view only through a candidate. |
-| `derived-from` | `""`, or the wikilink of the view that this view came from |
-| `view_id`, `base_hash`, `state` | A candidate only (see The Candidate and the Apply) |
-
-The folder gives the program: a view has no `program` field.
-
-The body:
-
-1. One H1: the name of the view. The prose after it answers the question in one to three sentences.
-2. Each H2 to H6 heading ends with a stable id. A node that stands for a part has the part id as its heading id: `## Doors open {#66d9ddb1-384a-46d7-ae27-1d4061868b88}`. A node with no part has a slug id: `## Set up the hall {#set-up}`, and the check says so (`anchor-missing`).
-3. Depth is containment. A section with one fenced block `node` is a node. A section with no block is a group, or the node of its part.
-4. The node block: `kind` (a type id); `layer`; the relations `next`, `uses`, `blocks`, `informs`, `depends-on` (lists of heading ids of the same view: part ids or slugs); `inside`, `actor`, `action`, `result`; `date` (map `timeline`); `status` (map `board`). A node with a slug id can also have `part` (the id of the part where a step runs: see The Anchor of a Step in [[knw-ite-software]]), `code-refs`, `stories`, and `criteria` (see Programs with a Codebase in [[knw-ite-software]]). A node block has no `reviewed`: a review is a row of the data item `reviews` (see The Review in [[knw-ite-software]]).
-5. A node of a part names no part and holds no code: its heading id names the part, and the part holds its code and its stories. `part`, `code-refs`, `stories`, or `criteria` in the block of a node of a part is the error `format`: "The part holds its code and its stories."
-
-The nodes of a view are its headings, and each part of its `slice` that has no heading (with the title and the prose of the part). A node of a part shows the type, the note, the fields, and the grounding of the part: the grounding comes from the claims about the part. The prose of the view stays under the part id, so it survives each refactor of the main map.
-
-### Lifetime
-
-| Field | Values | Rule |
-|---|---|---|
-| `lifetime` | `draft`, `accepted` | A new view is `draft`. A reshape keeps the value of the view. `accepted` means that the person read the view, agrees with it, and wants it kept true: the check gives `never-reviewed` for each node of an accepted view that has code or stories and no row in the data item `reviews`. |
-
-- **`lifetime` is the one decision of a person about a view.** A view is `draft` until a person accepts it: `flint ite view accept "<view>"`, or Accept in the Workbench (`flint ite view draft "<view>"` sets it back to draft). Only this key of the file changes. An agent never writes `accepted`, and it runs `flint ite view accept` or `view draft` only when the person asks for it in the session. A view has no key `curation`.
-- **Only a person removes a view.** `flint ite view remove <view>` writes the view to `History/` first, so that `flint ite view restore` can bring it back. It refuses an accepted view with `refused-state` (exit 2): "Set the view to draft first" (`flint ite view draft`). An agent never removes a view, and nobody removes a view with `rm` or `flint helper delete`.
-- `History/` keeps the newest 5 replaced forms of each view. An apply, a restore, and a remove write one. A direct edit of a person (with Undo) writes none.
-
-## Maps
-
-A map is a renderer: `Steel/Maps/<Map Name>/` with a manifest `map.md` (`format: steel-map/1`, `id`, `title`, `entry: index.js`, `needs: { capabilities, connections, fields }`, and prose for a person) and one plain JavaScript ES module (no build). The module exports `render(root, api)`. The form and one complete example are in [[tmp-ite-map-v0.1]].
-
-1. **A map only draws.** It reads one read model through `api.model` (the program, the types and connections that it uses, the parts with their fields and grounding, the claims with their states and newest results, the processes, the instruction maps with their active runs, the links, the view, and the saved state), and it draws again on `api.onModel(fn)`. The core computes each fact.
-2. **A map sends intents.** `api.select(ids)`, `api.open(partId)`, `api.propose(ops, reason)` (a map change: a person's hand change applies at once, with Undo), and `api.saveState(state)`. It never writes a file.
-3. **A map runs in a sandbox.** Steel runs it in an iframe with `sandbox="allow-scripts"`. It cannot read a file, call a route, or reach the network.
-4. **A view names its map.** `map: <map id>` in a view. Steel draws a builtin shape natively, and each other map in the sandbox.
-5. **A map says what it needs.** Steel offers a map for a program when the types of the program meet its `needs`.
-6. **A data map** (`kind: data`) draws one piece of data, not a view, and it has the code of a store (`store: data.js`). See Data Maps in [[knw-ite-state]].
-
-This Flint has three example maps: **Outline** (`outline`: the tree of the parts with their types and grounding), **Owners** (`owners`: the parts grouped by the connection `owner`), and **Status Board** (`status-board`: columns by the field `status`). It has one data map: **Seating** (`seating`: the guests of an event at their tables).
-
-| Route | What it gives |
-|---|---|
-| `GET /api/steel/maps[?program=<p>]` | The maps, each with its `needs`; with a program, whether the program meets them |
-| `GET /api/steel/maps/:id/module` | The JavaScript text of one map |
-| `GET /api/steel/programs/:program/model[?view=<id>]` | The read model of a program, and of one view |
-| `PUT /api/steel/programs/:program/model/state` | The saved state of a map in one view: `State/<view id>.map.json` |
-| `GET /api/steel/programs/:program/candidates` | The view candidates of a program in `Proposals/`, in each state |
-
-## References
-
-Each link of the model names one **element** with one form, the **reference**. So a claim can be about a part, a process, a node of an instruction map, or a piece of data, and a process can act on each of them.
-
-| Element | Reference |
-|---|---|
-| A part | `<part id>` (no prefix) |
-| A claim | `claim:<id>` |
-| A process | `process:<id>` |
-| A node of an instruction map | `process:<id>#<node>` |
-| The runs of a process (data that the core makes) | `process:<id>#runs` |
-| A piece of data | `data:<id>` |
-| An output of a piece of data | `data:<id>#<output>`, for example `data:rsvps#count` or `data:budget#total:planned` |
-| A view | `view:<id>` |
-| A node of a view | `view:<view id>#<node id>` |
-
-1. **The fields that take references:** `about` (claims, processes, steps, data, and the `about` of an event trigger), `reads` (processes and steps: a check, a maker, a worker), `kept-by` (claims, data notes, parts, the root note, and views; always `process:<id>`), and `points-to` (a pointer part: `process:<id>`, `data:<id>`, or `view:<id>`). `effect` and `precondition` name claim ids. A process has no `writes`, and a data note has no `from`.
-2. **Quote a reference in YAML** when it has a `:` or a `#`: `reads: ["data:rsvps#count", "data:rsvp-target"]`.
-3. **A node id `runs` is not allowed**: `process:<id>#runs` is the data of the runs.
-4. **The findings** of `flint ite check`: `unknown-reference` (error: a reference names no element of the program), `data-cycle` (error: the `reads` of the makers make a cycle), `pointer-target-missing` (error: the `points-to` of a pointer part names nothing), and `no-keeper` (note: the root note has no `kept-by`, and the program has no process `keep-map-true`).
-
-## Proposals: The Candidate and the Apply
-
-Each change that waits for a person is a file of `Steel/Programs/<P>/Proposals/`: a map change (`mc-*`, see The Main Map; a realize of a future note is a map change too), a view candidate, or a revision (a promote of a draft is a revision too). Each engine keeps its own file form. A proposal outside the Mesh is safe from a rename of the Mesh, so its bytes stay exact for a revert.
-
-A person changes a view directly (the Workbench, or by hand). **An agent changes a view only through a candidate**: a complete view file `Proposals/<candidate-id>.md` in the format `steel-view/1`, with `view_id`, `base_hash`, and `state: proposed`.
-
-1. The candidate id is `<view-slug>-<UTC yyyymmdd-hhmmss>`. The view slug is the H1 in lower case, with each run of other characters than `a-z` and `0-9` replaced by one `-`.
-2. A new view: `view_id` is a new UUID, `id` is a second new UUID, `base_hash: null`.
-3. A reshape: `view_id` is the `id` of the view, `id` is a new UUID, and `base_hash` is the SHA-256 hex of the bytes of the view file (`shasum -a 256 "<view file>"`), computed before you read the view.
-4. Verify with `flint ite check --candidate <id>` (exit 0: no error finding of the candidate) and `flint ite diff --candidate <id>` (no conflict). `flint ite check <program>` reads the main map and the views, not a candidate. `flint ite diff` names each changed node with the kinds of its change: `title`, `claim` (the text, or a field that is not a reference, for example `actor`), `contract` (`part`, `code-refs`, `stories`, or `criteria`), `links`, and `level`. `flint ite view --candidate <id>` shows the candidate as the view will show it, and `flint ite diff --candidate <id> --against-candidate <id>` compares two candidates of one view.
-5. The apply (`flint ite apply --candidate <id>`, or the Workbench) replaces the view only when the hash of the view file is `base_hash`, and writes the replaced form to `History/`. A conflict writes nothing. The apply and the discard keep the candidate file: they set `state: applied` or `state: discarded`.
-6. In an interactive session, apply only when the person agrees. In a headless session, never apply and never discard the candidate that you return.
+`flint ite create` copies the types of the template into the root note (`types`) and writes `from-template`. After that, nothing reads the template. The six templates of the shard are `software`, `process`, `event`, `research`, `organisation`, and `general` ([[(Template) Event (ITE Shard)]] and the others). A template can have more keys of a later module: keep them. To change a template of the shard, write your own template in a new note with another id. Add a type, a connection, or a template only when none fits, and when the person agrees.
 
 ## The Main Map
 
-The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it by zoom in the Workbench. The views of the program name the parts of the main map by their ids. For a program with a codebase, the code is the sources of the parts (`code-refs`).
+The **main map** of a program is the tree of its parts by `parent`. Each program has one main map. A subsystem is a deeper level of the same main map, not a separate program: a person opens it on the canvas. For a program with a codebase, the code is the sources of the parts (`code-refs`).
 
 ### The Tree
 
-- **The root is the root note.** Each part has one `parent`: one wikilink to the parent part, or to the root note for a top part. A note is a part when its `parent` chain reaches the root note.
+- **The root is the root note.** Each part has one `parent`: one wikilink to the parent part, or to the root note for a top part.
 - **The 100% rule.** The children of a part together are the whole part: each source of the part belongs to one child. Nothing of the system is outside the tree, and nothing is in it two times.
-- **No size limit.** A level has no size limit by default. A program can set one with `max-children` (see the configuration below). A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
-- **Relations are free, and they roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
-- **Coverage.** A program with `codebase` on its root note (a part of a type with `covers-files`), for each template: each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part is the file, or a folder that holds it (a folder ends with `/`). A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf covers its files and makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap. The counts are of the time of the read. Each program: each item of `boundary.inside` is covered when one of its `parts` names a part.
-- **Views name parts by id.** A view node that stands for a part has the part id as its heading id. Each part lists the view nodes that look at it.
+- **No size limit.** A level has no size limit by default. A program can set one with `max-children`. A part with exactly one child is a finding: merge the child into the part, or give the child its siblings.
+- **Relations roll up.** A link of a connection with `rolls-up` (`uses`, `depends-on`, `blocks`) shows at each level as one relation between the two cards whose subtrees hold its two ends, with the count and the connection keys. A link inside one card does not show. A wikilink in the prose (`mentions`), `sources`, and `code-refs` do not roll up.
+- **Coverage.** In a program with `codebase` on its root note, each file of `git ls-files` of the product root is covered when one `code-refs` entry of a part (of a type with `covers-files`) is the file, or a folder that holds it. A file that no part covers is a gap. A file that two leaves cover with a whole-file or folder ref is an overlap. A ref of a part that is not a leaf makes no overlap. A slice (`path#symbol` or `path:Lx-Ly`) covers its file and never makes an overlap.
 
 The configuration is in the frontmatter of the root note. Each key is optional:
 
 ```yaml
 main-map:
-  max-children: 12         # optional: an integer of 2 or more; with no value, a level has no size limit
+  max-children: 12         # an integer of 2 or more; with no value, a level has no size limit
   coverage-ignore:         # paths relative to the product root (a folder ends with /), or globs
-    - orbtest/
+    - dist/
     - "**/test/"           # a folder of that name at any depth
     - "**/package.json"    # a file name at any depth
-  card-face: sentence      # optional (Task 1275): what each card shows under its title: title (the default), sentence, or field:<key>
+  card-face: sentence      # what each card shows under its title: title (the default), sentence, or field:<key>
 ```
 
-A `card-face` that is not a face is a `format` finding (warning), and each card shows the face `title`. A card can name its own face (see The Places of the Main Map).
-
-In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and `{a,b}` is one of the words.
+In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and `{a,b}` is one of the words. A `card-face` that is not a face is a `format` finding (warning).
 
 ### The Findings of the Main Map
 
-`flint ite map check` shows these findings. `flint ite check` does not show them.
+`flint ite map check` shows these findings.
 
 | Code | Level | Meaning | The repair |
 |---|---|---|---|
 | `map-parent-missing` | error | The `parent` of a part names no note. The part shows under the root with a marker. | `move` to the correct parent |
 | `map-parent-outside` | error | The `parent` names a note that is not a part of the program. | `move` |
 | `map-cycle` | error | The parents of a part make a cycle. | `move` |
-| `map-too-many-children` | warning | A level has more than `max-children` parts. Only a program that sets `max-children` gets it. | `split`, `merge`, `move` (the action `map-refactor`) |
+| `map-too-many-children` | warning | A level has more than `max-children` parts. Only a program that sets `max-children` gets it. | `split`, `merge`, `move` ([[wkfl-ite-map_refactor]]) |
 | `map-single-child` | note | A part has exactly one child. | `merge`, or `add` the siblings |
-| `anchor-missing` | warning | A view node names no part of the main map. | Reshape the view, or `add` the part |
-| `anchor-none` | note | A view node has no part (a slug heading id). | Give it its part, or keep it as a concept of the view only |
-| `coverage-gap` | note | Files that no part covers (one finding on the root, with the count). | The action `map-cover` |
+| `coverage-gap` | note | Files that no part covers (one finding on the root, with the count). | [[wkfl-ite-map_cover]] |
 | `coverage-overlap` | warning | Two leaves cover one file. | `edit` the sources of one leaf |
-| `code-ref-missing` | warning | A `code-refs` entry matches no file. | `edit` the sources (the action `map-update`) |
+| `code-ref-missing` | warning | A `code-refs` entry matches no file. | `edit` the sources ([[wkfl-ite-map_update]]) |
 | `map-change-stuck` | error | A map change is `applying` or `reverting`: a write did not finish. | The next write of the change engine recovers it |
+
+`flint ite check "<program>"` gives the findings of the files of the program (for example `format` and `link-missing`) for the modules that are on. `flint ite check --all` gives each finding of each module.
 
 ### The Map Change
 
@@ -306,20 +194,20 @@ The operations are one JSON array. They apply in order. A part is named by its i
 
 | Operation | The JSON | What it does |
 |---|---|---|
-| `add` | `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","prose":"<optional>","sources":["..."],"fields":{"points-to":"<optional>","kept-by":"<optional>"}}` | A new part. An optional `id` (a UUID v4) lets a later operation name it. `fields` sets other frontmatter keys, for example `points-to` of a pointer part. |
+| `add` | `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","prose":"<optional>","sources":["..."]}` | A new part. An optional `id` (a UUID v4) lets a later operation name it. `fields` sets other frontmatter keys. |
 | `move` | `{"op":"move","part":"<part>","parent":"<part or null>"}` | A new parent. The new parent is not in the subtree of the part. |
-| `split` | `{"op":"split","parent":"<part or null>","subsystem":{"title":"<t>","kind":"<type id>","sentence":"<s>"},"children":["<part>","..."]}` | Groups children of `parent` into a new subsystem under `parent`. |
+| `split` | `{"op":"split","parent":"<part or null>","subsystem":{"title":"<t>","kind":"<type id>","sentence":"<s>"},"children":["<part>","..."]}` | Groups children of `parent` into a new part under `parent`. |
 | `merge` | `{"op":"merge","from":"<part>","into":"<part>"}` | The children and the sources of `from` go to `into`; each wikilink to `from` becomes a link to `into`; the file of `from` is removed. |
 | `rename` | `{"op":"rename","part":"<part>","title":"<new title>","kind":"<optional new type id>"}` | The new file name (with the new `(Type)` word when `kind` is given) and H1; each wikilink to the old name changes. The id stays. |
 | `remove` | `{"op":"remove","part":"<part>"}` | The children move up one level, and the file is removed. The links to the part stay: the preview lists them as dangling. |
-| `edit` | `{"op":"edit","part":"<part>","sentence":"<optional>","prose":"<optional>","sources":["<the whole new list>"]}` | A new sentence, prose, or list of sources. `sources` replaces the whole list. |
+| `edit` | `{"op":"edit","part":"<part>","sentence":"<optional>","prose":"<optional>","sources":["<the whole new list>"],"fields":{"<key>":"<value>"}}` | A new sentence, prose, list of sources, or field. `sources` replaces the whole list. A field with `null` goes. |
 
 The states: `proposed`, then `applied` (and `reverted` after a revert), or `discarded`. `applying` and `reverting` are the marks of a write in progress.
 
 1. **One writer of the structure.** Each change of the tree is a map change: `flint ite map change propose`, the shortcuts `map split|move|rename|merge`, and `part add` and `part remove`.
 2. **An agent proposes; only a person applies.** The engine refuses an apply, a revert, and `--apply` from an agent with `forbidden`. An agent can discard a change that it proposed.
 3. **The apply checks each base hash.** A file that changed after the propose is a conflict (`changed`), and the apply writes nothing. The apply writes in two phases, and a revert writes back the exact old bytes.
-4. **A refactor keeps the links valid.** A `rename` and a `merge` rewrite each wikilink to the old part in the Mesh. The views, the claims, the processes, the instruction maps, the runs, and the log name parts by id, so a refactor breaks none of them.
+4. **A refactor keeps the links valid.** A `rename` and a `merge` rewrite each wikilink to the old part in the Mesh. A place names a part by its id, so a refactor keeps it.
 5. **A change by a person applies at once.** In the Workbench, a person adds, removes, groups, moves, renames, and merges by hand. Each hand change is one map change that is proposed and applied in one call, with Undo (a revert).
 
 ### The Places of the Main Map
@@ -327,36 +215,31 @@ The states: `proposed`, then `applied` (and `reverted` after a revert), or `disc
 The main map is manual: each card stays where a person or an agent puts it.
 
 - **A saved place.** Each part has one place in `Steel/Programs/<P>/State/main.json`: `positions[<part id>] = { x, y, parent }`. The place is the top left corner of the box of the part, relative to the **room** of its parent: in a group, the room inside the group box (below its title row); at the top of the root or of a layer, the canvas of that level. `parent` is the parent that the place is for (null: the top of the root). A place for another parent than the parent of the part now is old: the part shows at the place of a new card.
-- **A group or a layer.** A part with children is a group (a box on the level of its parent, with its parts inside) or a layer (one card that a person enters). The field `map-mode` of the note (`group` or `layer`) gives the mode; with no field, a part with at most 9 parts and 2 levels below it is a group, and a larger part is a layer. The size of a group follows its parts.
-- **A saved size (Task 1275).** A person resizes a box on the canvas: the handles at the right side, the bottom, and the corner of the one selected box. The size is in the same position: `positions[<part id>] = { x, y, parent, w, h }`. It snaps to the grid of 8, and it is at least 128 × 40. A card and the card of a layer have their saved size. For a group, the saved size is the smallest size: the box is the larger of the saved size and the size of its parts, so a part never falls out of its box. "Reset the size" in the menu of a card removes it.
-- **The face of a card (Task 1275).** What a card shows under its title: `title` (the title and the type only; at a large zoom, one line of its text), `sentence` (the first line of the text of the part), or `field:<key>` (one field of the note, as `<key>: <value>`). A card has the face of its position (`face`), else `card-face` of the `main-map` block of the root note, else `title`. A group shows its face in its title row. One line fits in a card of the default size; a taller card shows more lines. The row "On the card" of the section Main map of the inspector sets the face of the selected part. The switch "Card text" of the menu Show hides the faces for this person only (the browser keeps it).
-- **The size and the face belong to the part.** A move keeps them, also to another parent. A layout write keeps `w`, `h`, and `face` when it does not name them, and `null` removes one.
-- **Only a person or an agent moves a card.** Nothing pushes a card, and two cards can overlap. The canvas of the Workbench and `flint ite place` write one place. A place is not meaning: it is in `State/`, not in the Mesh, so a move applies at once, also for an agent. It is not a proposal.
-- **The place of a new card.** The engine calculates only the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts (an add, a move, a split, a merge, a removal), and when a revision of a part file applies or reverts, each part with no saved place for its parent now gets that place in the same lock. A new part that the canvas adds at a position keeps that position. Each other place stays.
-- **Arrange runs only when a person or an agent asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself.
+- **A group or a layer.** A part with children is a group (a box on the level of its parent, with its parts inside) or a layer (one card that a person enters). The field `map-mode` of the note (`group` or `layer`) gives the mode. With no field, a part with at most 9 parts and 2 levels below it is a group, and a larger part is a layer. The size of a group follows its parts.
+- **A saved size.** A person resizes a box on the canvas with the handles of the one selected box. The size is in the same position: `positions[<part id>] = { x, y, parent, w, h }`. It snaps to the grid of 8, and it is at least 128 × 40. A new card is 320 × 240. For a group, the saved size is the smallest size: a part never falls out of its box. "Reset the size" in the menu of a card removes it.
+- **The face of a card.** What a card shows under its title: `title` (the title and the type only), `sentence` (the first line of the text of the part), or `field:<key>` (one field of the note). A card has the face of its position (`face`), else `card-face` of the `main-map` block of the root note, else `title`.
+- **The look of a card.** A position can also have `shape` (`card`, `rect`, `rounded`, `ellipse`, `diamond`, `sticky`), `color` (`gray`, `red`, `orange`, `yellow`, `green`, `blue`, `purple`), and `z` (the layer order among the cards and the drawings of its level). The drawing tools of the canvas set them.
+- **The size, the face, and the look belong to the part.** A move keeps them, also to another parent. A layout write keeps the keys that it does not name, and `null` removes one.
+- **Only a person or an agent moves a card.** Nothing pushes a card, and two cards can overlap. A place is not meaning: it is in `State/`, not in the Mesh. So a move applies at once, also for an agent. It is not a proposal.
+- **The place of a new card.** The engine calculates only the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts, each part with no saved place for its parent now gets that place. Each other place stays.
+- **Arrange runs only when a person asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself.
 
-| Command | Result | Writes |
-|---|---|---|
-| `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` (no saved place for its parent now). `--deep` adds each level below, indented. | Nothing |
-| `flint ite place <program> <part> --at <x>,<y>` | Sets the place of one part, relative to the room of its parent. The place snaps to the grid of 8. In a group, a negative value is 0. | `State/main.json` |
-| `flint ite place <program> <part> --near <part> [--side right\|below]` | Puts one part beside a part with the same parent (default: to its right). A part of another parent is refused. | `State/main.json` |
-| `flint ite place <program> <part> --size <w>,<h>\|auto [--face <face>\|default]` | Task 1275. Sets the size of the box of one part (a group: its smallest size), or `auto` removes the saved size; `--face` sets the face of its card (`title`, `sentence`, `field:<key>`), or `default` gives it the face of the program. The part keeps its place. `places` shows each size and face. | `State/main.json` |
-| `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep]` | One Arrange of the parts of `--in` (default: the top of the root). `--only` moves only the named parts and keeps the top left corner of their boxes. `--deep` arranges each group and layer below too. It prints how many parts moved. | `State/main.json` |
-| `flint ite arrange <program> --all` | One Arrange of each level of the program | `State/main.json` |
+### The Drawings
 
-A part reference is an id, a note name, or a title. Example: `flint ite place "Club Launch" "Venue booked" --near "Launch budget" --side below`. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
+A **drawing** is a shape, a text, a frame, a line, or a group on one level of the main map. A person draws it with the drawing tools of the canvas. A drawing is not a note: it changes no part and no link. It is in `State/main.json`, in the list `drawings`, beside the places. So, as with a place, a write of a drawing applies at once, for a person and for an agent. It is not a proposal.
 
-### Pointer Parts
+| Field | Value |
+|---|---|
+| `id` | The id of the drawing: unique in the program, and not the id of a part |
+| `kind` | `rect`, `ellipse`, `diamond`, `text`, `frame`, `line`, or `group` |
+| `layer` | The part of the level that holds the drawing; `null` (or no value) for the top of the root |
+| `x`, `y`, `w`, `h` | The box of a shape, a text, or a frame, on the canvas of its level |
+| `text` | The words in a shape, a text, a frame (its title), or on a line |
+| `color`, `z`, `locked` | The colour (as for a card; the default is `gray`), the layer order, and `true` when a person locked the drawing |
+| `from`, `to`, `arrow`, `route` | A line: its two ends (`x`, `y`, and an optional `node`: the id of the part or the drawing that the end follows), the arrowheads (`none`, `start`, `end`, `both`), and `straight` or `elbow` |
+| `members` | A group: the ids of its members (parts and drawings of one level) |
 
-A **pointer part** is a part with `points-to`: one target of the same program, `"process:<id>"`, `"data:<id>"`, or `"view:<id>"`. Use a pointer part to put the processes, the data, and the views of a program where a person reads the main map: a process near the parts that it acts on, a view near the parts that it shows.
-
-- **It is a normal part.** It is a Mesh note with a type, a `parent`, and prose. The rules of the tree count it: the 100% rule, the level, the one-child finding, and the map changes. It has a keeper, and it can have a future note.
-- **Add it with a map change**, as each part: `{"op":"add","title":"<t>","kind":"<type id>","parent":"<part or null>","sentence":"<s>","fields":{"points-to":"process:<id>"}}`. Change the target with `edit` and `fields`.
-- **Its card shows the face of its target.** A process: its jobs, its last run, and the button Run (when the person may run it). A data item: its value or its count, and its state. A view: its shape and the button Open.
-- **A run from the card uses the gate of the process.** The card gives no authority: who may run it (`authority.run`), the approval, `irreversible`, and the inputs stay the same. A process that needs an approval or an input opens its run form first.
-- **A target that does not exist** is the finding `pointer-target-missing` (error). Change `points-to`, or remove the part with a map change.
-
-Example: `echo '[{"op":"add","title":"Smoke check","kind":"process","parent":null,"sentence":"The smoke check of the Workbench.","fields":{"points-to":"process:smoke-check-steel"}}]' | flint ite map change propose "NUU Steel" --ops - --reason "Show the smoke check on the main map"`.
+Read and change the drawings with `flint ite drawing list "<program>"`, and `flint ite drawing add|set|remove "<program>" ...` (`flint ite drawing <verb> --help` gives the flags). Never write `State/main.json` with your own tools. A drawing holds no meaning of the system: put a fact of the system in a part.
 
 ### Two Kinds of Links
 
@@ -364,15 +247,16 @@ The main map has two kinds of links. The field `shown` of the connection gives t
 
 - **A link that shows on a click** (`shown: selected`, the default): `uses`, `depends-on`, and each other connection. The canvas shows it for the selected card and for the card below the pointer. The switch Links shows each one.
 - **A link that always shows** (`shown: always`): the builtin `refers-to`. The canvas shows it at each time, as a quiet line with a small arrow head, and as a strong line when a card at one end is selected.
-- **A person draws a `refers-to` link.** Select one card: four small dots show, one at the middle of each side. Drag from a dot to another card. The line shows at once, and Cmd+Z removes it. The inspector of the part lists the link and can remove it.
+- **A person draws a `refers-to` link.** Select one card: four small dots show, one at the middle of each side. Drag from a dot to another card. The inspector of the part lists the link and can remove it.
 - **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person writes it at once with `flint ite link` (or a drag on the canvas). An agent's `flint ite link` proposes one map change that a person applies.
 
-Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers-to`. Add `--remove` to remove the link. A part is an id or a note name.
+Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers-to`. Add `--remove` to remove the link.
 
 ### The Commands of the Main Map
 
 | Command | Result | Writes |
 |---|---|---|
+| `flint ite map <program> [--full]` | The tree with the id of each part, the totals, and three next commands; `--full` adds the text and the links of each part | Nothing |
 | `flint ite map show <program> [--focus <part>]` | One level: the focus, the cards with their counts, coverage, and findings, and the relations | Nothing |
 | `flint ite map tree <program> [--ids]` | The whole tree with the markers and the counts of the findings | Nothing |
 | `flint ite map check <program>` | Each finding of the main map. Exit 1 for an error finding. | Nothing |
@@ -384,43 +268,61 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 | `flint ite map change discard <program> <id>` | Discards a proposed change; the file stays with the state `discarded`. A person, or the agent that proposed it. | The proposal |
 | `flint ite map split <program> --parent <part\|root> --title <t> --kind <type id> --sentence <s> <child>...` | Proposes one `split` | One proposal |
 | `flint ite map move <program> <part> --parent <part\|root>`, `map rename <program> <part> --title <t>`, `map merge <program> <from> --into <part>` | Propose one operation; `--apply` applies it (a person only) | One proposal |
+| `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` | Nothing |
+| `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below]) [--size <w>,<h>\|auto] [--face <face>\|default]` | Sets the place, the size, or the face of one part. The place is relative to the room of its parent, on the grid of 8. `--near` needs a part with the same parent. | `State/main.json` |
+| `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level (default: the top of the root); `--deep` adds each level below; `--all` arranges each level. It prints how many parts moved. | `State/main.json` |
+| `flint ite drawing list\|add\|set\|remove <program> ...` | Reads or changes the drawings of the main map | `State/main.json`, or nothing |
 
-Each verb takes `--json`. `flint ite map <program>` with no verb gives the tree with the id of each part, the totals, and three next commands; `--full` adds the text, the links, and the grounding of each part, and `--json` gives each part with its type, its parent, its links, and its grounding. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`.
+Each verb takes `--json`. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. A part reference is an id, a note name, or a title. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
 ### The Rules of the Main Map
 
-1. **A job of a map action changes the main map only through a map change.** It never writes a part file with its own tools.
+1. **Change the main map only through a map change.** Never write a part file with your own tools.
 2. **Never apply a map change, and never revert one.** Only a person does. A headless session never discards the change that it returns.
-3. **One change for one job, and read the waiting changes first.** Run `flint ite map change list <program> --state proposed`, then `flint ite map change show <program> <change id>` for each one. Do not propose what a waiting change does already. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. **Read the preview before you return.** The tree after must have no new finding of the level error, and, when the program sets `max-children`, no new `map-too-many-children` that the job could avoid.
+3. **One change for one piece of work, and read the waiting changes first.** Run `flint ite map change list <program> --state proposed`, then `flint ite map change show <program> <change id>` for each one. Do not propose what a waiting change does already. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
+4. **Read the preview before you hand over.** The tree after must have no new finding of the level error, and, when the program sets `max-children`, no new `map-too-many-children` that you could avoid.
 5. **The quality rules apply to each new part**: the words of the person, a type of the program, a title of two to six words, one sentence that says what the part is, and sources that you read (never invented paths).
 
-### The Actions of the Main Map
+### The Workflows of the Main Map
 
-| Action | Nodes | Workflow (headless / interactive) | The agent does |
-|---|---|---|---|
-| `map-create` | None | [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: the parts, each with one sentence and its sources |
-| `map-expand` | 1 part | [[wkfl-ite-map_expand]] | Takes one part one level deeper: the children that cover the sources of the part |
-| `map-refactor` | 0 or 1 (the focus) | [[wkfl-ite-map_refactor]] | Gives one level a clearer shape: split, merge, move, rename |
-| `map-cover` | 0 or 1 | [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
-| `map-update` | 1 part | [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
-| `parts-add` | 0 or 1 (the parent) | [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
+| Workflow | The agent does |
+|---|---|
+| [[wkfl-ite-program_create]] | Makes a program and proposes its first level |
+| [[wkfl-ite-map_create]] | Reads the sources and drafts the root and level 1: the parts, each with one sentence and its sources |
+| [[wkfl-ite-map_expand]] | Takes one part one level deeper: the children that cover the sources of the part |
+| [[wkfl-ite-map_refactor]] | Gives one level a clearer shape: split, merge, move, rename |
+| [[wkfl-ite-map_cover]] | Places the gap files: `edit` the sources of a part, or `add` a part |
+| [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
+| [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
 
-The prompt of a job of a map action holds only the data: the level of the focus (the cards, the relations, the findings) and the coverage gaps (at most 200 paths). The workflow of the action holds the steps, the form of each operation, and the last step: `flint ite map change propose "<program>" --ops - --reason "<one sentence>"`.
+Each workflow ends with one map change that the person reads and applies.
+
+## The Setting of the Modules
+
+The ITE has modules. The main map is the module `main-map`: it is always on, and this shard teaches only it. The later modules are `views` (views and the plan), `processes` (processes and runs), `data-claims` (data and claims), `agents` (agent sessions of the Workbench), and `loop` (events and the loop). They exist in the code. With the default setting, they are off: the Workbench and `flint ite` show nothing of them, and nothing of them runs.
+
+The setting is in `flint.toml` of the Flint:
+
+```toml
+[ite]
+modules = ["main-map"]
+```
+
+- With no `[ite]` block, the value is `["main-map"]`. `main-map` is on also when the list omits it. An unknown word gives one warning.
+- `flint ite modules` shows each module, its title, and whether it is on. Each agent can read it.
+- `flint ite modules on <id>` and `flint ite modules off <id>` change the setting. A person only: the engine refuses an agent with `forbidden`. Name the command for the person.
+- `flint ite --help` shows the verbs of the modules that are on, and one line that names the others.
 
 ## Quality Rules of a Program
 
 A program is for a person. A model that breaks these rules does not help that person think.
 
 1. **The words of the person.** Use the words that the person uses for the system, not the words of a tool. Take the names of the parts from the notes, the sources, and the speech of the person.
-2. **Prose first.** Each part has one to three short paragraphs for a person before any tool field. Each view node has one to three sentences before its block. A person must understand the map from the prose alone.
-3. **One idea for each part.** When the prose of a part needs two claims, make two parts. A short title: two to six words.
+2. **Prose first.** Each part has one to three short paragraphs for a person before any tool field. A person must understand the map from the prose alone.
+3. **One idea for each part.** When the prose of a part needs two ideas, make two parts. A short title: two to six words.
 4. **The types of the program.** Give each part a type of the `types` of the root note. When no type fits, use `note` and tell the person. Never invent a type: a new type is a type note that a person agrees to.
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
-6. **Select, do not dump.** Include only what helps the person see the system or answer the question. A level of the main map holds the parts of one idea; a deeper level holds the detail; a view of 5 to 15 nodes reads well. Do not make one part for each file, each email, or each line of a sheet. When a view needs more than 25 nodes, propose a split into two views.
-7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. When only a person can check a claim, give it a person check ("Is this true now: <the claim>?"). A model with an honest gap is better than a model with an invented fact.
-8. **Give each claim a check.** A claim is a test of reality: it says what must be true now, never a goal, a target with a date, or a prediction. Its check is a process: its own code that reads data, a file, a page, or a command; an agent request; or a question to a person. Prefer a check that code can run. A check judges: it gives `holds`, `fails`, or `error`, never only a value. When two claims read one source, make the source one piece of data, and let both claims read it.
-9. **Never leave a check, a process, or a maker that you did not test.** Before you hand over a code check, test it with `flint ite claim test "<program>" <claim>`; before you hand over a code process, test it with `flint ite process test "<program>" <process>`; before you hand over a maker of data, test it with `flint ite data test "<program>" <id>`. Never invent a story id, a path, a URL, or a note name. A check touches reality outside the model: code that only finds a part of the same program proves nothing about the system.
-10. **End each view with what it leaves out.** The last section of a view is one node of the type `note` that names what the view does not show, and why.
-11. **Meaning only.** No grounding, no result, no state of a claim, no finding, no position, and no presence in a file.
-12. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.
+6. **Select, do not dump.** Include only what helps the person see the system. A level of the main map holds the parts of one idea; a deeper level holds the detail. Do not make one part for each file, each email, or each line of a sheet.
+7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. A model with an honest gap is better than a model with an invented fact. Never invent a path, a URL, or a note name.
+8. **Meaning only.** No finding, no count, no place, and no size in a note: a command computes them, and `State/` keeps the places.
+9. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.

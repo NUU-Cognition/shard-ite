@@ -1,7 +1,8 @@
 ---
-description: "A template of this Flint (steel-template/1): the start of a new program, with its types, connections, views, and questions, and the instruction for the agent that models a system of that kind, with one complete example"
+description: "A template of this Flint (steel-template/1): the start of a new program, with its types, connections, and questions, and the instruction for the agent that models a system of that kind, with one complete example"
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
+  - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
 ---
 
 # Filename: Mesh/Metadata/Templates/(Template) [Title].md
@@ -24,8 +25,8 @@ orb:
   THE BODY
   - One H1: the title of the template. One paragraph for a person: the kind of system, and when to use it.
   - "## How to model a system of this kind": the steps of the agent (create the program, propose the first level
-    of the main map as one map change, join the parts with the connections, write the claims with their check
-    processes, the data with their makers, and the processes, answer the questions with views).
+    of the main map as one map change, join the parts with the connections, take a part deeper with one more map
+    change, and check the map). A person applies each map change.
   - "## The types": one row for each type: the name, the id, and when to use it.
   - "## The connections" (optional) and "## The questions".
   - One fenced block with the info string `template`, at the end.
@@ -36,13 +37,10 @@ orb:
   - title, description: for a person.
   - types: the type ids of a new program, in order. Each is a type of `flint ite types`; end with note.
   - connections: the connection ids that the parts use (`flint ite types` lists them). parent is not a connection.
-    kept-by and points-to are not connections: they are fields of each part. The connections reads and writes are
-    gone: a check and a maker name their data in reads of the process, and a data note names its keeper in kept-by.
-  - views: the first views of a new program: a list of { map, question }. map is a builtin shape (flow, streams,
-    layers, tree, table, free, timeline, board) or the id of a map of Steel/Maps/.
-  - questions: example questions that a view of this kind of system answers.
-  - shapes (optional): the builtin shapes that fit, the best first.
+  - questions: example questions of a person about this kind of system. They help the agent find the parts.
   - layers (optional): the layers of the canvas legend: a list of { id, title, description }.
+  - A template can have more keys of a later module. Keep them in a template that has them, and add none to a new
+    template.
 */
 
 ````markdown
@@ -65,8 +63,8 @@ orb:
 1. Write the root note with `flint ite create "<Name>" --template TEMPLATE-ID --purpose "<one sentence>"`.
 2. Find the first level of the main map: the parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below.
-4. Write each claim that must be true now as a claim about a part, with its check process (code, an agent, or a person).
-5. Answer the questions below with views.
+4. Take a part one level deeper with one more map change, when the person asks for it.
+5. Check the map with `flint ite map check "<Name>"`.
 
 ## The types
 
@@ -85,8 +83,6 @@ title: "TITLE"
 description: "ONE SENTENCE: THE KIND OF SYSTEM."
 types: [TYPE-ID, TYPE-ID, note]
 connections: [next, uses, depends-on, owner, informs, mentions]
-views:
-  - { map: tree, question: "A QUESTION OF A PERSON?" }
 questions: ["A QUESTION OF A PERSON?"]
 ```
 ````
@@ -112,11 +108,7 @@ title: "Work"
 description: "The work of a Flint: tasks, notepads, and reports of the shards, grouped by theme, with the people who own them."
 types: [theme, task, notepad, report, person, note]
 connections: [next, uses, depends-on, owner, informs, mentions]
-views:
-  - { map: board, question: "What is in work now, and what is blocked?" }
-  - { map: tree, question: "Which theme has the most open work?" }
 questions: ["What is in work now, and what is blocked?", "Which theme has the most open work?"]
-shapes: [board, tree, table, timeline]
 layers:
   - { id: direction, title: "Direction", description: "Which themes does the work serve?" }
   - { id: work, title: "Work", description: "What is in work now, and in which state?" }
@@ -126,5 +118,5 @@ layers:
 What the example does:
 
 - `types` lists the type ids. `task`, `notepad`, and `report` are types of the shards of this Flint: a part of the type Task is the task note itself, with a `parent` in the program.
-- `views` gives the two first views of a new program, each with its map and its question.
+- `questions` gives the questions that a person asks about the work. The agent uses them to find the parts of level 1.
 - `flint ite templates` shows the template, and `flint ite create "<Name>" --template work` uses it.

@@ -2,6 +2,7 @@
 description: "Give each file that no part covers a place on the main map, by the sources of a part or a new part, as one map change that a person applies, with one stage gate: the person reads the preview"
 orb:
   - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
+  - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -12,12 +13,9 @@ Run `flint shard start ite` if you haven't already.
 
 Cover the gap: give each file (or boundary item) that no part covers a part of the main map. Remove the overlaps, and repair the sources that match no file. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
-The focus of this workflow: the selected part, or the root when no node is selected.
-
 > [!headless]
-> A headless agent session follows this workflow for a job of the action `map-cover`, with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
-> - The focus of this job: the selected part, or the root when no node is selected.
-> - The result is one map change that the person reviews and applies. The job ends with one `steel-result/1` JSON value, as the callout of The End of a Job says.
+> A headless session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
+> - The result is one map change that the person reads and applies. At the end, return the change id as the prompt says (the callout of The End).
 
 # Input
 
@@ -26,23 +24,22 @@ The focus of this workflow: the selected part, or the root when no node is selec
 - (Optional) The instructions of the person
 
 > [!headless]
-> - The prompt of the job: the data of the level of the focus (the cards, the relations, the findings) and the coverage gaps. The steps and the form of each operation are in this workflow (the callout of Stage 3).
+> - The prompt: it can give the facts of the level of the focus (the cards, the relations, the findings) and the coverage gaps. The steps and the form of each operation are in this workflow (the callout of Stage 3).
 
 # Actions
 
 ## Stage 1: Read the Level
 
-1. Set the focus: `flint ite focus <the part id>` ([[sk-ite-focus]]); at the root, set it when you start to work on a part.
-2. Read the level: `flint ite map show "<program>" [--focus <part>]` (the cards, the relations, the findings), `flint ite map coverage "<program>"`, and `flint ite map check "<program>"`.
-3. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id>` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does the task already, show it to the person, and ask: review it, or make a new one. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
-4. Note the product root of a program with a codebase. A level of the main map has no size limit. When the program sets `max-children` (the `main-map` block of the program file), note it: a level of that program holds at most `max-children` parts.
-5. Once you know the level, progress to the next stage.
+1. Read the level: `flint ite map show "<program>" [--focus <part>]` (the cards, the relations, the findings), `flint ite map coverage "<program>"`, and `flint ite map check "<program>"`.
+2. Read the waiting changes: run `flint ite map change list "<program>" --state proposed`, then `flint ite map change show "<program>" <change id>` for each one, and read its operations. The list shows no focus: decide from the operations. When a waiting change does the task already, show it to the person, and ask: review it, or make a new one. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
+3. Note the product root of a program with a codebase. A level of the main map has no size limit. When the program sets `max-children` (the `main-map` block of the program file), note it: a level of that program holds at most `max-children` parts.
+4. Once you know the level, progress to the next stage.
 
 > [!headless]
-> - Run the `flint ite focus` command of the prompt of the job ([[sk-ite-focus]]). Then run `flint orbh session set phase reading`.
-> - In place of step 2, read the level of the focus: the section The main map of the prompt of the job. When the prompt says that the ITE could not load the main map, run `flint ite map show "<program>" [--focus <part>] --json` and `flint ite map coverage "<program>" --json`.
+> - Run `flint orbh session set phase reading`.
+> - When the prompt gives the level of the focus (for example, in a section The main map), read it in place of step 1. When the prompt does not give it, or says that the ITE could not load the main map, run `flint ite map show "<program>" [--focus <part>] --json` and `flint ite map coverage "<program>" --json`.
 > - Read each waiting change with `flint ite map change show "<program>" <change id> --json`.
-> - When a waiting change does your task already, do not ask the person, and propose nothing: end the job as the callout of The End of a Job says, and return its id with a `summary` that says so.
+> - When a waiting change does your task already, do not ask the person, and propose nothing: end as the callout of The End says. Name the id of that waiting change in your result.
 
 ## Stage 2: Read the Sources
 
@@ -55,7 +52,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 
 > [!headless]
 > - Run `flint orbh session set phase reading-sources`.
-> - Ask no question (step 5). When the scope of the task can have two meanings, select the reading that best helps the person, and write it in the `summary` (rule 3 of [[init-ite#Headless]]).
+> - Ask no question (step 5). When the scope of the task can have two meanings, select the reading that best helps the person, and write it in your result (the rule Ask no question of [[init-ite#Headless]]).
 
 ## Stage 3: Plan the Operations
 
@@ -68,14 +65,14 @@ The focus of this workflow: the selected part, or the root when no node is selec
 7. **A folder ref that makes an overlap becomes a list of files.** When the folder ref of a leaf covers a file that another leaf also covers, replace the folder ref with the list of the files that belong to that leaf.
 8. **A shared file can stay in the common ancestor.** A file that two or more leaves use can be a source of their common ancestor (a part that is not a leaf), not of each leaf.
 9. **A slice never makes an overlap.** A slice is a code ref with a symbol or a line range: `path#symbol` or `path:Lx-Ly`. It covers the file. A slice and a whole-file ref of one file make no overlap. Give a slice to each leaf that is one part of a shared file, with a symbol that you read in the file.
-10. **Do not edit a part that a waiting change moves.** The `move` (or the `split`) of the waiting change writes the `parent` of the same file, so your `edit` gets a conflict (`changed`) at the apply. Leave that part, or name it in the result for a later job.
+10. **Do not edit a part that a waiting change moves.** The `move` (or the `split`) of the waiting change writes the `parent` of the same file, so your `edit` gets a conflict (`changed`) at the apply. Leave that part, or name it in the result for a later map change.
 11. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
 12. Once the plan does the task, progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase planning`.
-> - When no type of the program fits a new part, use `note`, and name the part in the `summary`.
-> - The form of each operation. The prompt of the job gives only the data: the level and the gaps. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards of the prompt of the job) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
+> - When no type of the program fits a new part, use `note`, and name the part in your result.
+> - The form of each operation. The prompt gives only the facts: the level and the gaps. A map change is one JSON array of operations. They apply in order. Name a part by its id (the `id` of the cards) or by its note name. `parent: null` is the root note (the engine writes `parent: "[[<root note>]]"`). `kind` is a type id of the program (the `types` of the root note). `sources` are the `code-refs` of a program with a codebase (paths relative to the product root; a folder ends with `/`), else wikilinks or URLs.
 >
 >   ```text
 >   {"op":"add","title":"<title>","kind":"<type id>","parent":"<part, or null>","sentence":"<one sentence>","prose":"<optional>","sources":["<source>"]}
@@ -92,7 +89,7 @@ The focus of this workflow: the selected part, or the root when no node is selec
 >   - `merge` moves the children and the sources of `from` to `into`, rewrites each link to `from`, and removes `from`.
 >   - `rename` keeps the id and rewrites each wikilink to the old name. With `kind`, the file name gets the new `(Type)` word.
 >   - `remove` moves the children up one level, and leaves the links to the part: the preview lists them.
-> - Change the main map only through a map change. Do not write a part file with your own tools, and do not run `flint ite part add` or `flint ite part set` on the main map in this job.
+> - Change the main map only through a map change. Do not write a part file with your own tools, and do not run `flint ite part add` or `flint ite part set` on the main map in this workflow.
 
 ## Stage 4: Propose the Change and Review It With the Person
 
@@ -126,27 +123,19 @@ The focus of this workflow: the selected part, or the root when no node is selec
 > - Read the preview of the output (`flint ite map change show "<program>" <change id> --json`): the tree after, `findings.added`, `files`, `dangling`, and `conflicts`.
 >   - The tree after must hold your plan. It must have no new finding of the level error.
 >   - When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times.
-> - Change the main map only through a map change. Never apply the change. Once one change is proposed and its preview is correct, end the job as the callout of The End of a Job says.
+> - Change the main map only through a map change. Never apply the change. Once one change is proposed and its preview is correct, end as the callout of The End says.
 
-# The End of a Job
+# The End
 
-When an agent session of the Workbench follows this workflow for a job, end the job in the chat:
-
-1. Write the result in the chat: the map change id, whether the person applied it, the counts of each operation, and the most important gap. Use short sentences.
-2. Wait for the person. Do not end the session, and never run `flint orbh session return --finish`: the person gives the next job in the chat or in the Workbench, or ends the session with End.
+Tell the person the result in short sentences. Give the map change id, whether the person applied it, the count of each operation, and the most important gap.
 
 > [!headless]
-> A headless session does not end the job in the chat, and does not wait for the person. It returns the result:
-> 1. Run `flint orbh session set phase returning`. Check each item of Before You Return of [[init-ite#Headless]].
-> 2. Write the `summary`: what the change does (the counts of each operation), the findings that it repairs, and the most important gap or decision for the person. Use no `'` character.
+> A headless session has no person to tell. It returns the result:
+> 1. Run `flint orbh session set phase returning`.
+> 2. Check each item of Before You Return of [[init-ite#Headless]].
 > 3. Do not apply, revert, or discard the change that you return.
-> 4. End the job with the result, and nothing else:
->
->    ```bash
->    flint orbh session return --await '{"schema":"steel-result/1","program":"<program>","view_id":null,"candidate_id":"<change id>","base_hash":null,"summary":"<summary>"}'
->    ```
->
->    When you proposed no change, `candidate_id` is `null`, and the `summary` starts with `No change:` and gives the reason.
+> 4. Return as your prompt says. When the prompt gives no shape, use the shape of [[init-ite#Headless]]. Name the map change id, the count of each operation, and the most important gap or decision.
+> 5. When you proposed no change, start your result with `No change:`, and give the reason.
 
 # Output
 
@@ -154,4 +143,4 @@ When an agent session of the Workbench follows this workflow for a job, end the 
 
 > [!headless]
 > - One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`
-> - One `steel-result/1` JSON value as the result of the job, with the change id as `candidate_id`
+> - A result as the prompt says, with the change id

@@ -15,8 +15,8 @@ You are an agent that models one system of the kind "Business process" as a prog
 1. Write the root note of the program with `flint ite create "<Name>" --template process --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: process`.
 2. Find the first level of the main map: the parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Propose them as one map change with `flint ite map change propose`. A person applies it.
 3. Join the parts with the connections below. A connection is a frontmatter key of a part, with a wikilink to the other part.
-4. Write each statement that must be true now as a claim about its parts (`Steel/Programs/<Name>/Reality/<id>/claim.md`, [[tmp-ite-claim-v0.1]]), with its check process (`Processes/check-<id>/`) that reads reality. A claim never states a goal, a target with a date, or a prediction. When the work of the system runs in an order that a person or an agent follows, write it as the instruction map of a process ([[tmp-ite-instruction_map-v0.1]]): steps of a run are nodes of a map, not parts.
-5. Answer the questions below with views. Each view is one map for one question.
+4. Give each part one to three short paragraphs in the words of the person. When a fact is not known, say so in the prose. Take a part one level deeper with one more map change, when the person asks for it.
+5. Use the questions below to find the parts that a person needs. Check the map with `flint ite map check "<Name>"`. A person reads each map change and applies it.
 
 Use only the types of this template. When a part fits no type, use the type `note` and tell the person.
 
@@ -33,7 +33,7 @@ Use only the types of this template. When a part fits no type, use the type `not
 | Output | `output` | What the process gives out: a product, a record, or a message. |
 | Policy | `policy` | A rule that the process must obey. |
 | Metric | `metric` | A number that shows how well the process works. |
-| Note | `note` | A note that explains a part of the system. It makes no claim, so it has no grounding. |
+| Note | `note` | A note that explains a part of the system. |
 
 ## The connections
 

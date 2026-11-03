@@ -1,5 +1,7 @@
 ---
-description: "Make a new program end to end with a person: the purpose and the template, the first map as one map change, the state (data), the processes, the claims, the plan, the check, and the list of what only the person applies and enables; in a headless session, make it for a person or a manager, and return a result that lists each proposal and each enable that waits for the person"
+description: "Make a new program with a person: the purpose and the template, the first map as one map change, the check, and the list of what only the person applies; in a headless session, make it for a person or a manager, and return a result that lists each map change that waits for the person"
+orb:
+  - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -8,18 +10,17 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Program Create
 
-Make one program from the words of a person, from the purpose to a process that can run. Example: "Make a program for my weekly team meeting, with a process that sends the agenda each Monday, and a claim that the agenda exists." You propose each change. The person applies the map change and the promotes, and enables the processes at the end, each with one command.
+Make one program from the words of a person, and draft its first map. Example: "Make a program for my weekly team meeting." You make the program and propose its first map. The person reads the map change and applies it.
 
-The kernel words are in [[init-ite]]: the model (the parts, the views, the future notes, and the statements of the claims), the processes (each check, maker, keeper, and worker), the data, and the events that start the processes. Use these words and the words of the person. Do not teach the person a new word.
+A new program gets only its root note: no other file. Use the words of the person. Do not teach the person a new word.
 
 > [!headless]
-> A headless session follows this workflow with no person in the session. You are a builder (see [[init-ite#Headless]]). Do each stage, and follow the `> [!headless]` callout in it.
-> - You propose each change. The person reads your result later, applies the map change and the promotes, and enables the processes, each with one command.
-> - The turn ends with the return shape of your prompt, as the callout of Stage 7 says.
+> A headless session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules are in [[init-ite#Headless]].
+> - You propose the first map. The person reads your result later and applies the map change with one command.
 
 # Input
 
-- The words of the person: the system, and what it must do
+- The words of the person: the system, and what the person wants to see in it
 - (Optional) Sources: notes, files, or pages that describe the system
 
 > [!headless]
@@ -31,7 +32,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 
 1. Say the system again in one sentence: what it is, and why the person models it. This is the purpose.
 2. Run `flint ite list`. When a program already models this system, show it to the person, and ask: extend it, or make a new program.
-3. Run `flint ite templates`, and select the template by the kind of system: `organisation` (a team, its meetings and duties), `process` (repeated work of a business), `event` (one dated event), `research` (a question), `software` (a product with code), else `general`.
+3. Run `flint ite templates`, and select the template by the kind of system: `organisation` (a team, its meetings and duties), `process` (repeated work of a business), `event` (one dated event), `research` (a question), `software` (a product with code), else `general`. A template of this Flint can fit better: read its description.
 4. Show the person the name, the purpose, and the template. Ask: make it, or change it.
 5. Once the person agrees, make the program:
 
@@ -39,8 +40,7 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
    flint ite create "<name>" --purpose "<purpose>" --template <id>
    ```
 
-   The program gets the process `keep-map-true` (`recipe: keep-map-true`: the agent of the program, on the events `note.added` and `task.finished`; it keeps the root note; it is not enabled) and a starter kit of its template: one piece of data, one code process that runs at once, and one claim with its code check that reads the data (for an organisation: the data `next-meeting`, the process `days-until-meeting`, and the claim `next-meeting-ahead`; a process template gets the runs of `keep-map-true`; a software template gets the newest commit). Read the kit with `flint ite process list`, `flint ite data list`, and `flint ite claim list` before you add your own: use it where it fits, and change it with `process set`.
-
+   The command writes the root note (with the `types` of the template) and the empty folder of the program in `Steel/`.
 6. Once the program exists, progress to the next stage.
 
 > [!headless]
@@ -51,137 +51,69 @@ The kernel words are in [[init-ite]]: the model (the parts, the views, the futur
 
 ## Stage 2: The First Map
 
-1. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type.
-2. Select the parts for level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or roles, the decisions. Each part has a title of two to six words, a type of the program, and one sentence.
-3. Write the operations into one JSON array (the table "The Operations of a Map Change" of [[init-ite]]). For a deeper part, give its parent an `id` (a UUID v4) in the same change.
-4. Propose it, and read the preview:
+1. Read the types of the program: the field `types` of its root note (the template gave them). `flint ite types --type <id>` shows one type. The template note in `Mesh/Metadata/Templates/` says how to model a system of its kind.
+2. Read the sources that the person gave. Never invent a path, a URL, or a note name.
+3. Select the parts of level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or the roles, and the decisions. Each part has a title of two to six words, a type of the program, and one sentence. When no type fits, use `note`, and tell the person.
+4. Write the operations into one JSON array (The Operations of a Map Change in [[init-ite]]), in a file in the scratch folder of your session. Check that it parses: `python3 -m json.tool < <file>`. For a deeper part, give its parent an `id` (a new UUID v4) in the same change.
+5. Propose it, and read the preview:
 
    ```bash
-   flint ite map change propose "<program>" --ops <file|-> --reason "<one sentence for the person>"
+   flint ite map change propose "<program>" --ops <file> --reason "<one sentence for the person>"
    flint ite map change show "<program>" <change id>
    ```
 
-5. Show the person the tree after. A person applies it in the Workbench, or with `flint ite map change apply "<program>" <change id>`. You never apply it.
-6. Once the person applied it, or asked you to go on, progress to the next stage. The part ids are in `flint ite map tree "<program>" --ids` after the apply. Before the apply, the program has no part: a process can name its data (`--about data:<id>`).
+   An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
+6. **Stage gate.** Show the person the tree after. Ask: apply, change, or discard.
+   - **Apply**: the person applies it in the Workbench, or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You never apply it.
+   - **Change**: discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
+   - **Discard**: `flint ite map change discard "<program>" <change id>`.
+7. Once the person applied or discarded the change, progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase first-map`.
-> - Do not invent a fact: say a gap in the sentence.
-> - Put a deeper level in the same change, and give its parent an `id` (a UUID v4): a map change cannot name a part of another waiting change. Until the person applies the change, the program has no part: the processes and the claims of this workflow name their data (`data:<id>`).
-> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed`, with no conflict and no new error finding in the tree after. Never apply it.
-> - Do not show the tree to a person, and do not wait for the apply (steps 5 and 6). Progress to the next stage.
+> - Do not invent a fact: say a gap in the sentence of the part.
+> - Put a deeper level in the same change, and give its parent an `id` (a new UUID v4): a map change cannot name a part of another waiting change.
+> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed`, with no conflict and no new error finding in the tree after. When the preview shows a mistake, discard your change, repair the operations, and propose again. Do this at most two times.
+> - Do not show the tree to a person, and do not wait for the apply (steps 6 and 7). Never apply the change. Progress to the next stage.
 
-## Stage 3: The Data
+## Stage 3: Check
 
-1. Ask: what does the system hold or measure? For the weekly meeting: the topics of this week, and the agenda that was sent.
-2. For each piece of data, select its maker (the process that keeps it):
-   - A person writes it when Steel asks: `--by person` with a `--task` (the question).
-   - Code calculates it from other data: `--by code` with `--reads data:<id>`.
-   - It comes from outside (a file, a page, a command): a `--source` and a maker that pulls it, `--by code` (a stub `pull.js`).
-   - A process of Stage 4 writes it (for example the table of the sent agendas): write it in Stage 4, after its process, with `--kept-by process:<id>`.
-3. Write each piece of data and its maker with one command: `flint ite data new "<program>" <id> [--source command:<line>|url:<url>|path:<file> | --value <v>] [--by code|agent|person [--reads data:<id>...] [--task "<question or request>"] [--every|--cron]] [--fresh-for <d>] [--history]`. It writes `Data/<id>/data.md` and `Processes/make-<id>/`. The CLI is the truth: check the flags with `--help`.
-4. Test each maker that has code: `flint ite data test "<program>" <id>`. Repair and test again. Then pull it one time: `flint ite data pull "<program>" <id>`. A test writes nothing, and a check does not pull data whose maker is not enabled, so the processes and the claims of the next stages need this first value. A value that a person writes has no code to test. Then `flint ite data list "<program>"` must show no problem (a value of a person shows as `pending`).
-5. Once the data is written, progress to the next stage.
-
-> [!headless]
-> - Run `flint orbh session set phase data`.
-> - Do not ask the person (step 1). Write each piece of data that the system holds or measures.
-> - Never decide a value for a person.
-
-## Stage 4: The Processes
-
-1. For each piece of work that the system does again and again, write one process. Follow [[sk-ite-process_new]] for each one. When the work has steps and decisions in order, follow [[sk-ite-workflow_new]].
-2. Give the trigger with a flag of `process new` (for example `--cron "0 8 * * 1"` for each Monday at 08:00, or `--on <kind> [--on-about <ref>]` for an event), or write it in `process.md`. A trigger runs only after the person enables the process.
-3. A process that sends something outside this machine (an email, a message) gets `--irreversible`, so the person approves each run.
-4. A process has no `writes`. For each value or table that a process writes, write the data now, with the process as its keeper: `flint ite data new "<program>" agenda --table week:date sent_at:date --key week --kept-by process:send-agenda`.
-5. Check and test each process: `flint ite process check "<program>" <id>`, then `flint ite process test "<program>" <id>` (`--dry` for an agent process or an irreversible process; `--data data:<id>=<json>` gives a sample of data that has no value yet). Never run it.
-6. Once each process passes its test, progress to the next stage.
-
-> [!headless]
-> - Run `flint orbh session set phase processes`.
-> - The trigger flags also include `--every`. Never enable the process.
-> - The data that a process keeps: `flint ite data new "<program>" <data id> --table <name:kind>... --key <field> --kept-by process:<id>`.
-
-## Stage 5: The Claims
-
-1. For each thing that must be true now, write one claim and its check: `flint ite claim new "<program>" <id> --about <part id> --title "<title>" --by code|agent|person`. A claim never states a goal, a target with a date, or a prediction. For the weekly meeting: `agenda-exists` ("The agenda of this week exists"), about the agenda part, `--by code --reads data:agenda --cron "30 8 * * 1"`. `--about` takes a part (its id or its title), `root`, or `data:<id>`: before the person applies the first map change, name the data that the claim judges. Give the rest in the same command: `--reads data:<id>` of the check, a trigger of the check (`--every`, `--cron`, `--on`), and `--fresh-for`. The command writes the claim and its check as a draft (`Processes/check-<id>/dev/`).
-2. Write its check: a code check gets a stub `check.js` in its draft folder that gives `error` until you write the test. The test reads the data of `reads`, and prints one line `{"state":"holds|fails|error","summary":"..."}`.
-3. Test it: `flint ite claim test "<program>" <id>`. Then propose the promote of the check: `flint ite process promote "<program>" check-<id>`. The person applies it; then run it one time: `flint ite claim check "<program>" <id>`.
-4. Name each claim in the `effect` of the process that makes it true: `flint ite process set "<program>" <process id> --effect <claim id>...`. Ask the person which side changes when the claim fails: a process that repairs the world gets the trigger `--on claim.failed --on-about claim:<id>`; else the keeper of the part proposes a change of the model. Use `--add-trigger` so that the process keeps its other triggers: `flint ite process set "<program>" <process> --add-trigger --on claim.failed --on-about claim:<claim id>`. Without `--add-trigger`, the trigger flags replace each trigger.
-5. Once each claim has a tested check, progress to the next stage.
-
-> [!headless]
-> - Run `flint orbh session set phase claims`.
-> - The example of the weekly meeting in this mode: `--about data:agenda --by code --reads data:agenda --cron "30 8 * * 1"`.
-> - Replace the stub `check.js` in the draft folder. A check only reads.
-> - A claim that fails in the test is a true answer: say why in the result. The claim counts only after the person applies the promote. Do not wait for the apply, and do not run the check one time (step 3).
-> - Do not ask the person which side changes (step 4). When a process repairs the world after a failure of the claim, give it the trigger on `claim.failed` of the claim, with `--add-trigger`. With no such process, the keeper of the part proposes a change of the model when the claim fails.
-> - Progress to the next stage.
-
-## Stage 6: The Plan
-
-1. Ask: what must be different next? When the person names a change, write one future note: `flint ite plan add "<program>" --of <part> --change change --text <file|->`, or `--change add --parent <part> --type <Type> --title "<title>"` for a new thing. A future note has no state: the keeper proposes its realize when the work makes it true, and the person applies it.
-2. When the person names nothing, write no plan. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. Before the person applies the first map change, write no future note: name what must be next in your result.
+1. Run `flint ite map check "<program>"` and `flint ite check "<program>"`. Repair each error of a part that you proposed: discard the change, and propose it again with the repair.
+2. Before the apply, the program has no part, so the check reads only the root note. After the apply, run `flint ite map check "<program>"` again, and show the person the findings of level 1.
 3. Progress to the next stage.
 
 > [!headless]
-> - Run `flint orbh session set phase plan`.
-> - Do not ask the person (step 1). Write a future note only when your prompt asks for it. A future note has no state. `plan add` needs a part that exists: it refuses a part of a waiting map change and the root. So before the person applies the first map change, put each item in the line GAPS of your result.
-> - Then the system. Each program is a living system: `flint ite brief "<program>"` works with no `system` block, with the defaults. Only when your prompt asks for other owners, a boundary, an authority, or a governor, write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; the form is in [[tmp-ite-program-v0.1]]) into a file, and propose it:
->
->   ```bash
->   flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"
->   ```
->
->   Never apply it.
+> - Run `flint orbh session set phase checking`.
+> - Read the tree after of your change for its findings: the person applies it later.
 
-## Stage 7: Check and Hand Over
+## Stage 4: Hand Over
 
-1. Run `flint ite check "<program>"`, `flint ite process check "<program>"`, and `flint ite flow check "<program>"`. Repair each error of a file that you wrote. `claim-fails` is not an error of a file: it is a true answer about the world, so report it.
-2. Run `flint ite pulse "<program>"`.
-3. Show the person the list of what only the person does, one command each:
+1. Show the person the list of what only the person does, one command each:
 
    ```bash
    flint ite map change apply "<program>" <change id>     # when not applied yet
-   flint ite revision apply "<program>" <revision id>     # the promote of each check: then its claim counts
-   flint ite process set "<program>" <id> --run-by agent  # only for a process that an agent must start
-   flint ite enable "<program>" --all                     # each process that is off and has no problem, also keep-map-true
-   flint ite enable "<program>" <process id>              # or one process (a check, a maker, or a worker), with each of its triggers
    ```
 
-   Each program is a living system: the brief works at once, with the defaults. When a default does not fit (the owners, the boundary, the authority, or the governor), write the full root note with one `system` block (owners, boundary, attention, authority, and governor; no `goals`; [[tmp-ite-program-v0.1]]), propose it with `flint ite revision propose "<program>" --kind system --target "<root note file>" --content-file <file> --reason "<one sentence>"`, and the person applies it with `flint ite revision apply "<program>" <id> --protected`.
-
-4. Propose the next step: Run now of one process (`flint ite process run "<program>" <id>`), a view for a question, or more parts.
-5. The workflow is done.
+2. Propose the next step, as one more map change: a part one level deeper ([[wkfl-ite-map_expand]]), the files that no part covers ([[wkfl-ite-map_cover]]), or the parts that the person names ([[wkfl-ite-parts_add]]).
+3. The workflow is done.
 
 > [!headless]
-> - Run `flint orbh session set phase checking`.
-> - The `system` block is proposed in Stage 6 (see its callout), only when your prompt asks for it. Never apply it.
-> - Do not show the list to a person (step 3), and do not propose the next step to a person (step 4). Return with the shape of your prompt. When the prompt gives no shape, return Markdown with these lines:
+> - Do not show the list to a person (step 1), and do not propose the next step to a person (step 2). Return as your prompt says. When the prompt gives no shape, return Markdown with these lines:
 >
 >   ```
->   PROGRAM: <name> (<template>) — <purpose>
->   WROTE: <each file and each command that wrote it, one line each>
->   TESTED: <each check, process, and maker with its test result>
->   WAITS FOR YOU:
->   - flint ite map change apply "<program>" <change id>
->   - flint ite revision apply "<program>" <revision id>   (the promote of each check: then its claim counts)
->   - flint ite revision apply "<program>" <revision id> --protected   (only when you proposed a system block)
->   - flint ite process set "<program>" <id> --run-by agent   (only for a process that an agent must start)
->   - flint ite enable "<program>" --all   (each process and its triggers, also keep-map-true; or one process id each)
->   GAPS: <what you did not know, the items for the plan, and the question for the person>
+>   PROGRAM: <name> (<template>): <purpose>
+>   PROPOSED: <the map change id, with the count of each operation>
+>   WAITS FOR YOU: flint ite map change apply "<program>" <change id>
+>   GAPS: <what you did not know, and the question for the person>
 >   ```
 
 # Output
 
-- One program: the root note and its folder in `Steel/Programs/<name>/`
-- One map change with the first level, applied by the person
-- The data and their makers, the processes, and the claims with their checks, each tested and promoted by the person
-- The future notes that the person named
-- The list of the applies, the promotes, and the enables for the person
+- One program: the root note and its empty folder in `Steel/Programs/<name>/`
+- One map change with the first level: applied by the person, or discarded
+- The list of the applies for the person
 
 > [!headless]
 > - One program, or one extended program
-> - One map change that waits for the person, and one revision of the system block when the prompt asks for it
-> - The data and their makers, the processes, and the claims with their checks, each tested, and one promote revision for each check
-> - A result that lists each apply and each enable for the person
+> - One map change that waits for the person, with the state `proposed`
+> - A result that names the change id and the command that only the person runs
