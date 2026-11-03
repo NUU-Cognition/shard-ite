@@ -5,7 +5,8 @@ by: agent
 agent: program
 action: { object: program, needs-nodes: false, needs-text: false, writes-proposal: true, ask: "What is the system, and which sources must the agent read?", workflow: ite-model }
 task: |
-  Follow the workflow `wkfl-ite-model` of the ITE shard (`Shards/ITE/workflows/wkfl-ite-model.md`). In a headless session, follow its `> [!headless]` callouts. Do each step of it, in order.
+  Read `Shards/ITE/.later/init-ite-0.4.2.md` first: it holds the rules of this job.
+  Follow the workflow `wkfl-ite-model` of the ITE shard (`Shards/ITE/.later/wkfl-ite-model.md`). In a headless session, follow its `> [!headless]` callouts. Do each step of it, in order.
 ---
 
 # Model this system

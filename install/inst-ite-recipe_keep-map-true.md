@@ -4,6 +4,8 @@ id: keep-map-true
 by: agent
 agent: program
 task: |
+  Read `Shards/ITE/.later/init-ite-0.4.2.md` first: it holds the rules of this job.
+
   You are the agent of the program {{program}}. Keep the map of {{program}} true to one event. Work from the root of the Flint {{flint}}. The program is "{{program}}". Its root note is "{{root-note}}".
 
   1. Find the event.
@@ -24,7 +26,7 @@ task: |
      - Write the text in Simplified Technical English. Write only what a file or a commit shows. Never invent a path, a name, or a count.
      - Run `flint ite map change propose "{{program}}" --ops - --reason "<the summary of the event>"` with the JSON array on stdin. Then run `flint ite map change show "{{program}}" <change id>`. The change must be `proposed`, with no conflict and no new error finding.
      - For a program with the data item `reviews`, name each touched part whose review is due in the result, with "Run the process review". Do not record a review.
-  7. Check the views in both cases: after step 5 and after step 6. When a node of an accepted view that the event touches is not true now, write one candidate with Stages 1 to 4 of [[wkfl-ite-reshape]] and their `> [!headless]` callouts. Do not do The End of a Job of that workflow, and do not return there: after its Stage 4, go on with step 8 of this task. This job returns once, in step 10.
+  7. Check the views in both cases: after step 5 and after step 6. When a node of an accepted view that the event touches is not true now, write one candidate with Stages 1 to 4 of the workflow `wkfl-ite-reshape` (`Shards/ITE/.later/wkfl-ite-reshape.md`) and their `> [!headless]` callouts. Do not do The End of a Job of that workflow, and do not return there: after its Stage 4, go on with step 8 of this task. This job returns once, in step 10.
   8. Read the plan: `flint ite plan "{{program}}" --json`. When the work made a future note true in full, propose its realize: `flint ite plan realize "{{program}}" <future id>`. When the work made a part of it true, propose a partial realize: `flint ite plan realize "{{program}}" <future id> --part -` with `{ "now": "<the new full text of the true note>", "rest": "<the text that stays in the future note>" }` on stdin. A realize is a map change: a person applies it. Never set a state of a future note.
   9. Never apply, revert, or discard a map change or a candidate. Never enable a trigger. Never move a process, a data item, a claim, or a folder of the sidebar (`flint ite move`, `flint ite folder`): only a person moves them. Write no file with your own tools, and do not commit.
   10. End the job with the result form that the brief of this job gives (`steel-result/1`). Put the map change id in `candidate_id`, or null. In the summary, name the event id, the touched parts, the parts whose review is due, the candidate (or none), and each realize that you proposed (or none).

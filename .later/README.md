@@ -35,5 +35,5 @@ A module that comes back takes its files back with `git mv` to their old folder.
 
 - `dev-knw-ite-loop.md` also teaches the agent sessions and their jobs (the module `agents`). Split it when only one of the two modules comes back.
 - `dev-knw-ite-software.md` also teaches the view nodes of a product (the module `views`) and the check after a task with an event (the module `loop`).
-- The recipes in `install/` stay in the shard: the engine reads them, and existing programs name them. The recipes of the jobs (for example `inst-ite-recipe_claim-add.md`) name the workflows here by their built names. A job of a later module can run only after its workflow is back in `workflows/`.
+- The recipes in `install/` stay in the shard: the engine reads them, and existing programs name them. A recipe of a later action reaches the files here by their built paths: its `task` first names the old init, `Shards/ITE/.later/init-ite-0.4.2.md` (the rules of the job), then its workflow, `Shards/ITE/.later/wkfl-ite-<name>.md`. When a file goes back to its old folder, change the path in each recipe that names it.
 - The build of the shard copies this folder, and `flint shard start` does not list it (NUU Flint Task 1327). No agent loads a file of this folder.
