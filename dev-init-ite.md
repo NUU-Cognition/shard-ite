@@ -40,9 +40,9 @@ A note is a part when its `parent` chain reaches the root note. Its identity is 
 
 ## Make a Program and Change Its Map
 
-1. **The purpose and the template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. `flint ite templates` lists the templates: the six of the shard (`organisation`, `process` for repeated work of a business, `event`, `research`, `software`, `general`) and the templates of this Flint. The program gets only its root note and an empty folder in `Steel/`.
+1. **The purpose and the template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. `flint ite templates` lists the templates: the six of the shard (`organisation`, `process` for repeated work of a business, `event`, `research`, `software`, `general`) and the templates of this Flint. The program gets only its root note, and `Steel/Programs/<Name>/program.md`.
 2. **The first map, as one map change.** Write the parts of level 1 as one JSON array (the table below), then: `flint ite map change propose "<program>" --ops <file> --reason "<one sentence>"`.
-3. **The person decides.** Read the preview: `flint ite map change show "<program>" <change id>`. The person applies it in the Workbench, or with `flint ite map change apply "<program>" <change id>` `(a person)`.
+3. **The person decides.** Read the preview: `flint ite map change show "<program>" <change id>`. `flint ite proposals "<program>"` lists each change that waits. The person applies it in the Workbench, or with `flint ite map change apply "<program>" <change id>` `(a person)`.
 4. **Deeper.** One more map change for each next step: a part one level deeper, a clearer level, the parts that the person names. See the workflows below.
 5. **Check.** `flint ite map check "<program>"` and `flint ite check "<program>"` give no error.
 
@@ -64,28 +64,28 @@ A map change cannot name a part that another waiting map change adds. So put a n
 
 ## Jobs to Commands
 
-`<program>` is the name or the id of a program. `<part>` is an id, a note name, or a title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
+`<program>` is the name or the id of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
 
 | To do this | Run this |
 |---|---|
-| See the programs and the map changes that wait | `flint ite` (no verb); `flint ite list` for the counts |
-| Read one program | `flint ite map "<program>"` (the tree with the id of each part; `--full` adds the text); `flint ite map show "<program>" [--focus <part>]` (one level) |
+| See the programs and the map changes that wait | `flint ite` (no verb); `flint ite list` (the parts, the levels, the waiting map changes, the files with no part, and the errors of each program) |
+| Read one program | `flint ite map "<program>"` (the tree with the id of each part; `--full` adds the text); `flint ite map show "<program>" [--focus <id>]` (one level) |
 | See the types and the templates; make a program | `flint ite types`, `flint ite templates`; `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
-| Add or remove one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"]`; `flint ite part remove "<program>" <part>` |
+| Add or remove one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <id>] [--text "<text>"]`; `flint ite part remove "<program>" <id>` |
 | Change many parts at once; move, rename, merge, or group parts | `flint ite map change propose "<program>" --ops <file\|-> --reason "<text>"`; `flint ite map move\|rename\|merge\|split "<program>" ...` (one operation each) |
-| Change the prose or a field of a part | `flint ite part set "<program>" <part> --text "<text>"` (a person: at once; an agent: one map change) |
-| Link two parts | `flint ite link "<program>" <from> <to> --relation <key>` (`refers-to` always shows on the map; a person: at once; an agent: one map change) |
-| Read the map changes that wait; take back your own | `flint ite map change list "<program>" --state proposed`; `map change show "<program>" <id>`; `map change discard "<program>" <id>` |
-| Read or set the place, the size, or the face of a card | `flint ite places "<program>" [--in <part>]`; `flint ite place "<program>" <part> --at <x>,<y>\|--near <part> [--size <w>,<h>] [--face <face>]` (at once, also for an agent); `flint ite arrange "<program>" [--in <part>] [--all]` (only when a person asks) |
-| Read or change the drawings | `flint ite drawing list "<program>"`; `flint ite drawing add\|set\|remove "<program>" ...` (at once, also for an agent; a drawing is not structure) |
-| Check the map | `flint ite map check "<program>"`, `flint ite map coverage "<program>"`, `flint ite check "<program>"` |
+| Change the prose or a field of a part | `flint ite part set "<program>" <id> --text "<text>"` (a person: at once; an agent: one map change) |
+| Link two parts | `flint ite link "<program>" <from id> <to id> --relation <key>` (`refers-to` always shows on the map; a person: at once; an agent: one map change) |
+| Read the map changes that wait; take back your own | `flint ite proposals "<program>"`; `map change list "<program>" --state proposed`; `map change show "<program>" <id>`; `map change discard "<program>" <id>` |
+| Read or set the place, the size, or the face of a card | `flint ite places "<program>" [--in <id>]`; `flint ite place "<program>" <id> --at <x>,<y>\|--near <id> [--size <w>,<h>] [--face <face>]` (at once, also for an agent); `flint ite arrange "<program>" [--in <id>] [--all]` (only when a person asks) |
+| Read or change the drawings | `flint ite drawing list "<program>" [--layer <id>\|root]`; `flint ite drawing add "<program>" --kind rect\|ellipse\|diamond\|text\|frame --at <x>,<y> [--size <w>,<h>] [--text "<t>"]` (a line: `--kind line --from-node <id> --to-node <id>`); `drawing set "<program>" <drawing id> ...`; `drawing remove "<program>" <drawing id>` (at once, also for an agent; a drawing is not structure) |
+| Check the map | `flint ite map check "<program>"`, `flint ite map coverage "<program>"`, `flint ite check "<program>"` (the findings of the modules that are on; `--all` gives each finding) |
 | The check after a product task | [[sk-ite-check_after_task]] |
 
 A person only (an agent never runs these): `map change apply|revert`, `map change propose --apply`, `rename`, `archive`, `modules on|off`. The exit codes: 0 done; 1 a finding of the level error or a conflict; 2 a refusal of the input, and nothing was written.
 
 ## The Modules
 
-The main map is the module `main-map`, and it is always on. `flint ite modules` shows the modules of this Flint (the key `modules` of the block `[ite]` of `flint.toml`). The later modules (`views`, `processes`, `data-claims`, `agents`, `loop`) exist in the code and are off by default. Only a person turns one on: `flint ite modules on <id>` `(a person)`.
+The main map is the module `main-map`, and it is always on. `flint ite modules` shows each module and whether it is on (the key `modules` of the block `[ite]` of `flint.toml`). The later modules (`views`, `processes`, `data-claims`, `agents`, `loop`) exist in the code and are off by default: `flint ite --help` names them in one line. Only a person turns one on: `flint ite modules on <id>` `(a person)`. An agent gets `forbidden`.
 
 ## Read More
 

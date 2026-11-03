@@ -184,7 +184,7 @@ In a glob, `*` does not cross `/`, `**/` is any depth, `?` is one character, and
 | `code-ref-missing` | warning | A `code-refs` entry matches no file. | `edit` the sources ([[wkfl-ite-map_update]]) |
 | `map-change-stuck` | error | A map change is `applying` or `reverting`: a write did not finish. | The next write of the change engine recovers it |
 
-`flint ite check "<program>"` gives the findings of the files of the program (for example `format` and `link-missing`) for the modules that are on. `flint ite check --all` gives each finding of each module.
+`flint ite check "<program>"` gives the findings of the files of the program (for example `format` and `link-missing`), only for the modules that are on. Its last line gives the count of the findings that it does not show, with `flint ite check --all`. `--all` gives each finding of each module, and each note. The command exits 1 only for an error finding that it shows. `--json` adds `modules` and `hidden`.
 
 ### The Map Change
 
@@ -216,7 +216,7 @@ The main map is manual: each card stays where a person or an agent puts it.
 
 - **A saved place.** Each part has one place in `Steel/Programs/<P>/State/main.json`: `positions[<part id>] = { x, y, parent }`. The place is the top left corner of the box of the part, relative to the **room** of its parent: in a group, the room inside the group box (below its title row); at the top of the root or of a layer, the canvas of that level. `parent` is the parent that the place is for (null: the top of the root). A place for another parent than the parent of the part now is old: the part shows at the place of a new card.
 - **A group or a layer.** A part with children is a group (a box on the level of its parent, with its parts inside) or a layer (one card that a person enters). The field `map-mode` of the note (`group` or `layer`) gives the mode. With no field, a part with at most 9 parts and 2 levels below it is a group, and a larger part is a layer. The size of a group follows its parts.
-- **A saved size.** A person resizes a box on the canvas with the handles of the one selected box. The size is in the same position: `positions[<part id>] = { x, y, parent, w, h }`. It snaps to the grid of 8, and it is at least 128 × 40. A new card is 320 × 240. For a group, the saved size is the smallest size: a part never falls out of its box. "Reset the size" in the menu of a card removes it.
+- **A saved size.** A person resizes a box on the canvas with the handles of the one selected box. The size is in the same position: `positions[<part id>] = { x, y, parent, w, h }`. It snaps to the grid of 8, and it is at least 128 × 40. With no saved size, a plain card is 208 × 48, and the card of a layer is 320 × 240. For a group, the saved size is the smallest size: a part never falls out of its box. "Reset the size" in the menu of a card removes it.
 - **The face of a card.** What a card shows under its title: `title` (the title and the type only), `sentence` (the first line of the text of the part), or `field:<key>` (one field of the note). A card has the face of its position (`face`), else `card-face` of the `main-map` block of the root note, else `title`.
 - **The look of a card.** A position can also have `shape` (`card`, `rect`, `rounded`, `ellipse`, `diamond`, `sticky`), `color` (`gray`, `red`, `orange`, `yellow`, `green`, `blue`, `purple`), and `z` (the layer order among the cards and the drawings of its level). The drawing tools of the canvas set them.
 - **The size, the face, and the look belong to the part.** A move keeps them, also to another parent. A layout write keeps the keys that it does not name, and `null` removes one.
@@ -239,7 +239,14 @@ A **drawing** is a shape, a text, a frame, a line, or a group on one level of th
 | `from`, `to`, `arrow`, `route` | A line: its two ends (`x`, `y`, and an optional `node`: the id of the part or the drawing that the end follows), the arrowheads (`none`, `start`, `end`, `both`), and `straight` or `elbow` |
 | `members` | A group: the ids of its members (parts and drawings of one level) |
 
-Read and change the drawings with `flint ite drawing list "<program>"`, and `flint ite drawing add|set|remove "<program>" ...` (`flint ite drawing <verb> --help` gives the flags). Never write `State/main.json` with your own tools. A drawing holds no meaning of the system: put a fact of the system in a part.
+The commands (`flint ite drawing <verb> --help` gives each flag):
+
+- `flint ite drawing list "<program>" [--layer <part>|root]`: the drawings of the main map, or of one layer.
+- `flint ite drawing add "<program>" --kind rect|ellipse|diamond|text|frame|line|group [--id <id>] [--layer <part>|root] ...`: one new drawing. A shape, a text, and a frame need `--at <x>,<y>`; `--size <w>,<h>` has the default 160,96 (a text 160,32, a frame 320,200). A line needs `--from <x>,<y>` or `--from-node <item>`, and `--to <x>,<y>` or `--to-node <item>`: an end on a part or a drawing with no point is at the center of its box. A group needs `--members <a>,<b>`. The other flags: `--text`, `--color`, `--z` (the default of add: on top), `--locked`, `--arrow` (the default of add: `end`), `--route`. The id has letters, digits, `-`, and `_`; the default is a new id.
+- `flint ite drawing set "<program>" <drawing id> ...`: the same flags, and `--unlocked`. A locked drawing does not move and is not resized: give `--unlocked` with the change.
+- `flint ite drawing remove "<program>" <drawing id>...`: removes one or more drawings.
+
+Never write `State/main.json` with your own tools. A drawing holds no meaning of the system: put a fact of the system in a part.
 
 ### Two Kinds of Links
 
@@ -257,7 +264,7 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 | Command | Result | Writes |
 |---|---|---|
 | `flint ite map <program> [--full]` | The tree with the id of each part, the totals, and three next commands; `--full` adds the text and the links of each part | Nothing |
-| `flint ite map show <program> [--focus <part>]` | One level: the focus, the cards with their counts, coverage, and findings, and the relations | Nothing |
+| `flint ite map show <program> [--focus <id>]` | One level: the focus, the cards with their counts, coverage, and findings, and the relations | Nothing |
 | `flint ite map tree <program> [--ids]` | The whole tree with the markers and the counts of the findings | Nothing |
 | `flint ite map check <program>` | Each finding of the main map. Exit 1 for an error finding. | Nothing |
 | `flint ite map coverage <program> [--gaps]` | Covered / total, the coverage of each part, the overlaps; `--gaps` lists the gap files | Nothing |
@@ -271,9 +278,10 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 | `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` | Nothing |
 | `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below]) [--size <w>,<h>\|auto] [--face <face>\|default]` | Sets the place, the size, or the face of one part. The place is relative to the room of its parent, on the grid of 8. `--near` needs a part with the same parent. | `State/main.json` |
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level (default: the top of the root); `--deep` adds each level below; `--all` arranges each level. It prints how many parts moved. | `State/main.json` |
-| `flint ite drawing list\|add\|set\|remove <program> ...` | Reads or changes the drawings of the main map | `State/main.json`, or nothing |
+| `flint ite drawing list\|add\|set\|remove <program> ...` | Reads or changes the drawings of the main map (see The Drawings) | `State/main.json`, or nothing |
+| `flint ite proposals [<program>]` | Each change that waits for a person, the oldest first, each with its show command | Nothing |
 
-Each verb takes `--json`. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. A part reference is an id, a note name, or a title. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
+Each verb takes `--json`. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. In a map change, a `map` shortcut, `place`, `places`, and `arrange`, a part is its id, its note name, or a unique title. `part set` and `link` take only the id of a part; `part add --parent` and `part remove` take the id or the note name. `flint ite map` prints each id. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
 ### The Rules of the Main Map
 
@@ -309,9 +317,10 @@ modules = ["main-map"]
 ```
 
 - With no `[ite]` block, the value is `["main-map"]`. `main-map` is on also when the list omits it. An unknown word gives one warning.
-- `flint ite modules` shows each module, its title, and whether it is on. Each agent can read it.
-- `flint ite modules on <id>` and `flint ite modules off <id>` change the setting. A person only: the engine refuses an agent with `forbidden`. Name the command for the person.
-- `flint ite --help` shows the verbs of the modules that are on, and one line that names the others.
+- `flint ite modules [--json]` shows each module, its title, and whether it is on. Each agent can read it.
+- `flint ite modules on <id>` and `flint ite modules off <id>` change the setting. A person only: the engine refuses an agent with the code `forbidden` (exit 1). Name the command for the person.
+- `flint ite --help` shows the verbs of the modules that are on, then the line `Off in this Flint: <ids>. Their commands still work.`
+- `flint ite check` shows only the findings of the modules that are on (see The Findings of the Main Map). `flint ite actions` lists only the actions of the modules that are on (`--all`: each action). An action of a module that is off is refused (exit 2), with the command `flint ite modules on <id>` for a person.
 
 ## Quality Rules of a Program
 

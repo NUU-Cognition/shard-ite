@@ -43,7 +43,7 @@ One term has one meaning. Use these terms in each file and each result.
 | Subsystem | A part of the main map with children. A person opens it on the canvas. It is not a separate program. |
 | Group | A part with children that shows as a box on the level of its parent, with its parts inside. |
 | Layer | A part with children that shows as one card. A person enters it to see its parts. |
-| Card | One part on the canvas. |
+| Card | One part on the canvas. With no saved size, a plain card is 208 × 48, and the card of a layer is 320 × 240. |
 | Coverage | How much of the codebase the parts cover: the files of a program with `codebase` on its root note. |
 | Codebase | The field `codebase` of the root note: the code of the program. It gives the file coverage and the `code-refs`. |
 | Code-ref | One entry of `code-refs` of a part: a folder, a file, a symbol, a line range, or a path of another codebase. |
@@ -107,30 +107,33 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 
 ## The Commands
 
-`flint ite` is a part of the Flint CLI. Each command takes `--json`. `<program>` is the name or the id of a program. `<part>` is an id, a note name, or a title.
+`flint ite` is a part of the Flint CLI. Each command takes `--json`. `<program>` is the name or the id of a program. `<id>` is the id of a part: `flint ite map` prints it. `<part>` is an id, a note name, or a unique title.
 
 | Command | Result | Writes |
 |---|---|---|
-| `flint ite` | The start: each program in one line with the map changes that wait, then three next commands | Nothing |
-| `flint ite list` | The programs with the counts of their parts, their levels, their coverage gaps, and their map changes that wait | Nothing |
+| `flint ite` | The start: each program in one line with its map facts (parts, levels, map changes that wait). The first next command is `flint ite proposals <program>` when a map change waits, else `flint ite map <program>`. `--json`: `{ programs, modules, next }`. | Nothing |
+| `flint ite list` | For each program: `<name>  <template>  <N parts in L levels · K map changes wait · G files have no part · E errors>`, its purpose, and the findings of its main map. `--json` adds `modules` and `map_facts`. | Nothing |
 | `flint ite types [--type <id>]` | The types and the connections of this Flint, with their capabilities | Nothing |
 | `flint ite templates` | The templates that a new program can start from | Nothing |
-| `flint ite create <name> --purpose "<one sentence>" [--template <id>]` | A new program: the root note with the `types` of the template, and its empty folder in `Steel/`. With no `--template`, the template is a guess from the purpose. | The root note, `Steel/Programs/<Name>/` |
+| `flint ite create <name> --purpose "<one sentence>" [--template <id>]` | A new program: the root note with the `types` of the template, and `Steel/Programs/<Name>/program.md`. With no `--template`, the template is a guess from the purpose. The output names the template, the types, and the root note, says that the map has only its root note, and gives the next commands (`part add`, `map`, `proposals`). | The root note, `Steel/Programs/<Name>/program.md` |
 | `flint ite map ...` | The main map: `show`, `tree`, `check`, `coverage`, `change propose\|list\|show\|apply\|revert\|discard`, `split`, `move`, `rename`, `merge` (see The Commands of the Main Map in [[knw-ite-programs]]) | A proposal, or nothing |
-| `flint ite part add <program> --kind <type id> --title "<title>" [--parent <part>] [--text "<text>"] [--field k=v]...` | Adds one part: a map change. A person's change applies at once; an agent's change is a proposal. `--field` is for a person only. | One proposal (and the note, when applied) |
-| `flint ite part set <program> <part> [--text "<text>"] [--field k=v]... [--base-hash <hash>]` | Changes the text and the fields of a part. It refuses `title`, `kind`, and `parent`. A person's change writes at once; an agent's change is one map change (`edit`). | One note (a person), or one proposal (an agent) |
-| `flint ite part remove <program> <part>` | Removes one part: a map change. Its children move to its parent. | One proposal |
-| `flint ite link <program> <from> <to> --relation <key> [--remove]` | Adds or removes a link of a connection. `--relation refers-to` gives a link that the main map always shows. A person's link writes at once; an agent's link is one map change. | One note (a person), or one proposal (an agent) |
+| `flint ite part add <program> --kind <type id> --title "<title>" [--parent <id or note name>] [--text "<text>"] [--field k=v]...` | Adds one part: a map change. A person's change applies at once; an agent's change is a proposal. `--field` is for a person only. | One proposal (and the note, when applied) |
+| `flint ite part set <program> <id> [--text "<text>"] [--field k=v]... [--base-hash <hash>]` | Changes the text and the fields of a part. It refuses `title`, `kind`, and `parent`. A person's change writes at once; an agent's change is one map change (`edit`). | One note (a person), or one proposal (an agent) |
+| `flint ite part remove <program> <id or note name>` | Removes one part: a map change. Its children move to its parent. | One proposal |
+| `flint ite link <program> <from id> <to id> --relation <key> [--remove]` | Adds or removes a link of a connection. `--relation refers-to` gives a link that the main map always shows. A person's link writes at once; an agent's link is one map change. | One note (a person), or one proposal (an agent) |
 | `flint ite places <program> [--in <part>] [--deep]` | The place of each part of one level (default: the top of the root): the id, the title, the type, the mode (card, group, or layer), x, y, the width, the height, and `saved` or `new` | Nothing |
 | `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below]) [--size <w>,<h>\|auto] [--face <face>\|default]` | Sets the place, the size, or the face of one part. It applies at once, for a person and for an agent. | `State/main.json` |
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level, or of each level (`--all`). It prints how many parts moved. Only when a person asks. | `State/main.json` |
-| `flint ite drawing list <program>` | The drawings of the main map | Nothing |
-| `flint ite drawing add\|set\|remove <program> ...` | Adds, changes, or removes one drawing (`flint ite drawing <verb> --help` gives the flags). It applies at once, for a person and for an agent. | `State/main.json` |
-| `flint ite check [<program>]` | The findings of the programs, for the modules that are on. `--all` gives each finding of each module. Exit 1 for an error finding. | Nothing |
-| `flint ite check [<program>] --paths <path...> [--checkout <dir>]` | The check after a task: the parts whose sources name one of the paths ([[sk-ite-check_after_task]]) | Nothing |
-| `flint ite modules` | Each module of the ITE, its title, and whether it is on in this Flint | Nothing |
-| `flint ite modules on\|off <id>` | Turns one module on or off. A person only. | `flint.toml` |
+| `flint ite proposals [<program>]` | Each change that waits for a person, the oldest first, each with its show command | Nothing |
+| `flint ite drawing list <program> [--layer <part>\|root]` | The drawings of the main map, or of one layer | Nothing |
+| `flint ite drawing add <program> --kind rect\|ellipse\|diamond\|text\|frame\|line\|group [--id] [--layer] [--at x,y] [--size w,h] [--text] [--color] [--z] [--locked] [--from x,y] [--from-node] [--to x,y] [--to-node] [--arrow] [--route] [--members a,b]` | Adds one drawing (see The Drawings in [[knw-ite-programs]]). It applies at once, for a person and for an agent. | `State/main.json` |
+| `flint ite drawing set <program> <drawing id> [the flags of add] [--unlocked]`, `flint ite drawing remove <program> <drawing id>...` | Changes or removes drawings. A locked drawing does not move until `--unlocked`. | `State/main.json` |
+| `flint ite check [<program>] [--all]` | The findings of the programs, only for the modules that are on. The last line gives the count of the hidden findings, with `flint ite check --all`. `--all` gives each finding of each module, and each note. Exit 1 only for an error finding that it shows. `--json` adds `modules` and `hidden`. | Nothing |
+| `flint ite check [<program>] --paths <path...> [--checkout <dir>] [--json]` | The check after a task: the parts whose sources name one of the paths. `--json`: `programs[]`, each with `program` and `parts[]` (`id`, `title`, `findings`). Exit 0 when no part names the paths. ([[sk-ite-check_after_task]]) | Nothing |
+| `flint ite modules [--json]` | Each module of the ITE, its title, and whether it is on in this Flint | Nothing |
+| `flint ite modules on\|off <id>` | Turns one module on or off. A person only: an agent gets the code `forbidden` (exit 1). | `flint.toml` |
+| `flint ite actions [--all]` | The actions of the modules that are on (`--all`: each action). An action of a module that is off is refused (exit 2), with `flint ite modules on <id>` for a person. | Nothing |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A person only. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A person only. | The program folder |
 
-`flint ite --help` shows the verbs of the modules that are on, and one line that names the other modules. The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server, and `GET /api/ite/modules` gives the setting.
+`flint ite --help` shows the verbs of the modules that are on, then the line `Off in this Flint: <ids>. Their commands still work.` The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server, and `GET /api/ite/modules` gives the setting.

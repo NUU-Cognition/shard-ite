@@ -31,7 +31,7 @@ Run the skill after the WIP commits, when the commits are in the checkout of the
    flint ite check --paths <absolute path>... --json
    ```
 
-   The output gives, for each program, the parts whose sources name one of the paths (each with `id`, `title`, and `findings`). Use only the parts. Exit 2 is a refusal: read the reason, write it in the result, and stop. When the command says that no part names the paths, it exits 0: go to step 5.
+   The output (`steel-check-paths/1`) has `programs[]`: each entry has `program` and `parts[]`, the parts whose sources name one of the paths, each with `id`, `title`, and `findings`. Use only `parts`. When `programs` is empty, no part names the paths, and the command exits 0: go to step 5. Exit 2 is a refusal: read the reason, write it in the result, and stop.
 3. **Compare each part with the change.** Read the text and the sources of the part: `flint ite map "<program>" --full`, or the part note. Read the diff of its sources: `git -C "<codebase path>" diff <sha>~1 <sha> -- <path>` for each commit of the task. Answer one question: does the text of the part still say what the code does? A new name of a function, or a change of its inner logic, often keeps the text true.
 4. **Propose one map change, or name one gap.** For each program with a part that is no longer true:
    - Write all the operations of that program in one map change: `edit` (a new sentence, new prose, or new `sources`), `add` (a new part for new code that no part covers), or `remove` (a part whose code is gone). Then run `flint ite map change propose "<program>" --ops - --reason "<one sentence: the task and what changed>"`, and read the preview with `flint ite map change show "<program>" <change id>`. The person applies it.
