@@ -1,5 +1,8 @@
 ---
 description: "The ITE for the main map: what a program and its main map are, the rules, where the files live, how to make a program and change its map, the operations of a map change, the command for each piece of work, the setting of the modules, which file to read, and the section Headless with its rules and the shape of the result"
+orb:
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 # ITE
@@ -23,7 +26,7 @@ Read this file first. With this file and one workflow, you can make a program an
 4. **Test before you hand over.** Read the preview of each map change that you propose. Hand over no change with a new error finding.
 5. **Read before you run.** Never run code that you did not read. Run `flint ite arrange` only when a person asks for it: it moves many cards.
 6. **Never invent.** No invented id, path, URL, part, or type. Say a gap in the prose: "Nobody knows this yet."
-7. **The words of the person.** Use the words that the person uses for the system. Prose first: one to three short paragraphs for each part. A title of two to six words. The quality rules are in [[knw-ite-programs]].
+7. **The words of the person.** Use the words that the person uses for the system. Prose first: one to three short paragraphs for each part. A title of two to six words. The quality rules are in [[knw-ite-programs]]. A part can also show its flow in one Mermaid diagram, when a picture says more than the text: see [[knw-ite-programs#Diagrams in the Prose]].
 8. **Simplified Technical English.** Short sentences, active voice, one term for one thing.
 
 ## Where the Files Live

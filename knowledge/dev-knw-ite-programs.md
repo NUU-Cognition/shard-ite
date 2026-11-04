@@ -1,8 +1,10 @@
 ---
-description: "Programs and their main map: the root note, the part file, types, connections, and templates, the tree, coverage, the findings, the map change, the places, sizes, and faces of the cards, the drawings, the two kinds of links, the commands, the setting of the modules, and the quality rules of a program"
+description: "Programs and their main map: the root note, the part file, types, connections, and templates, the tree, coverage, the findings, the map change, the places, sizes, and faces of the cards, the drawings, the diagrams in the prose, the two kinds of links, the commands, the setting of the modules, and the quality rules of a program"
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 # Knowledge: Programs and the Main Map
@@ -283,6 +285,38 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 
 Each verb takes `--json`. In an Orbh session the actor is `agent:<session id>`, else `person:<Name>`. In a map change, a `map` shortcut, `place`, `places`, and `arrange`, a part is its id, its note name, or a unique title. `part set` and `link` take only the id of a part; `part add --parent` and `part remove` take the id or the note name. `flint ite map` prints each id. Read `flint ite places` before a move: each place is relative to the room of the parent of the part.
 
+### Diagrams in the Prose
+
+A part can show its flow in a **diagram**. A diagram is a fenced block of the prose, with the language `mermaid`. The inspector of the part draws it. Draw a diagram when a picture says more than the text: how something flows, who acts in what order, the states of a thing, or the shape of the data.
+
+The rules:
+
+1. **When.** Each part with children that has a flow, and each part with a flow, an order of steps, or states, has one diagram. A small part with nothing to draw has none. Do not force one.
+2. **Not the tree.** Do not draw the children of a part. The canvas shows them.
+3. **The kinds.** Use `flowchart`, `sequenceDiagram`, `stateDiagram-v2`, `erDiagram`, or `classDiagram`. A program of any type can use them. An event, a process, and a research have flows and states too.
+4. **The size.** Use 3 to 12 nodes. Each label is short and uses the real name of the thing.
+5. **The labels.** A label with a slash, a dot, or brackets goes in quotes. A diagram has no wikilink.
+6. **The first paragraph.** The first paragraph of the prose stays plain text. The card reads the first sentence of the prose, and it skips a paragraph that starts with `#`, a code fence, `|`, or `>`. So the diagram comes after the first paragraph.
+7. **The sentence.** Write one plain sentence before each diagram. It says what the diagram shows.
+8. **The truth.** Draw only what the sources show. Each arrow must be true. A step that nobody described is a gap: say so in the prose.
+9. **The prose stays.** A diagram does not replace the prose.
+
+When a diagram does not render, the inspector shows its source and one quiet line with the error. Repair the source, and write the part again.
+
+Example: the part "Venue booked" of the program Club Launch Night, with the times from its prose.
+
+````markdown
+# (Milestone) Venue booked
+
+Priya booked the hall on 24 September 2026. The diagram shows the hall on the night of the launch.
+
+```mermaid
+flowchart LR
+  A["Set-up starts at 17:30"] --> B["Hall in use"]
+  B --> C["Hall empty at 22:00"]
+```
+````
+
 ### The Rules of the Main Map
 
 1. **Change the main map only through a map change.** Never write a part file with your own tools.
@@ -327,7 +361,7 @@ modules = ["main-map"]
 A program is for a person. A model that breaks these rules does not help that person think.
 
 1. **The words of the person.** Use the words that the person uses for the system, not the words of a tool. Take the names of the parts from the notes, the sources, and the speech of the person.
-2. **Prose first.** Each part has one to three short paragraphs for a person before any tool field. A person must understand the map from the prose alone.
+2. **Prose first.** Each part has one to three short paragraphs for a person before any tool field, and a diagram where a picture says more (see Diagrams in the Prose). A person must understand the map from the prose alone.
 3. **One idea for each part.** When the prose of a part needs two ideas, make two parts. A short title: two to six words.
 4. **The types of the program.** Give each part a type of the `types` of the root note. When no type fits, use `note` and tell the person. Never invent a type: a new type is a type note that a person agrees to.
 5. **Explain each word of the system at its first use.** "The run sheet is the list of the steps of the night, with a time and a role for each."
@@ -335,3 +369,4 @@ A program is for a person. A model that breaks these rules does not help that pe
 7. **Tell the truth about gaps.** When a part of the system is not known, say so in the prose. A model with an honest gap is better than a model with an invented fact. Never invent a path, a URL, or a note name.
 8. **Meaning only.** No finding, no count, no place, and no size in a note: a command computes them, and `State/` keeps the places.
 9. **Simplified Technical English.** Short sentences, active voice, and one term for one thing.
+10. **A picture when it helps.** A part with a flow, an order of steps, or states has one Mermaid diagram in its prose. A part with nothing to draw has none. See Diagrams in the Prose, under The Main Map.

@@ -1,8 +1,10 @@
 ---
-description: "A part of an ITE program: one Mesh note of a type, with its parent, its links, its sources, and prose for a person, with a complete example"
+description: "A part of an ITE program: one Mesh note of a type, with its parent, its links, its sources, and prose for a person with an optional diagram, with a complete example"
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 # Filename: Mesh/Programs/(Program) [Name]/Map/(Program) [Name] . ([Type]) [Title].md
@@ -57,6 +59,7 @@ orb:
   - One H1: "(<Type>) <Title>". It is for a person; no code reads it.
   - One to three short paragraphs for a person: what this part is, and what is true when it is done.
     Use the words of the person. One idea for each part. A wikilink in the prose gives a link of the connection mentions.
+  - A diagram when the part has a flow, an order of steps, or states: one plain sentence, then one fenced `mermaid` block after the first paragraph. Diagrams in the Prose of [[knw-ite-programs]] has the rules.
 */
 
 ````markdown
@@ -78,6 +81,8 @@ orb:
 # (TYPE) [Title]
 
 [One to three short paragraphs for a person: what this part is, and what is true when it is done.]
+
+[Only when the part has a flow, an order of steps, or states: one plain sentence, then one fenced mermaid block. Leave out this block when the part has nothing to draw.]
 ````
 
 ## A complete example
@@ -102,6 +107,14 @@ authors:
 
 The garden has four raised beds behind the hall. The member on duty waters them on Tuesday and on Saturday, with the hose of the tool shed.
 
+The diagram shows the watering, from the tool shed to the beds.
+
+```mermaid
+flowchart LR
+  shed["Tool shed"] -->|hose| member["Member on duty"]
+  member -->|waters| beds["Four raised beds"]
+```
+
 Nobody knows yet who repairs a bed when its wood breaks.
 ````
 
@@ -110,4 +123,5 @@ What the example does:
 - The file name gives the program, the type `Resource`, and the title. The H1 repeats the type and the title.
 - `parent` puts the beds inside the part "The garden". `uses` is a connection: each wikilink is one link.
 - `owner` names a part of the same program (an actor), so the link has a target.
+- The diagram comes after the first paragraph. Its arrows follow the prose: the member takes the hose from the tool shed, and waters the beds.
 - The prose says a gap in plain words. The part has no `status` and no place: the canvas keeps the place of the card in `State/main.json`.
