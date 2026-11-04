@@ -87,6 +87,7 @@ The `layout` says where the parts are after the change: `{"places":{"<part>":{"x
 | Draw the draft of a change; plan it with no write | `flint ite map render "<program>" --ops <file> [--layout <file>]`; `flint ite map change propose ... --dry-run` |
 | Read or set the place, the size, or the face of a card | `flint ite places "<program>" [--in <id>]`; `flint ite place "<program>" <id> --at <x>,<y>\|--near <id> [--size <w>,<h>] [--face <face>]` (at once, also for an agent); `flint ite arrange "<program>" [--in <id>] [--all]` (a real level: only when a person asks) |
 | Read or change the drawings | `flint ite drawing list "<program>" [--layer <id>\|root]`; `flint ite drawing add "<program>" --kind rect\|ellipse\|diamond\|text\|frame --at <x>,<y> [--size <w>,<h>] [--text "<t>"]` (a line: `--kind line --from-node <id> --to-node <id>`); `drawing set "<program>" <drawing id> ...`; `drawing remove "<program>" <drawing id>` (at once, also for an agent; a drawing is not structure) |
+| Move many cards and drawings at once, with no proposal | `flint ite map layout "<program>" --layout <file\|-> [--dry-run]` (at once, also for an agent; only parts that exist, and each keeps its parent) |
 | Check the map | `flint ite map check "<program>"`, `flint ite map coverage "<program>"`, `flint ite check "<program>"` (the findings of the modules that are on; `--all` gives each finding) |
 | The check after a product task | [[sk-ite-check_after_task]] |
 

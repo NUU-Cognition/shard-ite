@@ -214,7 +214,7 @@ The program is "Club Launch". Its event level shows two cards that a person plac
       "add": [
         { "kind": "line", "from": { "node": "Launch night" }, "to": { "node": "Preparation" }, "arrow": "end" },
         { "kind": "line", "from": { "node": "Preparation" }, "to": { "node": "Run the night" }, "arrow": "end" },
-        { "kind": "text", "x": 240, "y": 256, "w": 240, "h": 32, "text": "Hall first. Then invites. Then pizza." }
+        { "kind": "text", "x": 240, "y": 256, "w": 320, "h": 32, "text": "Hall first. Then invites. Then pizza." }
       ]
     }
   }
@@ -264,6 +264,19 @@ A proposal **can also move existing cards**. Do this in two cases only:
 2. Your new parts need the room. Move the least number of cards, by the least distance, and say in the reason which cards moved and why.
 
 `flint ite arrange` on a real level still waits for a person. An agent lays out its own new level, and the parts it adds or moves, in the `layout` of its change.
+
+## Move Directly, or Propose
+
+There are two paths for a change of the canvas. Both take the same place and drawing shapes.
+
+| Path | Commands | What happens | Use it when |
+|---|---|---|---|
+| **Direct** | `flint ite place` (one card), `flint ite drawing set` (one drawing), `flint ite map layout "<program>" --layout <file\|->` (many items in one write) | It applies at once, also for an agent. There is no change file, no review, and no revert. | The person asks you to tidy or move something now. You fix the places of parts that are yours, for example after your change is applied. |
+| **Proposal** | `flint ite map change propose "<program>" --layout <file> [--ops <file>]` | Nothing changes until a person applies it. A person can revert it. | The change also has operations. The person should see the level first. You rearrange a level that a person arranged, and the person did not ask for it now. |
+
+- **The direct path moves only what exists.** A key of `places` must name a part now, and the part keeps its parent. A new part and a new parent are structure, so they are always a proposal.
+- **Check first, and keep the old places.** Run `flint ite map layout ... --dry-run`, and read its problems. The `--json` output of the write holds the `before` of each item: keep it, so that you can give the items back. No command does this for you.
+- **The rule for a level that a person arranged stays the same.** A direct move is still a move of a person's cards. Do it only when the person asks.
 
 ## The Canvas Problems
 

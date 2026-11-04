@@ -135,6 +135,8 @@ A map change has `ops` and `layout`. The plan runs the operations first, then re
 
 ### The Canvas and the Render
 
+The direct path: `flint ite map layout "<program>" --layout <file|-> [--dry-run] [--json]` applies a layout at once, for a person and for an agent, with no change file. It takes the same JSON as the `layout` of a map change. A key of `places` must name a part that exists now, and the part keeps its parent. Its JSON has the `before` of each place and drawing. [[knw-ite-canvas]] says when to use it.
+
 `flint ite map canvas "<program>" [--in <part>] [--deep] [--json]` reads one level. It reads the files, not the server, and writes nothing. `--json` gives the scene `steel-canvas/1`:
 
 - `level`: `null` (the top of the root), or `{ id, title, mode }`.
