@@ -223,8 +223,8 @@ The main map is manual: each card stays where a person or an agent puts it.
 - **The look of a card.** A position can also have `shape` (`card`, `rect`, `rounded`, `ellipse`, `diamond`, `sticky`), `color` (`gray`, `red`, `orange`, `yellow`, `green`, `blue`, `purple`), and `z` (the layer order among the cards and the drawings of its level). The drawing tools of the canvas set them.
 - **The size, the face, and the look belong to the part.** A move keeps them, also to another parent. A layout write keeps the keys that it does not name, and `null` removes one.
 - **Only a person or an agent moves a card.** Nothing pushes a card, and two cards can overlap. A place is not meaning: it is in `State/`, not in the Mesh. So a move applies at once, also for an agent. It is not a proposal.
-- **The place of a new card.** The engine calculates only the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts, each part with no saved place for its parent now gets that place. Each other place stays.
-- **Arrange runs only when a person asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself.
+- **The place of a new card.** A person's change gets the place of a new card from the engine. An agent's change must give a place for each new part and each part with a new parent, in its `layout`: the engine refuses it otherwise, and suggests a place for each part. How to choose the places is in [[knw-ite-canvas]]. The engine calculates the place of a new card: to the right of the last box of its level, or at the start of a new row below. When a map change applies or reverts, each part with no saved place for its parent now gets that place. Each other place stays.
+- **Arrange runs only when a person asks.** `flint ite arrange` puts the groups of one level in columns, then the cards in rows. It never runs by itself. An agent does not run it on a real level: it lays out its own parts in the `layout` of its map change.
 
 ### The Drawings
 
@@ -270,13 +270,15 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 | `flint ite map tree <program> [--ids]` | The whole tree with the markers and the counts of the findings | Nothing |
 | `flint ite map check <program>` | Each finding of the main map. Exit 1 for an error finding. | Nothing |
 | `flint ite map coverage <program> [--gaps]` | Covered / total, the coverage of each part, the overlaps; `--gaps` lists the gap files | Nothing |
-| `flint ite map change propose <program> --ops <file\|-> --reason "<one sentence>" [--apply]` | Proposes a map change and prints its id and preview. `--apply` applies it at once: a person only. | One proposal |
+| `flint ite map change propose <program> --ops <file\|-> [--layout <file\|->] --reason "<one sentence>" [--dry-run] [--apply]` | Proposes a map change and prints its id and preview. `--dry-run` writes nothing. `--apply` applies it at once: a person only. | One proposal |
 | `flint ite map change list <program> [--state <state>]` | The map changes, the newest first | Nothing |
 | `flint ite map change show <program> <id>` | One change with its preview: the tree before and after with the marks, the files, the dangling links, the conflicts | Nothing |
 | `flint ite map change apply\|revert <program> <id>` | Applies or reverts one change. A person only. | The part files, the proposal |
 | `flint ite map change discard <program> <id>` | Discards a proposed change; the file stays with the state `discarded`. A person, or the agent that proposed it. | The proposal |
 | `flint ite map split <program> --parent <part\|root> --title <t> --kind <type id> --sentence <s> <child>...` | Proposes one `split` | One proposal |
 | `flint ite map move <program> <part> --parent <part\|root>`, `map rename <program> <part> --title <t>`, `map merge <program> <from> --into <part>` | Propose one operation; `--apply` applies it (a person only) | One proposal |
+| `flint ite map canvas <program> [--in <part>] [--deep]` | One level with the absolute place of each box, the drawings, the links, the bounds, and the problems | Nothing |
+| `flint ite map render <program> [--in <part>] [--all] [--out <file>]` | The image of a level, of a change (`--change <id>`), or of a draft (`--ops <file> [--layout <file>]`) | The image only |
 | `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` | Nothing |
 | `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below]) [--size <w>,<h>\|auto] [--face <face>\|default]` | Sets the place, the size, or the face of one part. The place is relative to the room of its parent, on the grid of 8. `--near` needs a part with the same parent. | `State/main.json` |
 | `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level (default: the top of the root); `--deep` adds each level below; `--all` arranges each level. It prints how many parts moved. | `State/main.json` |

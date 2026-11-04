@@ -1,5 +1,15 @@
 # ITE Releases
 
+## Release 0.6.0
+
+The shard teaches how to compose a level (NUU Flint Task 1329). A map change holds a `layout`, and an agent's change with a new part that has no place is refused.
+
+- New knowledge file `knowledge/dev-knw-ite-canvas.md` ("Compose a Level"). It gives a method: read the level (`map canvas`, `map render`), decide what it says, choose a shape (row, column, group, layer), compute the places from the sizes and the gaps (`ITE_PLACE`), draw only what the links do not say, render the draft and read the image, then dry-run and propose. It has one full worked example with the arithmetic, the rule for a level that a person arranged, the refusal `unplaced-parts`, and the meaning of the problems `overlap`, `unplaced`, `far`, and `empty-drawing`.
+- The init has the rule about Arrange changes: `flint ite arrange` on a real level still waits for a person, and an agent lays out its own parts in the `layout` of its change. It has a short section "The Layout of a Map Change", new rows in the command table (`map canvas`, `map render`, `--layout`, `--at`, `--near`, `--dry-run`), a row in Read More, and one item in Before You Return (no `overlap` that you made, and a render that you read). Its size is 131 lines.
+- A new stage "Place the Parts on the Canvas" in `map_create`, `map_expand`, `map_refactor`, `map_cover`, `parts_add`, and `program_create`. The stages that follow move by one number. The propose commands take `--layout`. A headless session reads the images itself and fixes the layout at most three times. `map_update` has one line: a change of text needs no place.
+- `knw-ite-reference` has the section "The Layout of a Map Change" (the JSON shapes, the refusal, the apply and the revert, the preview, and the problems), the section "The Canvas and the Render", and the new terms Layout, Canvas, Render, and Room. `knw-ite-programs` names the new verbs.
+- This version needs a Flint CLI with the verbs `map canvas` and `map render` and the `layout` of a map change (NUU Flint Task 1329). With an older CLI, the new commands in the text do not exist.
+
 ## Release 0.5.0
 
 The shard teaches only the main map (NUU Flint Task 1327). The later modules of the ITE stay in the code, and a setting of each Flint turns them on.

@@ -6,7 +6,7 @@ orb:
 
 # Knowledge: The Reference of the ITE
 
-Read this file when you need the exact meaning of a term, the folder of a file, or a command that the init does not name. The rules of [[init-ite]] apply with no change. This file covers the main map, the module that is always on. The details of the main map are in [[knw-ite-programs]].
+Read this file when you need the exact meaning of a term, the folder of a file, or a command that the init does not name. The rules of [[init-ite]] apply with no change. This file covers the main map, the module that is always on. The details of the main map are in [[knw-ite-programs]]. How to compose a level is in [[knw-ite-canvas]].
 
 ## The ITE as an IDE for Systems
 
@@ -53,7 +53,11 @@ One term has one meaning. Use these terms in each file and each result.
 | Apply, revert, discard | A person writes a map change into the Mesh (apply), or writes back the old files (revert). A person or the agent that proposed it discards it. |
 | Place | Where a card is: the top left corner of its box, relative to the room of its parent. A fact of `State/main.json`, not meaning. |
 | Size, face, look | The size of the box of a card, what the card shows under its title, and its shape, colour, and layer order. Facts of `State/main.json`. |
-| Arrange | One command that puts the cards of a level in columns and rows. It runs only when a person asks. |
+| Arrange | One command that puts the cards of a level in columns and rows. On a real level it runs only when a person asks. An agent lays out its own parts in the `layout` of its change. |
+| Layout | The field `layout` of a map change: the place of each part and the drawings, as the level is after the change. Facts, not meaning. A person's apply writes them to `State/main.json`. |
+| Canvas | One level of the main map as the Workbench draws it: the boxes with absolute places, the drawings, the links, the bounds, and the problems. `flint ite map canvas` reads it. |
+| Render | The image (PNG or SVG) of a canvas. `flint ite map render` draws it with no browser and no server. |
+| Room | The area of a group box below its title row, 16 from the sides. A place is relative to the room of the parent. |
 | Drawing | A shape, a text, a frame, a line, or a group on one level of the canvas. It is not a note, and it changes no part. A fact of `State/main.json`. |
 | Finding | One problem that a command computes about a program. |
 | Module | One part of the ITE that a person turns on or off for a Flint. The main map (`main-map`) is always on. |
@@ -68,7 +72,7 @@ One term has one meaning. Use these terms in each file and each result.
 | The prose and the fields of a part | The part note | A person directly, or with `flint ite part set`. An agent through a map change (`edit`). |
 | A link | The frontmatter of a part | A person directly, or with `flint ite link`. An agent through a map change. |
 | A map change | `Steel/Programs/<P>/Proposals/mc-*.md` | Only the change engine |
-| The places, the sizes, the faces, the looks, and the drawings | `Steel/Programs/<P>/State/main.json` | Only the canvas and the commands `place`, `arrange`, and `drawing`, for a person and for an agent |
+| The places, the sizes, the faces, the looks, and the drawings | `Steel/Programs/<P>/State/main.json` | Only the canvas and the commands `place`, `arrange`, and `drawing`, for a person and for an agent; and the apply of a map change with a `layout` (a person) |
 | The types, the connections, and the templates | `Mesh/Metadata/Types/`, `Mesh/Metadata/Templates/` | A shard (its install files), or a person |
 | The setting of the modules | `flint.toml`, block `[ite]` | A person, with `flint ite modules on|off` |
 
@@ -105,6 +109,48 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 
 **The root note gives the program, not the folder.** The ITE finds each program by its form: each Mesh note with `format: steel-program/1` is a root note. The name of the program is the file stem with no first `(<Type words>) ` prefix: `(Program) Club Launch Night` gives `Club Launch Night`, and a root note `(Product) Flint` gives `Flint`. A new part goes to `Map/` in the folder of the root note, with the name `<stem of the root note> . (<Type>) <Title>.md`. Two root notes with one name give the finding `format` on both, and neither loads.
 
+## The Layout of a Map Change
+
+A map change has `ops` and `layout`. The plan runs the operations first, then reads the layout against the tree after them. So the order of the operations has no effect on a place, and a key of `layout.places` can name a new part of the same change. A change can hold only a layout.
+
+```json
+{ "ops": [ ],
+  "layout": {
+    "places":   { "<part: id, note name, or title>": { "x": 240, "y": 0, "width": 208, "height": 48, "face": "sentence" },
+                  "<other part>": { "near": "<part with the same parent>", "side": "right" } },
+    "drawings": { "add": [ { "kind": "frame|rect|ellipse|diamond|text|line|group", "x": 0, "y": 0, "w": 320, "h": 200, "text": "<words>",
+                             "color": "gray", "z": 0, "layer": null,
+                             "from": { "node": "<part>" }, "to": { "node": "<part>" }, "arrow": "end", "route": "straight|elbow",
+                             "members": ["<part>"] } ],
+                  "set": [ { "id": "<drawing id>", "text": "<new words>" } ],
+                  "remove": [ "<drawing id>" ] } } }
+```
+
+- A place gives `x` and `y`, or `near` (with `side`: `right` or `below`). `width`, `height`, and `face` are optional. A place snaps to 8. A drawing follows the rules of `flint ite drawing`. A `set` or a `remove` names a drawing that exists, or an `add` of the same change.
+- **Which part needs a place:** a part that the current tree does not have (`new`), and a part that the change gives another parent (`new-parent`). They come from `add`, `move`, `split`, `merge`, `remove`, and `plan realize`.
+- **The refusal:** an agent's change with such a part and no place is refused before any write: exit 2, code `refused-state`, `reason: "unplaced-parts"`, with `unplaced[]` (`part`, `title`, `parent`, `parent_title`, `why`, `suggested`) and `layout.places` (the suggested place of each). A suggested place is a floor: choose a better one. A person's change is never refused.
+- **The apply** (a person) writes the places and the drawings to `State/main.json`. The revert writes back a place or a drawing that nobody changed since. It keeps the others and lists them in the document as `kept`.
+- **The preview** (`map change show`, `propose --dry-run`) has a block `Layout`: each place (before → after), each drawing, each unplaced part, and each problem. `--json`: `preview.layout` with `places[]`, `drawings[]`, `unplaced[]`, `levels[]`, and `problems[]`.
+- **The problems:** `overlap` (warning), `unplaced` (warning), `far` (note), `empty-drawing` (note). They never refuse a change. `map check` lists them too (`--json`: `canvas.problems`).
+
+### The Canvas and the Render
+
+`flint ite map canvas "<program>" [--in <part>] [--deep] [--json]` reads one level. It reads the files, not the server, and writes nothing. `--json` gives the scene `steel-canvas/1`:
+
+- `level`: `null` (the top of the root), or `{ id, title, mode }`.
+- `boxes[]`: `id`, `title`, `kind`, `mode` (`card`, `group`, or `layer`), `parent`, `depth`, `at` (relative to the room of the parent: what `--at` takes), `abs` (on the canvas), `size`, `place` (`saved` or `new`), `face`, `face_text`, `parts` (for a layer), and `marks` (in the scene of a change).
+- `drawings[]`, `links[]` (`from`, `to`, `relation`), `bounds` (or `null`), and `problems[]`.
+
+`flint ite map render "<program>" [--in <part>] [--all] [--out <file|dir>] [--format png|svg] [--scale <n>] [--no-grid]` draws the canvas. It writes only the image, with no browser and no server. It has three sources:
+
+- Now: `map render "<program>"`.
+- A change: `map render "<program>" --change <id> [--side before|after]`.
+- A draft: `map render "<program>" --ops <file|-> [--layout <file|->] [--side before|after]`. The `--ops` file can be `{ "ops": [...], "layout": {...} }`.
+
+It prints the file, the pixel size, the scale, the bounds, the count of the boxes, and the count of the problems. With no `--out`, the file goes to `$ORBH_SCRATCH_DIR`, else to the temporary folder, as `ite-<program slug>-<level slug>.png`. `--all` needs a folder. The image has a grid with coordinate labels, so you can read a place from it. A box with a new place has a dashed border. In a change: green is added, blue is moved or placed, orange is renamed or edited, and (with `--side before`) red is removed or merged. When the PNG cannot be made, the command writes the SVG and says why.
+
+The server gives the same image for a change that waits: `GET /api/ite/programs/:program/changes/:id/canvas?side=before|after&level=root|<part id>&format=svg|json`. The Workbench shows it in the section `Layout` of the review of the change.
+
 ## The Commands
 
 `flint ite` is a part of the Flint CLI. Each command takes `--json`. `<program>` is the name or the id of a program. `<id>` is the id of a part: `flint ite map` prints it. `<part>` is an id, a note name, or a unique title.
@@ -116,14 +162,14 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite types [--type <id>]` | The types and the connections of this Flint, with their capabilities | Nothing |
 | `flint ite templates` | The templates that a new program can start from | Nothing |
 | `flint ite create <name> --purpose "<one sentence>" [--template <id>]` | A new program: the root note with the `types` of the template, and `Steel/Programs/<Name>/program.md`. With no `--template`, the template is a guess from the purpose. The output names the template, the types, and the root note, says that the map has only its root note, and gives the next commands (`part add`, `map`, `proposals`). | The root note, `Steel/Programs/<Name>/program.md` |
-| `flint ite map ...` | The main map: `show`, `tree`, `check`, `coverage`, `change propose\|list\|show\|apply\|revert\|discard`, `split`, `move`, `rename`, `merge` (see The Commands of the Main Map in [[knw-ite-programs]]) | A proposal, or nothing |
-| `flint ite part add <program> --kind <type id> --title "<title>" [--parent <id or note name>] [--text "<text>"] [--field k=v]...` | Adds one part: a map change. A person's change applies at once; an agent's change is a proposal. `--field` is for a person only. | One proposal (and the note, when applied) |
+| `flint ite map ...` | The main map: `show`, `tree`, `check`, `coverage`, `canvas`, `render`, `change propose\|list\|show\|apply\|revert\|discard`, `split`, `move`, `rename`, `merge` (see The Commands of the Main Map in [[knw-ite-programs]], and The Layout of a Map Change above) | A proposal, an image, or nothing |
+| `flint ite part add <program> --kind <type id> --title "<title>" [--parent <id or note name>] [--text "<text>"] [--field k=v]... [--at <x>,<y>\|--near <part> [--side right\|below]]` | Adds one part: a map change. A person's change applies at once; an agent's change is a proposal. `--field` is for a person only. | One proposal (and the note, when applied) |
 | `flint ite part set <program> <id> [--text "<text>"] [--field k=v]... [--base-hash <hash>]` | Changes the text and the fields of a part. It refuses `title`, `kind`, and `parent`. A person's change writes at once; an agent's change is one map change (`edit`). | One note (a person), or one proposal (an agent) |
-| `flint ite part remove <program> <id or note name>` | Removes one part: a map change. Its children move to its parent. | One proposal |
+| `flint ite part remove <program> <id or note name> [--layout <file\|->]` | Removes one part: a map change. Its children move to its parent, and an agent gives each child a place in `--layout`. | One proposal |
 | `flint ite link <program> <from id> <to id> --relation <key> [--remove]` | Adds or removes a link of a connection. `--relation refers-to` gives a link that the main map always shows. A person's link writes at once; an agent's link is one map change. | One note (a person), or one proposal (an agent) |
 | `flint ite places <program> [--in <part>] [--deep]` | The place of each part of one level (default: the top of the root): the id, the title, the type, the mode (card, group, or layer), x, y, the width, the height, and `saved` or `new` | Nothing |
 | `flint ite place <program> <part> (--at <x>,<y> \| --near <part> [--side right\|below]) [--size <w>,<h>\|auto] [--face <face>\|default]` | Sets the place, the size, or the face of one part. It applies at once, for a person and for an agent. | `State/main.json` |
-| `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level, or of each level (`--all`). It prints how many parts moved. Only when a person asks. | `State/main.json` |
+| `flint ite arrange <program> [--in <part>] [--only <part>,<part>] [--deep] [--all]` | One Arrange of one level, or of each level (`--all`). It prints how many parts moved. On a real level, only when a person asks. | `State/main.json` |
 | `flint ite proposals [<program>]` | Each change that waits for a person, the oldest first, each with its show command | Nothing |
 | `flint ite drawing list <program> [--layer <part>\|root]` | The drawings of the main map, or of one layer | Nothing |
 | `flint ite drawing add <program> --kind rect\|ellipse\|diamond\|text\|frame\|line\|group [--id] [--layer] [--at x,y] [--size w,h] [--text] [--color] [--z] [--locked] [--from x,y] [--from-node] [--to x,y] [--to-node] [--arrow] [--route] [--members a,b]` | Adds one drawing (see The Drawings in [[knw-ite-programs]]). It applies at once, for a person and for an agent. | `State/main.json` |
@@ -134,5 +180,7 @@ A folder is for a person: the identity of a part is its `id`, and its membership
 | `flint ite modules on\|off <id>` | Turns one module on or off. A person only: an agent gets the code `forbidden` (exit 1). | `flint.toml` |
 | `flint ite rename <program> <name> [--base-hash <hash>]` | Renames a program and its files, and updates each wikilink in the Mesh. A person only. | The program, the wikilinks |
 | `flint ite archive <program> [--base-hash <hash>]` | Moves a program to `Mesh/Archive/Programs`. Deletes no file. A person only. | The program folder |
+
+The one-operation verbs `map move|split|merge|rename`, `part add`, and `plan realize` take `--at <x>,<y>` or `--near <part> [--side right|below]` for the part that they make or move, and `--layout <file|->` for each other part. `--dry-run` on `map change propose` plans the change and writes nothing.
 
 `flint ite --help` shows the verbs of the modules that are on, then the line `Off in this Flint: <ids>. Their commands still work.` The exit codes: 0 done; 1 a finding of the level error, or a conflict; 2 a refusal, and nothing was written. Each write runs inside the lock of the Flint. The Workbench uses the same code through the routes `/api/ite/*` and `/api/steel/*` of the Flint server, and `GET /api/ite/modules` gives the setting.

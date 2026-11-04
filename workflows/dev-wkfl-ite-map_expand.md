@@ -93,16 +93,32 @@ Take one part of the main map one level deeper: the children that together cover
 >   "prose":"<first paragraph, plain text>\n\n<one plain sentence: what the diagram shows>\n\n```mermaid\nflowchart LR\n  A[Step one] --> B[Step two]\n```"
 >   ```
 
-## Stage 4: Propose the Change and Review It With the Person
+## Stage 4: Place the Parts on the Canvas
+
+Every part that you add, and every part that gets a new parent, needs a place: the engine refuses an agent's change without it. The method is in [[knw-ite-canvas]].
+
+1. Read the level: `flint ite map canvas "<program>" [--in <part>]`, and render it: `flint ite map render "<program>" [--in <part>] --out "$ORBH_SCRATCH_DIR/now.png"`. Read the image with your file read tool.
+2. Decide what the level says (the order, the flow, the groups). Write `layout.places` for your own parts, and the drawings that help, to a file: `"$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json"` (the file holds the layout: `{"places":{...},"drawings":{...}}`). Keep each card that a person placed.
+3. Write the operations of the plan to the ops file `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Render the draft: `flint ite map render "<program>" --ops "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json" --layout "$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json" --out "$ORBH_SCRATCH_DIR/draft.png"`. Read the image. Fix the layout until the level reads well and the render shows no `overlap` that you made.
+4. Once the image is right, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase placing`.
+> - Read each image yourself with your file read tool. Ask no person.
+> - Fix the layout at most three times. Then go on, and name each problem that is left in your result.
+> - Never run `flint ite arrange` on a real level.
+
+## Stage 5: Propose the Change and Review It With the Person
 
 1. Write the operations as one JSON array to a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`.
 2. Propose the change:
 
    ```bash
-   flint ite map change propose "<program>" --ops <file> --reason "<one sentence: what the change does>"
+   flint ite map change propose "<program>" --ops <file> --layout <layout file> --reason "<one sentence: what the change does>"
    ```
 
    An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
+   A part with no place refuses with `refused-state` (`unplaced-parts`) and a suggested place for each part. Choose better places from the canvas, and propose again. Run the propose with `--dry-run` first to see the `Layout` block.
 3. Show the person the preview: `flint ite map change show "<program>" <change id>` (the tree before and after with the marks, the files, the new findings, and the dangling links).
 4. **Stage gate.** Ask the person: apply, change, or discard.
    - **Apply**: the person applies the change in the Workbench (the review of the change) or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You cannot apply it: in an Orbh session the engine refuses an agent with `forbidden`. A conflict (`changed`) means that a file changed after the propose: propose the change again from the files now.
@@ -118,10 +134,11 @@ Take one part of the main map one level deeper: the children that together cover
 > - Propose the change:
 >
 >   ```bash
->   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change does>" --json < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"
+>   flint ite map change propose "<program>" --ops - --layout "$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json" --reason "<one sentence: what the change does>" --json < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"
 >   ```
 >
 >   An operation that does not apply refuses with `invalid-input` and its index ("Operation 3 (move): ..."). Repair that operation and propose again. Nothing was written.
+> - A part with no place refuses with `refused-state` (`unplaced-parts`). Choose better places from the canvas than the suggested ones, and propose again. Run the propose with `--dry-run` first.
 > - Read the preview of the output (`flint ite map change show "<program>" <change id> --json`): the tree after, `findings.added`, `files`, `dangling`, and `conflicts`.
 >   - The tree after must hold your plan. It must have no new finding of the level error.
 >   - When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times.

@@ -57,29 +57,51 @@ A new program gets only its root note: no other file. Use the words of the perso
 2. Read the sources that the person gave. Never invent a path, a URL, or a note name.
 3. Select the parts of level 1: what the system is made of, in the words of the person. For the weekly meeting: the meeting itself (a ritual), the agenda, the people or the roles, and the decisions. Each part has a title of two to six words, a type of the program, and one sentence. When no type fits, use `note`, and tell the person.
 4. **Diagrams.** When a part of level 1 has a flow, an order of steps, or states, give its `prose` one Mermaid diagram, after the first paragraph. Follow [[knw-ite-programs#Diagrams in the Prose]].
-5. Write the operations into one JSON array (The Operations of a Map Change in [[init-ite]]), in a file in the scratch folder of your session. Check that it parses: `python3 -m json.tool < <file>`. For a deeper part, give its parent an `id` (a new UUID v4) in the same change.
-6. Propose it, and read the preview:
-
-   ```bash
-   flint ite map change propose "<program>" --ops <file> --reason "<one sentence for the person>"
-   flint ite map change show "<program>" <change id>
-   ```
-
-   An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
-7. **Stage gate.** Show the person the tree after. Ask: apply, change, or discard.
-   - **Apply**: the person applies it in the Workbench, or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You never apply it.
-   - **Change**: discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
-   - **Discard**: `flint ite map change discard "<program>" <change id>`.
-8. Once the person applied or discarded the change, progress to the next stage.
+5. Write the operations into one JSON array (The Operations of a Map Change in [[init-ite]]), in a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`. For a deeper part, give its parent an `id` (a new UUID v4) in the same change.
+6. Once the plan holds the parts of level 1, progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase first-map`.
 > - Do not invent a fact: say a gap in the sentence of the part.
 > - Put a deeper level in the same change, and give its parent an `id` (a new UUID v4): a map change cannot name a part of another waiting change.
-> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed`, with no conflict and no new error finding in the tree after. When the preview shows a mistake, discard your change, repair the operations, and propose again. Do this at most two times.
-> - Do not show the tree to a person, and do not wait for the apply (steps 7 and 8). Never apply the change. Progress to the next stage.
 
-## Stage 3: Check
+## Stage 3: Place the Parts on the Canvas
+
+The new program has only its root note, so the first map has no level to keep. Every part of the first map needs a place: the engine refuses an agent's change without it. The method is in [[knw-ite-canvas]].
+
+1. Decide what level 1 says: the order, the flow, and the groups.
+2. Write `layout.places` for each part, and the drawings that help, to a file: `"$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json"` (the file holds the layout: `{"places":{...},"drawings":{...}}`).
+3. Render the draft: `flint ite map render "<program>" --ops "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json" --layout "$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json" --out "$ORBH_SCRATCH_DIR/draft.png"`. Read the image with your file read tool. Fix the layout until the level reads well and the render shows no `overlap` that you made.
+4. Once the image is right, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase placing`.
+> - Read each image yourself. Ask no person. Fix the layout at most three times, then go on and name each problem that is left in your result.
+> - Never run `flint ite arrange` on a real level.
+
+## Stage 4: Propose the First Map
+
+1. Propose it, and read the preview:
+
+   ```bash
+   flint ite map change propose "<program>" --ops "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json" --layout "$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json" --reason "<one sentence for the person>"
+   flint ite map change show "<program>" <change id>
+   ```
+
+   An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
+   A part with no place refuses with `refused-state` (`unplaced-parts`) and a suggested place for each part. Choose better places from the canvas, and propose again. Run the propose with `--dry-run` first to see the `Layout` block.
+2. **Stage gate.** Show the person the tree after. Ask: apply, change, or discard.
+   - **Apply**: the person applies it in the Workbench, or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You never apply it.
+   - **Change**: discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
+   - **Discard**: `flint ite map change discard "<program>" <change id>`.
+3. Once the person applied or discarded the change, progress to the next stage.
+
+> [!headless]
+> - Run `flint orbh session set phase proposing`.
+> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed`, with no conflict and no new error finding in the tree after. When the preview shows a mistake, discard your change, repair the operations, and propose again. Do this at most two times.
+> - Do not show the tree to a person, and do not wait for the apply (steps 2 and 3). Never apply the change. Progress to the next stage.
+
+## Stage 5: Check
 
 1. Run `flint ite map check "<program>"` and `flint ite check "<program>"`. Repair each error of a part that you proposed: discard the change, and propose it again with the repair.
 2. Before the apply, the program has no part, so the check reads only the root note. After the apply, run `flint ite map check "<program>"` again, and show the person the findings of level 1.
@@ -89,7 +111,7 @@ A new program gets only its root note: no other file. Use the words of the perso
 > - Run `flint orbh session set phase checking`.
 > - Read the tree after of your change for its findings: the person applies it later.
 
-## Stage 4: Hand Over
+## Stage 6: Hand Over
 
 1. Show the person the list of what only the person does, one command each:
 

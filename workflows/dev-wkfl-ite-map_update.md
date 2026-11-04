@@ -97,6 +97,7 @@ Update one part of the main map from its sources now: its sentence, its prose, i
 ## Stage 4: Propose the Change and Review It With the Person
 
 1. Write the operations as one JSON array to a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`.
+   A change of text (`edit`) needs no place. A part that you add, move, or remove does: do the stage Place the Parts on the Canvas of [[wkfl-ite-map_expand]], and add `--layout <layout file>` to the propose.
 2. Propose the change:
 
    ```bash
