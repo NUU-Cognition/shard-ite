@@ -3,6 +3,8 @@ description: "Draft the root and level 1 of the main map of a program from its s
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -59,7 +61,8 @@ Draft the root and level 1 of the main map: the parts under the root, each with 
 3. **Keep the parts that exist.** When the main map has parts already, do not add a second part for one thing. Put the existing children of the root under the new parts: one `split` for each new part that groups existing parts (`parent: null`, the children are the existing parts), or `add` with an `id` and then `move`.
 4. Give an `add` an `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) when a later operation of the same change names the new part.
 5. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
-6. Once the plan does the task, progress to the next stage.
+6. **Diagrams.** When the prose of a part has a flow, an order of steps, or states, give the part one Mermaid diagram in its `prose`, after the first paragraph. Follow [[knw-ite-programs#Diagrams in the Prose]].
+7. Once the plan does the task, progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase planning`.
@@ -82,6 +85,11 @@ Draft the root and level 1 of the main map: the parts under the root, each with 
 >   - `rename` keeps the id and rewrites each wikilink to the old name. With `kind`, the file name gets the new `(Type)` word.
 >   - `remove` moves the children up one level, and leaves the links to the part: the preview lists them.
 > - Change the main map only through a map change. Do not write a part file with your own tools, and do not run `flint ite part add` or `flint ite part set` on the main map in this workflow.
+> - A diagram is one fenced `mermaid` block in the `prose` of an `add` or an `edit`, after the first paragraph. The prose is one JSON string, so a new line is `\n`. The rules are in [[knw-ite-programs#Diagrams in the Prose]]:
+>
+>   ```text
+>   "prose":"<first paragraph, plain text>\n\n<one plain sentence: what the diagram shows>\n\n```mermaid\nflowchart LR\n  A[Step one] --> B[Step two]\n```"
+>   ```
 
 ## Stage 4: Propose the Change and Review It With the Person
 

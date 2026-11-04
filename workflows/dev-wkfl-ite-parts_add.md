@@ -3,6 +3,8 @@ description: "Add the parts that a person names below one part of the main map (
 orb:
   - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -37,6 +39,12 @@ This workflow uses `add`, and `split` when related parts belong in one container
 
 `add` and `split` take an optional `id` (a new UUID v4: `uuidgen | tr A-Z a-z`) for a part that a later operation names. The other operations are in The Map Change of [[knw-ite-programs]].
 
+A diagram goes in the `prose` of an `add`, after the first paragraph. The prose is one JSON string, so a new line is `\n`. The rules are in [[knw-ite-programs#Diagrams in the Prose]].
+
+```text
+"prose":"<first paragraph, plain text>\n\n<one plain sentence: what the diagram shows>\n\n```mermaid\nflowchart LR\n  A[Step one] --> B[Step two]\n```"
+```
+
 > [!headless]
 > - `kind` is a type id of the program (the `types` of the root note). The `code-refs` are paths relative to the product root; a folder ends with `/`.
 > - Give an `id` to an `add` or a `split` when a later operation of the same change names the new part: a new part below a new part.
@@ -63,8 +71,9 @@ This workflow uses `add`, and `split` when related parts belong in one container
 2. For each new part: a title of two to six words, a type of the program, one sentence that says what the part is, and its sources. Never invent a path, a URL, or a note name.
 3. A level has no size limit. When the new parts belong together, group them with one `split`, or add a container part with an `id` and put the new parts under it. When the program sets `max-children`, the level after the change holds at most `max-children` parts.
 4. Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
-5. When the words of the person can have two meanings, ask the person one question.
-6. Once the plan holds each part of the list, progress to the next stage.
+5. **Diagrams.** When a new part has a flow, an order of steps, or states, give its `prose` one Mermaid diagram, after the first paragraph. Follow [[knw-ite-programs#Diagrams in the Prose]].
+6. When the words of the person can have two meanings, ask the person one question.
+7. Once the plan holds each part of the list, progress to the next stage.
 
 > [!headless]
 > - At the start, run `flint orbh session set phase reading-sources`.
@@ -76,7 +85,7 @@ This workflow uses `add`, and `split` when related parts belong in one container
 > - Write one `add` for each new part, under the parent (`parent`: the id of the parent, or `null` for the root). For each: a title of two to six words in the words of the person, a type of the program, one sentence that says what the part is, the prose that the text gives, and its sources.
 > - When the program sets `max-children` and a group is not clear, add the parts and name the finding `map-too-many-children` in your result, with [[wkfl-ite-map_refactor]] as the next step.
 > - When no type of the program fits a new part, use `note`, and name the part in your result.
-> - Ask no question (step 5). When the text can have two meanings, select the reading that best helps the person, and write it in your result (the rule Ask no question of [[init-ite#Headless]]).
+> - Ask no question (step 6). When the text can have two meanings, select the reading that best helps the person, and write it in your result (the rule Ask no question of [[init-ite#Headless]]).
 
 ## Stage 3: Propose the Change and Review It With the Person
 

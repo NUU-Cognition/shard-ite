@@ -3,6 +3,8 @@ description: "Update one part of the main map and its children from their source
 orb:
   - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+orbh-fleet: steel-map-refresh-1104
 ---
 
 > [!important] THIS FILE IS AN INSTRUCTION. WHEN REFERENCED IT IS MEANT TO BE TAKEN AS AN ACTION.
@@ -62,7 +64,8 @@ Update one part of the main map from its sources now: its sentence, its prose, i
 4. When the title or the type of a part is not true now, `rename` it. For a new type, give `kind`: the new type id.
 5. Change only the part and its subtree.
 6. Name each existing part by its id (the `id` of the cards). Follow the quality rules of [[knw-ite-programs]] for each new part. When no type of the program fits a new part, use `note`, and tell the person.
-7. Once the plan does the task, progress to the next stage.
+7. **Diagrams.** When the sources change the flow, the order of steps, or the states of a part, `edit` its prose: write the whole prose again, with the first paragraph and a diagram that shows the sources now. Follow [[knw-ite-programs#Diagrams in the Prose]].
+8. Once the plan does the task, progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase planning`.
@@ -85,6 +88,11 @@ Update one part of the main map from its sources now: its sentence, its prose, i
 >   - `rename` keeps the id and rewrites each wikilink to the old name. With `kind`, the file name gets the new `(Type)` word.
 >   - `remove` moves the children up one level, and leaves the links to the part: the preview lists them.
 > - Change the main map only through a map change. Do not write a part file with your own tools, and do not run `flint ite part add` or `flint ite part set` on the main map in this workflow.
+> - A diagram is one fenced `mermaid` block in the `prose` of an `add` or an `edit`, after the first paragraph. The prose is one JSON string, so a new line is `\n`. The rules are in [[knw-ite-programs#Diagrams in the Prose]]:
+>
+>   ```text
+>   "prose":"<first paragraph, plain text>\n\n<one plain sentence: what the diagram shows>\n\n```mermaid\nflowchart LR\n  A[Step one] --> B[Step two]\n```"
+>   ```
 
 ## Stage 4: Propose the Change and Review It With the Person
 
