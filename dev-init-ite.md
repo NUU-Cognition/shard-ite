@@ -69,16 +69,31 @@ A map change cannot name a part that another waiting map change adds. So put a n
 
 The `layout` says where the parts are after the change: `{"places":{"<part>":{"x":240,"y":0}},"drawings":{"add":[...]}}`. `--layout` takes a file or `-`, and the `--ops` file can hold `{"ops":[...],"layout":{...}}`. A key of `places` is a part, also a new part of the same change. A place is relative to the room of the parent after the change. Each new part, and each part with a new parent, needs one. The JSON shapes are in [[knw-ite-reference]].
 
+## The Address of a Program
+
+Each program has a NUU address. A program is a thing of its Flint.
+
+| Form | Text | Use |
+|---|---|---|
+| With the names | `@v1/<org>/flint/<slug>/steel/<name>`, or the same text with no `@v1/` | A person reads and types it. `<name>` is the slug of the program name. A rename changes it. |
+| With the id | `@v1/<org>/steel/<uuid>#flint/<slug>` | A pointer part stores it. A rename does not change it. |
+
+`flint ite address` shows each form. `flint ite address <address>` tells where an address leads: this Flint, another Flint of this machine, not on this machine, or not found. `flint resolve <address>` also reads it. The contract is S19 of `packages/entity/ADDRESS.md` in the repository `main`.
+
+**A reference to another program.** A reference is a pointer part: a normal part with the field `points-to`. It keeps its own text, its place, and its links. The program can be in another Flint. A target that is not on this machine is not an error: the part keeps its address and tells the person. The module `main-map` owns it, so no later module must be on. A person adds it from the canvas menu "Add a reference to a program", or with `--points-to`. As with each new part, a change of an agent is a proposal.
+
 ## The Commands
 
-`<program>` is the name or the id of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
+`<program>` is the name, the id, or the address of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
 
 | To do this | Run this |
 |---|---|
 | See the programs and the map changes that wait | `flint ite` (no verb); `flint ite list` (the parts, the levels, the waiting map changes, the files with no part, and the errors of each program) |
 | Read one program | `flint ite map "<program>"` (the tree with the id of each part; `--full` adds the text); `flint ite map show "<program>" [--focus <id>]` (one level) |
+| Show the address of a program; tell where an address leads | `flint ite address ["<program>"\|<address>]` |
 | See the types and the templates; make a program | `flint ite types`, `flint ite templates`; `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
 | Add or remove one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <id>] [--text "<text>"] [--at <x>,<y>\|--near <id>]`; `flint ite part remove "<program>" <id> [--layout <file\|->]` |
+| Add a note that points to another program | `flint ite part add "<program>" --kind note --title "<title>" --points-to <address> [--text "<text>"] [--at <x>,<y>]` (a person: at once; an agent: one map change) |
 | Change many parts at once; move, rename, merge, or group parts | `flint ite map change propose "<program>" --ops <file\|-> [--layout <file\|->] --reason "<text>"`; `flint ite map move\|rename\|merge\|split "<program>" ... [--at <x>,<y>\|--near <id>]` (one operation each) |
 | Change the prose or a field of a part | `flint ite part set "<program>" <id> --text "<text>"` (a person: at once; an agent: one map change) |
 | Link two parts | `flint ite link "<program>" <from id> <to id> --relation <key>` (`refers-to` always shows on the map; a person: at once; an agent: one map change) |
