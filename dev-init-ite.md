@@ -76,8 +76,8 @@ Each program has a NUU address. A program is a thing of its Flint.
 
 | Form | Text | Use |
 |---|---|---|
-| With the names | `@v1/<org>/flint/<slug>/steel/<name>`, or the same text with no `@v1/` | A person reads and types it. `<name>` is the slug of the program name. A rename changes it. |
-| With the id | `@v1/<org>/steel/<uuid>#flint/<slug>` | A pointer part stores it. A rename does not change it. |
+| With the names | `@v1/<org>/flint/<slug>/program/<name>`, or the same text with no `@v1/` | A person reads and types it. `<name>` is the slug of the program name. A rename changes it. |
+| With the id | `@v1/<org>/program/<uuid>#flint/<slug>` | A pointer part stores it. A rename does not change it. |
 
 `flint ite address` shows each form. `flint ite address <address>` tells where an address leads: this Flint, another Flint of this machine, not on this machine, or not found. `flint resolve <address>` also reads it. Each `flint ite` command that takes a program takes its address: a command on a program of another Flint of this machine runs in that Flint, and it says the Flint on stderr. In Steel, an address opens from Quick Open and from the page URL `/ite/<address>`. The contract is S19 and S20 of `packages/entity/ADDRESS.md` in the repository `main`.
 
