@@ -1,7 +1,8 @@
 ---
-description: "Compose a level of the main map: read the canvas, decide what the level says, choose a shape (row, column, group, layer), compute the places from the sizes and the gaps, draw only what the links do not say, render the draft and read the image, then propose with a layout; one full worked example, the rule for a level that a person arranged, and the meaning of each canvas problem"
+description: "Compose a level of the main map: read the canvas, decide what the level says, choose a shape (row, column, group, layer), compute the places from the sizes and the gaps, draw only what the links do not say, render the draft and read the image, then propose with a layout (or apply it with `--apply` in the mode direct); one full worked example, the rule for a level that a person arranged, and the meaning of each canvas problem"
 orb:
   - "@v1/nuucognition/session/74fcdfda-d339-4da9-9d33-f60f86c78146#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 orbh-fleet: ite-canvas-1104
 ---
 
@@ -163,6 +164,8 @@ The dry run plans the change, prints the preview with the layout, and writes not
 
 The person then sees the same level in the Workbench: the review of the change shows the level before and after, side by side. Write the reason so that the person knows what moved and why.
 
+In the mode `direct` ([[init-ite#The Two Modes]]), add `--apply` to the second command. The change applies at once. Then render the level again, read the image, and read its problems. When the level is wrong, revert the change (`flint ite map change revert "<program>" <change id>`), fix the layout, and apply again.
+
 ## The Refusal of an Unplaced Part
 
 An agent's change is **refused** when a new part, or a part with a new parent, has no place in `layout.places`. The error is `refused-state` with `reason: "unplaced-parts"`. Nothing is written. The error lists each part with its parent and a **suggested place**:
@@ -258,7 +261,7 @@ A person's place is a decision. Do not undo it.
 - **Match the level.** Use the direction, the gaps, and the alignment that the person's cards use. If they used a gap of 64, a gap of 32 looks wrong.
 - **Never cover a box.** A new box must not overlap an existing one. A group box is large: use its size from the table above.
 
-A proposal **can also move existing cards**. Do this in two cases only:
+A change **can also move existing cards**, in both modes. Do this in two cases only:
 
 1. The person asks for a tidier level. Then arrange the whole level with the method above.
 2. Your new parts need the room. Move the least number of cards, by the least distance, and say in the reason which cards moved and why.
@@ -267,16 +270,17 @@ A proposal **can also move existing cards**. Do this in two cases only:
 
 ## Move Directly, or Propose
 
-There are two paths for a change of the canvas. Both take the same place and drawing shapes.
+There are three paths for a change of the canvas. They take the same place and drawing shapes. The mode of the session ([[init-ite#The Two Modes]]) decides the path for a move of many cards.
 
 | Path | Commands | What happens | Use it when |
 |---|---|---|---|
-| **Direct** | `flint ite place` (one card), `flint ite drawing set` (one drawing), `flint ite map layout "<program>" --layout <file\|->` (many items in one write) | It applies at once, also for an agent. There is no change file, no review, and no revert. | The person asks you to tidy or move something now. You fix the places of parts that are yours, for example after your change is applied. |
-| **Proposal** | `flint ite map change propose "<program>" --layout <file> [--ops <file>]` | Nothing changes until a person applies it. A person can revert it. | The change also has operations. The person should see the level first. You rearrange a level that a person arranged, and the person did not ask for it now. |
+| **At once, with no record** | `flint ite place` (one card), `flint ite drawing set` (one drawing), `flint ite map layout "<program>" --layout <file\|->` (many items in one write) | It applies at once, also for an agent, in both modes. There is no change file, no review, and no revert. | One card or one drawing, in both modes. In the mode `proposal`: the person asks you to tidy or move something now, or you fix the places of parts that are yours, for example after your change is applied. |
+| **Proposal** (the mode `proposal`) | `flint ite map change propose "<program>" --layout <file> [--ops <file>] --reason "<text>"` | Nothing changes until a person applies it. A person can revert it. | The change also has operations. The person should see the level first. You rearrange a level that a person arranged, and the person did not ask for it now. |
+| **Direct change** (the mode `direct`) | `flint ite map change propose "<program>" --layout <file> [--ops <file>] --reason "<text>" --apply` | It applies at once. The engine keeps a change file with `state: applied`, and you can revert it. | Each move of many cards, and each change with operations. Use a change with only a layout in place of `map layout`: it has a record and an undo. |
 
-- **The direct path moves only what exists.** A key of `places` must name a part now, and the part keeps its parent. A new part and a new parent are structure, so they are always a proposal.
-- **Check first, and keep the old places.** Run `flint ite map layout ... --dry-run`, and read its problems. The `--json` output of the write holds the `before` of each item: keep it, so that you can give the items back. No command does this for you.
-- **The rule for a level that a person arranged stays the same.** A direct move is still a move of a person's cards. Do it only when the person asks.
+- **The path at once moves only what exists.** A key of `places` must name a part now, and the part keeps its parent. A new part and a new parent are structure, so they always go through a map change: a proposal, or a direct change in the mode `direct`.
+- **Check first, and keep the old places.** Run the command with `--dry-run`, and read its problems. The `--json` output of `map layout` holds the `before` of each item: keep it, so that you can give the items back. No command does this for you. A direct change keeps the old places in its change file: `flint ite map change revert "<program>" <change id>` gives them back.
+- **The rule for a level that a person arranged stays the same.** A move at once and a direct change are still moves of a person's cards. Do them only when the person asks.
 
 ## The Canvas Problems
 

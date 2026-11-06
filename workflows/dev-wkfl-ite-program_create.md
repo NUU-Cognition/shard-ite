@@ -1,8 +1,9 @@
 ---
-description: "Make a new program with a person: the purpose and the template, the first map as one map change, the check, and the list of what only the person applies; in a headless session, make it for a person or a manager, and return a result that lists each map change that waits for the person"
+description: "Make a new program with a person: the purpose and the template, the first map as one map change (proposed, or applied with `--apply` in the mode `direct`), the check, and the list of what only the person applies or can revert; in a headless session, make it for a person or a manager, and return a result that lists each map change that waits for the person, or each change that the mode `direct` applied"
 orb:
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
   - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 orbh-fleet: steel-map-refresh-1104
 ---
 
@@ -12,13 +13,13 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Program Create
 
-Make one program from the words of a person, and draft its first map. Example: "Make a program for my weekly team meeting." You make the program and propose its first map. The person reads the map change and applies it.
+Make one program from the words of a person, and draft its first map. Example: "Make a program for my weekly team meeting." You make the program and propose its first map. The person reads the map change and applies it. In the mode `direct`, you apply the first map yourself ([[init-ite#The Two Modes]]).
 
 A new program gets only its root note: no other file. Use the words of the person. Do not teach the person a new word.
 
 > [!headless]
 > A headless session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules are in [[init-ite#Headless]].
-> - You propose the first map. The person reads your result later and applies the map change with one command.
+> - You propose the first map. The person reads your result later and applies the map change with one command. When the prompt says `mode: direct`, you apply it with `--apply`, and your result gives its revert command.
 
 # Input
 
@@ -79,51 +80,56 @@ The new program has only its root note, so the first map has no level to keep. E
 > - Read each image yourself. Ask no person. Fix the layout at most three times, then go on and name each problem that is left in your result.
 > - Never run `flint ite arrange` on a real level.
 
-## Stage 4: Propose the First Map
+## Stage 4: Propose or Apply the First Map
 
-1. Propose it, and read the preview:
+The mode decides this stage ([[init-ite#The Two Modes]]). When nobody named a mode, the mode is `proposal`.
+
+1. Plan it with `--dry-run` first, and read the preview and the `Layout` block. Then write it, and read the preview:
 
    ```bash
    flint ite map change propose "<program>" --ops "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json" --layout "$ORBH_SCRATCH_DIR/ite-layout-<program slug>.json" --reason "<one sentence for the person>"
    flint ite map change show "<program>" <change id>
    ```
 
+   In the mode `direct`, add `--apply` to the propose: the first map applies at once.
    An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
-   A part with no place refuses with `refused-state` (`unplaced-parts`) and a suggested place for each part. Choose better places from the canvas, and propose again. Run the propose with `--dry-run` first to see the `Layout` block.
-2. **Stage gate.** Show the person the tree after. Ask: apply, change, or discard.
-   - **Apply**: the person applies it in the Workbench, or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You never apply it.
+   A part with no place refuses with `refused-state` (`unplaced-parts`) and a suggested place for each part. Choose better places from the canvas, and propose again.
+2. **Stage gate (the mode `proposal`).** Show the person the tree after. Ask: apply, change, or discard.
+   - **Apply**: the person applies it in the Workbench, or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You never apply a proposal.
    - **Change**: discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
    - **Discard**: `flint ite map change discard "<program>" <change id>`.
-3. Once the person applied or discarded the change, progress to the next stage.
+3. **The mode `direct`.** Render level 1 (`flint ite map render "<program>" --out "$ORBH_SCRATCH_DIR/after.png"`), read the image, and read its problems. When the first map is wrong, revert it (`flint ite map change revert "<program>" <change id>`), and do this stage again.
+4. Once the change is applied or discarded, progress to the next stage.
 
 > [!headless]
-> - Run `flint orbh session set phase proposing`.
-> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed`, with no conflict and no new error finding in the tree after. When the preview shows a mistake, discard your change, repair the operations, and propose again. Do this at most two times.
-> - Do not show the tree to a person, and do not wait for the apply (steps 2 and 3). Never apply the change. Progress to the next stage.
+> - Run `flint orbh session set phase proposing` (the mode `direct`: `applying`).
+> - Read the preview with `flint ite map change show "<program>" <change id> --json`. The state must be `proposed` (the mode `direct`: `applied`), with no conflict and no new error finding in the tree after. When the preview shows a mistake, discard your change (the mode `direct`: revert it), repair the operations, and write it again. Do this at most two times.
+> - Do not show the tree to a person, and do not wait for the apply (steps 2 and 4). Never apply a proposal. Progress to the next stage.
 
 ## Stage 5: Check
 
-1. Run `flint ite map check "<program>"` and `flint ite check "<program>"`. Repair each error of a part that you proposed: discard the change, and propose it again with the repair.
+1. Run `flint ite map check "<program>"` and `flint ite check "<program>"`. Repair each error of a part that you proposed: discard the change, and propose it again with the repair. In the mode `direct`, repair it with one more change and `--apply`.
 2. Before the apply, the program has no part, so the check reads only the root note. After the apply, run `flint ite map check "<program>"` again, and show the person the findings of level 1.
 3. Progress to the next stage.
 
 > [!headless]
 > - Run `flint orbh session set phase checking`.
-> - Read the tree after of your change for its findings: the person applies it later.
+> - The mode `proposal`: read the tree after of your change for its findings: the person applies it later. The mode `direct`: run `flint ite map check "<program>"` now.
 
 ## Stage 6: Hand Over
 
-1. Show the person the list of what only the person does, one command each:
+1. Show the person the list of what only the person does, one command each. In the mode `direct`, show the revert command of each change in its place, the newest first:
 
    ```bash
-   flint ite map change apply "<program>" <change id>     # when not applied yet
+   flint ite map change apply "<program>" <change id>     # the mode proposal: when not applied yet
+   flint ite map change revert "<program>" <change id>    # the mode direct: to take the change back
    ```
 
 2. Propose the next step, as one more map change: a part one level deeper ([[wkfl-ite-map_expand]]), the files that no part covers ([[wkfl-ite-map_cover]]), or the parts that the person names ([[wkfl-ite-parts_add]]).
 3. The workflow is done.
 
 > [!headless]
-> - Do not show the list to a person (step 1), and do not propose the next step to a person (step 2). Return as your prompt says. When the prompt gives no shape, return Markdown with these lines:
+> - Do not show the list to a person (step 1), and do not propose the next step to a person (step 2). Return as your prompt says. When the prompt gives no shape, use the shape of [[init-ite#Headless]] for your mode. The mode `proposal`:
 >
 >   ```
 >   PROGRAM: <name> (<template>): <purpose>
@@ -131,14 +137,16 @@ The new program has only its root note, so the first map has no level to keep. E
 >   WAITS FOR YOU: flint ite map change apply "<program>" <change id>
 >   GAPS: <what you did not know, and the question for the person>
 >   ```
+>
+>   The mode `direct`: `APPLIED: <the map change id, with the count of each operation>` in place of `PROPOSED`, and `REVERT: flint ite map change revert "<program>" <change id>` in place of `WAITS FOR YOU`.
 
 # Output
 
 - One program: the root note and `Steel/Programs/<name>/program.md`
-- One map change with the first level: applied by the person, or discarded
-- The list of the applies for the person
+- One map change with the first level: applied by the person, or discarded. The mode `direct`: applied by you.
+- The list of the applies for the person (the mode `direct`: the revert commands)
 
 > [!headless]
 > - One program, or one extended program
-> - One map change that waits for the person, with the state `proposed`
-> - A result that names the change id and the command that only the person runs
+> - One map change that waits for the person, with the state `proposed` (the mode `direct`: `applied`)
+> - A result that names the change id, and the apply command that only the person runs (the mode `direct`: the revert command)

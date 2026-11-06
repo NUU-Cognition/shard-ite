@@ -3,6 +3,7 @@ description: "A template of this Flint (steel-template/1): the start of a new pr
 orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 ---
 
 # Filename: Mesh/Metadata/Templates/(Template) [Title].md
@@ -26,7 +27,8 @@ orb:
   - One H1: the title of the template. One paragraph for a person: the kind of system, and when to use it.
   - "## How to model a system of this kind": the steps of the agent (create the program, propose the first level
     of the main map as one map change, join the parts with the connections, take a part deeper with one more map
-    change, and check the map). A person applies each map change.
+    change, and check the map). A person applies each map change, or, in the mode `direct` of the ITE shard, the
+    agent applies it with `--apply`.
   - "## The types": one row for each type: the name, the id, and when to use it.
   - "## The connections" (optional) and "## The questions".
   - One fenced block with the info string `template`, at the end.
@@ -61,7 +63,7 @@ orb:
 ## How to model a system of this kind
 
 1. Write the root note with `flint ite create "<Name>" --template TEMPLATE-ID --purpose "<one sentence>"`.
-2. Find the first level of the main map: the parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`. A person applies it.
+2. Find the first level of the main map: the parts below the root, each of one of the types below. Propose them as one map change with `flint ite map change propose`: a person applies it. In the mode `direct` (The Two Modes in [[init-ite]]), add `--apply`: the change applies at once.
 3. Join the parts with the connections below.
 4. Take a part one level deeper with one more map change, when the person asks for it.
 5. Check the map with `flint ite map check "<Name>"`.

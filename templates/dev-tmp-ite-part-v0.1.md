@@ -4,6 +4,7 @@ orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
   - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 orbh-fleet: steel-map-refresh-1104
 ---
 
@@ -12,11 +13,13 @@ orbh-fleet: steel-map-refresh-1104
 /*
   A part is one Mesh note of a program. A note is a part when its `parent` chain reaches the root note.
   `flint ite part add <program> --kind <type id> --title "<title>" [--parent <part>]` makes it with a map change:
-  a person's change applies at once, an agent's change is a proposal that a person applies.
+  a person's change applies at once. An agent's change is a proposal that a person applies, or, with `--apply`
+  in the mode `direct` (The Two Modes in [[init-ite]]), it applies at once.
   Each change of the structure (the title, the type, the parent) is a map change. Never write a new part file,
   a `parent`, or a `(Type)` word with your own tools. `flint ite part set` changes the prose and the
-  fields that are not structure: a person's change writes at once, and an agent's change is a proposal (one map
-  change, `edit`) that a person applies. `flint ite link` is the same for a link.
+  fields that are not structure: a person's change writes at once. An agent's change is one map change (`edit`):
+  a proposal that a person applies, or, with `--apply` in the mode `direct`, an applied change. `flint ite link`
+  is the same for a link.
   A note of another type (a Task, a Person) is a part when its `parent` names a part of the program: give it its
   parent with a map change (op move).
 

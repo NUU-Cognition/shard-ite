@@ -4,6 +4,7 @@ orb:
   - "@v1/nuucognition/session/9f552ce0-0455-44ed-b8ec-d749c3ae9b2f#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
   - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 orbh-fleet: steel-map-refresh-1104
 ---
 
@@ -85,7 +86,7 @@ The rules of the read:
 8. **The sources.** `sources` lists the notes and the pages that a part comes from (wikilinks or URLs). In a program with `codebase`, `code-refs` lists the code of the part: a file, a small folder (ends with `/`), a symbol (`path#Name`), or a path of another codebase (`@<Codebase name>/<path>`). Each path must exist.
 9. **Keys of a later module.** A part can have more keys of a later module. Keep each key that this file does not name. With the default setting, each part shows as a plain card of its type.
 
-**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once, and an agent's change is a proposal. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`. A person's `part set` and `flint ite link` write at once; an agent's `part set` and `link` each propose one map change (`edit`), and a person applies it.
+**One writer of the structure.** Each change of the tree (add, move, rename, merge, remove, a change of type) is a map change. A person's hand change applies at once, with Undo. `flint ite part add` and `part remove` make a map change: a person's change applies at once. An agent's change is a proposal, or, with `--apply` in the mode `direct` ([[init-ite#The Two Modes]]), it applies at once. `flint ite part set` changes only the prose and the fields that are not structure: it refuses `title`, `kind`, and `parent`. A person's `part set` and `flint ite link` write at once; an agent's `part set` and `link` each make one map change (`edit`): a person applies it, or, in the mode `direct`, the agent's `--apply` applies it at once.
 
 ## Types, Connections, and Templates
 
@@ -207,7 +208,7 @@ The operations are one JSON array. They apply in order. A part is named by its i
 The states: `proposed`, then `applied` (and `reverted` after a revert), or `discarded`. `applying` and `reverting` are the marks of a write in progress.
 
 1. **One writer of the structure.** Each change of the tree is a map change: `flint ite map change propose`, the shortcuts `map split|move|rename|merge`, and `part add` and `part remove`.
-2. **An agent proposes; only a person applies.** The engine refuses an apply, a revert, and `--apply` from an agent with `forbidden`. An agent can discard a change that it proposed.
+2. **The mode decides who applies.** In the mode `proposal`, an agent proposes and a person applies. In the mode `direct`, an agent applies its own change with `--apply`: the change is proposed and applied in one call, with the agent in `by` and `applied_by` ([[init-ite#The Two Modes]]). The engine does not know the mode. It refuses an agent with `forbidden` for the apply of a proposal (`map change apply`), the revert of the change of another actor, and an `--apply` of a change with `realizes`. An agent can revert its own applied change, and discard a change that it proposed.
 3. **The apply checks each base hash.** A file that changed after the propose is a conflict (`changed`), and the apply writes nothing. The apply writes in two phases, and a revert writes back the exact old bytes.
 4. **A refactor keeps the links valid.** A `rename` and a `merge` rewrite each wikilink to the old part in the Mesh. A place names a part by its id, so a refactor keeps it.
 5. **A change by a person applies at once.** In the Workbench, a person adds, removes, groups, moves, renames, and merges by hand. Each hand change is one map change that is proposed and applied in one call, with Undo (a revert).
@@ -257,7 +258,7 @@ The main map has two kinds of links. The field `shown` of the connection gives t
 - **A link that shows on a click** (`shown: selected`, the default): `uses`, `depends-on`, and each other connection. The canvas shows it for the selected card and for the card below the pointer. The switch Links shows each one.
 - **A link that always shows** (`shown: always`): the builtin `refers-to`. The canvas shows it at each time, as a quiet line with a small arrow head, and as a strong line when a card at one end is selected.
 - **A person draws a `refers-to` link.** Select one card: four small dots show, one at the middle of each side. Drag from a dot to another card. The inspector of the part lists the link and can remove it.
-- **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person writes it at once with `flint ite link` (or a drag on the canvas). An agent's `flint ite link` proposes one map change that a person applies.
+- **It is meaning.** The link is the frontmatter key `refers-to` of the part: `refers-to: ["[[<note of the other part>]]"]`. It is in the Mesh, not in `State/`. A person writes it at once with `flint ite link` (or a drag on the canvas). An agent's `flint ite link` makes one map change: a proposal that a person applies, or, with `--apply` in the mode `direct`, an applied change.
 
 Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers-to`. Add `--remove` to remove the link.
 
@@ -270,13 +271,13 @@ Example: `flint ite link "NUU Steel" <part id> <other part id> --relation refers
 | `flint ite map tree <program> [--ids]` | The whole tree with the markers and the counts of the findings | Nothing |
 | `flint ite map check <program>` | Each finding of the main map. Exit 1 for an error finding. | Nothing |
 | `flint ite map coverage <program> [--gaps]` | Covered / total, the coverage of each part, the overlaps; `--gaps` lists the gap files | Nothing |
-| `flint ite map change propose <program> --ops <file\|-> [--layout <file\|->] --reason "<one sentence>" [--dry-run] [--apply]` | Proposes a map change and prints its id and preview. `--dry-run` writes nothing. `--apply` applies it at once: a person only. | One proposal |
+| `flint ite map change propose <program> --ops <file\|-> [--layout <file\|->] --reason "<one sentence>" [--dry-run] [--apply]` | Proposes a map change and prints its id and preview. `--dry-run` writes nothing. `--apply` applies it at once: a person, or an agent in the mode `direct`. | One map change |
 | `flint ite map change list <program> [--state <state>]` | The map changes, the newest first | Nothing |
 | `flint ite map change show <program> <id>` | One change with its preview: the tree before and after with the marks, the files, the dangling links, the conflicts | Nothing |
-| `flint ite map change apply\|revert <program> <id>` | Applies or reverts one change. A person only. | The part files, the proposal |
+| `flint ite map change apply\|revert <program> <id>` | Applies a proposal (a person only), or reverts an applied change (a person; an agent only its own change, and a run of changes newest first) | The part files, the change file |
 | `flint ite map change discard <program> <id>` | Discards a proposed change; the file stays with the state `discarded`. A person, or the agent that proposed it. | The proposal |
-| `flint ite map split <program> --parent <part\|root> --title <t> --kind <type id> --sentence <s> <child>...` | Proposes one `split` | One proposal |
-| `flint ite map move <program> <part> --parent <part\|root>`, `map rename <program> <part> --title <t>`, `map merge <program> <from> --into <part>` | Propose one operation; `--apply` applies it (a person only) | One proposal |
+| `flint ite map split <program> --parent <part\|root> --title <t> --kind <type id> --sentence <s> <child>...` | Proposes one `split`; `--apply` applies it (a person, or an agent in the mode `direct`) | One map change |
+| `flint ite map move <program> <part> --parent <part\|root>`, `map rename <program> <part> --title <t>`, `map merge <program> <from> --into <part>` | Propose one operation; `--apply` applies it (a person, or an agent in the mode `direct`) | One map change |
 | `flint ite map canvas <program> [--in <part>] [--deep]` | One level with the absolute place of each box, the drawings, the links, the bounds, and the problems | Nothing |
 | `flint ite map render <program> [--in <part>] [--all] [--out <file>]` | The image of a level, of a change (`--change <id>`), or of a draft (`--ops <file> [--layout <file>]`) | The image only |
 | `flint ite places <program> [--in <part>] [--deep]` | The place and the size of each part of one level (default: the top of the root), its mode, and `saved` or `new` | Nothing |
@@ -322,7 +323,7 @@ flowchart LR
 ### The Rules of the Main Map
 
 1. **Change the main map only through a map change.** Never write a part file with your own tools.
-2. **Never apply a map change, and never revert one.** Only a person does. A headless session never discards the change that it returns.
+2. **Apply only in the mode `direct`, and only your own change.** In the mode `proposal`, never apply or revert a map change: a person does. In the mode `direct`, apply your own change with `--apply`, and revert only your own change. Never apply a proposal. A headless session never reverts or discards the change that it returns.
 3. **One change for one piece of work, and read the waiting changes first.** Run `flint ite map change list <program> --state proposed`, then `flint ite map change show <program> <change id>` for each one. Do not propose what a waiting change does already. Do not `edit` or `move` a part that a waiting change moves or edits: the later change gets a conflict (`changed`) at the apply.
 4. **Read the preview before you hand over.** The tree after must have no new finding of the level error, and, when the program sets `max-children`, no new `map-too-many-children` that you could avoid.
 5. **The quality rules apply to each new part**: the words of the person, a type of the program, a title of two to six words, one sentence that says what the part is, and sources that you read (never invented paths).
@@ -339,7 +340,7 @@ flowchart LR
 | [[wkfl-ite-map_update]] | Updates one part from its sources now: `edit`, and `add` or `remove` of children |
 | [[wkfl-ite-parts_add]] | Adds the parts that the person names below one part (or the root): `add` operations |
 
-Each workflow ends with one map change that the person reads and applies.
+Each workflow ends with one map change: the person reads and applies it, or, in the mode `direct`, the agent applies it.
 
 ## The Setting of the Modules
 

@@ -1,5 +1,16 @@
 # ITE Releases
 
+## Release 0.7.0
+
+The shard has two modes for an agent: `proposal` and `direct` (NUU Flint Task 1335). In the mode `direct`, an agent applies its own change to the main map at once, and the change keeps a record and a revert. The mode is a rule of the shard: the engine does not know it, and Steel has no switch for it.
+
+- The init has a new section "The Two Modes": what each mode does, who chooses it (the person; the default is `proposal`; a headless session uses `direct` only when its prompt says `mode: direct`), the verbs that take `--apply`, the move of cards with a change that has only a layout, what the engine still refuses, the revert of an own change (newest first), what stays with a person in both modes, and what the engine does not check. Rule 1 points to it. Rules 2, 4, and 5, the line "A person only", the command table (`--apply`, and a row for the revert of an own change), the paragraph about a reference to another program, and the section Headless (rule 3, Before You Return, and a result shape with `APPLIED` and `REVERT` for the mode `direct`) changed. Its size is 181 lines.
+- The seven workflows that change the main map (`map_create`, `map_expand`, `map_refactor`, `map_cover`, `map_update`, `parts_add`, `program_create`) have a stage "Propose or Apply": a dry run, then the write. In the mode `proposal`, the stage gate stays. In the mode `direct`, the agent adds `--apply`, renders the level again, reads its problems, and reverts its own change when it is wrong. The End and the Output name the change id and its revert command.
+- `knw-ite-canvas`: the section "Move Directly, or Propose" has three paths. The path at once (`place`, `drawing`, `map layout`) has no record. In the mode `direct`, a move of many cards is a change with only a layout and `--apply`, because it has an undo. Step 7 of the method says the same.
+- `knw-ite-reference` has the term Mode, and its tables of who writes what and of the commands say the two modes. New rows: `map change propose`, `map move|rename|merge|split`, `map change apply`, and `map change revert`. `knw-ite-programs`, the templates `tmp-ite-part` and `tmp-ite-template`, the skill `sk-ite-check_after_task`, the six templates of `install/`, the type note Program, and the connection note Refers To say the two modes too.
+- The text of the later modules (`.later/`) and the recipes of `install/` did not change. A recipe of Steel names no mode, so its session uses the mode `proposal`.
+- This version needs a Flint CLI in which an agent's `--apply` applies its own change, and in which `part add`, `part set`, `part remove`, and `link` take `--apply` (NUU Flint Task 1335). With an older CLI, the engine refuses an agent's `--apply` with `forbidden`.
+
 ## Release 0.6.0
 
 The shard teaches how to compose a level (NUU Flint Task 1329). A map change holds a `layout`, and an agent's change with a new part that has no place is refused.

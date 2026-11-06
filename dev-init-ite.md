@@ -1,5 +1,5 @@
 ---
-description: "The ITE for the main map: what a program and its main map are, the rules, where the files live, how to make a program and change its map, the operations and the layout of a map change, the command for each piece of work, the setting of the modules, which file to read, and the section Headless with its rules and the shape of the result"
+description: "The ITE for the main map: what a program and its main map are, the rules, the two modes (proposal and direct), where the files live, how to make a program and change its map, the operations and the layout of a map change, the command for each piece of work, the setting of the modules, which file to read, and the section Headless with its rules and the shape of the result"
 orb:
   - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
   - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
@@ -12,7 +12,7 @@ The ITE (Integrated Thinking Environment) lets a person model a **system** of an
 
 A **program** is one root note in the Mesh and the tree of its **parts**. A part is one Mesh note of a type (a goal, a person, a module, a step). The tree of the parts by `parent` is the **main map**: what the system is made of. A part with children is a deeper **level**: a person opens it on the canvas. Each program has one main map.
 
-The surface for a person is the **Workbench** of Steel (the page `/ite`). There a person sees the main map as cards, changes it by hand, and applies each change that an agent proposes. This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and the map changes that wait. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. The CLI is the truth: check a form with `--help`.
+The surface for a person is the **Workbench** of Steel (the page `/ite`). There a person sees the main map as cards, changes it by hand, applies each change that an agent proposes, and can revert each change that an agent applied. This shard gives the agent side. The command is `flint ite`: with no verb, it shows the programs and the map changes that wait. Each verb takes `--json`, and `flint ite <verb> --help` gives the flags and one example. The CLI is the truth: check a form with `--help`.
 
 > [!headless]
 > A headless or subagent Orbh session: read the section `# Headless` at the end of this file too.
@@ -21,14 +21,33 @@ Read this file first. With this file and one workflow, you can make a program an
 
 ## The Rules
 
-1. **An agent proposes. Only a person decides.** Only a person applies or reverts a map change, and renames or archives a program. The engine refuses an agent with `forbidden`. In an Orbh session, a `Next:` line that only a person may run ends with `(a person)`: name it for the person, and never run it. Write each reason so that the person can decide in one click.
-2. **One writer of the structure.** The main map changes only through a map change (`flint ite part add`, `part remove`, `map change propose`, `map split|move|rename|merge`). Never write a part file, a `parent`, a title, or a `(Type)` word with your own tools. Write through `flint ite` each time a command exists, so that the person sees your change in the Workbench.
+1. **The person chooses the mode.** In the mode `proposal` (the default), an agent proposes and a person applies. In the mode `direct`, an agent applies its own change with `--apply`. Some acts stay with a person in both modes. See [[#The Two Modes]]. In an Orbh session, a `Next:` line that only a person may run ends with `(a person)`: name it for the person, and never run it. Write each reason so that the person can decide in one click.
+2. **One writer of the structure.** The main map changes only through a map change (`flint ite part add`, `part remove`, `map change propose`, `map split|move|rename|merge`). This is true in both modes: with `--apply`, the map change applies at once and keeps its record. Never write a part file, a `parent`, a title, or a `(Type)` word with your own tools. Write through `flint ite` each time a command exists, so that the person sees your change in the Workbench.
 3. **Only commands write facts.** A program holds meaning: the root note, the parts, their prose, and their links. It never holds a finding, a count, or a place. The place, the size, and the face of each card, and the drawings, are in `State/main.json`. Only the canvas, `flint ite place`, `arrange`, and `drawing` write that file, and the apply of a map change that holds a `layout`. Never write a file of `Proposals/` by hand.
-4. **Test before you hand over.** Read the preview of each map change that you propose. Hand over no change with a new error finding.
-5. **Read before you run.** Never run code that you did not read. `flint ite arrange` on a real level waits for a person: it moves many cards. You lay out your own new level, and each part that you add or move, in the `layout` of your change. The engine refuses an agent's change with a new part that has no place. See [[knw-ite-canvas]].
+4. **Test before you hand over.** Read the preview of each map change that you propose. In the mode `direct`, read a dry run (`--dry-run`, on each verb that takes it) and a render before you write. Hand over no change with a new error finding.
+5. **Read before you run.** Never run code that you did not read. `flint ite arrange` on a real level waits for a person: it moves many cards. You lay out your own new level, and each part that you add or move, in the `layout` of your change. In both modes, the engine refuses an agent's change with a new part that has no place. Move the cards that a person arranged only when the person asks, also in the mode `direct`. See [[knw-ite-canvas]].
 6. **Never invent.** No invented id, path, URL, part, or type. Say a gap in the prose: "Nobody knows this yet."
 7. **The words of the person.** Use the words that the person uses for the system. Prose first: one to three short paragraphs for each part. A title of two to six words. The quality rules are in [[knw-ite-programs]]. A part can also show its flow in one Mermaid diagram, when a picture says more than the text: see [[knw-ite-programs#Diagrams in the Prose]].
 8. **Simplified Technical English.** Short sentences, active voice, one term for one thing.
+
+## The Two Modes
+
+An agent changes the main map in one of two modes. The mode is a rule of this shard. The engine does not know the mode, and Steel has no switch for it.
+
+| Mode | A write of the agent | Who applies it |
+|---|---|---|
+| `proposal` (the default) | One map change that waits. | A person: in the Workbench, or with `map change apply`. |
+| `direct` | The same command with `--apply`. | The agent, at once. The engine keeps the change file with `state: applied`, the agent in `by` and `applied_by`, and the reason. |
+
+- **Who chooses.** The person chooses the mode. When nobody names a mode, use `proposal`. Use `direct` only after the person names it in the conversation. When the person names `proposal` again, use `proposal` again. A headless session uses `direct` only when its prompt says `mode: direct`.
+- **The verbs that take `--apply`.** `flint ite part add`, `part set`, `part remove`, `link`, `map move|rename|merge|split`, and `map change propose` (with `--ops`, with `--layout`, or with both). All seven operations apply in the mode `direct`: `add`, `move`, `split`, `merge`, `rename`, `remove`, and `edit`.
+- **A move of cards.** In the mode `direct`, move cards with a change that has only a layout: `flint ite map change propose "<program>" --layout <file|-> --reason "<text>" --apply`. This change has a record and an undo. `flint ite place`, `drawing`, and `map layout` apply at once in both modes, with no record. See [[knw-ite-canvas#Move Directly, or Propose]].
+- **Before and after a direct write.** Before: run the same command with `--dry-run` (each `map` verb and `map change propose` take it), and read the preview and a render. After: render the level again, and read its problems. The output names each waiting proposal that now has a conflict: tell the person.
+- **What the engine refuses.** The engine refuses the apply of an agent, and writes nothing, for: a new finding of the level error; a conflict (`changed`: a file changed after the plan); a new or moved part with no place (the refusal gives a suggested place); a protected declaration; and a change with `realizes` (`forbidden`: an item of a plan is a decision of a person).
+- **The undo.** Revert your own applied change: `flint ite map change revert "<program>" <change id>`. A revert refuses when a file changed after the apply, so revert a run of changes newest first. You cannot revert the change of another actor. Give the person the change id and the revert command of each direct change.
+- **A person only, in both modes.** The apply of a proposal (`map change apply`), the revert of the change of another actor, `rename` and `archive` of a program, `modules on|off`, and `flint ite arrange` on a real level, unless the person asks. The verbs of the later modules keep their rules.
+- **What the engine does not check.** The engine does not know the mode. An `--apply` in the mode `proposal` breaks a rule of this shard, and the engine does not stop it. The record (the agent in `by` and `applied_by`) and the revert are the safety. So never add `--apply` in the mode `proposal`.
+- **The other rules stay.** Each rule above applies in both modes: one writer of the structure, only commands write facts, a place for each new or moved part, and a preview before the write.
 
 ## Where the Files Live
 
@@ -45,8 +64,8 @@ A note is a part when its `parent` chain reaches the root note. Its identity is 
 ## Make a Program and Change Its Map
 
 1. **The purpose and the template.** `flint ite create "Weekly Team Meeting" --purpose "<one sentence: what the system is, and why>" [--template organisation]`. `flint ite templates` lists the templates: the six of the shard (`organisation`, `process` for repeated work of a business, `event`, `research`, `software`, `general`) and the templates of this Flint. The program gets only its root note, and `Steel/Programs/<Name>/program.md`.
-2. **The first map, as one map change.** Write the parts of level 1 as one JSON array (the table below), and their places as a `layout` ([[knw-ite-canvas]]). Render the draft and read the image. Then: `flint ite map change propose "<program>" --ops <file> [--layout <file>] --reason "<one sentence>"`.
-3. **The person decides.** Read the preview: `flint ite map change show "<program>" <change id>`. `flint ite proposals "<program>"` lists each change that waits. The person applies it in the Workbench, or with `flint ite map change apply "<program>" <change id>` `(a person)`.
+2. **The first map, as one map change.** Write the parts of level 1 as one JSON array (the table below), and their places as a `layout` ([[knw-ite-canvas]]). Render the draft and read the image. Then: `flint ite map change propose "<program>" --ops <file> [--layout <file>] --reason "<one sentence>"`. In the mode `direct`, add `--apply`.
+3. **The person decides, or you apply.** The mode `proposal`: read the preview: `flint ite map change show "<program>" <change id>`. `flint ite proposals "<program>"` lists each change that waits. The person applies it in the Workbench, or with `flint ite map change apply "<program>" <change id>` `(a person)`. The mode `direct`: the change applied. Render the level, read its problems, and give the person the change id and its revert command.
 4. **Deeper.** One more map change for each next step: a part one level deeper, a clearer level, the parts that the person names. See the workflows below.
 5. **Check.** `flint ite map check "<program>"` and `flint ite check "<program>"` give no error.
 
@@ -81,11 +100,11 @@ Each program has a NUU address. A program is a thing of its Flint.
 
 `flint ite address` shows each form. `flint ite address <address>` tells where an address leads: this Flint, another Flint of this machine, not on this machine, or not found. `flint resolve <address>` also reads it. Each `flint ite` command that takes a program takes its address: a command on a program of another Flint of this machine runs in that Flint, and it says the Flint on stderr. In Steel, an address opens from Quick Open and from the page URL `/ite/<address>`. The contract is S19 and S20 of `packages/entity/ADDRESS.md` in the repository `main`.
 
-**A reference to another program.** A reference is a pointer part: a normal part with the field `points-to`. It keeps its own text, its place, and its links. The program can be in another Flint. A target that is not on this machine is not an error: the part keeps its address and tells the person. The module `main-map` owns it, so no later module must be on. A person adds it from the canvas menu "Add a reference to a program", or with `--points-to`. A person changes its target with the button Change in the inspector, or with `flint ite part set "<program>" <id> --field points-to=<address>`. As with each change of a part, a change of an agent is a proposal.
+**A reference to another program.** A reference is a pointer part: a normal part with the field `points-to`. It keeps its own text, its place, and its links. The program can be in another Flint. A target that is not on this machine is not an error: the part keeps its address and tells the person. The module `main-map` owns it, so no later module must be on. A person adds it from the canvas menu "Add a reference to a program", or with `--points-to`. A person changes its target with the button Change in the inspector, or with `flint ite part set "<program>" <id> --field points-to=<address>`. As with each change of a part, a change of an agent is a proposal in the mode `proposal`, and it applies at once with `--apply` in the mode `direct`.
 
 ## The Commands
 
-`<program>` is the name, the id, or the address of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent, so a change of the structure is a proposal.
+`<program>` is the name, the id, or the address of a program. `<id>` is the id of a part: `flint ite map` prints it. A map change, the `map` shortcuts, and `place` also take a note name or a unique title. In an Orbh session the CLI acts as the agent: a write of the main map is a proposal, or, with `--apply` in the mode `direct`, an applied change ([[#The Two Modes]]).
 
 | To do this | Run this |
 |---|---|
@@ -93,21 +112,22 @@ Each program has a NUU address. A program is a thing of its Flint.
 | Read one program | `flint ite map "<program>"` (the tree with the id of each part; `--full` adds the text); `flint ite map show "<program>" [--focus <id>]` (one level) |
 | Show the address of a program; tell where an address leads | `flint ite address ["<program>"\|<address>]` |
 | See the types and the templates; make a program | `flint ite types`, `flint ite templates`; `flint ite create "<name>" --purpose "<one sentence>" [--template <id>]` |
-| Add or remove one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <id>] [--text "<text>"] [--at <x>,<y>\|--near <id>]`; `flint ite part remove "<program>" <id> [--layout <file\|->]` |
-| Add a note that points to another program | `flint ite part add "<program>" --kind note --title "<title>" --points-to <address> [--text "<text>"] [--at <x>,<y>]` (a person: at once; an agent: one map change) |
-| Change many parts at once; move, rename, merge, or group parts | `flint ite map change propose "<program>" --ops <file\|-> [--layout <file\|->] --reason "<text>"`; `flint ite map move\|rename\|merge\|split "<program>" ... [--at <x>,<y>\|--near <id>]` (one operation each) |
-| Change the prose or a field of a part | `flint ite part set "<program>" <id> --text "<text>"` (a person: at once; an agent: one map change) |
-| Link two parts | `flint ite link "<program>" <from id> <to id> --relation <key>` (`refers-to` always shows on the map; a person: at once; an agent: one map change) |
+| Add or remove one part | `flint ite part add "<program>" --kind <type id> --title "<title>" [--parent <id>] [--text "<text>"] [--at <x>,<y>\|--near <id>] [--apply]`; `flint ite part remove "<program>" <id> [--layout <file\|->] [--apply]` |
+| Add a note that points to another program | `flint ite part add "<program>" --kind note --title "<title>" --points-to <address> [--text "<text>"] [--at <x>,<y>] [--apply]` (a person: at once; an agent: one map change) |
+| Change many parts at once; move, rename, merge, or group parts | `flint ite map change propose "<program>" --ops <file\|-> [--layout <file\|->] --reason "<text>" [--apply]`; `flint ite map move\|rename\|merge\|split "<program>" ... [--at <x>,<y>\|--near <id>] [--apply]` (one operation each) |
+| Change the prose or a field of a part | `flint ite part set "<program>" <id> --text "<text>" [--apply]` (a person: at once; an agent: one map change) |
+| Link two parts | `flint ite link "<program>" <from id> <to id> --relation <key> [--apply]` (`refers-to` always shows on the map; a person: at once; an agent: one map change) |
 | Read the map changes that wait; take back your own | `flint ite proposals "<program>"`; `map change list "<program>" --state proposed`; `map change show "<program>" <id>`; `map change discard "<program>" <id>` |
+| Revert your own applied change (the mode `direct`) | `flint ite map change list "<program>" --state applied`; `flint ite map change revert "<program>" <change id> [--reason "<text>"]` (only your own change; a run of changes newest first) |
 | Read one level: places, drawings, links, problems; draw it as an image | `flint ite map canvas "<program>" [--in <id>] [--deep]`; `flint ite map render "<program>" [--in <id>] [--all] [--out <file>]` (writes only the image) |
 | Draw the draft of a change; plan it with no write | `flint ite map render "<program>" --ops <file> [--layout <file>]`; `flint ite map change propose ... --dry-run` |
 | Read or set the place, the size, or the face of a card | `flint ite places "<program>" [--in <id>]`; `flint ite place "<program>" <id> --at <x>,<y>\|--near <id> [--size <w>,<h>] [--face <face>]` (at once, also for an agent); `flint ite arrange "<program>" [--in <id>] [--all]` (a real level: only when a person asks) |
 | Read or change the drawings | `flint ite drawing list "<program>" [--layer <id>\|root]`; `flint ite drawing add "<program>" --kind rect\|ellipse\|diamond\|text\|frame --at <x>,<y> [--size <w>,<h>] [--text "<t>"]` (a line: `--kind line --from-node <id> --to-node <id>`); `drawing set "<program>" <drawing id> ...`; `drawing remove "<program>" <drawing id>` (at once, also for an agent; a drawing is not structure) |
-| Move many cards and drawings at once, with no proposal | `flint ite map layout "<program>" --layout <file\|-> [--dry-run]` (at once, also for an agent; only parts that exist, and each keeps its parent) |
+| Move many cards and drawings at once, with no proposal | `flint ite map layout "<program>" --layout <file\|-> [--dry-run]` (at once, also for an agent, with no record; only parts that exist, and each keeps its parent). In the mode `direct`, use `flint ite map change propose "<program>" --layout <file\|-> --reason "<text>" --apply`: it has a record and an undo. |
 | Check the map | `flint ite map check "<program>"`, `flint ite map coverage "<program>"`, `flint ite check "<program>"` (the findings of the modules that are on; `--all` gives each finding) |
 | The check after a product task | [[sk-ite-check_after_task]] |
 
-A person only (an agent never runs these): `map change apply|revert`, `map change propose --apply`, `rename`, `archive`, `modules on|off`. The exit codes: 0 done; 1 a finding of the level error or a conflict; 2 a refusal of the input, and nothing was written.
+`--apply`: an agent adds it only in the mode `direct` ([[#The Two Modes]]). A person only, in both modes (an agent never runs these): `map change apply` (the apply of a proposal), `map change revert` of the change of another actor, `rename`, `archive`, `modules on|off`. The exit codes: 0 done; 1 a finding of the level error or a conflict; 2 a refusal of the input, and nothing was written.
 
 ## The Modules
 
@@ -129,20 +149,33 @@ A headless or subagent Orbh session has no person at the terminal. It loads this
 
 1. **Show progress.** Set the phase at the start of each stage: `flint orbh session set phase <phase>`. Each workflow names its phases.
 2. **Ask no question.** When the instructions are not clear, select the reading that best helps the person, and write it in your result.
-3. **Propose; do not decide.** Each change of the main map is one map change that waits for the person. An agent's `part add`, `part remove`, `part set`, and `link` are proposals too. Never apply, revert, or discard the map change that you return. Place each part that you add or move in the `layout` of the change. A place and a drawing are not structure: `flint ite place` and `drawing` apply at once. Never write `State/main.json` with your own tools. Never run `flint ite arrange` on a real level.
+3. **Use the mode of your prompt.** The mode is `proposal`, unless your prompt says `mode: direct` ([[#The Two Modes]]).
+   - The mode `proposal`: each change of the main map is one map change that waits for the person. An agent's `part add`, `part remove`, `part set`, and `link` are proposals too. Never apply, revert, or discard the map change that you return.
+   - The mode `direct`: add `--apply` to each write. Revert only your own change, and only to repair your own mistake. Never revert or discard a change that you return. Never apply the proposal of another actor.
+   - In both modes: place each part that you add or move in the `layout` of the change. A place and a drawing are not structure: `flint ite place` and `drawing` apply at once. Never write `State/main.json` with your own tools. Never run `flint ite arrange` on a real level.
 4. **Stay inside your work.** Change only the program that your prompt names. Commit only when your prompt says so, with only your own paths.
 
 ## Before You Return
 
-- [ ] Each map change: `flint ite map change show "<program>" <change id> --json` shows `change.state` = `proposed`, an empty `preview.conflicts`, and no new finding of the level error in the tree after.
+- [ ] Each map change: `flint ite map change show "<program>" <change id> --json` shows an empty `preview.conflicts` and no new finding of the level error in the tree after. The mode `proposal`: `change.state` = `proposed`. The mode `direct`: `change.state` = `applied`.
 - [ ] `flint ite map check "<program>"` gives no new error for a part that you changed.
-- [ ] The layout of your change has no `overlap` problem that you made, and you read a render of it (`flint ite map render`).
+- [ ] The layout of your change has no `overlap` problem that you made, and you read a render of it (`flint ite map render`). The mode `direct`: you rendered the level again after the write.
 
-Then return as your prompt says. When the prompt gives no shape, return Markdown with these lines:
+Then return as your prompt says. When the prompt gives no shape, return Markdown with these lines. The mode `proposal`:
 
 ```
 PROGRAM: <name> (<template>): <purpose>
 PROPOSED: <each map change id, with the count of each operation>
 WAITS FOR YOU: flint ite map change apply "<program>" <change id>   (one line for each change)
+GAPS: <what you did not know, and the question for the person>
+```
+
+The mode `direct`:
+
+```
+PROGRAM: <name> (<template>): <purpose>
+APPLIED: <each map change id, with the count of each operation, the oldest first>
+REVERT: flint ite map change revert "<program>" <change id>   (one line for each change, the newest first)
+CONFLICTS: <each waiting proposal that your writes gave a conflict, or "none">
 GAPS: <what you did not know, and the question for the person>
 ```

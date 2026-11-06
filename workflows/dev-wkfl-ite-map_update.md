@@ -1,9 +1,10 @@
 ---
-description: "Update one part of the main map and its children from their sources now, as one map change that a person applies, with one stage gate: the person reads the preview"
+description: "Update one part of the main map and its children from their sources now, as one map change that a person applies after one stage gate (the mode `proposal`: the person reads the preview), or that the agent applies with `--apply` (the mode `direct`)"
 orb:
   - "@v1/nuucognition/session/578f9937-43d6-4705-9622-d380db0d2ab4#flint/nuu-orbh"
   - "@v1/nuucognition/session/ccaed053-844a-48bd-966a-41a2e32d6412#flint/nuu-flint"
   - "@v1/nuucognition/session/c486136a-df4f-4481-826f-ab4c7dcfc657#flint/nuu-flint"
+  - "@v1/nuucognition/session/cb2fbb61-6a9d-4cc8-aa5c-7588d998e369#flint/nuu-flint"
 orbh-fleet: steel-map-refresh-1104
 ---
 
@@ -13,11 +14,11 @@ Run `flint shard start ite` if you haven't already.
 
 # Workflow: Map Update
 
-Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. The result is one map change that the person reads and applies. The rules of the main map are in The Main Map of [[knw-ite-programs]].
+Update one part of the main map from its sources now: its sentence, its prose, its sources, and its children. The result is one map change: the person reads and applies it, or, in the mode `direct`, you apply it ([[init-ite#The Two Modes]]). The rules of the main map are in The Main Map of [[knw-ite-programs]].
 
 > [!headless]
 > A headless session follows this workflow with no person in the session. Do each stage, and follow the `> [!headless]` callout in it. The rules of a headless session are in [[init-ite#Headless]].
-> - The result is one map change that the person reads and applies. At the end, return the change id as the prompt says (the callout of The End).
+> - The result is one map change: it waits for the person, or, when the prompt says `mode: direct`, you apply it. At the end, return the change id as the prompt says (the callout of The End).
 
 # Input
 
@@ -94,30 +95,35 @@ Update one part of the main map from its sources now: its sentence, its prose, i
 >   "prose":"<first paragraph, plain text>\n\n<one plain sentence: what the diagram shows>\n\n```mermaid\nflowchart LR\n  A[Step one] --> B[Step two]\n```"
 >   ```
 
-## Stage 4: Propose the Change and Review It With the Person
+## Stage 4: Propose or Apply the Change
+
+The mode decides this stage ([[init-ite#The Two Modes]]). When nobody named a mode, the mode is `proposal`.
 
 1. Write the operations as one JSON array to a file in the scratch folder of your session: `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`. Check that it parses: `python3 -m json.tool < <file>`.
-   A change of text (`edit`) needs no place. A part that you add, move, or remove does: do the stage Place the Parts on the Canvas of [[wkfl-ite-map_expand]], and add `--layout <layout file>` to the propose.
-2. Propose the change:
+   A change of text (`edit`) needs no place. A part that you add, move, or remove does: do the stage Place the Parts on the Canvas of [[wkfl-ite-map_expand]], and add `--layout <layout file>` to the command.
+2. Plan the change with no write, and read the preview:
 
    ```bash
-   flint ite map change propose "<program>" --ops <file> --reason "<one sentence: what the change does>"
+   flint ite map change propose "<program>" --ops <file> --reason "<one sentence: what the change does>" --dry-run
    ```
 
-   An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and propose again. Nothing was written.
-3. Show the person the preview: `flint ite map change show "<program>" <change id>` (the tree before and after with the marks, the files, the new findings, and the dangling links).
-4. **Stage gate.** Ask the person: apply, change, or discard.
-   - **Apply**: the person applies the change in the Workbench (the review of the change) or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You cannot apply it: in an Orbh session the engine refuses an agent with `forbidden`. A conflict (`changed`) means that a file changed after the propose: propose the change again from the files now.
+   An operation that does not apply refuses with `invalid-input` and its index. Repair that operation and plan again. Nothing was written.
+3. Write the change: run the same command with no `--dry-run`.
+   - **The mode `proposal`**: the change waits for the person. Do steps 4 to 6.
+   - **The mode `direct`**: add `--apply`. The change applies at once. Do step 7.
+4. Show the person the preview: `flint ite map change show "<program>" <change id>` (the tree before and after with the marks, the files, the new findings, and the dangling links).
+5. **Stage gate.** Ask the person: apply, change, or discard.
+   - **Apply**: the person applies the change in the Workbench (the review of the change) or runs `flint ite map change apply "<program>" <change id>` in their own terminal. You cannot apply it: the apply of a proposal is for a person only, and the engine refuses an agent with `forbidden`. A conflict (`changed`) means that a file changed after the propose: propose the change again from the files now.
    - **Change**: discard the change (`flint ite map change discard "<program>" <change id>`), change the operations, and propose again.
    - **Discard**: `flint ite map change discard "<program>" <change id>`.
-5. After an apply, run `flint ite map check "<program>"` and show the person the findings of the level.
-6. Once the person applied or discarded the change, the workflow is done.
+6. After an apply, run `flint ite map check "<program>"` and show the person the findings of the level. Once the person applied or discarded the change, the workflow is done.
+7. **The mode `direct`.** Render the level again (`flint ite map render "<program>" [--in <part>] --out "$ORBH_SCRATCH_DIR/after.png"`), and read the image. Run `flint ite map check "<program>"`, and read the problems of the level. When the output of the write names a waiting proposal that now has a conflict, tell the person. When the change is wrong, revert it (`flint ite map change revert "<program>" <change id>`), and do this stage again. Then the workflow is done.
 
 > [!headless]
-> A headless session does not do the review with the person (steps 3 to 6): it reads the preview itself, and never applies the change.
-> - Run `flint orbh session set phase proposing`.
+> A headless session does not do the review with the person (steps 4 to 6): it reads the preview itself, and never applies a proposal. Its mode is `proposal`, unless the prompt says `mode: direct`.
+> - Run `flint orbh session set phase proposing` (the mode `direct`: `applying`).
 > - Write the operations in the form of the callout of Stage 3, as one JSON array to the file `"$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"` (the scratch folder of your session). Check that it parses: `python3 -m json.tool < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"`.
-> - Propose the change:
+> - Plan the change with `--dry-run` first, then write it. In the mode `direct`, add `--apply`:
 >
 >   ```bash
 >   flint ite map change propose "<program>" --ops - --reason "<one sentence: what the change does>" --json < "$ORBH_SCRATCH_DIR/ite-map-<program slug>.json"
@@ -126,25 +132,26 @@ Update one part of the main map from its sources now: its sentence, its prose, i
 >   An operation that does not apply refuses with `invalid-input` and its index ("Operation 3 (move): ..."). Repair that operation and propose again. Nothing was written.
 > - Read the preview of the output (`flint ite map change show "<program>" <change id> --json`): the tree after, `findings.added`, `files`, `dangling`, and `conflicts`.
 >   - The tree after must hold your plan. It must have no new finding of the level error.
->   - When the preview shows a mistake, discard your change (`flint ite map change discard "<program>" <change id>`), repair the operations, and propose again. Do this at most two times.
-> - Change the main map only through a map change. Never apply the change. Once one change is proposed and its preview is correct, end as the callout of The End says.
+>   - When the preview shows a mistake, repair the operations and write the change again. Do this at most two times. The mode `proposal`: discard your change first (`flint ite map change discard "<program>" <change id>`). The mode `direct`: revert it first (`flint ite map change revert "<program>" <change id>`).
+> - The mode `direct`: render the level again, and read its problems. Name in your result each waiting proposal that the output names with a conflict.
+> - Change the main map only through a map change. Never apply a proposal. Once one change is written and its preview is correct, end as the callout of The End says.
 
 # The End
 
-Tell the person the result in short sentences. Give the map change id, whether the person applied it, the count of each operation, and the most important gap.
+Tell the person the result in short sentences. Give the map change id, its state (the person applied it, it waits, or you applied it in the mode `direct`), the count of each operation, and the most important gap. In the mode `direct`, give the revert command too: `flint ite map change revert "<program>" <change id>`.
 
 > [!headless]
 > A headless session has no person to tell. It returns the result:
 > 1. Run `flint orbh session set phase returning`.
 > 2. Check each item of Before You Return of [[init-ite#Headless]].
-> 3. Do not apply, revert, or discard the change that you return.
-> 4. Return as your prompt says. When the prompt gives no shape, use the shape of [[init-ite#Headless]]. Name the map change id, the count of each operation, and the most important gap or decision.
-> 5. When you proposed no change, start your result with `No change:`, and give the reason.
+> 3. Do not apply a proposal. Do not revert or discard the change that you return.
+> 4. Return as your prompt says. When the prompt gives no shape, use the shape of [[init-ite#Headless]] for your mode. Name the map change id, the count of each operation, and the most important gap or decision. In the mode `direct`, name the change as applied, with its revert command.
+> 5. When you wrote no change, start your result with `No change:`, and give the reason.
 
 # Output
 
-- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded
+- One map change in `Steel/Programs/<program>/Proposals/`: applied by the person, or discarded. The mode `direct`: applied by you, with its revert command.
 
 > [!headless]
-> - One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed`
+> - One map change in `Steel/Programs/<program>/Proposals/`, with the state `proposed` (the mode `direct`: `applied`)
 > - A result as the prompt says, with the change id

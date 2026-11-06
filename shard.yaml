@@ -3,10 +3,10 @@ shard: "@nuucognition/ite"
 id: 963b5c54-ddcf-4a74-b776-059c06432948
 source:
   id: 31bb4bb5-cebf-4cc2-9a7e-0caeee6a96fb
-version: "0.6.0"
+version: "0.7.0"
 name: ITE
 shorthand: ite
-description: "Model any system as a program and build its main map: typed parts in the Mesh, one map change for each change of the tree that a person applies, and the places, sizes, and drawings of the cards. A map change holds the layout of its parts, and the shard teaches how to compose a level. The later modules of the ITE stay in the code and are off by default."
+description: "Model any system as a program and build its main map: typed parts in the Mesh, one map change for each change of the tree, and the places, sizes, and drawings of the cards. A map change holds the layout of its parts, and the shard teaches how to compose a level. An agent works in one of two modes that the person chooses: in the mode proposal, it proposes each map change and a person applies it; in the mode direct, it applies its own change at once, with a record and a revert. The later modules of the ITE stay in the code and are off by default."
 dependencies:
   "@nuucognition/flint": ""
 

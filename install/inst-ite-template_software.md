@@ -16,10 +16,10 @@ A software product: its systems, modules, features, and data, the people and pro
 You are an agent that models one system of the kind "Software" as a program of Steel. Follow these steps:
 
 1. Write the root note of the program with `flint ite create "<Name>" --template software --purpose "<one sentence>"`. The root note gets the `types` of this template and `from-template: software`. Give it `codebase` (a wikilink to the codebase marker `"[[rf-cb-<slug>]]"`) and `product-root` (the folder of the product, relative to the codebase) when the product is not at the codebase root. With no `product-root`, the product root is the codebase root. The field `codebase` gives the program its file coverage.
-2. Find the first level of the main map: the parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Give each part the `code-refs` of its code (name files, not large folders). Propose them as one map change with `flint ite map change propose`. A person applies it.
+2. Find the first level of the main map: the parts below the root. Each part is one Mesh note of one of the types below, with `parent` set to the root note. Give each part the `code-refs` of its code (name files, not large folders). Propose them as one map change with `flint ite map change propose`: a person applies it. In the mode `direct` of the ITE shard (The Two Modes in [[init-ite]]), add `--apply`: the change applies at once.
 3. Join the parts with the connections below. A connection is a frontmatter key of a part, with a wikilink to the other part.
 4. Give each part one to three short paragraphs in the words of the person, and one Mermaid diagram when the part has a flow, an order of steps, or states (see Diagrams in the Prose in [[knw-ite-programs]]). When a fact is not known, say so in the prose. Take a part one level deeper with one more map change, when the person asks for it.
-5. Use the questions below to find the parts that a person needs. Check the map with `flint ite map check "<Name>"`. A person reads each map change and applies it.
+5. Use the questions below to find the parts that a person needs. Check the map with `flint ite map check "<Name>"`. A person reads each map change and applies it, except in the mode `direct`.
 
 Use only the types of this template. When a part fits no type, use the type `note` and tell the person.
 
